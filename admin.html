@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quản lý nội dung - Truyền Giáo Kitô</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="admin-page">
+    <header class="site-header admin-header">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">✝</span>
+        <span>Truyền Giáo<br />Kitô</span>
+      </a>
+      <nav class="main-nav" aria-label="Điều hướng quản trị">
+        <a href="index.html">Xem website</a>
+        <a href="#contentManager">Nội dung</a>
+        <a href="#preview">Xem trước</a>
+      </nav>
+    </header>
+
+    <main class="admin-shell">
+      <section class="admin-intro">
+        <div>
+          <p class="eyebrow">Trang quản lý</p>
+          <h1>Thêm, sửa, xóa hình ảnh và nội dung truyền giáo</h1>
+          <p>Nhập nội dung mới, chọn ảnh từ máy, rồi lưu. Dữ liệu sẽ hiển thị ngay trên trang chủ trong cùng trình duyệt.</p>
+        </div>
+        <button class="danger-button" id="resetData">Khôi phục dữ liệu mẫu</button>
+      </section>
+
+      <section class="manager-layout" id="contentManager">
+        <form class="editor-panel" id="contentForm">
+          <input type="hidden" id="itemId" />
+          <label>
+            <span>Loại nội dung</span>
+            <select id="itemType" required>
+              <option value="saints">Các thánh</option>
+              <option value="churches">Nhà thờ</option>
+              <option value="articles">Bài viết</option>
+              <option value="events">Sự kiện</option>
+            </select>
+          </label>
+          <label>
+            <span>Tiêu đề</span>
+            <input id="itemTitle" type="text" required placeholder="Ví dụ: Thánh Giuse" />
+          </label>
+          <label>
+            <span>Mô tả ngắn</span>
+            <textarea id="itemDescription" rows="4" required placeholder="Viết nội dung tóm tắt..."></textarea>
+          </label>
+          <div class="two-fields">
+            <label>
+              <span>Thông tin phụ</span>
+              <input id="itemMeta" type="text" placeholder="Địa điểm, ngày giờ, câu trích..." />
+            </label>
+            <label>
+              <span>Ngày sự kiện</span>
+              <input id="itemDate" type="date" />
+            </label>
+          </div>
+          <label>
+            <span>Upload hình ảnh</span>
+            <input id="itemImage" type="file" accept="image/*" />
+          </label>
+          <img class="image-preview" id="imagePreview" alt="Xem trước ảnh" />
+          <div class="form-actions">
+            <button class="primary-button" type="submit">Lưu nội dung</button>
+            <button class="ghost-button" type="button" id="clearForm">Làm mới</button>
+          </div>
+        </form>
+
+        <section class="table-panel">
+          <div class="section-heading">
+            <h2>Danh sách nội dung</h2>
+            <select id="filterType" aria-label="Lọc loại nội dung">
+              <option value="all">Tất cả</option>
+              <option value="saints">Các thánh</option>
+              <option value="churches">Nhà thờ</option>
+              <option value="articles">Bài viết</option>
+              <option value="events">Sự kiện</option>
+            </select>
+          </div>
+          <div class="admin-list" id="adminList"></div>
+        </section>
+      </section>
+
+      <section class="section-block wide" id="preview">
+        <div class="section-heading">
+          <h2>Xem trước bài viết</h2>
+          <a href="index.html">Mở trang chủ</a>
+        </div>
+        <div class="article-grid" id="previewList"></div>
+      </section>
+    </main>
+
+    <script src="data.js"></script>
+    <script src="admin.js"></script>
+  </body>
+</html>

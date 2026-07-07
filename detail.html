@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chi tiết nội dung - Truyền Giáo Kitô</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="Truyền Giáo Kitô">
+        <span class="brand-mark">✝</span>
+        <span>Truyền Giáo<br />Kitô</span>
+      </a>
+      <nav class="main-nav" aria-label="Điều hướng chính">
+        <a href="index.html#home">Trang chủ</a>
+        <a href="index.html#saints">Các Thánh</a>
+        <a href="index.html#daily">Kinh Thánh</a>
+        <a href="index.html#churches">Nhà Thờ</a>
+        <a href="index.html#articles">Bài viết</a>
+        <a href="index.html#events">Sự kiện</a>
+      </nav>
+      <div class="header-actions">
+        <a class="login-button" href="admin.html">Quản lý</a>
+      </div>
+    </header>
+
+    <main class="detail-shell">
+      <a class="back-link" href="index.html">← Quay lại trang chủ</a>
+      <article class="detail-article" id="detailArticle"></article>
+      <section class="related-section">
+        <div class="section-heading">
+          <h2>Nội dung liên quan</h2>
+        </div>
+        <div class="article-grid" id="relatedList"></div>
+      </section>
+    </main>
+
+    <footer class="site-footer" id="contact">
+      <div>
+        <strong>Truyền Giáo Kitô</strong>
+        <p>Lan tỏa Tin Mừng bằng lời cầu nguyện, học hỏi và phục vụ.</p>
+      </div>
+      <a href="mailto:lienhe@truyengiaokito.vn">lienhe@truyengiaokito.vn</a>
+    </footer>
+
+    <script src="data.js"></script>
+    <script src="detail.js"></script>
+  </body>
+</html>

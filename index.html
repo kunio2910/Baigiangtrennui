@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Truyền Giáo Kitô</title>
+    <link rel="preconnect" href="https://images.unsplash.com" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="Truyền Giáo Kitô">
+        <span class="brand-mark">✝</span>
+        <span>Truyền Giáo<br />Kitô</span>
+      </a>
+      <nav class="main-nav" aria-label="Điều hướng chính">
+        <a href="#home">Trang chủ</a>
+        <a href="#saints">Các Thánh</a>
+        <a href="#daily">Kinh Thánh</a>
+        <a href="#churches">Nhà Thờ</a>
+        <a href="#articles">Bài viết</a>
+        <a href="#events">Sự kiện</a>
+        <a href="#contact">Liên hệ</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-button" id="searchToggle" aria-label="Tìm kiếm">⌕</button>
+        <a class="login-button" href="admin.html">Đăng nhập</a>
+      </div>
+    </header>
+
+    <main class="home-dashboard">
+      <div class="left-column">
+        <section class="hero" id="home" aria-labelledby="heroTitle">
+          <div class="hero-bg"></div>
+          <div class="hero-figure" aria-hidden="true"></div>
+          <div class="hero-cross" aria-hidden="true"></div>
+          <div class="hero-content">
+            <h1 id="heroTitle">Đức Kitô<br />là ánh sáng thế gian</h1>
+            <p>
+              “Thầy là ánh sáng thế gian: ai theo Thầy, sẽ không đi trong bóng tối,
+              nhưng sẽ được ánh sáng đem lại sự sống.”<br />(Ga 8,12)
+            </p>
+            <a class="primary-button" href="#articles">Tìm hiểu thêm</a>
+            <div class="hero-dots" aria-hidden="true">
+              <span></span><span></span><span></span>
+            </div>
+          </div>
+        </section>
+
+        <section class="quick-links" aria-label="Lối tắt mục vụ">
+          <a href="#daily">
+            <span>✝</span>
+            <strong>Cầu nguyện</strong>
+            <small>Kết nối với Chúa mỗi ngày</small>
+          </a>
+          <a href="#daily">
+            <span>▣</span>
+            <strong>Lời Chúa</strong>
+            <small>Lắng nghe và sống theo Lời Chúa</small>
+          </a>
+          <a href="#contact">
+            <span>●●</span>
+            <strong>Cộng đoàn</strong>
+            <small>Hiệp thông trong tình yêu Đức Kitô</small>
+          </a>
+          <a href="#articles">
+            <span>♥</span>
+            <strong>Bác ái</strong>
+            <small>Yêu thương và phục vụ tha nhân</small>
+          </a>
+        </section>
+
+        <section class="section-block" id="saints">
+          <div class="section-heading">
+            <h2>Các thánh tiêu biểu</h2>
+            <a href="admin.html">Xem tất cả</a>
+          </div>
+          <div class="card-row" id="saintsList"></div>
+        </section>
+      </div>
+
+      <div class="right-column">
+        <div class="top-panels">
+          <aside class="daily-panel" id="daily">
+            <div class="section-heading">
+              <h2>Lời Chúa mỗi ngày</h2>
+            </div>
+            <article class="daily-card">
+              <button class="round-arrow" id="prevDaily" aria-label="Lời Chúa trước">‹</button>
+              <div>
+                <blockquote id="dailyQuote"></blockquote>
+                <small id="dailyRef"></small>
+                <a class="light-button" href="#articles">Đọc thêm</a>
+              </div>
+              <button class="round-arrow" id="nextDaily" aria-label="Lời Chúa tiếp theo">›</button>
+            </article>
+            <div class="mini-dots" id="dailyDots"></div>
+          </aside>
+
+          <section class="section-block" id="churches">
+            <div class="section-heading">
+              <h2>Giới thiệu nhà thờ</h2>
+              <a href="admin.html">Xem tất cả</a>
+            </div>
+            <div class="church-grid" id="churchesList"></div>
+          </section>
+        </div>
+
+        <section class="section-block" id="articles">
+          <div class="section-heading">
+            <h2>Bài viết & suy niệm</h2>
+            <a href="admin.html">Xem tất cả</a>
+          </div>
+          <div class="article-grid" id="articlesList"></div>
+        </section>
+
+        <section class="section-block" id="events">
+          <div class="section-heading">
+            <h2>Sự kiện sắp tới</h2>
+            <a href="admin.html">Xem tất cả</a>
+          </div>
+          <div class="event-list" id="eventsList"></div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="site-footer" id="contact">
+      <div>
+        <strong>Truyền Giáo Kitô</strong>
+        <p>Lan tỏa Tin Mừng bằng lời cầu nguyện, học hỏi và phục vụ.</p>
+      </div>
+      <a href="mailto:lienhe@truyengiaokito.vn">lienhe@truyengiaokito.vn</a>
+    </footer>
+
+    <div class="search-drawer" id="searchDrawer" aria-hidden="true">
+      <label>
+        <span>Tìm nội dung</span>
+        <input id="searchInput" type="search" placeholder="Nhập tên thánh, nhà thờ, bài viết..." />
+      </label>
+      <div id="searchResults"></div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="main.js"></script>
+  </body>
+</html>
