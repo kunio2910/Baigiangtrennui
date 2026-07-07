@@ -57,15 +57,16 @@ function renderCategoryItems(items) {
   list.innerHTML = items
     .map((item) => {
       const date = item.date ? formatDateParts(item.date) : null;
+      const link = categoryDetailLink(activeType, item.id);
       return `
-        <article class="category-card">
+        <article class="category-card clickable-card" onclick="window.location.href='${link}'">
           <img src="${item.image || fallbackImage}" alt="${item.title}" />
           <div>
             <p class="eyebrow">${item.meta || categoryInfo.eyebrow}</p>
             <h2>${item.title}</h2>
             <p>${categorySummary(item.description)}</p>
             ${date ? `<small>${date.day} ${date.month}</small>` : ""}
-            <a href="${categoryDetailLink(activeType, item.id)}">${categoryInfo.action}</a>
+            <a href="${link}" onclick="event.stopPropagation()">${categoryInfo.action}</a>
           </div>
         </article>
       `;

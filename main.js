@@ -11,39 +11,42 @@ function summarizeText(text, maxLength = 115) {
 }
 
 function cardTemplate(item, type = "saints") {
+  const link = detailLink(type, item.id);
   return `
-    <article class="content-card">
+    <article class="content-card clickable-card" onclick="window.location.href='${link}'">
       <img src="${imageOrFallback(item)}" alt="${item.title}" />
       <div>
         <h3>${item.title}</h3>
         <p>${summarizeText(item.description, 105)}</p>
-        <a href="${detailLink(type, item.id)}">Chi tiết</a>
+        <a href="${link}" onclick="event.stopPropagation()">Chi tiết</a>
       </div>
     </article>
   `;
 }
 
 function churchTemplate(item) {
+  const link = detailLink("churches", item.id);
   return `
-    <article class="church-card">
+    <article class="church-card clickable-card" onclick="window.location.href='${link}'">
       <img src="${imageOrFallback(item)}" alt="${item.title}" />
       <div>
         <h3>${item.title}</h3>
         <p>📍 ${item.meta || "Việt Nam"}</p>
-        <a href="${detailLink("churches", item.id)}">Chi tiết</a>
+        <a href="${link}" onclick="event.stopPropagation()">Chi tiết</a>
       </div>
     </article>
   `;
 }
 
 function articleTemplate(item) {
+  const link = detailLink("articles", item.id);
   return `
-    <article class="article-card">
+    <article class="article-card clickable-card" onclick="window.location.href='${link}'">
       <img src="${imageOrFallback(item)}" alt="${item.title}" />
       <div>
         <h3>${item.title}</h3>
         <p>${summarizeText(item.description, 105)}</p>
-        <a href="${detailLink("articles", item.id)}">Đọc thêm</a>
+        <a href="${link}" onclick="event.stopPropagation()">Đọc thêm</a>
       </div>
     </article>
   `;
@@ -51,8 +54,9 @@ function articleTemplate(item) {
 
 function eventTemplate(item) {
   const date = formatDateParts(item.date);
+  const link = detailLink("events", item.id);
   return `
-    <article class="event-card">
+    <article class="event-card clickable-card" onclick="window.location.href='${link}'">
       <div class="event-date">
         <strong>${date.day}</strong>
         <span>${date.month}</span>
@@ -61,7 +65,7 @@ function eventTemplate(item) {
         <h3>${item.title}</h3>
         <p>${item.meta || item.description}</p>
         <small>${summarizeText(item.description, 85)}</small>
-        <a href="${detailLink("events", item.id)}">Chi tiết</a>
+        <a href="${link}" onclick="event.stopPropagation()">Chi tiết</a>
       </div>
     </article>
   `;
@@ -77,7 +81,7 @@ function renderDaily() {
 }
 
 function renderHome() {
-  document.querySelector("#saintsList").innerHTML = content.saints.map((item) => cardTemplate(item, "saints")).join("");
+  document.querySelector("#saintsList").innerHTML = content.saints.slice(0, 5).map((item) => cardTemplate(item, "saints")).join("");
   document.querySelector("#churchesList").innerHTML = content.churches.map(churchTemplate).join("");
   document.querySelector("#articlesList").innerHTML = content.articles.map(articleTemplate).join("");
   document.querySelector("#eventsList").innerHTML = content.events.map(eventTemplate).join("");
