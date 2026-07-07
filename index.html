@@ -15,12 +15,10 @@
       </a>
       <nav class="main-nav" aria-label="Điều hướng chính">
         <a class="active" href="#home">Trang chủ</a>
-        <a href="#saints">Các Thánh</a>
-        <a href="#daily">Kinh Thánh</a>
-        <a href="#churches">Nhà Thờ</a>
-        <a href="#articles">Bài viết</a>
-        <a href="#events">Sự kiện</a>
-        <a href="#contact">Liên hệ</a>
+        <a href="category.html?type=saints">Các Thánh</a>
+        <a href="category.html?type=churches">Nhà Thờ</a>
+        <a href="category.html?type=articles">Bài viết</a>
+        <a href="category.html?type=events">Sự kiện</a>
       </nav>
       <div class="header-actions">
         <button class="icon-button" id="searchToggle" aria-label="Tìm kiếm">⌕</button>
@@ -40,10 +38,6 @@
               “Thầy là ánh sáng thế gian: ai theo Thầy, sẽ không đi trong bóng tối,
               nhưng sẽ được ánh sáng đem lại sự sống.”<br />(Ga 8,12)
             </p>
-            <a class="primary-button" href="#articles">Tìm hiểu thêm</a>
-            <div class="hero-dots" aria-hidden="true">
-              <span></span><span></span><span></span>
-            </div>
           </div>
         </section>
 
@@ -73,7 +67,7 @@
         <section class="section-block" id="saints">
           <div class="section-heading">
             <h2>Các thánh tiêu biểu</h2>
-            <a href="admin.html">Xem tất cả</a>
+            <a href="category.html?type=saints">Xem tất cả</a>
           </div>
           <div class="card-row" id="saintsList"></div>
         </section>
@@ -100,7 +94,7 @@
           <section class="section-block" id="churches">
             <div class="section-heading">
               <h2>Giới thiệu nhà thờ</h2>
-              <a href="admin.html">Xem tất cả</a>
+              <a href="category.html?type=churches">Xem tất cả</a>
             </div>
             <div class="church-grid" id="churchesList"></div>
           </section>
@@ -109,7 +103,7 @@
         <section class="section-block" id="articles">
           <div class="section-heading">
             <h2>Bài viết & suy niệm</h2>
-            <a href="admin.html">Xem tất cả</a>
+            <a href="category.html?type=articles">Xem tất cả</a>
           </div>
           <div class="article-grid" id="articlesList"></div>
         </section>
@@ -117,7 +111,7 @@
         <section class="section-block" id="events">
           <div class="section-heading">
             <h2>Sự kiện sắp tới</h2>
-            <a href="admin.html">Xem tất cả</a>
+            <a href="category.html?type=events">Xem tất cả</a>
           </div>
           <div class="event-list" id="eventsList"></div>
         </section>

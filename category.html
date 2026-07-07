@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Chi tiết nội dung - Truyền Giáo Kitô</title>
+    <title>Danh sách nội dung - Truyền Giáo Kitô</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -20,19 +20,18 @@
         <a href="category.html?type=events">Sự kiện</a>
       </nav>
       <div class="header-actions">
-        <a class="login-button" href="admin.html">Quản lý</a>
+        <a class="login-button" href="admin.html">Đăng nhập</a>
       </div>
     </header>
 
-    <main class="detail-shell">
-      <a class="back-link" href="index.html#home">← Quay lại trang chủ</a>
-      <article class="detail-article" id="detailArticle"></article>
-      <section class="related-section">
-        <div class="section-heading">
-          <h2>Nội dung liên quan</h2>
-        </div>
-        <div class="article-grid" id="relatedList"></div>
-      </section>
+    <main class="category-shell">
+      <div class="category-intro">
+        <a class="back-link" href="index.html#home">← Quay lại trang chủ</a>
+        <p class="eyebrow" id="categoryEyebrow">Tổng hợp</p>
+        <h1 id="categoryTitle">Nội dung</h1>
+        <p id="categoryDescription"></p>
+      </div>
+      <div class="category-grid" id="categoryList"></div>
     </main>
 
     <footer class="site-footer" id="contact">
@@ -48,6 +47,6 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-storage-compat.js"></script>
     <script src="firebase-config.js"></script>
     <script src="data.js"></script>
-    <script src="detail.js"></script>
+    <script src="category.js"></script>
   </body>
 </html>

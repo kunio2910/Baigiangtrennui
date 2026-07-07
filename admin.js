@@ -1,6 +1,6 @@
 let content = null;
 let currentImage = "";
-let selectedImageFile = null;
+let currentImagePath = "";
 let canManageContent = false;
 
 const typeLabels = {
@@ -15,18 +15,26 @@ const itemId = document.querySelector("#itemId");
 const itemType = document.querySelector("#itemType");
 const itemTitle = document.querySelector("#itemTitle");
 const itemDescription = document.querySelector("#itemDescription");
+const itemBodyHtml = document.querySelector("#itemBodyHtml");
 const itemMeta = document.querySelector("#itemMeta");
 const itemDate = document.querySelector("#itemDate");
-const itemImage = document.querySelector("#itemImage");
+const itemImageUrl = document.querySelector("#itemImageUrl");
 const imagePreview = document.querySelector("#imagePreview");
 const filterType = document.querySelector("#filterType");
 const loginPanel = document.querySelector("#loginPanel");
 const protectedPanel = document.querySelector("#adminProtected");
 const loginForm = document.querySelector("#loginForm");
 const loginMessage = document.querySelector("#loginMessage");
+const contentMessage = document.querySelector("#contentMessage");
 
 function detailLink(type, id) {
   return `detail.html?type=${encodeURIComponent(type)}&id=${encodeURIComponent(id)}`;
+}
+
+function summarizeText(text, maxLength = 120) {
+  const value = String(text || "").replace(/\s+/g, " ").trim();
+  if (value.length <= maxLength) return value;
+  return `${value.slice(0, maxLength).trim()}...`;
 }
 
 function getItemsForAdmin() {
@@ -46,7 +54,7 @@ function renderAdminList() {
           <div>
             <span>${typeLabels[item.type]}</span>
             <h3>${item.title}</h3>
-            <p>${item.description}</p>
+            <p>${summarizeText(item.description, 130)}</p>
             <small>${item.meta || ""}</small>
           </div>
           ${
@@ -72,7 +80,7 @@ function renderAdminList() {
           <img src="${item.image || fallbackImage}" alt="${item.title}" />
           <div>
             <h3>${item.title}</h3>
-            <p>${item.description}</p>
+            <p>${summarizeText(item.description, 120)}</p>
             <a href="${detailLink("articles", item.id)}">Đọc thêm</a>
           </div>
         </article>
@@ -85,9 +93,11 @@ function clearForm() {
   form.reset();
   itemId.value = "";
   currentImage = "";
-  selectedImageFile = null;
+  currentImagePath = "";
+  itemImageUrl.value = "";
   imagePreview.removeAttribute("src");
   imagePreview.classList.remove("show");
+  contentMessage.textContent = "";
 }
 
 function editItem(type, id) {
@@ -99,9 +109,12 @@ function editItem(type, id) {
   itemType.value = type;
   itemTitle.value = item.title;
   itemDescription.value = item.description;
+  itemBodyHtml.value = item.bodyHtml || "";
   itemMeta.value = item.meta || "";
   itemDate.value = item.date || "";
   currentImage = item.image || "";
+  currentImagePath = item.imagePath || "";
+  itemImageUrl.value = currentImage;
 
   if (currentImage) {
     imagePreview.src = currentImage;
@@ -128,14 +141,20 @@ async function deleteItem(type, id) {
   }
 }
 
-itemImage.addEventListener("change", () => {
+itemImageUrl.addEventListener("input", () => {
   if (!canManageContent) return;
-  const file = itemImage.files[0];
-  if (!file) return;
+  const imageUrl = itemImageUrl.value.trim();
 
-  selectedImageFile = file;
-  imagePreview.src = URL.createObjectURL(file);
+  if (!imageUrl) {
+    imagePreview.removeAttribute("src");
+    imagePreview.classList.remove("show");
+    contentMessage.textContent = "";
+    return;
+  }
+
+  imagePreview.src = imageUrl;
   imagePreview.classList.add("show");
+  contentMessage.textContent = "Đã nhập URL ảnh.";
 });
 
 form.addEventListener("submit", async (event) => {
@@ -148,25 +167,28 @@ form.addEventListener("submit", async (event) => {
   const id = itemId.value || `${type}-${Date.now()}`;
   const submitButton = form.querySelector("button[type='submit']");
   submitButton.disabled = true;
+  contentMessage.textContent = "Đang lưu nội dung...";
 
   try {
-    const imageUrl = selectedImageFile
-      ? await uploadContentImage(selectedImageFile, type)
-      : currentImage || fallbackImage;
+    const imageUrl = itemImageUrl.value.trim() || currentImage || fallbackImage;
 
     await saveContentItem(type, {
       id,
       title: itemTitle.value.trim(),
       description: itemDescription.value.trim(),
+      bodyHtml: itemBodyHtml.value.trim(),
       meta: itemMeta.value.trim(),
       date: itemDate.value,
       image: imageUrl,
+      imagePath: "",
     });
 
     content = await getContent();
     renderAdminList();
     clearForm();
+    contentMessage.textContent = "Đã lưu nội dung và URL hình ảnh.";
   } catch (error) {
+    contentMessage.textContent = error.message;
     alert(error.message);
   } finally {
     submitButton.disabled = false;

@@ -4,13 +4,19 @@ let dailyIndex = 0;
 const imageOrFallback = (item) => item.image || fallbackImage;
 const detailLink = (type, id) => `detail.html?type=${encodeURIComponent(type)}&id=${encodeURIComponent(id)}`;
 
+function summarizeText(text, maxLength = 115) {
+  const value = String(text || "").replace(/\s+/g, " ").trim();
+  if (value.length <= maxLength) return value;
+  return `${value.slice(0, maxLength).trim()}...`;
+}
+
 function cardTemplate(item, type = "saints") {
   return `
     <article class="content-card">
       <img src="${imageOrFallback(item)}" alt="${item.title}" />
       <div>
         <h3>${item.title}</h3>
-        <p>${item.description}</p>
+        <p>${summarizeText(item.description, 105)}</p>
         <a href="${detailLink(type, item.id)}">Chi tiết</a>
       </div>
     </article>
@@ -36,7 +42,7 @@ function articleTemplate(item) {
       <img src="${imageOrFallback(item)}" alt="${item.title}" />
       <div>
         <h3>${item.title}</h3>
-        <p>${item.description}</p>
+        <p>${summarizeText(item.description, 105)}</p>
         <a href="${detailLink("articles", item.id)}">Đọc thêm</a>
       </div>
     </article>
@@ -54,7 +60,7 @@ function eventTemplate(item) {
       <div>
         <h3>${item.title}</h3>
         <p>${item.meta || item.description}</p>
-        <small>${item.description}</small>
+        <small>${summarizeText(item.description, 85)}</small>
         <a href="${detailLink("events", item.id)}">Chi tiết</a>
       </div>
     </article>
@@ -103,7 +109,13 @@ function setupSearch() {
   document.querySelector("#searchToggle").addEventListener("click", () => {
     const open = drawer.classList.toggle("open");
     drawer.setAttribute("aria-hidden", String(!open));
-    if (open) input.focus();
+    if (open) {
+      const rect = document.querySelector("#searchToggle").getBoundingClientRect();
+      drawer.style.top = `${Math.round(rect.top)}px`;
+      drawer.style.left = `${Math.round(rect.right + 10)}px`;
+      drawer.style.right = "auto";
+      input.focus();
+    }
   });
 
   input.addEventListener("input", () => {
@@ -113,7 +125,7 @@ function setupSearch() {
     );
 
     resultBox.innerHTML = keyword
-      ? matches.map((item) => `<a href="${detailLink(item.type, item.id)}"><strong>${item.title}</strong><span>${item.description}</span></a>`).join("")
+      ? matches.map((item) => `<a href="${detailLink(item.type, item.id)}"><strong>${item.title}</strong><span>${summarizeText(item.description, 120)}</span></a>`).join("")
       : "";
   });
 }
@@ -137,6 +149,7 @@ async function initHome() {
     content = structuredClone(defaultContent);
     renderDaily();
     renderLoadError(error);
+    setupSearch();
   }
 }
 

@@ -221,16 +221,6 @@ async function getContent() {
   return content;
 }
 
-async function uploadContentImage(file, type) {
-  if (!file) return "";
-  const { storage } = requireFirebase();
-  const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "-");
-  const path = `contents/${type}/${Date.now()}-${safeName}`;
-  const imageRef = storage.ref(path);
-  await imageRef.put(file);
-  return imageRef.getDownloadURL();
-}
-
 async function saveContentItem(type, item) {
   const { db } = requireFirebase();
   const id = item.id || `${type}-${Date.now()}`;
