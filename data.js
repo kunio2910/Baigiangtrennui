@@ -481,6 +481,42 @@ async function submitContentRating(id, ratings) {
   );
 }
 
+async function submitContentFeedback(item, message) {
+  const feedbackMessage = String(message || "").trim();
+  if (!feedbackMessage) throw new Error("Vui lòng nhập ý kiến đóng góp.");
+
+  const { db } = requireFirebase();
+  await db.collection("feedbacks").add({
+    contentId: item.id,
+    contentType: item.type || "",
+    contentTitle: item.title || "",
+    message: feedbackMessage,
+    pageUrl: window.location.href,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    createdAtText: new Date().toISOString(),
+  });
+}
+
+async function getContentFeedbacks(limit = 100) {
+  const { db } = requireFirebase();
+  const snapshot = await db
+    .collection("feedbacks")
+    .orderBy("createdAt", "desc")
+    .limit(limit)
+    .get();
+
+  const feedbacks = [];
+  snapshot.forEach((doc) => {
+    feedbacks.push({ id: doc.id, ...doc.data() });
+  });
+  return feedbacks;
+}
+
+async function deleteContentFeedback(id) {
+  const { db } = requireFirebase();
+  await db.collection("feedbacks").doc(id).delete();
+}
+
 async function resetContentRating(id) {
   const { db } = requireFirebase();
   await db.collection("contents").doc(id).set(

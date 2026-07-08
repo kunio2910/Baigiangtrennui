@@ -83,6 +83,16 @@ function defaultBodyHtml(item) {
   `;
 }
 
+function sourceLinkHtml(value) {
+  const sourceUrl = String(value || "").trim();
+  if (!/^https?:\/\//i.test(sourceUrl)) return "";
+  return `
+    <p class="detail-source">
+      Nguồn: <a href="${sourceUrl}" target="_blank" rel="noopener noreferrer">${sourceUrl}</a>
+    </p>
+  `;
+}
+
 function renderMissing() {
   document.title = "Không tìm thấy nội dung - Truyền Giáo Kitô";
   detailArticle.innerHTML = `
@@ -130,6 +140,7 @@ function renderDetail() {
     </header>
     <div class="detail-content">
       <div class="detail-body">${sanitizeContentHtml(item.bodyHtml || defaultBodyHtml(item))}</div>
+      ${sourceLinkHtml(item.sourceUrl)}
       <section class="rating-panel" aria-label="Đánh giá bài viết">
         <p class="rating-note">*Nội dung này được xây dựng để hỗ trợ việc học hỏi, cầu nguyện và chia sẻ Tin Mừng. Ước mong mỗi bài viết, mỗi hình ảnh và mỗi sự kiện nơi đây trở thành một lời mời gọi sống đức tin cụ thể hơn trong đời sống hằng ngày.<br />Trang có sử dụng tài nguyên AI. Bạn vui lòng giành ít phút để đánh giá về bài viết và chất lượng website.</p>
         <div class="rating-group">
@@ -152,10 +163,19 @@ function renderDetail() {
           <button class="primary-button" type="button" id="submitRating">Gửi</button>
         </div>
         <small id="ratingMessage"></small>
+        <div class="feedback-box">
+          <label for="feedbackMessage">Ý kiến đóng góp</label>
+          <textarea id="feedbackMessage" rows="4" placeholder="Nhập ý kiến đóng góp của bạn..."></textarea>
+          <div class="rating-row">
+            <button class="primary-button" type="button" id="submitFeedback">Gửi ý kiến</button>
+          </div>
+          <small id="feedbackStatus"></small>
+        </div>
       </section>
     </div>
   `;
   setupRating();
+  setupFeedback();
 }
 
 function renderRelated() {
@@ -218,6 +238,40 @@ function setupRating() {
       message.textContent = "Cảm ơn bạn đã đánh giá bài viết.";
     } catch (error) {
       message.textContent = error.message;
+    } finally {
+      submitButton.disabled = false;
+    }
+  });
+}
+
+function setupFeedback() {
+  const textarea = detailArticle.querySelector("#feedbackMessage");
+  const submitButton = detailArticle.querySelector("#submitFeedback");
+  const status = detailArticle.querySelector("#feedbackStatus");
+
+  submitButton.addEventListener("click", async () => {
+    const message = textarea.value.trim();
+    if (!message) {
+      status.textContent = "Vui lòng nhập ý kiến đóng góp.";
+      return;
+    }
+
+    submitButton.disabled = true;
+    status.textContent = "Đang gửi ý kiến đóng góp...";
+
+    try {
+      await submitContentFeedback(
+        {
+          id: currentItem.id,
+          type,
+          title: currentItem.title,
+        },
+        message
+      );
+      textarea.value = "";
+      status.textContent = "Cảm ơn bạn đã gửi ý kiến đóng góp.";
+    } catch (error) {
+      status.textContent = error.message;
     } finally {
       submitButton.disabled = false;
     }

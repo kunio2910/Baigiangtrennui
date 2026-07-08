@@ -435,7 +435,7 @@ main {
 }
 
 .event-list {
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 #saints {
@@ -589,9 +589,11 @@ main {
 
 .event-card {
   display: grid;
-  grid-template-columns: 66px 1fr;
+  grid-template-columns: 66px minmax(0, 1fr);
   gap: 14px;
   padding: 14px;
+  min-height: 120px;
+  height: 100%;
 }
 
 .event-date {
@@ -599,6 +601,8 @@ main {
   place-items: center;
   align-content: center;
   min-height: 66px;
+  align-self: stretch;
+  width: 66px;
   border-radius: 6px;
   background: #fff4e3;
   color: var(--gold-dark);
@@ -619,23 +623,55 @@ main {
 }
 
 .event-date.is-text-date span {
+  display: -webkit-box;
+  max-height: 48px;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
   font-size: 12px;
   line-height: 1.25;
   overflow-wrap: anywhere;
 }
 
+.event-card > div:last-child {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.event-card h3 {
+  display: -webkit-box;
+  max-height: 40px;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
 .event-card p {
   margin: 0 0 4px;
-  white-space: pre-line;
+  display: -webkit-box;
+  max-height: 36px;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .event-card small {
+  display: -webkit-box;
+  max-height: 32px;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
   font-size: 11px;
+  overflow-wrap: anywhere;
 }
 
 .event-card a {
   display: inline-flex;
   margin-top: 6px;
+  align-self: flex-start;
 }
 
 .site-footer {
@@ -1060,6 +1096,20 @@ textarea {
   font-weight: 800;
 }
 
+.detail-source {
+  margin: 18px 0 0;
+  text-align: right;
+  color: #1d4ed8;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.detail-source a {
+  color: #1d4ed8;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 .detail-body blockquote {
   padding: 14px 18px;
   border-left: 3px solid var(--gold);
@@ -1123,6 +1173,72 @@ textarea {
   min-height: 18px;
   color: var(--gold-dark);
   font-weight: 700;
+}
+
+.feedback-box {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--line);
+}
+
+.feedback-box label {
+  color: var(--ink);
+  font-weight: 800;
+}
+
+.feedback-box textarea {
+  min-height: 104px;
+}
+
+.feedback-panel {
+  margin-top: 26px;
+}
+
+.feedback-list {
+  display: grid;
+  gap: 12px;
+}
+
+.feedback-item {
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--white);
+  box-shadow: var(--shadow);
+}
+
+.feedback-item-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.feedback-item h3 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 15px;
+}
+
+.feedback-item time {
+  flex: 0 0 auto;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.feedback-item p {
+  margin: 10px 0;
+  color: #4b3622;
+  white-space: pre-line;
+}
+
+.feedback-item a {
+  color: var(--gold-dark);
+  font-weight: 800;
+  font-size: 12px;
 }
 
 .detail-empty {

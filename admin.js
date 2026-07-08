@@ -2,6 +2,7 @@
 let currentImage = "";
 let currentImagePath = "";
 let canManageContent = false;
+let feedbackItems = [];
 
 const typeLabels = {
   saints: "Các thánh",
@@ -22,9 +23,11 @@ const itemMeta = document.querySelector("#itemMeta");
 const itemDate = document.querySelector("#itemDate");
 const itemStatus = document.querySelector("#itemStatus");
 const itemImageUrl = document.querySelector("#itemImageUrl");
+const itemSourceUrl = document.querySelector("#itemSourceUrl");
 const imagePreview = document.querySelector("#imagePreview");
 const filterType = document.querySelector("#filterType");
 const adminList = document.querySelector("#adminList");
+const feedbackList = document.querySelector("#feedbackList");
 const loginPanel = document.querySelector("#loginPanel");
 const protectedPanel = document.querySelector("#adminProtected");
 const loginForm = document.querySelector("#loginForm");
@@ -40,6 +43,32 @@ function summarizeText(text, maxLength = 120) {
   const value = String(text || "").replace(/\s+/g, " ").trim();
   if (value.length <= maxLength) return value;
   return `${value.slice(0, maxLength).trim()}...`;
+}
+
+function escapeHtml(value) {
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function formatFeedbackTime(feedback) {
+  const value = feedback.createdAt?.toDate ? feedback.createdAt.toDate() : new Date(feedback.createdAtText || "");
+  if (Number.isNaN(value.getTime())) return "Chưa có thời gian";
+  return value.toLocaleString("vi-VN", {
+    hour: "2-digit",
+    minute: "2-digit",
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+}
+
+function safeFeedbackUrl(value) {
+  const url = String(value || "").trim();
+  return /^https?:\/\//i.test(url) ? escapeHtml(url) : "";
 }
 
 function getItemsForAdmin() {
@@ -98,12 +127,45 @@ function renderAdminList() {
     .join("");
 }
 
+function renderFeedbackList() {
+  if (!feedbackList) return;
+
+  if (!feedbackItems.length) {
+    feedbackList.innerHTML = `
+      <article class="feedback-item">
+        <h3>Chưa có ý kiến đóng góp</h3>
+        <p>Các ý kiến từ người xem sẽ xuất hiện tại đây.</p>
+      </article>
+    `;
+    return;
+  }
+
+  feedbackList.innerHTML = feedbackItems
+    .map(
+      (feedback) => {
+        const feedbackUrl = safeFeedbackUrl(feedback.pageUrl);
+        return `
+          <article class="feedback-item">
+            <div class="feedback-item-head">
+              <h3>${escapeHtml(feedback.contentTitle || "Không rõ bài viết")}</h3>
+              <time>${formatFeedbackTime(feedback)}</time>
+            </div>
+            <p>${escapeHtml(feedback.message)}</p>
+            ${feedbackUrl ? `<a href="${feedbackUrl}" target="_blank" rel="noopener noreferrer">Mở bài viết</a>` : ""}
+          </article>
+        `;
+      }
+    )
+    .join("");
+}
+
 function clearForm() {
   form.reset();
   itemId.value = "";
   currentImage = "";
   currentImagePath = "";
   itemImageUrl.value = "";
+  itemSourceUrl.value = "";
   itemStatus.value = "actived";
   imagePreview.removeAttribute("src");
   imagePreview.classList.remove("show");
@@ -126,6 +188,7 @@ function editItem(type, id) {
   currentImage = item.image || "";
   currentImagePath = item.imagePath || "";
   itemImageUrl.value = currentImage;
+  itemSourceUrl.value = item.sourceUrl || "";
 
   if (currentImage) {
     imagePreview.src = currentImage;
@@ -233,6 +296,7 @@ form.addEventListener("submit", async (event) => {
       status: itemStatus.value || "actived",
       image: imageUrl,
       imagePath: "",
+      sourceUrl: itemSourceUrl.value.trim(),
     });
 
     content = await getContent();
@@ -359,7 +423,9 @@ async function setupLogin() {
 
   try {
     content = await getContent();
+    feedbackItems = await getContentFeedbacks();
     renderAdminList();
+    renderFeedbackList();
   } catch (error) {
     document.querySelector("#adminList").innerHTML = `
       <article class="admin-item">
@@ -370,6 +436,14 @@ async function setupLogin() {
         </div>
       </article>
     `;
+    if (feedbackList) {
+      feedbackList.innerHTML = `
+        <article class="feedback-item">
+          <h3>Không thể tải ý kiến đóng góp</h3>
+          <p>${escapeHtml(error.message)}</p>
+        </article>
+      `;
+    }
   }
 }
 
