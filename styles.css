@@ -441,7 +441,24 @@ main {
 }
 
 .prayer-grid {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  display: flex;
+  width: max-content;
+  min-width: 100%;
+  animation: prayer-marquee 46s linear infinite;
+}
+
+#prayers {
+  overflow: hidden;
+}
+
+#prayers:hover .prayer-grid {
+  animation-play-state: paused;
+}
+
+.prayer-grid .prayer-card {
+  width: min(360px, 30vw);
+  min-width: 260px;
+  flex: 0 0 auto;
 }
 
 #saints {
@@ -647,6 +664,16 @@ main {
 .prayer-card .light-button {
   justify-self: start;
   margin-top: 4px;
+}
+
+@keyframes prayer-marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(calc(-50% - 8px));
+  }
 }
 
 .light-button {
@@ -1518,11 +1545,22 @@ textarea {
   line-height: 1.1;
 }
 
-.category-intro p:last-child {
+#categoryDescription {
   margin: 0;
   color: var(--muted);
   font-size: 16px;
   line-height: 1.7;
+}
+
+.category-search {
+  display: grid;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.category-search span {
+  color: var(--gold-dark);
+  font-weight: 800;
 }
 
 .category-grid {
@@ -1573,6 +1611,31 @@ textarea {
   color: var(--gold-dark);
   font-size: 12px;
   font-weight: 800;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 26px 0 0;
+}
+
+.pagination button {
+  min-width: 34px;
+  height: 34px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--gold-dark);
+  background: var(--white);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.pagination button.active {
+  color: var(--white);
+  border-color: var(--gold);
+  background: var(--gold);
 }
 
 .eyebrow {
@@ -1859,9 +1922,13 @@ textarea:disabled {
   .church-grid,
   .article-grid,
   .event-list,
-  .prayer-grid,
   .two-fields {
     grid-template-columns: 1fr;
+  }
+
+  .prayer-grid .prayer-card {
+    width: min(300px, 78vw);
+    min-width: min(300px, 78vw);
   }
 
   .hero {

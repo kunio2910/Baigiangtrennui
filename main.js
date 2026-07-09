@@ -118,7 +118,9 @@ function renderHome() {
   document.querySelector("#churchesList").innerHTML = activeItems(content.churches).slice(0, 3).map(churchTemplate).join("");
   document.querySelector("#articlesList").innerHTML = activeItems(content.articles).slice(0, 3).map(articleTemplate).join("");
   document.querySelector("#eventsList").innerHTML = activeItems(content.events).slice(0, 3).map(eventTemplate).join("");
-  document.querySelector("#prayersList").innerHTML = activeItems(content.prayers).slice(0, 3).map(prayerTemplate).join("");
+  const prayerItems = activeItems(content.prayers).slice(0, 6);
+  const prayerTrackItems = prayerItems.length > 1 ? [...prayerItems, ...prayerItems] : prayerItems;
+  document.querySelector("#prayersList").innerHTML = prayerTrackItems.map(prayerTemplate).join("");
   renderDaily();
 }
 
