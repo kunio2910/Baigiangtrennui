@@ -187,6 +187,15 @@ function setupSearch() {
   });
 }
 
+function setupComingSoonLinks() {
+  document.querySelectorAll("[data-coming-soon]").forEach((link) => {
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      alert("Nội dung này đang hoàn thành, vui lòng đợi !");
+    });
+  });
+}
+
 document.querySelector("#prevDaily").addEventListener("click", () => {
   const dailyItems = activeItems(content.daily);
   if (!dailyItems.length) return;
@@ -217,6 +226,7 @@ async function initHome() {
     renderLoadError(error);
     setupSearch();
   }
+  setupComingSoonLinks();
   rememberCurrentPage("Trang chủ");
 }
 

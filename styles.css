@@ -242,9 +242,12 @@ main {
   position: absolute;
   inset: 0;
   z-index: -2;
-  background:
+  background-image:
     linear-gradient(90deg, rgba(48, 29, 17, 0.1), rgba(255, 224, 176, 0.5)),
-    var(--hero-image, url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=80")) center/cover no-repeat;
+    var(--hero-image, none);
+  background-position: center, center;
+  background-size: auto, cover;
+  background-repeat: no-repeat;
   background-color: #f1dfc5;
 }
 
@@ -444,7 +447,10 @@ main {
   display: flex;
   width: max-content;
   min-width: 100%;
-  animation: prayer-marquee 46s linear infinite;
+  animation: prayer-marquee 72s linear infinite;
+  backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
 }
 
 #prayers {
@@ -668,11 +674,11 @@ main {
 
 @keyframes prayer-marquee {
   from {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
 
   to {
-    transform: translateX(calc(-50% - 8px));
+    transform: translate3d(calc(-50% - 8px), 0, 0);
   }
 }
 
