@@ -1,4 +1,4 @@
-let content = null;
+﻿let content = null;
 let dailyIndex = 0;
 let dailyTimer = null;
 
@@ -61,8 +61,12 @@ function dailyRandomItems(items = [], key, limit) {
   return dailyShuffle(activeItems(items), key).slice(0, limit);
 }
 
+function displayText(value) {
+  const text = String(value || "");
+  return typeof repairMojibakeText === "function" ? repairMojibakeText(text) : text;
+}
 function summarizeText(text, maxLength = 115) {
-  const value = String(text || "")
+  const value = displayText(text)
     .split(/\r?\n/)
     .map((line) => line.replace(/[ \t]+/g, " ").trim())
     .join("\n")
@@ -83,7 +87,7 @@ function cardTemplate(item, type = "saints") {
     <article class="content-card clickable-card" onclick="window.location.href='${link}'">
       <img src="${imageOrFallback(item)}" alt="${item.title}" ${lazyImageAttrs} />
       <div>
-        <h3>${item.title}</h3>
+        <h3>${displayText(item.title)}</h3>
         <p>${summarizeText(item.description, 105)}</p>
         <a href="${link}" onclick="event.stopPropagation()">Chi tiết</a>
       </div>
@@ -97,8 +101,8 @@ function churchTemplate(item) {
     <article class="church-card clickable-card" onclick="window.location.href='${link}'">
       <img src="${imageOrFallback(item)}" alt="${item.title}" ${lazyImageAttrs} />
       <div>
-        <h3>${item.title}</h3>
-        <p>📍 ${item.meta || "Việt Nam"}</p>
+        <h3>${displayText(item.title)}</h3>
+        <p>📍 ${displayText(item.meta || "Việt Nam")}</p>
         <a href="${link}" onclick="event.stopPropagation()">Chi tiết</a>
       </div>
     </article>
@@ -111,7 +115,7 @@ function articleTemplate(item) {
     <article class="article-card clickable-card" onclick="window.location.href='${link}'">
       <img src="${imageOrFallback(item)}" alt="${item.title}" ${lazyImageAttrs} />
       <div>
-        <h3>${item.title}</h3>
+        <h3>${displayText(item.title)}</h3>
         <p>${summarizeText(item.description, 105)}</p>
         <a href="${link}" onclick="event.stopPropagation()">Đọc thêm</a>
       </div>
@@ -128,8 +132,8 @@ function eventTemplate(item) {
         ${date.isText ? `<span>${date.display}</span>` : `<strong>${date.day}</strong><span>${date.month}</span>`}
       </div>
       <div>
-        <h3>${item.title}</h3>
-        <p>${item.meta || item.description}</p>
+        <h3>${displayText(item.title)}</h3>
+        <p>${displayText(item.meta || item.description)}</p>
         <small>${summarizeText(item.description, 85)}</small>
         <a href="${link}" onclick="event.stopPropagation()">Chi tiết</a>
       </div>
@@ -143,7 +147,7 @@ function prayerTemplate(item) {
   return `
     <article class="prayer-card clickable-card" style="--prayer-image: url('${imageOrFallback(item)}')" onclick="window.location.href='${link}'">
       <div>
-        <h3>${item.title}</h3>
+        <h3>${displayText(item.title)}</h3>
         <blockquote>“${summarizeText(prayerExcerpt, 125)}”</blockquote>
       </div>
     </article>
@@ -158,8 +162,8 @@ function renderDaily() {
   const quote = daily.quote || daily.description || daily.title || "";
   const ref = daily.ref || daily.meta || daily.title || "";
   preloadImage(imageOrFallback(daily));
-  document.querySelector("#dailyQuote").textContent = `“${quote}”`;
-  document.querySelector("#dailyRef").textContent = ref ? `(${ref})` : "";
+  document.querySelector("#dailyQuote").textContent = `“${displayText(quote)}”`;
+  document.querySelector("#dailyRef").textContent = ref ? `(${displayText(ref)})` : "";
   document.querySelector(".daily-card").style.setProperty("--daily-image", `url("${imageOrFallback(daily)}")`);
   document.querySelector("#dailyDots").innerHTML = dailyItems
     .map((_, index) => `<span class="${index === dailyIndex ? "active" : ""}"></span>`)
@@ -170,8 +174,8 @@ function renderHeroBanner() {
   const banner = activeItems(content.banners)?.[0];
   if (!banner) return;
   preloadImage(imageOrFallback(banner));
-  document.querySelector("#heroTitle").textContent = banner.title || "";
-  document.querySelector(".hero-content p").textContent = banner.description || "";
+  document.querySelector("#heroTitle").textContent = displayText(banner.title);
+  document.querySelector(".hero-content p").textContent = displayText(banner.description);
   document.querySelector(".hero-bg").style.setProperty("--hero-image", `url("${imageOrFallback(banner)}")`);
 }
 
@@ -201,7 +205,7 @@ function renderLoadError(error) {
   document.querySelector("#saintsList").innerHTML = `
     <article class="content-card">
       <div>
-        <h3>Chưa kết nối Firebase</h3>
+        <h3>ChÆ°a káº¿t ná»‘i Firebase</h3>
         <p>${error.message}</p>
       </div>
     </article>
@@ -269,7 +273,7 @@ function setupComingSoonLinks() {
   document.querySelectorAll("[data-coming-soon]").forEach((link) => {
     link.addEventListener("click", (event) => {
       event.preventDefault();
-      alert("Nội dung này đang hoàn thành, vui lòng đợi !");
+      alert("Ná»™i dung nÃ y Ä‘ang hoÃ n thÃ nh, vui lÃ²ng Ä‘á»£i !");
     });
   });
 }
@@ -291,6 +295,7 @@ document.querySelector("#nextDaily").addEventListener("click", () => {
 });
 
 async function initHome() {
+  trackPageView({ key: "page_home", label: "Trang chủ", kind: "page" });
   try {
     content = await getContent();
     renderHome();
@@ -309,3 +314,7 @@ async function initHome() {
 }
 
 initHome();
+
+
+
+

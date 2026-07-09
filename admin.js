@@ -5,6 +5,7 @@ let canManageContent = false;
 let feedbackItems = [];
 let prayerRequests = [];
 let editingPrayerRequestId = "";
+let visitStatsItems = [];
 
 const typeLabels = {
   saints: "Các thánh",
@@ -36,6 +37,11 @@ const adminSort = document.querySelector("#adminSort");
 const adminList = document.querySelector("#adminList");
 const feedbackList = document.querySelector("#feedbackList");
 const prayerReviewList = document.querySelector("#prayerReviewList");
+const visitSummary = document.querySelector("#visitSummary");
+const visitStatsList = document.querySelector("#visitStatsList");
+const visitSearch = document.querySelector("#visitSearch");
+const visitSort = document.querySelector("#visitSort");
+const resetVisitStatsButton = document.querySelector("#resetVisitStats");
 const loginPanel = document.querySelector("#loginPanel");
 const protectedPanel = document.querySelector("#adminProtected");
 const loginForm = document.querySelector("#loginForm");
@@ -74,6 +80,118 @@ function formatFeedbackTime(feedback) {
   });
 }
 
+function formatVisitTime(value) {
+  const date = value?.toDate ? value.toDate() : new Date(value || "");
+  if (Number.isNaN(date.getTime())) return "Chưa có thời gian";
+  return date.toLocaleString("vi-VN", {
+    hour: "2-digit",
+    minute: "2-digit",
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+}
+
+function visitKindLabel(kind) {
+  const labels = {
+    site: "Website",
+    page: "Trang",
+    category: "Danh mục",
+    content: "Nội dung",
+  };
+  return labels[kind] || "Khác";
+}
+
+function visitTimeValue(item) {
+  const date = item.updatedAt?.toDate ? item.updatedAt.toDate() : new Date(item.updatedAt || "");
+  const time = date.getTime();
+  return Number.isNaN(time) ? 0 : time;
+}
+
+function prepareVisitStats(items = []) {
+  const keyword = String(visitSearch?.value || "").trim().toLowerCase();
+  const sortValue = visitSort?.value || "views-desc";
+  const collator = new Intl.Collator("vi", { sensitivity: "base", numeric: true });
+  const filtered = items.filter((item) => {
+    if (!keyword) return true;
+    return `${item.label || ""} ${item.key || ""} ${item.path || ""} ${item.contentType || ""} ${item.contentId || ""} ${visitKindLabel(item.kind)}`
+      .toLowerCase()
+      .includes(keyword);
+  });
+
+  return filtered.sort((a, b) => {
+    if (sortValue === "views-asc") return Number(a.count || 0) - Number(b.count || 0);
+    if (sortValue === "time-desc") return visitTimeValue(b) - visitTimeValue(a);
+    if (sortValue === "time-asc") return visitTimeValue(a) - visitTimeValue(b);
+    if (sortValue === "title-asc") return collator.compare(a.label || a.key || "", b.label || b.key || "");
+    if (sortValue === "title-desc") return collator.compare(b.label || b.key || "", a.label || a.key || "");
+    return Number(b.count || 0) - Number(a.count || 0);
+  });
+}
+
+function renderVisitStats(stats = visitStatsItems) {
+  if (!visitSummary || !visitStatsList) return;
+  visitStatsItems = stats;
+  const siteStats = visitStatsItems.find((item) => item.id === "site_total" || item.key === "site_total");
+  const detailStats = visitStatsItems.filter((item) => item.id !== "site_total" && item.key !== "site_total");
+  const visibleStats = prepareVisitStats(detailStats);
+  const total = Number(siteStats?.count || 0);
+
+  visitSummary.innerHTML = `
+    <article class="visit-total-card">
+      <span>Tổng lượt truy cập website</span>
+      <strong>${total.toLocaleString("vi-VN")}</strong>
+      <small>Cập nhật: ${formatVisitTime(siteStats?.updatedAt)}</small>
+    </article>
+    <article class="visit-total-card">
+      <span>Kết quả đang hiển thị</span>
+      <strong>${visibleStats.length.toLocaleString("vi-VN")}/${detailStats.length.toLocaleString("vi-VN")}</strong>
+      <small>Chỉ tính sau mỗi 5 phút cho cùng một người dùng.</small>
+    </article>
+  `;
+
+  if (!detailStats.length) {
+    visitStatsList.innerHTML = `
+      <article class="visit-item">
+        <div>
+          <span>Chưa có dữ liệu</span>
+          <h3>Chưa ghi nhận lượt truy cập nào</h3>
+          <p>Khi người dùng mở website hoặc bài viết, dữ liệu sẽ xuất hiện tại đây.</p>
+        </div>
+      </article>
+    `;
+    return;
+  }
+
+  if (!visibleStats.length) {
+    visitStatsList.innerHTML = `
+      <article class="visit-item">
+        <div>
+          <span>Không có kết quả</span>
+          <h3>Không tìm thấy thống kê phù hợp</h3>
+          <p>Hãy thử đổi từ khóa tìm kiếm hoặc cách sắp xếp.</p>
+        </div>
+      </article>
+    `;
+    return;
+  }
+
+  visitStatsList.innerHTML = visibleStats
+    .map(
+      (item) => `
+        <article class="visit-item">
+          <div>
+            <span>${visitKindLabel(item.kind)}</span>
+            <h3>${escapeHtml(item.label || item.key || item.id)}</h3>
+            <p>${escapeHtml(item.path || `${item.contentType || ""} ${item.contentId || ""}`.trim())}</p>
+            <small>Cập nhật: ${formatVisitTime(item.updatedAt)}</small>
+          </div>
+          <strong>${Number(item.count || 0).toLocaleString("vi-VN")}</strong>
+        </article>
+      `
+    )
+    .join("");
+}
 function safeFeedbackUrl(value) {
   const url = String(value || "").trim();
   return /^https?:\/\//i.test(url) ? escapeHtml(url) : "";
@@ -603,6 +721,30 @@ adminList.addEventListener("click", (event) => {
   if (action === "reset-rating") resetItemRating(type, id);
 });
 
+resetVisitStatsButton?.addEventListener("click", async () => {
+  if (!canManageContent) return;
+  const confirmed = window.confirm("Bạn có chắc muốn xóa toàn bộ lượt truy cập không?");
+  if (!confirmed) return;
+  resetVisitStatsButton.disabled = true;
+  try {
+    await resetVisitStats();
+    visitStatsItems = [];
+    if (visitSearch) visitSearch.value = "";
+    if (visitSort) visitSort.value = "views-desc";
+    renderVisitStats([]);
+  } catch (error) {
+    alert(error.message);
+  } finally {
+    resetVisitStatsButton.disabled = false;
+  }
+});
+visitSearch?.addEventListener("input", () => {
+  renderVisitStats();
+});
+
+visitSort?.addEventListener("change", () => {
+  renderVisitStats();
+});
 feedbackList?.addEventListener("click", async (event) => {
   const button = event.target.closest("button");
   if (!button || button.dataset.action !== "delete-feedback") return;
@@ -718,6 +860,22 @@ async function setupLogin() {
     content = await getContent();
     feedbackItems = await getContentFeedbacks();
     prayerRequests = await getPrayerRequests();
+    try {
+      const visitStats = await getVisitStats();
+      renderVisitStats(visitStats);
+    } catch (analyticsError) {
+      if (visitStatsList) {
+        visitStatsList.innerHTML = `
+          <article class="visit-item">
+            <div>
+              <span>Lỗi thống kê</span>
+              <h3>Không thể tải lượt truy cập</h3>
+              <p>${escapeHtml(analyticsError.message)}</p>
+            </div>
+          </article>
+        `;
+      }
+    }
     renderAdminList();
     renderFeedbackList();
     renderPrayerReviewList();
@@ -770,3 +928,7 @@ loginForm.addEventListener("submit", async (event) => {
 });
 
 setupLogin();
+
+
+
+

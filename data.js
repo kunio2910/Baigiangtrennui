@@ -1,18 +1,18 @@
-const fallbackImage = "https://images.unsplash.com/photo-1507692049790-de58290a4334?auto=format&fit=crop&w=1200&q=80";
+﻿const fallbackImage = "https://images.unsplash.com/photo-1507692049790-de58290a4334?auto=format&fit=crop&w=1200&q=80";
 const CONTENT_TYPES = ["saints", "churches", "articles", "events", "prayers", "catechism", "daily", "banners"];
 
 const defaultContent = {
   daily: [
     {
-      quote: "Hãy đến cùng Thầy, hỡi những ai khó nhọc và gánh nặng nề, Thầy sẽ cho nghỉ ngơi bồi dưỡng.",
+      quote: "HÃ£y Ä‘áº¿n cÃ¹ng Tháº§y, há»¡i nhá»¯ng ai khÃ³ nhá»c vÃ  gÃ¡nh náº·ng ná», Tháº§y sáº½ cho nghá»‰ ngÆ¡i bá»“i dÆ°á»¡ng.",
       ref: "Mt 11,28",
     },
     {
-      quote: "Anh em hãy yêu thương nhau như Thầy đã yêu thương anh em.",
+      quote: "Anh em hÃ£y yÃªu thÆ°Æ¡ng nhau nhÆ° Tháº§y Ä‘Ã£ yÃªu thÆ°Æ¡ng anh em.",
       ref: "Ga 15,12",
     },
     {
-      quote: "Phúc thay ai xây dựng hòa bình, vì họ sẽ được gọi là con Thiên Chúa.",
+      quote: "PhÃºc thay ai xÃ¢y dá»±ng hÃ²a bÃ¬nh, vÃ¬ há» sáº½ Ä‘Æ°á»£c gá»i lÃ  con ThiÃªn ChÃºa.",
       ref: "Mt 5,9",
     },
   ],
@@ -20,41 +20,41 @@ const defaultContent = {
     {
       id: "saint-1",
       type: "saints",
-      title: "Thánh Giuse",
-      description: "Người công chính, đấng bảo trợ Giáo Hội hoàn vũ.",
-      meta: "Gương mẫu thầm lặng",
+      title: "ThÃ¡nh Giuse",
+      description: "NgÆ°á»i cÃ´ng chÃ­nh, Ä‘áº¥ng báº£o trá»£ GiÃ¡o Há»™i hoÃ n vÅ©.",
+      meta: "GÆ°Æ¡ng máº«u tháº§m láº·ng",
       image: "https://images.unsplash.com/photo-1594808830893-c41d8f5ff5d2?auto=format&fit=crop&w=900&q=80",
     },
     {
       id: "saint-2",
       type: "saints",
-      title: "Thánh Maria",
-      description: "Mẹ Thiên Chúa, mẫu gương của đức tin và vâng phục.",
-      meta: "Mẹ của niềm hy vọng",
+      title: "ThÃ¡nh Maria",
+      description: "Máº¹ ThiÃªn ChÃºa, máº«u gÆ°Æ¡ng cá»§a Ä‘á»©c tin vÃ  vÃ¢ng phá»¥c.",
+      meta: "Máº¹ cá»§a niá»m hy vá»ng",
       image: "https://images.unsplash.com/photo-1605130284535-11dd9eedc58a?auto=format&fit=crop&w=900&q=80",
     },
     {
       id: "saint-3",
       type: "saints",
-      title: "Thánh Phanxicô Assisi",
-      description: "Sống khó nghèo, yêu thiên nhiên và muôn loài.",
-      meta: "Niềm vui Tin Mừng",
+      title: "ThÃ¡nh PhanxicÃ´ Assisi",
+      description: "Sá»‘ng khÃ³ nghÃ¨o, yÃªu thiÃªn nhiÃªn vÃ  muÃ´n loÃ i.",
+      meta: "Niá»m vui Tin Má»«ng",
       image: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?auto=format&fit=crop&w=900&q=80",
     },
     {
       id: "saint-4",
       type: "saints",
-      title: "Thánh Têrêsa Hài Đồng Giêsu",
-      description: "Con đường nhỏ: tin tưởng và yêu mến Chúa mỗi ngày.",
-      meta: "Bổn mạng truyền giáo",
+      title: "ThÃ¡nh TÃªrÃªsa HÃ i Äá»“ng GiÃªsu",
+      description: "Con Ä‘Æ°á»ng nhá»: tin tÆ°á»Ÿng vÃ  yÃªu máº¿n ChÃºa má»—i ngÃ y.",
+      meta: "Bá»•n máº¡ng truyá»n giÃ¡o",
       image: "https://images.unsplash.com/photo-1548625361-58a9b86aa83b?auto=format&fit=crop&w=900&q=80",
     },
     {
       id: "saint-5",
       type: "saints",
-      title: "Thánh Phaolô",
-      description: "Tông đồ dân ngoại, rao giảng Tin Mừng khắp nơi.",
-      meta: "Nhà truyền giáo tiên khởi",
+      title: "ThÃ¡nh PhaolÃ´",
+      description: "TÃ´ng Ä‘á»“ dÃ¢n ngoáº¡i, rao giáº£ng Tin Má»«ng kháº¯p nÆ¡i.",
+      meta: "NhÃ  truyá»n giÃ¡o tiÃªn khá»Ÿi",
       image: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?auto=format&fit=crop&w=900&q=80",
     },
   ],
@@ -62,25 +62,25 @@ const defaultContent = {
     {
       id: "church-1",
       type: "churches",
-      title: "Nhà thờ Đức Bà Sài Gòn",
-      description: "Biểu tượng đức tin giữa trung tâm thành phố.",
-      meta: "TP Hồ Chí Minh",
+      title: "NhÃ  thá» Äá»©c BÃ  SÃ i GÃ²n",
+      description: "Biá»ƒu tÆ°á»£ng Ä‘á»©c tin giá»¯a trung tÃ¢m thÃ nh phá»‘.",
+      meta: "TP Há»“ ChÃ­ Minh",
       image: "https://images.unsplash.com/photo-1555899434-94d1368aa7af?auto=format&fit=crop&w=900&q=80",
     },
     {
       id: "church-2",
       type: "churches",
-      title: "Nhà thờ Lớn Hà Nội",
-      description: "Không gian cầu nguyện cổ kính và trang nghiêm.",
-      meta: "Hà Nội",
+      title: "NhÃ  thá» Lá»›n HÃ  Ná»™i",
+      description: "KhÃ´ng gian cáº§u nguyá»‡n cá»• kÃ­nh vÃ  trang nghiÃªm.",
+      meta: "HÃ  Ná»™i",
       image: "https://images.unsplash.com/photo-1548625149-fc4a29cf7092?auto=format&fit=crop&w=900&q=80",
     },
     {
       id: "church-3",
       type: "churches",
-      title: "Nhà thờ Phú Nhai",
-      description: "Một trong những đền thánh lớn tại miền Bắc.",
-      meta: "Nam Định",
+      title: "NhÃ  thá» PhÃº Nhai",
+      description: "Má»™t trong nhá»¯ng Ä‘á»n thÃ¡nh lá»›n táº¡i miá»n Báº¯c.",
+      meta: "Nam Äá»‹nh",
       image: "https://images.unsplash.com/photo-1514896856000-91cb6de818e0?auto=format&fit=crop&w=900&q=80",
     },
   ],
@@ -88,25 +88,25 @@ const defaultContent = {
     {
       id: "article-1",
       type: "articles",
-      title: "Sức mạnh của lời cầu nguyện",
-      description: "Cầu nguyện là hơi thở của linh hồn. Khi chúng ta đến với Chúa trong cầu nguyện, Ngài ban bình an.",
-      meta: "Suy niệm",
+      title: "Sá»©c máº¡nh cá»§a lá»i cáº§u nguyá»‡n",
+      description: "Cáº§u nguyá»‡n lÃ  hÆ¡i thá»Ÿ cá»§a linh há»“n. Khi chÃºng ta Ä‘áº¿n vá»›i ChÃºa trong cáº§u nguyá»‡n, NgÃ i ban bÃ¬nh an.",
+      meta: "Suy niá»‡m",
       image: "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&w=1200&q=80",
     },
     {
       id: "article-2",
       type: "articles",
-      title: "Ý nghĩa của Thập Giá",
-      description: "Thập Giá không phải là dấu chấm hết, nhưng là khởi đầu của ơn cứu độ và niềm hy vọng cho nhân loại.",
-      meta: "Giáo lý",
+      title: "Ã nghÄ©a cá»§a Tháº­p GiÃ¡",
+      description: "Tháº­p GiÃ¡ khÃ´ng pháº£i lÃ  dáº¥u cháº¥m háº¿t, nhÆ°ng lÃ  khá»Ÿi Ä‘áº§u cá»§a Æ¡n cá»©u Ä‘á»™ vÃ  niá»m hy vá»ng cho nhÃ¢n loáº¡i.",
+      meta: "GiÃ¡o lÃ½",
       image: "https://images.unsplash.com/photo-1528357136257-0c25517acfea?auto=format&fit=crop&w=1200&q=80",
     },
     {
       id: "article-3",
       type: "articles",
-      title: "Chúa đã sống lại!",
-      description: "Niềm vui Phục Sinh nhắc nhở chúng ta rằng sự chết đã bị đánh bại và sự sống đời đời đã được ban cho.",
-      meta: "Tin Mừng",
+      title: "ChÃºa Ä‘Ã£ sá»‘ng láº¡i!",
+      description: "Niá»m vui Phá»¥c Sinh nháº¯c nhá»Ÿ chÃºng ta ráº±ng sá»± cháº¿t Ä‘Ã£ bá»‹ Ä‘Ã¡nh báº¡i vÃ  sá»± sá»‘ng Ä‘á»i Ä‘á»i Ä‘Ã£ Ä‘Æ°á»£c ban cho.",
+      meta: "Tin Má»«ng",
       image: "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?auto=format&fit=crop&w=1200&q=80",
     },
   ],
@@ -114,27 +114,27 @@ const defaultContent = {
     {
       id: "event-1",
       type: "events",
-      title: "Thánh Lễ Chúa Nhật",
-      description: "Cùng cộng đoàn tham dự Thánh Lễ và lắng nghe Lời Chúa.",
-      meta: "08:00 - Nhà thờ Đức Bà Sài Gòn",
+      title: "ThÃ¡nh Lá»… ChÃºa Nháº­t",
+      description: "CÃ¹ng cá»™ng Ä‘oÃ n tham dá»± ThÃ¡nh Lá»… vÃ  láº¯ng nghe Lá»i ChÃºa.",
+      meta: "08:00 - NhÃ  thá» Äá»©c BÃ  SÃ i GÃ²n",
       date: "2026-08-25",
       image: fallbackImage,
     },
     {
       id: "event-2",
       type: "events",
-      title: "Giờ Chầu Thánh Thể",
-      description: "Thinh lặng bên Chúa Giêsu Thánh Thể.",
-      meta: "19:30 - Nhà thờ Lớn Hà Nội",
+      title: "Giá» Cháº§u ThÃ¡nh Thá»ƒ",
+      description: "Thinh láº·ng bÃªn ChÃºa GiÃªsu ThÃ¡nh Thá»ƒ.",
+      meta: "19:30 - NhÃ  thá» Lá»›n HÃ  Ná»™i",
       date: "2026-08-31",
       image: fallbackImage,
     },
     {
       id: "event-3",
       type: "events",
-      title: "Khóa Tĩnh Tâm",
-      description: "Một ngày trở về với Chúa qua cầu nguyện và chia sẻ.",
-      meta: "08:00 - Trung tâm Mục vụ",
+      title: "KhÃ³a TÄ©nh TÃ¢m",
+      description: "Má»™t ngÃ y trá»Ÿ vá» vá»›i ChÃºa qua cáº§u nguyá»‡n vÃ  chia sáº».",
+      meta: "08:00 - Trung tÃ¢m Má»¥c vá»¥",
       date: "2026-09-05",
       image: fallbackImage,
     },
@@ -143,99 +143,99 @@ const defaultContent = {
     {
       id: "prayer-1",
       type: "prayers",
-      title: "Cầu nguyện buổi sáng",
-      description: "Lạy Chúa, xin dẫn con bước vào ngày mới với trái tim bình an, biết yêu thương và phục vụ mọi người.",
-      meta: "Dâng ngày mới",
+      title: "Cáº§u nguyá»‡n buá»•i sÃ¡ng",
+      description: "Láº¡y ChÃºa, xin dáº«n con bÆ°á»›c vÃ o ngÃ y má»›i vá»›i trÃ¡i tim bÃ¬nh an, biáº¿t yÃªu thÆ°Æ¡ng vÃ  phá»¥c vá»¥ má»i ngÆ°á»i.",
+      meta: "DÃ¢ng ngÃ y má»›i",
       image: "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&w=1200&q=80",
-      bodyHtml: "<p>Lạy Chúa, con xin dâng lên Chúa ngày sống hôm nay. Xin soi sáng suy nghĩ, lời nói và việc làm của con, để mọi sự con làm đều trở nên lời ca tụng Chúa.</p><p>Xin cho con biết sống hiền hòa, kiên nhẫn và quảng đại với những người con gặp gỡ.</p>",
+      bodyHtml: "<p>Láº¡y ChÃºa, con xin dÃ¢ng lÃªn ChÃºa ngÃ y sá»‘ng hÃ´m nay. Xin soi sÃ¡ng suy nghÄ©, lá»i nÃ³i vÃ  viá»‡c lÃ m cá»§a con, Ä‘á»ƒ má»i sá»± con lÃ m Ä‘á»u trá»Ÿ nÃªn lá»i ca tá»¥ng ChÃºa.</p><p>Xin cho con biáº¿t sá»‘ng hiá»n hÃ²a, kiÃªn nháº«n vÃ  quáº£ng Ä‘áº¡i vá»›i nhá»¯ng ngÆ°á»i con gáº·p gá»¡.</p>",
     },
     {
       id: "prayer-2",
       type: "prayers",
-      title: "Cầu nguyện trước khi học hỏi Lời Chúa",
-      description: "Xin Chúa Thánh Thần mở lòng con, để con lắng nghe Lời Chúa bằng đức tin và đem ra thực hành.",
-      meta: "Xin ơn soi sáng",
+      title: "Cáº§u nguyá»‡n trÆ°á»›c khi há»c há»i Lá»i ChÃºa",
+      description: "Xin ChÃºa ThÃ¡nh Tháº§n má»Ÿ lÃ²ng con, Ä‘á»ƒ con láº¯ng nghe Lá»i ChÃºa báº±ng Ä‘á»©c tin vÃ  Ä‘em ra thá»±c hÃ nh.",
+      meta: "Xin Æ¡n soi sÃ¡ng",
       image: "https://images.unsplash.com/photo-1509021436665-8f07dbf5bf1d?auto=format&fit=crop&w=1200&q=80",
-      bodyHtml: "<p>Lạy Chúa Thánh Thần, xin đến soi sáng trí lòng con. Xin giúp con đọc Lời Chúa với tâm hồn khiêm tốn, biết lắng nghe điều Chúa muốn nói với con hôm nay.</p><p>Xin biến đổi Lời Chúa thành ánh sáng dẫn đường cho đời sống của con.</p>",
+      bodyHtml: "<p>Láº¡y ChÃºa ThÃ¡nh Tháº§n, xin Ä‘áº¿n soi sÃ¡ng trÃ­ lÃ²ng con. Xin giÃºp con Ä‘á»c Lá»i ChÃºa vá»›i tÃ¢m há»“n khiÃªm tá»‘n, biáº¿t láº¯ng nghe Ä‘iá»u ChÃºa muá»‘n nÃ³i vá»›i con hÃ´m nay.</p><p>Xin biáº¿n Ä‘á»•i Lá»i ChÃºa thÃ nh Ã¡nh sÃ¡ng dáº«n Ä‘Æ°á»ng cho Ä‘á»i sá»‘ng cá»§a con.</p>",
     },
     {
       id: "prayer-3",
       type: "prayers",
-      title: "Cầu nguyện cho gia đình",
-      description: "Xin Chúa gìn giữ gia đình con trong yêu thương, tha thứ và hiệp nhất mỗi ngày.",
-      meta: "Gia đình yêu thương",
+      title: "Cáº§u nguyá»‡n cho gia Ä‘Ã¬nh",
+      description: "Xin ChÃºa gÃ¬n giá»¯ gia Ä‘Ã¬nh con trong yÃªu thÆ°Æ¡ng, tha thá»© vÃ  hiá»‡p nháº¥t má»—i ngÃ y.",
+      meta: "Gia Ä‘Ã¬nh yÃªu thÆ°Æ¡ng",
       image: "https://images.unsplash.com/photo-1514896856000-91cb6de818e0?auto=format&fit=crop&w=1200&q=80",
-      bodyHtml: "<p>Lạy Chúa Giêsu, xin ở lại trong gia đình con. Xin dạy chúng con biết lắng nghe, tha thứ và nâng đỡ nhau trong mọi hoàn cảnh.</p><p>Xin cho mỗi thành viên trong gia đình con biết trở nên dấu chỉ tình yêu của Chúa.</p>",
+      bodyHtml: "<p>Láº¡y ChÃºa GiÃªsu, xin á»Ÿ láº¡i trong gia Ä‘Ã¬nh con. Xin dáº¡y chÃºng con biáº¿t láº¯ng nghe, tha thá»© vÃ  nÃ¢ng Ä‘á»¡ nhau trong má»i hoÃ n cáº£nh.</p><p>Xin cho má»—i thÃ nh viÃªn trong gia Ä‘Ã¬nh con biáº¿t trá»Ÿ nÃªn dáº¥u chá»‰ tÃ¬nh yÃªu cá»§a ChÃºa.</p>",
     },
     {
       id: "prayer-4",
       type: "prayers",
-      title: "Cầu nguyện khi gặp khó khăn",
-      description: "Lạy Chúa, xin nâng đỡ con trong thử thách và giúp con tín thác vào tình yêu quan phòng của Ngài.",
-      meta: "Tín thác",
+      title: "Cáº§u nguyá»‡n khi gáº·p khÃ³ khÄƒn",
+      description: "Láº¡y ChÃºa, xin nÃ¢ng Ä‘á»¡ con trong thá»­ thÃ¡ch vÃ  giÃºp con tÃ­n thÃ¡c vÃ o tÃ¬nh yÃªu quan phÃ²ng cá»§a NgÃ i.",
+      meta: "TÃ­n thÃ¡c",
       image: "https://images.unsplash.com/photo-1528357136257-0c25517acfea?auto=format&fit=crop&w=1200&q=80",
-      bodyHtml: "<p>Lạy Chúa, khi con mệt mỏi và lo âu, xin nhắc con nhớ rằng Chúa vẫn đồng hành. Xin ban cho con sức mạnh để bước tiếp trong tin tưởng.</p><p>Xin giúp con nhìn thấy hy vọng ngay cả giữa những điều chưa rõ ràng.</p>",
+      bodyHtml: "<p>Láº¡y ChÃºa, khi con má»‡t má»i vÃ  lo Ã¢u, xin nháº¯c con nhá»› ráº±ng ChÃºa váº«n Ä‘á»“ng hÃ nh. Xin ban cho con sá»©c máº¡nh Ä‘á»ƒ bÆ°á»›c tiáº¿p trong tin tÆ°á»Ÿng.</p><p>Xin giÃºp con nhÃ¬n tháº¥y hy vá»ng ngay cáº£ giá»¯a nhá»¯ng Ä‘iá»u chÆ°a rÃµ rÃ ng.</p>",
     },
     {
       id: "prayer-5",
       type: "prayers",
-      title: "Cầu nguyện buổi tối",
-      description: "Xin Chúa đón nhận ngày sống đã qua, tha thứ những thiếu sót và ban cho con giấc ngủ bình an.",
-      meta: "Tạ ơn cuối ngày",
+      title: "Cáº§u nguyá»‡n buá»•i tá»‘i",
+      description: "Xin ChÃºa Ä‘Ã³n nháº­n ngÃ y sá»‘ng Ä‘Ã£ qua, tha thá»© nhá»¯ng thiáº¿u sÃ³t vÃ  ban cho con giáº¥c ngá»§ bÃ¬nh an.",
+      meta: "Táº¡ Æ¡n cuá»‘i ngÃ y",
       image: "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?auto=format&fit=crop&w=1200&q=80",
-      bodyHtml: "<p>Lạy Chúa, con tạ ơn Chúa vì một ngày đã qua. Xin tha thứ những điều con thiếu sót và chữa lành những gì còn nặng nề trong lòng con.</p><p>Xin gìn giữ con trong bình an của Chúa suốt đêm nay.</p>",
+      bodyHtml: "<p>Láº¡y ChÃºa, con táº¡ Æ¡n ChÃºa vÃ¬ má»™t ngÃ y Ä‘Ã£ qua. Xin tha thá»© nhá»¯ng Ä‘iá»u con thiáº¿u sÃ³t vÃ  chá»¯a lÃ nh nhá»¯ng gÃ¬ cÃ²n náº·ng ná» trong lÃ²ng con.</p><p>Xin gÃ¬n giá»¯ con trong bÃ¬nh an cá»§a ChÃºa suá»‘t Ä‘Ãªm nay.</p>",
     },
   ],
   catechism: [
     {
       id: "catechism-1",
       type: "catechism",
-      title: "Kinh Lạy Cha",
-      description: "Kinh nguyện Chúa Giêsu dạy, giúp người tín hữu hướng lòng về Thiên Chúa là Cha và sống tinh thần phó thác.",
-      meta: "Kinh căn bản",
+      title: "Kinh Láº¡y Cha",
+      description: "Kinh nguyá»‡n ChÃºa GiÃªsu dáº¡y, giÃºp ngÆ°á»i tÃ­n há»¯u hÆ°á»›ng lÃ²ng vá» ThiÃªn ChÃºa lÃ  Cha vÃ  sá»‘ng tinh tháº§n phÃ³ thÃ¡c.",
+      meta: "Kinh cÄƒn báº£n",
       image: "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&w=1200&q=80",
       bodyHtml:
-        "<p>Kinh Lạy Cha là lời cầu nguyện trung tâm của đời sống Kitô hữu, được chính Chúa Giêsu dạy cho các môn đệ.</p><p>Lạy Cha chúng con ở trên trời, chúng con nguyện danh Cha cả sáng, nước Cha trị đến, ý Cha thể hiện dưới đất cũng như trên trời. Xin Cha cho chúng con hôm nay lương thực hằng ngày, và tha nợ chúng con như chúng con cũng tha kẻ có nợ chúng con. Xin chớ để chúng con sa chước cám dỗ, nhưng cứu chúng con cho khỏi sự dữ. Amen.</p>",
+        "<p>Kinh Láº¡y Cha lÃ  lá»i cáº§u nguyá»‡n trung tÃ¢m cá»§a Ä‘á»i sá»‘ng KitÃ´ há»¯u, Ä‘Æ°á»£c chÃ­nh ChÃºa GiÃªsu dáº¡y cho cÃ¡c mÃ´n Ä‘á»‡.</p><p>Láº¡y Cha chÃºng con á»Ÿ trÃªn trá»i, chÃºng con nguyá»‡n danh Cha cáº£ sÃ¡ng, nÆ°á»›c Cha trá»‹ Ä‘áº¿n, Ã½ Cha thá»ƒ hiá»‡n dÆ°á»›i Ä‘áº¥t cÅ©ng nhÆ° trÃªn trá»i. Xin Cha cho chÃºng con hÃ´m nay lÆ°Æ¡ng thá»±c háº±ng ngÃ y, vÃ  tha ná»£ chÃºng con nhÆ° chÃºng con cÅ©ng tha káº» cÃ³ ná»£ chÃºng con. Xin chá»› Ä‘á»ƒ chÃºng con sa chÆ°á»›c cÃ¡m dá»—, nhÆ°ng cá»©u chÃºng con cho khá»i sá»± dá»¯. Amen.</p>",
     },
     {
       id: "catechism-2",
       type: "catechism",
-      title: "Kinh Kính Mừng",
-      description: "Lời kinh tôn kính Đức Maria, Mẹ Thiên Chúa, và xin Mẹ chuyển cầu cho người tín hữu trong đời sống đức tin.",
-      meta: "Kính Đức Mẹ",
+      title: "Kinh KÃ­nh Má»«ng",
+      description: "Lá»i kinh tÃ´n kÃ­nh Äá»©c Maria, Máº¹ ThiÃªn ChÃºa, vÃ  xin Máº¹ chuyá»ƒn cáº§u cho ngÆ°á»i tÃ­n há»¯u trong Ä‘á»i sá»‘ng Ä‘á»©c tin.",
+      meta: "KÃ­nh Äá»©c Máº¹",
       image: "https://images.unsplash.com/photo-1605130284535-11dd9eedc58a?auto=format&fit=crop&w=1200&q=80",
       bodyHtml:
-        "<p>Kinh Kính Mừng kết hợp lời chào của sứ thần Gabriel, lời chúc tụng của bà Êlisabét và lời khẩn cầu của Hội Thánh.</p><p>Kính mừng Maria đầy ơn phúc, Đức Chúa Trời ở cùng Bà. Bà có phúc lạ hơn mọi người nữ, và Giêsu con lòng Bà gồm phúc lạ. Thánh Maria Đức Mẹ Chúa Trời, cầu cho chúng con là kẻ có tội, khi nay và trong giờ lâm tử. Amen.</p>",
+        "<p>Kinh KÃ­nh Má»«ng káº¿t há»£p lá»i chÃ o cá»§a sá»© tháº§n Gabriel, lá»i chÃºc tá»¥ng cá»§a bÃ  ÃŠlisabÃ©t vÃ  lá»i kháº©n cáº§u cá»§a Há»™i ThÃ¡nh.</p><p>KÃ­nh má»«ng Maria Ä‘áº§y Æ¡n phÃºc, Äá»©c ChÃºa Trá»i á»Ÿ cÃ¹ng BÃ . BÃ  cÃ³ phÃºc láº¡ hÆ¡n má»i ngÆ°á»i ná»¯, vÃ  GiÃªsu con lÃ²ng BÃ  gá»“m phÃºc láº¡. ThÃ¡nh Maria Äá»©c Máº¹ ChÃºa Trá»i, cáº§u cho chÃºng con lÃ  káº» cÃ³ tá»™i, khi nay vÃ  trong giá» lÃ¢m tá»­. Amen.</p>",
     },
     {
       id: "catechism-3",
       type: "catechism",
-      title: "Kinh Sáng Danh",
-      description: "Lời kinh chúc tụng Ba Ngôi Thiên Chúa, thường được đọc để kết thúc các lời cầu nguyện.",
-      meta: "Chúc tụng Ba Ngôi",
+      title: "Kinh SÃ¡ng Danh",
+      description: "Lá»i kinh chÃºc tá»¥ng Ba NgÃ´i ThiÃªn ChÃºa, thÆ°á»ng Ä‘Æ°á»£c Ä‘á»c Ä‘á»ƒ káº¿t thÃºc cÃ¡c lá»i cáº§u nguyá»‡n.",
+      meta: "ChÃºc tá»¥ng Ba NgÃ´i",
       image: "https://images.unsplash.com/photo-1507692049790-de58290a4334?auto=format&fit=crop&w=1200&q=80",
       bodyHtml:
-        "<p>Kinh Sáng Danh là lời tuyên xưng và chúc tụng vinh quang Chúa Cha, Chúa Con và Chúa Thánh Thần.</p><p>Sáng danh Đức Chúa Cha, và Đức Chúa Con, và Đức Chúa Thánh Thần. Như đã có trước vô cùng, và bây giờ, và hằng có, và đời đời chẳng cùng. Amen.</p>",
+        "<p>Kinh SÃ¡ng Danh lÃ  lá»i tuyÃªn xÆ°ng vÃ  chÃºc tá»¥ng vinh quang ChÃºa Cha, ChÃºa Con vÃ  ChÃºa ThÃ¡nh Tháº§n.</p><p>SÃ¡ng danh Äá»©c ChÃºa Cha, vÃ  Äá»©c ChÃºa Con, vÃ  Äá»©c ChÃºa ThÃ¡nh Tháº§n. NhÆ° Ä‘Ã£ cÃ³ trÆ°á»›c vÃ´ cÃ¹ng, vÃ  bÃ¢y giá», vÃ  háº±ng cÃ³, vÃ  Ä‘á»i Ä‘á»i cháº³ng cÃ¹ng. Amen.</p>",
     },
     {
       id: "catechism-4",
       type: "catechism",
-      title: "Kinh Tin Kính",
-      description: "Lời tuyên xưng đức tin của Hội Thánh, tóm lược những điều căn bản người Công Giáo tin nhận.",
-      meta: "Tuyên xưng đức tin",
+      title: "Kinh Tin KÃ­nh",
+      description: "Lá»i tuyÃªn xÆ°ng Ä‘á»©c tin cá»§a Há»™i ThÃ¡nh, tÃ³m lÆ°á»£c nhá»¯ng Ä‘iá»u cÄƒn báº£n ngÆ°á»i CÃ´ng GiÃ¡o tin nháº­n.",
+      meta: "TuyÃªn xÆ°ng Ä‘á»©c tin",
       image: "https://images.unsplash.com/photo-1528357136257-0c25517acfea?auto=format&fit=crop&w=1200&q=80",
       bodyHtml:
-        "<p>Kinh Tin Kính giúp người tín hữu tuyên xưng niềm tin vào Thiên Chúa Ba Ngôi, mầu nhiệm Nhập Thể, Cứu Độ và sự sống đời đời.</p><p>Tôi tin kính Đức Chúa Trời là Cha phép tắc vô cùng dựng nên trời đất. Tôi tin kính Đức Chúa Giêsu Kitô là Con Một Đức Chúa Cha cùng là Chúa chúng tôi...</p><p>Trong phụng vụ, Kinh Tin Kính thường được đọc trong Thánh lễ Chúa Nhật và các lễ trọng như lời đáp trả đức tin của cộng đoàn.</p>",
+        "<p>Kinh Tin KÃ­nh giÃºp ngÆ°á»i tÃ­n há»¯u tuyÃªn xÆ°ng niá»m tin vÃ o ThiÃªn ChÃºa Ba NgÃ´i, máº§u nhiá»‡m Nháº­p Thá»ƒ, Cá»©u Äá»™ vÃ  sá»± sá»‘ng Ä‘á»i Ä‘á»i.</p><p>TÃ´i tin kÃ­nh Äá»©c ChÃºa Trá»i lÃ  Cha phÃ©p táº¯c vÃ´ cÃ¹ng dá»±ng nÃªn trá»i Ä‘áº¥t. TÃ´i tin kÃ­nh Äá»©c ChÃºa GiÃªsu KitÃ´ lÃ  Con Má»™t Äá»©c ChÃºa Cha cÃ¹ng lÃ  ChÃºa chÃºng tÃ´i...</p><p>Trong phá»¥ng vá»¥, Kinh Tin KÃ­nh thÆ°á»ng Ä‘Æ°á»£c Ä‘á»c trong ThÃ¡nh lá»… ChÃºa Nháº­t vÃ  cÃ¡c lá»… trá»ng nhÆ° lá»i Ä‘Ã¡p tráº£ Ä‘á»©c tin cá»§a cá»™ng Ä‘oÃ n.</p>",
     },
     {
       id: "catechism-5",
       type: "catechism",
-      title: "Kinh Ăn Năn Tội",
-      description: "Lời kinh diễn tả lòng sám hối, xin Chúa tha thứ và quyết tâm trở về với tình yêu của Người.",
-      meta: "Sám hối",
+      title: "Kinh Ä‚n NÄƒn Tá»™i",
+      description: "Lá»i kinh diá»…n táº£ lÃ²ng sÃ¡m há»‘i, xin ChÃºa tha thá»© vÃ  quyáº¿t tÃ¢m trá»Ÿ vá» vá»›i tÃ¬nh yÃªu cá»§a NgÆ°á»i.",
+      meta: "SÃ¡m há»‘i",
       image: "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?auto=format&fit=crop&w=1200&q=80",
       bodyHtml:
-        "<p>Kinh Ăn Năn Tội giúp người tín hữu nhìn nhận lỗi lầm trước mặt Chúa, tin vào lòng thương xót của Người và quyết tâm đổi mới đời sống.</p><p>Lạy Chúa con, Chúa là Đấng trọn tốt trọn lành vô cùng. Chúa đã dựng nên con, và cho Con Chúa ra đời chịu nạn chịu chết vì con, mà con đã cả lòng phản nghịch lỗi nghĩa cùng Chúa, thì con lo buồn đau đớn cùng chê ghét mọi tội con trên hết mọi sự...</p>",
+        "<p>Kinh Ä‚n NÄƒn Tá»™i giÃºp ngÆ°á»i tÃ­n há»¯u nhÃ¬n nháº­n lá»—i láº§m trÆ°á»›c máº·t ChÃºa, tin vÃ o lÃ²ng thÆ°Æ¡ng xÃ³t cá»§a NgÆ°á»i vÃ  quyáº¿t tÃ¢m Ä‘á»•i má»›i Ä‘á»i sá»‘ng.</p><p>Láº¡y ChÃºa con, ChÃºa lÃ  Äáº¥ng trá»n tá»‘t trá»n lÃ nh vÃ´ cÃ¹ng. ChÃºa Ä‘Ã£ dá»±ng nÃªn con, vÃ  cho Con ChÃºa ra Ä‘á»i chá»‹u náº¡n chá»‹u cháº¿t vÃ¬ con, mÃ  con Ä‘Ã£ cáº£ lÃ²ng pháº£n nghá»‹ch lá»—i nghÄ©a cÃ¹ng ChÃºa, thÃ¬ con lo buá»“n Ä‘au Ä‘á»›n cÃ¹ng chÃª ghÃ©t má»i tá»™i con trÃªn háº¿t má»i sá»±...</p>",
     },
   ],
 };
@@ -270,81 +270,81 @@ defaultContent.banners = [
 
 const saintBiographyDefaults = {
   "thanh-giuse": {
-    meta: "Đấng công chính",
-    description: "Thánh Giuse là bạn trăm năm của Đức Maria, cha nuôi của Chúa Giêsu và là mẫu gương âm thầm của đời sống gia đình.",
+    meta: "Äáº¥ng cÃ´ng chÃ­nh",
+    description: "ThÃ¡nh Giuse lÃ  báº¡n trÄƒm nÄƒm cá»§a Äá»©c Maria, cha nuÃ´i cá»§a ChÃºa GiÃªsu vÃ  lÃ  máº«u gÆ°Æ¡ng Ã¢m tháº§m cá»§a Ä‘á»i sá»‘ng gia Ä‘Ã¬nh.",
     bodyHtml: `
-      <h2>Tiểu sử</h2>
-      <p>Thánh Giuse là người công chính thuộc dòng dõi vua Đavít. Tin Mừng mô tả ngài là bạn trăm năm của Đức Maria và là người được Thiên Chúa trao phó trách nhiệm chăm sóc Chúa Giêsu trong gia đình Nazareth.</p>
-      <p>Khi biết Đức Maria mang thai bởi quyền năng Chúa Thánh Thần, thánh Giuse đã lắng nghe lời sứ thần trong mộng và đón nhận Mẹ Maria về nhà. Ngài hiện diện trong những biến cố đầu đời của Chúa Giêsu: hành trình về Bêlem, cuộc trốn sang Ai Cập, rồi trở về Nazareth để sống đời lao động khiêm tốn.</p>
-      <h3>Nhân đức nổi bật</h3>
-      <p>Thánh Giuse nêu gương về sự vâng phục, thinh lặng, trách nhiệm và lòng tín thác. Ngài không để lại lời nói nào trong Kinh Thánh, nhưng đời sống của ngài là một chứng tá mạnh mẽ về đức tin được diễn tả bằng hành động.</p>
-      <h3>Ý nghĩa thiêng liêng</h3>
-      <p>Giáo Hội tôn kính thánh Giuse như bổn mạng của Hội Thánh hoàn vũ, của các gia đình, người lao động và những ai muốn sống đời công chính trong âm thầm.</p>
+      <h2>Tiá»ƒu sá»­</h2>
+      <p>ThÃ¡nh Giuse lÃ  ngÆ°á»i cÃ´ng chÃ­nh thuá»™c dÃ²ng dÃµi vua ÄavÃ­t. Tin Má»«ng mÃ´ táº£ ngÃ i lÃ  báº¡n trÄƒm nÄƒm cá»§a Äá»©c Maria vÃ  lÃ  ngÆ°á»i Ä‘Æ°á»£c ThiÃªn ChÃºa trao phÃ³ trÃ¡ch nhiá»‡m chÄƒm sÃ³c ChÃºa GiÃªsu trong gia Ä‘Ã¬nh Nazareth.</p>
+      <p>Khi biáº¿t Äá»©c Maria mang thai bá»Ÿi quyá»n nÄƒng ChÃºa ThÃ¡nh Tháº§n, thÃ¡nh Giuse Ä‘Ã£ láº¯ng nghe lá»i sá»© tháº§n trong má»™ng vÃ  Ä‘Ã³n nháº­n Máº¹ Maria vá» nhÃ . NgÃ i hiá»‡n diá»‡n trong nhá»¯ng biáº¿n cá»‘ Ä‘áº§u Ä‘á»i cá»§a ChÃºa GiÃªsu: hÃ nh trÃ¬nh vá» BÃªlem, cuá»™c trá»‘n sang Ai Cáº­p, rá»“i trá»Ÿ vá» Nazareth Ä‘á»ƒ sá»‘ng Ä‘á»i lao Ä‘á»™ng khiÃªm tá»‘n.</p>
+      <h3>NhÃ¢n Ä‘á»©c ná»•i báº­t</h3>
+      <p>ThÃ¡nh Giuse nÃªu gÆ°Æ¡ng vá» sá»± vÃ¢ng phá»¥c, thinh láº·ng, trÃ¡ch nhiá»‡m vÃ  lÃ²ng tÃ­n thÃ¡c. NgÃ i khÃ´ng Ä‘á»ƒ láº¡i lá»i nÃ³i nÃ o trong Kinh ThÃ¡nh, nhÆ°ng Ä‘á»i sá»‘ng cá»§a ngÃ i lÃ  má»™t chá»©ng tÃ¡ máº¡nh máº½ vá» Ä‘á»©c tin Ä‘Æ°á»£c diá»…n táº£ báº±ng hÃ nh Ä‘á»™ng.</p>
+      <h3>Ã nghÄ©a thiÃªng liÃªng</h3>
+      <p>GiÃ¡o Há»™i tÃ´n kÃ­nh thÃ¡nh Giuse nhÆ° bá»•n máº¡ng cá»§a Há»™i ThÃ¡nh hoÃ n vÅ©, cá»§a cÃ¡c gia Ä‘Ã¬nh, ngÆ°á»i lao Ä‘á»™ng vÃ  nhá»¯ng ai muá»‘n sá»‘ng Ä‘á»i cÃ´ng chÃ­nh trong Ã¢m tháº§m.</p>
     `,
   },
   "thanh-maria": {
-    meta: "Mẹ Thiên Chúa",
-    description: "Đức Maria là Mẹ Chúa Giêsu, mẫu gương của đức tin, sự vâng phục và lòng tín thác trọn vẹn vào Thiên Chúa.",
+    meta: "Máº¹ ThiÃªn ChÃºa",
+    description: "Äá»©c Maria lÃ  Máº¹ ChÃºa GiÃªsu, máº«u gÆ°Æ¡ng cá»§a Ä‘á»©c tin, sá»± vÃ¢ng phá»¥c vÃ  lÃ²ng tÃ­n thÃ¡c trá»n váº¹n vÃ o ThiÃªn ChÃºa.",
     bodyHtml: `
-      <h2>Tiểu sử</h2>
-      <p>Đức Maria là người nữ Do Thái tại Nazareth, được Thiên Chúa tuyển chọn để làm Mẹ Đấng Cứu Thế. Trong biến cố Truyền Tin, Mẹ đã thưa lời xin vâng, đón nhận ý định của Thiên Chúa với lòng khiêm nhường và tín thác.</p>
-      <p>Mẹ Maria đồng hành với Chúa Giêsu từ mầu nhiệm Nhập Thể, sinh hạ Người tại Bêlem, chăm sóc Người trong đời sống ẩn dật tại Nazareth, cho đến khi đứng dưới chân thập giá. Sau Phục Sinh, Mẹ hiện diện với các môn đệ trong cầu nguyện.</p>
-      <h3>Nhân đức nổi bật</h3>
-      <p>Mẹ là mẫu gương của đức tin lắng nghe, lòng khiêm nhường, sự vâng phục và tình mẫu tử. Mẹ ghi nhớ và suy niệm mọi biến cố trong lòng, để luôn tìm kiếm thánh ý Thiên Chúa.</p>
-      <h3>Ý nghĩa thiêng liêng</h3>
-      <p>Người Kitô hữu tôn kính Đức Maria như Mẹ Thiên Chúa và người Mẹ dẫn đưa con cái đến với Chúa Giêsu. Nơi Mẹ, Hội Thánh nhận ra hình ảnh của người môn đệ hoàn hảo.</p>
+      <h2>Tiá»ƒu sá»­</h2>
+      <p>Äá»©c Maria lÃ  ngÆ°á»i ná»¯ Do ThÃ¡i táº¡i Nazareth, Ä‘Æ°á»£c ThiÃªn ChÃºa tuyá»ƒn chá»n Ä‘á»ƒ lÃ m Máº¹ Äáº¥ng Cá»©u Tháº¿. Trong biáº¿n cá»‘ Truyá»n Tin, Máº¹ Ä‘Ã£ thÆ°a lá»i xin vÃ¢ng, Ä‘Ã³n nháº­n Ã½ Ä‘á»‹nh cá»§a ThiÃªn ChÃºa vá»›i lÃ²ng khiÃªm nhÆ°á»ng vÃ  tÃ­n thÃ¡c.</p>
+      <p>Máº¹ Maria Ä‘á»“ng hÃ nh vá»›i ChÃºa GiÃªsu tá»« máº§u nhiá»‡m Nháº­p Thá»ƒ, sinh háº¡ NgÆ°á»i táº¡i BÃªlem, chÄƒm sÃ³c NgÆ°á»i trong Ä‘á»i sá»‘ng áº©n dáº­t táº¡i Nazareth, cho Ä‘áº¿n khi Ä‘á»©ng dÆ°á»›i chÃ¢n tháº­p giÃ¡. Sau Phá»¥c Sinh, Máº¹ hiá»‡n diá»‡n vá»›i cÃ¡c mÃ´n Ä‘á»‡ trong cáº§u nguyá»‡n.</p>
+      <h3>NhÃ¢n Ä‘á»©c ná»•i báº­t</h3>
+      <p>Máº¹ lÃ  máº«u gÆ°Æ¡ng cá»§a Ä‘á»©c tin láº¯ng nghe, lÃ²ng khiÃªm nhÆ°á»ng, sá»± vÃ¢ng phá»¥c vÃ  tÃ¬nh máº«u tá»­. Máº¹ ghi nhá»› vÃ  suy niá»‡m má»i biáº¿n cá»‘ trong lÃ²ng, Ä‘á»ƒ luÃ´n tÃ¬m kiáº¿m thÃ¡nh Ã½ ThiÃªn ChÃºa.</p>
+      <h3>Ã nghÄ©a thiÃªng liÃªng</h3>
+      <p>NgÆ°á»i KitÃ´ há»¯u tÃ´n kÃ­nh Äá»©c Maria nhÆ° Máº¹ ThiÃªn ChÃºa vÃ  ngÆ°á»i Máº¹ dáº«n Ä‘Æ°a con cÃ¡i Ä‘áº¿n vá»›i ChÃºa GiÃªsu. NÆ¡i Máº¹, Há»™i ThÃ¡nh nháº­n ra hÃ¬nh áº£nh cá»§a ngÆ°á»i mÃ´n Ä‘á»‡ hoÃ n háº£o.</p>
     `,
   },
   "thanh-phanxico-assisi": {
-    meta: "Sống nghèo khó và yêu thiên nhiên",
-    description: "Thánh Phanxicô Assisi là người sáng lập Dòng Anh Em Hèn Mọn, nổi bật với tinh thần nghèo khó, hòa bình và yêu mến công trình tạo dựng.",
+    meta: "Sá»‘ng nghÃ¨o khÃ³ vÃ  yÃªu thiÃªn nhiÃªn",
+    description: "ThÃ¡nh PhanxicÃ´ Assisi lÃ  ngÆ°á»i sÃ¡ng láº­p DÃ²ng Anh Em HÃ¨n Má»n, ná»•i báº­t vá»›i tinh tháº§n nghÃ¨o khÃ³, hÃ²a bÃ¬nh vÃ  yÃªu máº¿n cÃ´ng trÃ¬nh táº¡o dá»±ng.",
     bodyHtml: `
-      <h2>Tiểu sử</h2>
-      <p>Thánh Phanxicô Assisi sinh khoảng năm 1181 tại Assisi, nước Ý, trong một gia đình thương gia khá giả. Sau thời trẻ nhiều mơ mộng và biến cố bệnh tật, ngài dần nhận ra tiếng gọi của Thiên Chúa nơi người nghèo, người phong cùi và trong cầu nguyện.</p>
-      <p>Trước thánh giá tại nhà nguyện San Damiano, ngài nghe lời mời gọi hãy sửa lại Hội Thánh. Từ đó, Phanxicô từ bỏ của cải, chọn đời sống nghèo khó, rao giảng Tin Mừng bằng sự đơn sơ và thành lập Dòng Anh Em Hèn Mọn.</p>
-      <h3>Nhân đức nổi bật</h3>
-      <p>Ngài sống tinh thần nghèo khó triệt để, yêu mến hòa bình, khiêm hạ và gần gũi mọi thụ tạo. Tình yêu dành cho thiên nhiên của ngài xuất phát từ niềm tin rằng mọi loài đều phản chiếu vẻ đẹp của Đấng Tạo Hóa.</p>
-      <h3>Ý nghĩa thiêng liêng</h3>
-      <p>Thánh Phanxicô nhắc người Kitô hữu sống đơn sơ, phục vụ người nghèo và xây dựng hòa bình. Ngài cũng là bổn mạng của môi sinh và những ai dấn thân chăm sóc công trình tạo dựng.</p>
+      <h2>Tiá»ƒu sá»­</h2>
+      <p>ThÃ¡nh PhanxicÃ´ Assisi sinh khoáº£ng nÄƒm 1181 táº¡i Assisi, nÆ°á»›c Ã, trong má»™t gia Ä‘Ã¬nh thÆ°Æ¡ng gia khÃ¡ giáº£. Sau thá»i tráº» nhiá»u mÆ¡ má»™ng vÃ  biáº¿n cá»‘ bá»‡nh táº­t, ngÃ i dáº§n nháº­n ra tiáº¿ng gá»i cá»§a ThiÃªn ChÃºa nÆ¡i ngÆ°á»i nghÃ¨o, ngÆ°á»i phong cÃ¹i vÃ  trong cáº§u nguyá»‡n.</p>
+      <p>TrÆ°á»›c thÃ¡nh giÃ¡ táº¡i nhÃ  nguyá»‡n San Damiano, ngÃ i nghe lá»i má»i gá»i hÃ£y sá»­a láº¡i Há»™i ThÃ¡nh. Tá»« Ä‘Ã³, PhanxicÃ´ tá»« bá» cá»§a cáº£i, chá»n Ä‘á»i sá»‘ng nghÃ¨o khÃ³, rao giáº£ng Tin Má»«ng báº±ng sá»± Ä‘Æ¡n sÆ¡ vÃ  thÃ nh láº­p DÃ²ng Anh Em HÃ¨n Má»n.</p>
+      <h3>NhÃ¢n Ä‘á»©c ná»•i báº­t</h3>
+      <p>NgÃ i sá»‘ng tinh tháº§n nghÃ¨o khÃ³ triá»‡t Ä‘á»ƒ, yÃªu máº¿n hÃ²a bÃ¬nh, khiÃªm háº¡ vÃ  gáº§n gÅ©i má»i thá»¥ táº¡o. TÃ¬nh yÃªu dÃ nh cho thiÃªn nhiÃªn cá»§a ngÃ i xuáº¥t phÃ¡t tá»« niá»m tin ráº±ng má»i loÃ i Ä‘á»u pháº£n chiáº¿u váº» Ä‘áº¹p cá»§a Äáº¥ng Táº¡o HÃ³a.</p>
+      <h3>Ã nghÄ©a thiÃªng liÃªng</h3>
+      <p>ThÃ¡nh PhanxicÃ´ nháº¯c ngÆ°á»i KitÃ´ há»¯u sá»‘ng Ä‘Æ¡n sÆ¡, phá»¥c vá»¥ ngÆ°á»i nghÃ¨o vÃ  xÃ¢y dá»±ng hÃ²a bÃ¬nh. NgÃ i cÅ©ng lÃ  bá»•n máº¡ng cá»§a mÃ´i sinh vÃ  nhá»¯ng ai dáº¥n thÃ¢n chÄƒm sÃ³c cÃ´ng trÃ¬nh táº¡o dá»±ng.</p>
     `,
   },
   "thanh-teresa-hai-dong-giesu": {
-    meta: "Con đường nhỏ",
-    description: "Thánh Têrêsa Hài Đồng Giêsu là nữ tu Cát Minh, tiến sĩ Hội Thánh, nổi tiếng với linh đạo con đường nhỏ của tình yêu và tín thác.",
+    meta: "Con Ä‘Æ°á»ng nhá»",
+    description: "ThÃ¡nh TÃªrÃªsa HÃ i Äá»“ng GiÃªsu lÃ  ná»¯ tu CÃ¡t Minh, tiáº¿n sÄ© Há»™i ThÃ¡nh, ná»•i tiáº¿ng vá»›i linh Ä‘áº¡o con Ä‘Æ°á»ng nhá» cá»§a tÃ¬nh yÃªu vÃ  tÃ­n thÃ¡c.",
     bodyHtml: `
-      <h2>Tiểu sử</h2>
-      <p>Thánh Têrêsa Hài Đồng Giêsu, tên khai sinh là Marie-Françoise-Thérèse Martin, sinh năm 1873 tại Alençon, Pháp. Từ nhỏ, Têrêsa đã có lòng yêu mến Chúa sâu xa và khao khát dâng mình trong đời sống tu trì.</p>
-      <p>Năm 15 tuổi, sau nhiều khó khăn, ngài được vào đan viện Cát Minh Lisieux. Trong đời sống âm thầm của đan viện, Têrêsa khám phá con đường nên thánh qua những việc nhỏ bé được làm với tình yêu lớn lao.</p>
-      <h3>Nhân đức nổi bật</h3>
-      <p>Linh đạo của thánh Têrêsa được gọi là con đường nhỏ: sống khiêm nhường, tin tưởng như trẻ thơ, yêu mến Chúa trong từng bổn phận nhỏ hằng ngày và phó thác cả những yếu đuối cho lòng thương xót của Thiên Chúa.</p>
-      <h3>Ý nghĩa thiêng liêng</h3>
-      <p>Dù sống đời kín ẩn và qua đời khi còn rất trẻ, Têrêsa trở thành bổn mạng các xứ truyền giáo. Ngài cho thấy sự thánh thiện không hệ tại những việc phi thường, nhưng ở tình yêu trung thành trong điều bé nhỏ.</p>
+      <h2>Tiá»ƒu sá»­</h2>
+      <p>ThÃ¡nh TÃªrÃªsa HÃ i Äá»“ng GiÃªsu, tÃªn khai sinh lÃ  Marie-FranÃ§oise-ThÃ©rÃ¨se Martin, sinh nÄƒm 1873 táº¡i AlenÃ§on, PhÃ¡p. Tá»« nhá», TÃªrÃªsa Ä‘Ã£ cÃ³ lÃ²ng yÃªu máº¿n ChÃºa sÃ¢u xa vÃ  khao khÃ¡t dÃ¢ng mÃ¬nh trong Ä‘á»i sá»‘ng tu trÃ¬.</p>
+      <p>NÄƒm 15 tuá»•i, sau nhiá»u khÃ³ khÄƒn, ngÃ i Ä‘Æ°á»£c vÃ o Ä‘an viá»‡n CÃ¡t Minh Lisieux. Trong Ä‘á»i sá»‘ng Ã¢m tháº§m cá»§a Ä‘an viá»‡n, TÃªrÃªsa khÃ¡m phÃ¡ con Ä‘Æ°á»ng nÃªn thÃ¡nh qua nhá»¯ng viá»‡c nhá» bÃ© Ä‘Æ°á»£c lÃ m vá»›i tÃ¬nh yÃªu lá»›n lao.</p>
+      <h3>NhÃ¢n Ä‘á»©c ná»•i báº­t</h3>
+      <p>Linh Ä‘áº¡o cá»§a thÃ¡nh TÃªrÃªsa Ä‘Æ°á»£c gá»i lÃ  con Ä‘Æ°á»ng nhá»: sá»‘ng khiÃªm nhÆ°á»ng, tin tÆ°á»Ÿng nhÆ° tráº» thÆ¡, yÃªu máº¿n ChÃºa trong tá»«ng bá»•n pháº­n nhá» háº±ng ngÃ y vÃ  phÃ³ thÃ¡c cáº£ nhá»¯ng yáº¿u Ä‘uá»‘i cho lÃ²ng thÆ°Æ¡ng xÃ³t cá»§a ThiÃªn ChÃºa.</p>
+      <h3>Ã nghÄ©a thiÃªng liÃªng</h3>
+      <p>DÃ¹ sá»‘ng Ä‘á»i kÃ­n áº©n vÃ  qua Ä‘á»i khi cÃ²n ráº¥t tráº», TÃªrÃªsa trá»Ÿ thÃ nh bá»•n máº¡ng cÃ¡c xá»© truyá»n giÃ¡o. NgÃ i cho tháº¥y sá»± thÃ¡nh thiá»‡n khÃ´ng há»‡ táº¡i nhá»¯ng viá»‡c phi thÆ°á»ng, nhÆ°ng á»Ÿ tÃ¬nh yÃªu trung thÃ nh trong Ä‘iá»u bÃ© nhá».</p>
     `,
   },
   "thanh-phaolo": {
-    meta: "Tông đồ dân ngoại",
-    description: "Thánh Phaolô là vị tông đồ lớn của Hội Thánh sơ khai, người rao giảng Tin Mừng cho muôn dân sau biến cố hoán cải trên đường Đamas.",
+    meta: "TÃ´ng Ä‘á»“ dÃ¢n ngoáº¡i",
+    description: "ThÃ¡nh PhaolÃ´ lÃ  vá»‹ tÃ´ng Ä‘á»“ lá»›n cá»§a Há»™i ThÃ¡nh sÆ¡ khai, ngÆ°á»i rao giáº£ng Tin Má»«ng cho muÃ´n dÃ¢n sau biáº¿n cá»‘ hoÃ¡n cáº£i trÃªn Ä‘Æ°á»ng Äamas.",
     bodyHtml: `
-      <h2>Tiểu sử</h2>
-      <p>Thánh Phaolô, trước kia là Saolô thành Tarsô, là người Do Thái nhiệt thành với Lề Luật. Ban đầu, ông tham gia bách hại các môn đệ Chúa Giêsu. Trên đường đi Đamas, Saolô gặp Đức Kitô Phục Sinh và được biến đổi tận căn.</p>
-      <p>Sau khi chịu phép rửa, Phaolô trở thành nhà truyền giáo lớn của Hội Thánh. Ngài thực hiện nhiều hành trình rao giảng, thành lập các cộng đoàn Kitô hữu và viết nhiều thư tín quan trọng trong Tân Ước.</p>
-      <h3>Nhân đức nổi bật</h3>
-      <p>Thánh Phaolô nổi bật với lòng nhiệt thành truyền giáo, tình yêu dành cho Đức Kitô và khả năng giải thích đức tin cho các dân ngoại. Ngài chịu nhiều gian nan nhưng luôn xác tín rằng không gì có thể tách người tín hữu khỏi tình yêu của Thiên Chúa.</p>
-      <h3>Ý nghĩa thiêng liêng</h3>
-      <p>Cuộc đời thánh Phaolô là chứng tá về sức mạnh của ơn hoán cải. Từ một người bách hại, ngài trở thành khí cụ loan báo Tin Mừng cho muôn dân.</p>
+      <h2>Tiá»ƒu sá»­</h2>
+      <p>ThÃ¡nh PhaolÃ´, trÆ°á»›c kia lÃ  SaolÃ´ thÃ nh TarsÃ´, lÃ  ngÆ°á»i Do ThÃ¡i nhiá»‡t thÃ nh vá»›i Lá» Luáº­t. Ban Ä‘áº§u, Ã´ng tham gia bÃ¡ch háº¡i cÃ¡c mÃ´n Ä‘á»‡ ChÃºa GiÃªsu. TrÃªn Ä‘Æ°á»ng Ä‘i Äamas, SaolÃ´ gáº·p Äá»©c KitÃ´ Phá»¥c Sinh vÃ  Ä‘Æ°á»£c biáº¿n Ä‘á»•i táº­n cÄƒn.</p>
+      <p>Sau khi chá»‹u phÃ©p rá»­a, PhaolÃ´ trá»Ÿ thÃ nh nhÃ  truyá»n giÃ¡o lá»›n cá»§a Há»™i ThÃ¡nh. NgÃ i thá»±c hiá»‡n nhiá»u hÃ nh trÃ¬nh rao giáº£ng, thÃ nh láº­p cÃ¡c cá»™ng Ä‘oÃ n KitÃ´ há»¯u vÃ  viáº¿t nhiá»u thÆ° tÃ­n quan trá»ng trong TÃ¢n Æ¯á»›c.</p>
+      <h3>NhÃ¢n Ä‘á»©c ná»•i báº­t</h3>
+      <p>ThÃ¡nh PhaolÃ´ ná»•i báº­t vá»›i lÃ²ng nhiá»‡t thÃ nh truyá»n giÃ¡o, tÃ¬nh yÃªu dÃ nh cho Äá»©c KitÃ´ vÃ  kháº£ nÄƒng giáº£i thÃ­ch Ä‘á»©c tin cho cÃ¡c dÃ¢n ngoáº¡i. NgÃ i chá»‹u nhiá»u gian nan nhÆ°ng luÃ´n xÃ¡c tÃ­n ráº±ng khÃ´ng gÃ¬ cÃ³ thá»ƒ tÃ¡ch ngÆ°á»i tÃ­n há»¯u khá»i tÃ¬nh yÃªu cá»§a ThiÃªn ChÃºa.</p>
+      <h3>Ã nghÄ©a thiÃªng liÃªng</h3>
+      <p>Cuá»™c Ä‘á»i thÃ¡nh PhaolÃ´ lÃ  chá»©ng tÃ¡ vá» sá»©c máº¡nh cá»§a Æ¡n hoÃ¡n cáº£i. Tá»« má»™t ngÆ°á»i bÃ¡ch háº¡i, ngÃ i trá»Ÿ thÃ nh khÃ­ cá»¥ loan bÃ¡o Tin Má»«ng cho muÃ´n dÃ¢n.</p>
     `,
   },
   "thanh-phero": {
-    meta: "Đá tảng của Hội Thánh",
-    description: "Thánh Phêrô là một trong Mười Hai Tông Đồ, người được Chúa Giêsu trao sứ mạng củng cố anh em và chăm sóc đoàn chiên.",
+    meta: "ÄÃ¡ táº£ng cá»§a Há»™i ThÃ¡nh",
+    description: "ThÃ¡nh PhÃªrÃ´ lÃ  má»™t trong MÆ°á»i Hai TÃ´ng Äá»“, ngÆ°á»i Ä‘Æ°á»£c ChÃºa GiÃªsu trao sá»© máº¡ng cá»§ng cá»‘ anh em vÃ  chÄƒm sÃ³c Ä‘oÃ n chiÃªn.",
     bodyHtml: `
-      <h2>Tiểu sử</h2>
-      <p>Thánh Phêrô, tên ban đầu là Simon, là một ngư phủ miền Galilê. Chúa Giêsu gọi ông đi theo Người và đặt tên là Phêrô, nghĩa là đá tảng. Ông thuộc nhóm môn đệ thân tín, chứng kiến nhiều biến cố quan trọng trong sứ vụ của Chúa.</p>
-      <p>Dù từng yếu đuối và chối Thầy trong cuộc Thương Khó, Phêrô đã được Chúa Phục Sinh tha thứ và trao sứ mạng chăn dắt đoàn chiên. Sau lễ Ngũ Tuần, ngài mạnh dạn rao giảng Đức Kitô và trở thành một trong những trụ cột của Hội Thánh sơ khai.</p>
-      <h3>Nhân đức nổi bật</h3>
-      <p>Thánh Phêrô cho thấy hành trình đức tin của người môn đệ: có nhiệt thành, có yếu đuối, có nước mắt sám hối và có ơn biến đổi. Sự khiêm nhường sau vấp ngã giúp ngài trở nên chứng nhân mạnh mẽ của lòng thương xót.</p>
-      <h3>Ý nghĩa thiêng liêng</h3>
-      <p>Ngài được truyền thống Kitô giáo tôn kính như vị lãnh đạo đầu tiên của Hội Thánh tại Rôma. Cuộc đời Phêrô nhắc người tín hữu biết đứng dậy sau yếu đuối và để Chúa dùng mình trong sứ mạng phục vụ.</p>
+      <h2>Tiá»ƒu sá»­</h2>
+      <p>ThÃ¡nh PhÃªrÃ´, tÃªn ban Ä‘áº§u lÃ  Simon, lÃ  má»™t ngÆ° phá»§ miá»n GalilÃª. ChÃºa GiÃªsu gá»i Ã´ng Ä‘i theo NgÆ°á»i vÃ  Ä‘áº·t tÃªn lÃ  PhÃªrÃ´, nghÄ©a lÃ  Ä‘Ã¡ táº£ng. Ã”ng thuá»™c nhÃ³m mÃ´n Ä‘á»‡ thÃ¢n tÃ­n, chá»©ng kiáº¿n nhiá»u biáº¿n cá»‘ quan trá»ng trong sá»© vá»¥ cá»§a ChÃºa.</p>
+      <p>DÃ¹ tá»«ng yáº¿u Ä‘uá»‘i vÃ  chá»‘i Tháº§y trong cuá»™c ThÆ°Æ¡ng KhÃ³, PhÃªrÃ´ Ä‘Ã£ Ä‘Æ°á»£c ChÃºa Phá»¥c Sinh tha thá»© vÃ  trao sá»© máº¡ng chÄƒn dáº¯t Ä‘oÃ n chiÃªn. Sau lá»… NgÅ© Tuáº§n, ngÃ i máº¡nh dáº¡n rao giáº£ng Äá»©c KitÃ´ vÃ  trá»Ÿ thÃ nh má»™t trong nhá»¯ng trá»¥ cá»™t cá»§a Há»™i ThÃ¡nh sÆ¡ khai.</p>
+      <h3>NhÃ¢n Ä‘á»©c ná»•i báº­t</h3>
+      <p>ThÃ¡nh PhÃªrÃ´ cho tháº¥y hÃ nh trÃ¬nh Ä‘á»©c tin cá»§a ngÆ°á»i mÃ´n Ä‘á»‡: cÃ³ nhiá»‡t thÃ nh, cÃ³ yáº¿u Ä‘uá»‘i, cÃ³ nÆ°á»›c máº¯t sÃ¡m há»‘i vÃ  cÃ³ Æ¡n biáº¿n Ä‘á»•i. Sá»± khiÃªm nhÆ°á»ng sau váº¥p ngÃ£ giÃºp ngÃ i trá»Ÿ nÃªn chá»©ng nhÃ¢n máº¡nh máº½ cá»§a lÃ²ng thÆ°Æ¡ng xÃ³t.</p>
+      <h3>Ã nghÄ©a thiÃªng liÃªng</h3>
+      <p>NgÃ i Ä‘Æ°á»£c truyá»n thá»‘ng KitÃ´ giÃ¡o tÃ´n kÃ­nh nhÆ° vá»‹ lÃ£nh Ä‘áº¡o Ä‘áº§u tiÃªn cá»§a Há»™i ThÃ¡nh táº¡i RÃ´ma. Cuá»™c Ä‘á»i PhÃªrÃ´ nháº¯c ngÆ°á»i tÃ­n há»¯u biáº¿t Ä‘á»©ng dáº­y sau yáº¿u Ä‘uá»‘i vÃ  Ä‘á»ƒ ChÃºa dÃ¹ng mÃ¬nh trong sá»© máº¡ng phá»¥c vá»¥.</p>
     `,
   },
 };
@@ -353,8 +353,8 @@ function normalizeSaintKey(value) {
   return String(value || "")
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
-    .replace(/đ/g, "d")
-    .replace(/Đ/g, "D")
+    .replace(/Ä‘/g, "d")
+    .replace(/Ä/g, "D")
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
@@ -386,7 +386,7 @@ function isFirebaseConfigured() {
 
 function requireFirebase() {
   if (!isFirebaseConfigured()) {
-    throw new Error("Bạn chưa cấu hình Firebase. Hãy dán firebaseConfig vào file firebase-config.js.");
+    throw new Error("Báº¡n chÆ°a cáº¥u hÃ¬nh Firebase. HÃ£y dÃ¡n firebaseConfig vÃ o file firebase-config.js.");
   }
 
   if (!firebase.apps.length) {
@@ -570,7 +570,7 @@ async function deleteContentItem(id) {
 async function submitContentRating(id, ratings) {
   const contentRating = Math.max(1, Math.min(5, Number(ratings?.content || 0)));
   const layoutRating = Math.max(1, Math.min(5, Number(ratings?.layout || 0)));
-  if (!contentRating || !layoutRating) throw new Error("Vui lòng chọn đủ đánh giá nội dung và trình bày.");
+  if (!contentRating || !layoutRating) throw new Error("Vui lÃ²ng chá»n Ä‘á»§ Ä‘Ã¡nh giÃ¡ ná»™i dung vÃ  trÃ¬nh bÃ y.");
 
   const { db } = requireFirebase();
   await db.collection("contents").doc(id).set(
@@ -587,7 +587,7 @@ async function submitContentRating(id, ratings) {
 
 async function submitContentFeedback(item, message) {
   const feedbackMessage = String(message || "").trim();
-  if (!feedbackMessage) throw new Error("Vui lòng nhập ý kiến đóng góp.");
+  if (!feedbackMessage) throw new Error("Vui lÃ²ng nháº­p Ã½ kiáº¿n Ä‘Ã³ng gÃ³p.");
 
   const { db } = requireFirebase();
   await db.collection("feedbacks").add({
@@ -623,14 +623,14 @@ async function deleteContentFeedback(id) {
 
 async function submitPrayerRequest(payload) {
   const prayerTitle = String(payload?.prayerTitle || "").trim();
-  if (!prayerTitle) throw new Error("Vui lòng nhập tiêu đề.");
+  if (!prayerTitle) throw new Error("Vui lÃ²ng nháº­p tiÃªu Ä‘á».");
 
   const prayerText = String(payload?.prayerText || "").trim();
-  if (!prayerText) throw new Error("Vui lòng nhập lời cầu nguyện.");
+  if (!prayerText) throw new Error("Vui lÃ²ng nháº­p lá»i cáº§u nguyá»‡n.");
 
   const anonymous = Boolean(payload?.anonymous);
   const displayName = anonymous ? "Anonymous" : String(payload?.displayName || "").trim();
-  if (!anonymous && !displayName) throw new Error("Vui lòng nhập họ tên hoặc chọn ẩn danh.");
+  if (!anonymous && !displayName) throw new Error("Vui lÃ²ng nháº­p há» tÃªn hoáº·c chá»n áº©n danh.");
 
   const { db } = requireFirebase();
   await db.collection("prayerRequests").add({
@@ -672,10 +672,10 @@ async function savePrayerRequest(id, payload) {
 async function approvePrayerRequest(id, payload) {
   const { db } = requireFirebase();
   const displayName = payload.anonymous ? "Anonymous" : payload.displayName || "Anonymous";
-  const prayerTitle = String(payload.prayerTitle || "").trim() || `Lời cầu nguyện của ${displayName}`;
+  const prayerTitle = String(payload.prayerTitle || "").trim() || `Lá»i cáº§u nguyá»‡n cá»§a ${displayName}`;
 
   const prayerText = String(payload.prayerText || "").trim();
-  if (!prayerText) throw new Error("Lời cầu nguyện không được để trống.");
+  if (!prayerText) throw new Error("Lá»i cáº§u nguyá»‡n khÃ´ng Ä‘Æ°á»£c Ä‘á»ƒ trá»‘ng.");
 
   const contentId = `prayer-request-${id}`;
   const batch = db.batch();
@@ -747,6 +747,99 @@ async function resetContent() {
   await seedDefaultContentIfEmpty(true);
 }
 
+function analyticsDocId(value) {
+  return String(value || "page_unknown").replace(/[^a-zA-Z0-9_-]/g, "_").slice(0, 140) || "page_unknown";
+}
+
+function shouldCountPageView(key, cooldownMs = 5 * 60 * 1000) {
+  const storageKey = `kito-view:${key}`;
+  const now = Date.now();
+  try {
+    const last = Number(localStorage.getItem(storageKey) || sessionStorage.getItem(storageKey) || 0);
+    if (last && now - last < cooldownMs) return false;
+    localStorage.setItem(storageKey, String(now));
+    sessionStorage.setItem(storageKey, String(now));
+  } catch (error) {
+    return true;
+  }
+  return true;
+}
+
+async function trackPageView(options = {}) {
+  const key = analyticsDocId(options.key || window.location.pathname || "page_unknown");
+  if (!shouldCountPageView(key, options.cooldownMs)) return false;
+
+  try {
+    const { db } = requireFirebase();
+    const batch = db.batch();
+    const now = firebase.firestore.FieldValue.serverTimestamp();
+    const siteRef = db.collection("analytics").doc("site_total");
+    const pageRef = db.collection("analytics").doc(key);
+
+    batch.set(
+      siteRef,
+      {
+        key: "site_total",
+        label: "Toàn website",
+        kind: "site",
+        count: firebase.firestore.FieldValue.increment(1),
+        updatedAt: now,
+      },
+      { merge: true }
+    );
+
+    batch.set(
+      pageRef,
+      {
+        key,
+        label: options.label || document.title || key,
+        kind: options.kind || "page",
+        contentType: options.contentType || "",
+        contentId: options.contentId || "",
+        path: window.location.pathname + window.location.search,
+        count: firebase.firestore.FieldValue.increment(1),
+        updatedAt: now,
+      },
+      { merge: true }
+    );
+
+    await batch.commit();
+    return true;
+  } catch (error) {
+    console.warn("Không thể ghi lượt truy cập", error);
+    return false;
+  }
+}
+
+async function getVisitStats(limit = 200) {
+  const { db } = requireFirebase();
+  const snapshot = await db.collection("analytics").orderBy("count", "desc").limit(limit).get();
+  const stats = [];
+  snapshot.forEach((doc) => stats.push({ id: doc.id, ...doc.data() }));
+  return stats;
+}
+
+function clearLocalVisitCooldowns() {
+  try {
+    [localStorage, sessionStorage].forEach((storage) => {
+      for (let index = storage.length - 1; index >= 0; index -= 1) {
+        const key = storage.key(index);
+        if (key?.startsWith("kito-view:")) storage.removeItem(key);
+      }
+    });
+  } catch (error) {
+    console.warn("Không thể xóa bộ nhớ lượt truy cập cục bộ", error);
+  }
+}
+
+async function resetVisitStats() {
+  const { db } = requireFirebase();
+  const snapshot = await db.collection("analytics").get();
+  const batch = db.batch();
+  snapshot.forEach((doc) => batch.delete(doc.ref));
+  await batch.commit();
+  clearLocalVisitCooldowns();
+}
 function formatDateParts(value) {
   const rawValue = String(value || "").trim();
   if (!rawValue) return { day: "--", month: "THÁNG --", display: "" };
@@ -789,8 +882,67 @@ const navigationPageTitles = {
   catechism: "Giáo Lý",
 };
 
+function repairMojibakeText(value) {
+  const text = String(value || "");
+  if (!/[ÃÄÆ]|áº|á»|â|ð/.test(text)) return text;
+
+  const windows1252 = {
+    0x20ac: 0x80,
+    0x201a: 0x82,
+    0x0192: 0x83,
+    0x201e: 0x84,
+    0x2026: 0x85,
+    0x2020: 0x86,
+    0x2021: 0x87,
+    0x02c6: 0x88,
+    0x2030: 0x89,
+    0x0160: 0x8a,
+    0x2039: 0x8b,
+    0x0152: 0x8c,
+    0x017d: 0x8e,
+    0x2018: 0x91,
+    0x2019: 0x92,
+    0x201c: 0x93,
+    0x201d: 0x94,
+    0x2022: 0x95,
+    0x2013: 0x96,
+    0x2014: 0x97,
+    0x02dc: 0x98,
+    0x2122: 0x99,
+    0x0161: 0x9a,
+    0x203a: 0x9b,
+    0x0153: 0x9c,
+    0x017e: 0x9e,
+    0x0178: 0x9f,
+  };
+
+  try {
+    const bytes = [];
+    for (const char of text) {
+      const code = char.charCodeAt(0);
+      if (windows1252[code]) {
+        bytes.push(windows1252[code]);
+      } else if (code <= 0xff) {
+        bytes.push(code);
+      } else {
+        throw new Error("mixed text");
+      }
+    }
+    const fixed = new TextDecoder("utf-8", { fatal: false }).decode(new Uint8Array(bytes));
+    return fixed && !fixed.includes("�") ? fixed : text;
+  } catch (error) {
+    return text
+      .replace(/â†/g, "←")
+      .replace(/â€œ/g, "“")
+      .replace(/â€/g, "”")
+      .replace(/Quay láº¡i/g, "Quay lại")
+      .replace(/Trang chá»§/g, "Trang chủ")
+      .replace(/CÃ¡c thÃ¡nh tiÃªu biá»ƒu/g, "Các thánh tiêu biểu")
+      .replace(/Truyá»n GiÃ¡o KitÃ´/g, "Truyền Giáo Kitô");
+  }
+}
 function cleanNavigationTitle(title) {
-  const value = String(title || "")
+  const value = repairMojibakeText(title)
     .replace(/\s+-\s+Truyền Giáo Kitô\s*$/i, "")
     .trim();
 
@@ -877,3 +1029,11 @@ function rememberCurrentPage(title = document.title) {
     // Session history is a small enhancement; navigation still works without it.
   }
 }
+
+
+
+
+
+
+
+

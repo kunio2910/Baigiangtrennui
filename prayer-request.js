@@ -1,3 +1,5 @@
+﻿trackPageView({ key: "page_prayer_request", label: "Trang gửi lời cầu nguyện", kind: "page" });
+
 const prayerForm = document.querySelector("#prayerRequestForm");
 const prayerName = document.querySelector("#prayerName");
 const prayerTitle = document.querySelector("#prayerTitle");
@@ -6,7 +8,7 @@ const anonymousToggle = document.querySelector("#anonymousToggle");
 const prayerMessage = document.querySelector("#prayerRequestMessage");
 let isAnonymous = false;
 
-setupBackLink("index.html", "Trang chủ", { useStored: false, useHistory: false });
+setupBackLink("index.html", "Trang chá»§", { useStored: false, useHistory: false });
 
 anonymousToggle.addEventListener("click", () => {
   isAnonymous = !isAnonymous;
@@ -20,7 +22,7 @@ prayerForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   const submitButton = prayerForm.querySelector("button[type='submit']");
   submitButton.disabled = true;
-  prayerMessage.textContent = "Đang gửi lời cầu nguyện...";
+  prayerMessage.textContent = "Äang gá»­i lá»i cáº§u nguyá»‡n...";
 
   try {
     await submitPrayerRequest({
@@ -35,10 +37,12 @@ prayerForm.addEventListener("submit", async (event) => {
     anonymousToggle.setAttribute("aria-pressed", "false");
     prayerName.disabled = false;
     prayerMessage.textContent =
-      "Lời cầu nguyện của bạn sẽ được gửi đến ban quản trị để duyệt trước khi hiển thị trên website.";
+      "Lá»i cáº§u nguyá»‡n cá»§a báº¡n sáº½ Ä‘Æ°á»£c gá»­i Ä‘áº¿n ban quáº£n trá»‹ Ä‘á»ƒ duyá»‡t trÆ°á»›c khi hiá»ƒn thá»‹ trÃªn website.";
   } catch (error) {
     prayerMessage.textContent = error.message;
   } finally {
     submitButton.disabled = false;
   }
 });
+
+

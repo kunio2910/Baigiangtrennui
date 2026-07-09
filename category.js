@@ -1,4 +1,4 @@
-const categoryLabels = {
+﻿const categoryLabels = {
   saints: {
     eyebrow: "Các thánh",
     title: "Các thánh tiêu biểu",
@@ -174,6 +174,7 @@ function renderCategoryView() {
 }
 
 async function initCategory() {
+  trackPageView({ key: `category_${activeType}`, label: `Danh mục: ${categoryInfo.title}`, kind: "category", contentType: activeType });
   setupBackLink("index.html", "Trang chủ", { useStored: false, useHistory: false });
   document.querySelector("#categoryTitle").textContent = categoryInfo.title;
   document.querySelector("#categoryDescription").textContent = categoryInfo.description;
@@ -215,3 +216,6 @@ async function initCategory() {
 }
 
 initCategory();
+
+
+

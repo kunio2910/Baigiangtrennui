@@ -1316,6 +1316,105 @@ textarea {
   min-height: 104px;
 }
 
+.visit-panel {
+  margin-top: 26px;
+}
+
+.visit-heading {
+  align-items: center;
+}
+
+.visit-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.visit-total-card,
+.visit-item {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--white);
+  box-shadow: var(--shadow);
+}
+
+.visit-total-card {
+  display: grid;
+  gap: 6px;
+  padding: 14px;
+}
+
+.visit-total-card span,
+.visit-item span {
+  color: var(--gold-dark);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.visit-total-card strong {
+  color: var(--ink);
+  font-family: var(--font-heading);
+  font-size: 32px;
+  line-height: 1;
+}
+
+.visit-total-card small,
+.visit-item small,
+.visit-item p {
+  color: var(--muted);
+}
+
+.visit-tools {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(190px, 240px);
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.visit-tools label {
+  display: grid;
+  gap: 8px;
+}
+
+.visit-tools span {
+  color: var(--gold-dark);
+  font-weight: 800;
+}
+
+.visit-list {
+  display: grid;
+  gap: 10px;
+  max-height: 420px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.visit-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+  padding: 12px 14px;
+}
+
+.visit-item h3 {
+  margin: 4px 0;
+  color: var(--ink);
+  font-size: 15px;
+}
+
+.visit-item p {
+  margin: 0 0 4px;
+  overflow-wrap: anywhere;
+}
+
+.visit-item > strong {
+  color: var(--gold-dark);
+  font-family: var(--font-heading);
+  font-size: 26px;
+}
 .feedback-panel {
   margin-top: 26px;
 }
@@ -2013,6 +2112,15 @@ textarea:disabled {
     min-width: 0;
     height: 40px;
   }
+  .visit-summary,
+  .visit-tools,
+  .visit-item {
+    grid-template-columns: 1fr;
+  }
+
+  .visit-item > strong {
+    justify-self: start;
+  }
   .home-dashboard {
     min-height: 0;
     grid-template-columns: minmax(0, 1fr);
@@ -2179,5 +2287,8 @@ textarea:disabled {
     grid-template-columns: 1fr;
   }
 }
+
+
+
 
 

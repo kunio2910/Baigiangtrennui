@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quản lý nội dung - Truyền Giáo Kitô</title>
-    <link rel="stylesheet" href="styles.css?v=20260709-mobile-related" />
+    <link rel="stylesheet" href="styles.css?v=20260709-visit-tools" />
   </head>
   <body class="admin-page">
     <header class="site-header admin-header">
@@ -49,6 +49,31 @@
         </div>
       </section>
 
+      <section class="visit-panel" id="visitPanel">
+        <div class="section-heading visit-heading">
+          <h2>Thống kê truy cập</h2>
+          <button class="danger-button" type="button" id="resetVisitStats">Xóa lượt truy cập</button>
+        </div>
+        <div class="visit-summary" id="visitSummary"></div>
+        <div class="visit-tools">
+          <label>
+            <span>Tìm kiếm</span>
+            <input id="visitSearch" type="search" placeholder="Tìm theo tên trang, bài viết, đường dẫn..." />
+          </label>
+          <label>
+            <span>Sắp xếp</span>
+            <select id="visitSort">
+              <option value="views-desc">Lượt truy cập cao nhất</option>
+              <option value="views-asc">Lượt truy cập thấp nhất</option>
+              <option value="time-desc">Cập nhật mới nhất</option>
+              <option value="time-asc">Cập nhật cũ nhất</option>
+              <option value="title-asc">Tên A-Z</option>
+              <option value="title-desc">Tên Z-A</option>
+            </select>
+          </label>
+        </div>
+        <div class="visit-list" id="visitStatsList"></div>
+      </section>
       <section class="manager-layout" id="contentManager">
         <form class="editor-panel" id="contentForm">
           <input type="hidden" id="itemId" />
@@ -170,10 +195,18 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-storage-compat.js"></script>
     <script src="firebase-config.js"></script>
-    <script src="data.js?v=20260709-catechism"></script>
+    <script src="data.js?v=20260709-fontfix4"></script>
     <script src="auth.js"></script>
-    <script src="admin.js?v=20260709-catechism"></script>
+    <script src="admin.js?v=20260709-visit-tools"></script>
   </body>
 </html>
+
+
+
+
+
+
+
+
 
 
