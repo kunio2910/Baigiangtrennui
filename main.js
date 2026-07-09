@@ -16,6 +16,12 @@ function summarizeText(text, maxLength = 115) {
   return `${value.slice(0, maxLength).trim()}...`;
 }
 
+function htmlToText(value) {
+  const template = document.createElement("template");
+  template.innerHTML = String(value || "");
+  return (template.content.textContent || "").replace(/\s+/g, " ").trim();
+}
+
 function cardTemplate(item, type = "saints") {
   const link = detailLink(type, item.id);
   return `
@@ -78,12 +84,12 @@ function eventTemplate(item) {
 
 function prayerTemplate(item) {
   const link = detailLink("prayers", item.id);
+  const prayerExcerpt = htmlToText(item.bodyHtml) || item.description || "";
   return `
     <article class="prayer-card clickable-card" style="--prayer-image: url('${imageOrFallback(item)}')" onclick="window.location.href='${link}'">
       <div>
-        <p>${item.meta || "Cầu nguyện"}</p>
         <h3>${item.title}</h3>
-        <blockquote>“${summarizeText(item.description, 125)}”</blockquote>
+        <blockquote>“${summarizeText(prayerExcerpt, 125)}”</blockquote>
       </div>
     </article>
   `;
