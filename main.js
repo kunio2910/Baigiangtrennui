@@ -187,8 +187,21 @@ function renderHome() {
   document.querySelector("#eventsList").innerHTML = activeItems(content.events).slice(0, 3).map(eventTemplate).join("");
   const prayerItems = dailyRandomItems(content.prayers, "prayers", 6);
   const prayerTrackItems = prayerItems.length > 1 ? [...prayerItems, ...prayerItems] : prayerItems;
-  document.querySelector("#prayersList").innerHTML = prayerTrackItems.map(prayerTemplate).join("");
+  const prayerList = document.querySelector("#prayersList");
+  prayerList.classList.toggle("is-static", prayerItems.length < 2);
+  prayerList.innerHTML = prayerTrackItems.map(prayerTemplate).join("");
+  restartPrayerMarquee();
   renderDaily();
+}
+
+function restartPrayerMarquee() {
+  const prayerList = document.querySelector("#prayersList");
+  if (!prayerList || prayerList.classList.contains("is-static")) return;
+  prayerList.classList.remove("is-ready");
+  window.requestAnimationFrame(() => {
+    void prayerList.offsetWidth;
+    prayerList.classList.add("is-ready");
+  });
 }
 
 function startDailyAutoSlide() {
@@ -292,6 +305,14 @@ document.querySelector("#nextDaily").addEventListener("click", () => {
   dailyIndex = (dailyIndex + 1) % dailyItems.length;
   renderDaily();
   startDailyAutoSlide();
+});
+
+window.addEventListener("resize", () => {
+  restartPrayerMarquee();
+});
+
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) restartPrayerMarquee();
 });
 
 async function initHome() {

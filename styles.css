@@ -467,21 +467,56 @@ main {
 
 .prayer-grid {
   display: flex;
-  width: max-content;
-  min-width: 100%;
-  animation: prayer-marquee 72s linear infinite;
+  width: fit-content;
+  min-width: max-content;
+  gap: 16px;
+  animation: none;
   backface-visibility: hidden;
-  contain: layout paint style;
   transform: translate3d(0, 0, 0);
+  transform-style: preserve-3d;
   will-change: transform;
+}
+
+.prayer-grid.is-ready {
+  animation: prayer-marquee 78s linear infinite;
+}
+
+.prayer-marquee {
+  width: 100%;
+  overflow: hidden;
+  contain: layout paint;
+  transform: translateZ(0);
 }
 
 #prayers {
   overflow: hidden;
+  content-visibility: visible;
+  contain-intrinsic-size: auto;
+}
+
+#prayers .section-heading {
+  position: relative;
+  z-index: 1;
 }
 
 #prayers:hover .prayer-grid {
   animation-play-state: running;
+}
+
+.prayer-grid.is-static {
+  width: 100%;
+  min-width: 0;
+  animation: none;
+}
+
+.prayer-grid.is-static .prayer-card {
+  width: 100%;
+}
+
+@supports not (width: fit-content) {
+  .prayer-grid {
+    width: max-content;
+  }
 }
 
 .prayer-grid .prayer-card {
@@ -2147,6 +2182,14 @@ textarea:disabled {
   .prayer-grid .prayer-card {
     width: min(225px, 64vw);
     min-width: min(225px, 64vw);
+  }
+
+  .prayer-grid {
+    animation-duration: 86s;
+  }
+
+  .prayer-grid.is-ready {
+    animation-duration: 86s;
   }
 
   .hero {
