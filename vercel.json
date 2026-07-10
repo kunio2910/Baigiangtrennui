@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/sitemap.xml",
+      "destination": "/api/sitemap"
+    },
+    {
       "source": "/cac-thanh/:slug",
       "destination": "/detail.html?type=saints&slug=:slug"
     },
