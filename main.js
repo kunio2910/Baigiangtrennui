@@ -286,10 +286,24 @@ function setupSearch() {
 }
 
 function setupComingSoonLinks() {
+  let notice = document.querySelector("#comingSoonNotice");
+  if (!notice) {
+    notice = document.createElement("div");
+    notice.id = "comingSoonNotice";
+    notice.className = "coming-soon-notice";
+    notice.setAttribute("role", "status");
+    notice.setAttribute("aria-live", "polite");
+    document.body.appendChild(notice);
+  }
+  let noticeTimer = null;
+
   document.querySelectorAll("[data-coming-soon]").forEach((link) => {
     link.addEventListener("click", (event) => {
       event.preventDefault();
-      alert("Ná»™i dung nÃ y Ä‘ang hoÃ n thÃ nh, vui lÃ²ng Ä‘á»£i !");
+      notice.textContent = "Nội dung này đang hoàn thành, vui lòng đợi !";
+      notice.classList.add("show");
+      clearTimeout(noticeTimer);
+      noticeTimer = setTimeout(() => notice.classList.remove("show"), 2600);
     });
   });
 }

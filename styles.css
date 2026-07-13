@@ -478,7 +478,7 @@ main {
 }
 
 .prayer-grid.is-ready {
-  animation: prayer-marquee 78s linear infinite;
+  animation: prayer-marquee 65s linear infinite;
 }
 
 .prayer-marquee {
@@ -501,6 +501,34 @@ main {
 
 #prayers:hover .prayer-grid {
   animation-play-state: running;
+}
+
+.coming-soon-notice {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  z-index: 1000;
+  max-width: min(420px, calc(100vw - 32px));
+  padding: 12px 18px;
+  border: 1px solid #e7c88e;
+  border-radius: 8px;
+  background: #fffaf2;
+  color: var(--brown);
+  box-shadow: 0 16px 38px rgba(66, 43, 28, 0.18);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.45;
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate3d(-50%, 12px, 0);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.coming-soon-notice.show {
+  opacity: 1;
+  transform: translate3d(-50%, 0, 0);
 }
 
 .prayer-grid.is-static {
@@ -2185,11 +2213,11 @@ textarea:disabled {
   }
 
   .prayer-grid {
-    animation-duration: 86s;
+    animation-duration: 72s;
   }
 
   .prayer-grid.is-ready {
-    animation-duration: 86s;
+    animation-duration: 72s;
   }
 
   .hero {
