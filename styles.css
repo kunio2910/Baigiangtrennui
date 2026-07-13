@@ -5,6 +5,7 @@
   --muted: #746456;
   --gold: #bd7b1b;
   --gold-dark: #9b6212;
+  --dark-bronze-bg: rgba(184, 121, 40, 0.1);
   --line: #efe4d5;
   --paper: #fbf7ef;
   --white: #ffffff;
@@ -16,6 +17,7 @@
   --muted: #cbbda9;
   --gold: #d89a35;
   --gold-dark: #f0b85b;
+  --dark-bronze-bg: rgba(184, 121, 40, 0.1);
   --line: #4a3828;
   --paper: #201811;
   --white: #2a2119;
@@ -46,7 +48,7 @@ body {
 }
 
 :root[data-theme="dark"] body {
-  background: #17110d;
+  background: var(--dark-bronze-bg);
 }
 
 img {
@@ -363,6 +365,10 @@ main {
   background: var(--gold);
 }
 
+#dailyDots {
+  display: none;
+}
+
 .quick-links {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -493,6 +499,7 @@ main {
 .church-grid,
 .article-grid,
 .event-list,
+
 .prayer-grid {
   display: grid;
   gap: 16px;
@@ -514,6 +521,18 @@ main {
 .event-list {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
+/* home-article-event-card-spacing */
+#articles .article-grid,
+#events .event-list {
+  padding: 6px 8px 8px;
+  gap: 16px;
+}
+
+:root[data-theme="dark"] #articles .article-grid,
+:root[data-theme="dark"] #events .event-list {
+  padding: 8px 10px 10px;
+}
+
 
 .prayer-grid {
   display: flex;
@@ -551,7 +570,8 @@ main {
   z-index: 1;
 }
 
-#prayers:hover .prayer-grid {
+#prayers:hover 
+.prayer-grid {
   animation-play-state: running;
 }
 
@@ -583,6 +603,75 @@ main {
   transform: translate3d(-50%, 0, 0);
 }
 
+
+.language-toggle {
+  position: fixed;
+  right: 74px;
+  bottom: 28px;
+  z-index: 1001;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  min-height: 34px;
+  padding: 0 11px;
+  border: 1px solid #e7c88e;
+  border-radius: 999px;
+  color: var(--gold-dark);
+  background: var(--white);
+  box-shadow: 0 14px 34px rgba(66, 43, 28, 0.18);
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.language-toggle button {
+  min-width: 20px;
+  padding: 0;
+  border: 0;
+  color: inherit;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  line-height: 1;
+  opacity: 0.62;
+}
+
+.language-toggle button.active {
+  color: var(--gold-dark);
+  opacity: 1;
+}
+
+.language-toggle span {
+  opacity: 0.45;
+}
+
+.google-translate-element,
+.goog-te-banner-frame,
+.goog-te-balloon-frame,
+#goog-gt-tt {
+  display: none !important;
+}
+
+body {
+  top: 0 !important;
+}
+
+
+:root[data-theme="dark"] .language-toggle {
+  border-color: #6f5434;
+  color: #ffd28b;
+  background: #34271d;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.42);
+}
+@media (max-width: 680px) {
+  .language-toggle {
+    right: 68px;
+    bottom: 28px;
+  }
+}
+
 .theme-toggle {
   position: fixed;
   right: 22px;
@@ -606,7 +695,6 @@ main {
 .theme-toggle:hover {
   transform: translateY(-2px);
 }
-
 :root[data-theme="dark"] .theme-toggle {
   border-color: #6f5434;
   color: #ffd28b;
@@ -623,7 +711,78 @@ main {
 :root[data-theme="dark"] .detail-shell,
 :root[data-theme="dark"] .auth-page,
 :root[data-theme="dark"] .admin-page {
-  background: #17110d;
+  background: var(--dark-bronze-bg);
+}
+
+:root[data-theme="dark"] .left-column,
+:root[data-theme="dark"] .right-column,
+:root[data-theme="dark"] main {
+  background: var(--dark-bronze-bg);
+}
+
+
+
+
+/* dark-mode-remove-column-divider */
+:root[data-theme="dark"] .left-column,
+:root[data-theme="dark"] .right-column {
+  border-left: 0;
+  border-right: 0;
+}
+
+@media (min-width: 1181px) {
+  :root[data-theme="dark"] body.home-page .right-column,
+  :root[data-theme="dark"] body:has(.home-dashboard) .right-column {
+    border-left: 0;
+  }
+}
+/* dark-mode-panel-spacing */
+:root[data-theme="dark"] .left-column {
+  display: grid;
+  align-content: start;
+  gap: 5px;
+}
+
+:root[data-theme="dark"] .quick-links {
+  gap: 2px;
+}
+
+:root[data-theme="dark"] .quick-links a {
+  border-radius: 6px;
+}
+/* dark-mode-rounded-surfaces */
+:root[data-theme="dark"] .site-header,
+:root[data-theme="dark"] .hero,
+:root[data-theme="dark"] .quick-links,
+:root[data-theme="dark"] .section-block,
+:root[data-theme="dark"] .daily-panel,
+:root[data-theme="dark"] .detail-article,
+:root[data-theme="dark"] .category-card,
+:root[data-theme="dark"] .auth-card,
+:root[data-theme="dark"] .admin-card {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+:root[data-theme="dark"] .home-dashboard {
+  padding: 7px;
+  gap: 7px;
+}
+
+@media (min-width: 1181px) {
+  :root[data-theme="dark"] body.home-page .site-header,
+  :root[data-theme="dark"] body:has(.home-dashboard) .site-header {
+    width: calc(52.4% - 14px);
+    margin: 7px 0 0 7px;
+  }
+
+  :root[data-theme="dark"] body.home-page .left-column,
+  :root[data-theme="dark"] body:has(.home-dashboard) .left-column,
+  :root[data-theme="dark"] body.home-page .right-column,
+  :root[data-theme="dark"] body:has(.home-dashboard) .right-column {
+    border-radius: 8px;
+    overflow: hidden;
+  }
 }
 
 :root[data-theme="dark"] .quick-links,
@@ -678,6 +837,24 @@ main {
   opacity: 0.82;
 }
 
+
+/* dark-detail-category-background */
+:root[data-theme="dark"] body:has(.detail-shell),
+:root[data-theme="dark"] body:has(.category-shell) {
+  background: #130d09;
+}
+
+:root[data-theme="dark"] body:has(.detail-shell) main,
+:root[data-theme="dark"] body:has(.category-shell) main,
+:root[data-theme="dark"] .detail-shell,
+:root[data-theme="dark"] .category-shell {
+  background: #130d09;
+}
+
+:root[data-theme="dark"] .detail-article,
+:root[data-theme="dark"] .category-card {
+  background-color: #2a2119;
+}
 :root[data-theme="dark"] .detail-heading h1,
 :root[data-theme="dark"] .detail-empty h1 {
   color: #fff7e8;
@@ -753,7 +930,8 @@ main {
 }
 
 @supports not (width: fit-content) {
-  .prayer-grid {
+  
+.prayer-grid {
     width: max-content;
   }
 }
@@ -902,14 +1080,14 @@ main {
   font-family: Cambria, "Palatino Linotype", "Times New Roman", serif;
   font-style: italic;
   font-weight: 500;
-  font-size: 11px;
+  font-size: 13.2px;
   line-height: 1.6;
   white-space: pre-line;
 }
 
 .daily-card small {
   font-family: Cambria, "Palatino Linotype", "Times New Roman", serif;
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .prayer-card {
@@ -1289,6 +1467,37 @@ textarea {
 
 .admin-tab-panel[hidden] {
   display: none !important;
+}
+
+
+/* dark-admin-contrast-tuning */
+:root[data-theme="dark"] .admin-intro .eyebrow {
+  color: #f1b64b;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.52);
+}
+
+:root[data-theme="dark"] .admin-intro h1 {
+  color: #fff7e8;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.5);
+}
+
+:root[data-theme="dark"] .admin-intro p {
+  color: #f0d4aa;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.42);
+}
+
+:root[data-theme="dark"] .row-actions button:first-child,
+:root[data-theme="dark"] .feedback-actions button[data-action="edit-prayer"] {
+  border-color: rgba(125, 211, 252, 0.58);
+  color: #8edcff;
+  background: rgba(26, 54, 72, 0.74);
+}
+
+:root[data-theme="dark"] .row-actions button:first-child:hover,
+:root[data-theme="dark"] .feedback-actions button[data-action="edit-prayer"]:hover {
+  border-color: rgba(167, 225, 255, 0.86);
+  color: #e8f8ff;
+  background: rgba(38, 81, 106, 0.9);
 }
 
 :root[data-theme="dark"] .admin-tabs {
@@ -2525,7 +2734,8 @@ textarea:disabled {
     min-width: min(225px, 64vw);
   }
 
-  .prayer-grid {
+  
+.prayer-grid {
     animation-duration: 55s;
   }
 
@@ -2671,6 +2881,27 @@ textarea:disabled {
     grid-template-columns: 1fr;
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -327,14 +327,17 @@ async function initDetail() {
     content = await getContent();
     renderDetail();
     renderRelated();
+    document.dispatchEvent(new Event("kito:content-rendered"));
   } catch (error) {
     content = structuredClone(defaultContent);
     renderDetail();
     renderRelated();
+    document.dispatchEvent(new Event("kito:content-rendered"));
   }
 }
 
 initDetail();
+
 
 
 

@@ -623,3 +623,376 @@ Cac truong trong form tao/sua noi dung:
 - index.html
 
 
+### **14.8. Quy dinh cap nhat ghi chu sau moi lan chinh sua**
+
+**Ngay cap nhat:** 13/07/2026
+
+**Quy trinh:**
+- Sau moi lan chinh sua giao dien, tinh nang hoac quy trinh van hanh, can bo sung mo ta vao file GHI_CHU_NGHIEP_VU_DU_AN.txt.
+- Noi dung ghi chu can neu ro muc dich thay doi, hanh vi moi cua website, cac man hinh/luong nghiep vu bi anh huong va file lien quan.
+- Neu co doi version CSS/JS de tranh cache trinh duyet, can ghi ro version moi va ly do doi.
+- Neu thay doi lien quan den Firebase, Google Analytics, quan ly noi dung, cau nguyen hoac thong ke truy cap, can ghi ro tac dong den du lieu va cach kiem tra.
+- Muc ghi chu moi nen dat cuoi file, dung dinh dang tieu de, ngay cap nhat, chuc nang/quy trinh va file lien quan de de theo doi lich su du an.
+
+**File lien quan:**
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+### **14.9. Cai Python va chay localhost de test website**
+
+**Ngay cap nhat:** 13/07/2026
+
+**Quy trinh:**
+- Cai Python 3.12 tren may de co the chay server local phuc vu source tinh cua website.
+- Python duoc tim thay tai duong dan C:\Users\PC\AppData\Local\Programs\Python\Python312\python.exe.
+- Chay website local bang lenh Python HTTP server tai thu muc C:\Users\PC\Documents\Kito.
+- Dia chi test local: http://127.0.0.1:5500/ hoac http://localhost:5500/.
+- Server hien dang lang nghe port 5500 va trang chu tra ve HTTP 200.
+
+**File lien quan:**
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+### **14.10. Them local server ho tro route dep khi test localhost**
+
+**Ngay cap nhat:** 13/07/2026
+
+**Quy trinh:**
+- Them file local-server.py de test website tren localhost voi cac duong dan dep giong moi truong production.
+- Route danh muc nhu /cac-thanh, /nha-tho, /bai-viet, /su-kien, /cau-nguyen va /giao-ly se tra ve category.html.
+- Route chi tiet nhu /cac-thanh/thanh-maria--saint-2 se tra ve detail.html de JavaScript doc slug va hien thi noi dung tuong ung.
+- Route /gui-loi-cau-nguyen se tra ve prayer-request.html.
+- Khi test local nen chay C:\Users\PC\AppData\Local\Programs\Python\Python312\python.exe local-server.py thay vi python -m http.server de tranh loi 404 voi route dep.
+- Da kiem tra http://127.0.0.1:5500/cac-thanh/thanh-maria--saint-2 va /cac-thanh deu tra ve HTTP 200.
+
+**File lien quan:**
+- local-server.py
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+### **14.11. Doi nen trang o giao dien toi sang mau vang dong**
+
+**Ngay cap nhat:** 13/07/2026
+
+**Chuc nang:**
+- Them bien mau --dark-bronze-bg voi gia tri #b87928 de lam mau nen chinh trong giao dien toi.
+- Doi nen body, home-dashboard, left-column, right-column, main va cac shell trang sang mau vang dong giong tong mau cua chu Doc them.
+- Giu nen card/khung noi dung o mau nau toi de dam bao chu va hinh anh van co do tuong phan tot.
+- Doi version CSS sang 20260713-dark-bronze-bg de trinh duyet tai lai giao dien moi.
+- Da kiem tra localhost trang chu tra ve HTTP 200 va CSS can bang dau ngoac.
+
+**File lien quan:**
+- styles.css
+- index.html
+- detail.html
+- category.html
+- prayer-request.html
+- accounts.html
+- admin.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+### **14.12. Giam opacity nen vang dong o giao dien toi xuong 20%**
+
+**Ngay cap nhat:** 13/07/2026
+
+**Chuc nang:**
+- Doi bien mau --dark-bronze-bg tu #b87928 sang rgba(184, 121, 40, 0.2) de nen vang dong trong giao dien toi nhe hon.
+- Giu cac vi tri dang dung --dark-bronze-bg nhu body, home-dashboard, left-column, right-column, main va cac shell trang.
+- Doi version CSS sang 20260713-dark-bronze-bg-20 de trinh duyet tai lai giao dien moi.
+- Da kiem tra localhost trang chu tra ve HTTP 200 va CSS can bang dau ngoac.
+
+**File lien quan:**
+- styles.css
+- index.html
+- detail.html
+- category.html
+- prayer-request.html
+- accounts.html
+- admin.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+### **14.13. Giam opacity nen vang dong xuong 10% va an cham Loi Chua Moi Ngay**
+
+**Ngay cap nhat:** 13/07/2026
+
+**Chuc nang:**
+- Doi bien mau --dark-bronze-bg tu rgba(184, 121, 40, 0.2) sang rgba(184, 121, 40, 0.1) de nen vang dong trong giao dien toi nhe hon nua.
+- An cum dau cham tron cua muc Loi Chua Moi Ngay bang rule #dailyDots { display: none; }.
+- Giu logic tu chuyen Loi Chua Moi Ngay trong JavaScript, chi bo phan hien thi cham trang thai tren giao dien.
+- Doi version CSS sang 20260713-dark-bronze-bg-10-no-daily-dots de trinh duyet tai lai giao dien moi.
+- Da kiem tra CSS can bang dau ngoac.
+
+**File lien quan:**
+- styles.css
+- index.html
+- detail.html
+- category.html
+- prayer-request.html
+- accounts.html
+- admin.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+### **14.14. Them bo goc cho cac khoi lon trong giao dien toi**
+
+**Ngay cap nhat:** 13/07/2026
+
+**Chuc nang:**
+- Them bo goc 8px cho cac khoi lon khi website o giao dien toi, gom header, hero/banner, quick-links, section-block, daily-panel va mot so panel/card lon.
+- Them overflow hidden de hinh anh va nen ben trong di theo bo goc, tranh bi tran ra ngoai.
+- Them padding/gap nhe cho home-dashboard trong giao dien toi de cac khoi bo goc co khoang tho va de nhin hon.
+- Dieu chinh header trang chu desktop o che do toi de giu bo goc va khong tran qua cot trai.
+- Doi version CSS sang 20260713-dark-rounded-surfaces de trinh duyet tai lai giao dien moi.
+- Da kiem tra localhost trang chu tra ve HTTP 200 va CSS can bang dau ngoac.
+
+**File lien quan:**
+- styles.css
+- index.html
+- detail.html
+- category.html
+- prayer-request.html
+- accounts.html
+- admin.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+### **14.15. Them khoang cach 2px giua cac panel danh muc o giao dien toi**
+
+**Ngay cap nhat:** 13/07/2026
+
+**Chuc nang:**
+- Them khoang cach 2px giua cac khoi/panel trong cot trai khi website o giao dien toi de cac panel khong bi dinh vao nhau.
+- Them gap 2px cho quick-links de cac panel danh muc Cau nguyen, Loi Chua, Cong doan va Bac ai tach nhau ro hon.
+- Them bo goc 6px cho tung item quick-links trong giao dien toi de phu hop voi khoang cach moi.
+- Doi version CSS sang 20260713-dark-panel-gap-2 de trinh duyet tai lai giao dien moi.
+- Da kiem tra localhost trang chu tra ve HTTP 200 va CSS can bang dau ngoac.
+
+**File lien quan:**
+- styles.css
+- index.html
+- detail.html
+- category.html
+- prayer-request.html
+- accounts.html
+- admin.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+### **14.16. Dieu chinh khoang cach panel lon va panel danh muc o giao dien toi**
+
+**Ngay cap nhat:** 13/07/2026
+
+**Chuc nang:**
+- Doi khoang cach giua cac panel lon trong cot trai cua trang chu o giao dien toi tu 2px len 5px.
+- Giu khoang cach giua cac panel danh muc Cau nguyen, Loi Chua, Cong doan va Bac ai la 2px.
+- Doi version CSS sang 20260713-dark-left-gap-5-menu-gap-2 de trinh duyet tai lai giao dien moi.
+- Da kiem tra localhost trang chu tra ve HTTP 200 va CSS can bang dau ngoac.
+
+**File lien quan:**
+- styles.css
+- index.html
+- detail.html
+- category.html
+- prayer-request.html
+- accounts.html
+- admin.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+### **14.17. Doi nen man chi tiet va xem tat ca trong giao dien toi**
+
+**Ngay cap nhat:** 13/07/2026
+
+**Chuc nang:**
+- Doi rieng nen cua man noi dung chi tiet va man xem tat ca trong giao dien toi sang mau nau den #130d09 giong mau trong hinh mau.
+- Ap dung cho body co detail-shell/category-shell, main, detail-shell va category-shell de khong con dung nen vang dong nhe cua trang chu.
+- Giu khung noi dung chi tiet va card danh muc o mau nau toi #2a2119 de noi dung van co do tuong phan tot.
+- Doi version CSS sang 20260713-detail-category-dark-bg de trinh duyet tai lai giao dien moi.
+- Da kiem tra localhost man chi tiet va man xem tat ca deu tra ve HTTP 200, CSS can bang dau ngoac.
+
+**File lien quan:**
+- styles.css
+- index.html
+- detail.html
+- category.html
+- prayer-request.html
+- accounts.html
+- admin.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+### **14.18. Bo duong ke giua hai cot trong giao dien toi**
+
+**Ngay cap nhat:** 13/07/2026
+
+**Chuc nang:**
+- An duong ke doc giua cot trai va cot phai tren trang chu khi website o giao dien toi.
+- Ghi de border-left va border-right cua left-column/right-column ve 0 trong dark mode.
+- Giu khoang cach giua hai cot bang gap/padding hien co de giao dien van tach bach nhung mem hon.
+- Doi version CSS sang 20260713-dark-no-column-divider de trinh duyet tai lai giao dien moi.
+- Da kiem tra localhost trang chu tra ve HTTP 200 va CSS can bang dau ngoac.
+
+**File lien quan:**
+- styles.css
+- index.html
+- detail.html
+- category.html
+- prayer-request.html
+- accounts.html
+- admin.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+### **14.19. Them nut VI/EN dung Google Translate**
+
+**Ngay cap nhat:** 13/07/2026
+
+**Chuc nang:**
+- Them nut chon ngon ngu VI/EN co dinh o goc duoi ben phai, nam phia tren nut doi giao dien.
+- Mac dinh ngon ngu la VI; khi bam EN website se nap Google Translate va dich tu tieng Viet sang tieng Anh.
+- Luu ngon ngu da chon vao localStorage voi khoa kitoLanguage va dong bo cookie googtrans de Google Translate ap dung lai sau khi tai trang.
+- An widget/mac dinh cua Google Translate de giao dien chi hien nut VI/EN tuy bien.
+- Them style rieng cho nut VI/EN o giao dien sang/toi va tren man hinh nho.
+- Doi version CSS va data.js sang 20260713-language-toggle de trinh duyet tai lai tinh nang moi.
+- Da kiem tra localhost trang chu tra ve HTTP 200 va CSS can bang dau ngoac. Chua the kiem tra truc tiep chat luong dich trong sandbox vi Google Translate can tai script ngoai.
+
+**File lien quan:**
+- data.js
+- styles.css
+- index.html
+- detail.html
+- category.html
+- prayer-request.html
+- accounts.html
+- admin.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+### **14.20. Chuyen nut VI/EN len goc tren ben phai header**
+
+**Ngay cap nhat:** 13/07/2026
+
+**Chuc nang:**
+- Rollback cach hien thi nut VI/EN dang co dinh o goc duoi ben phai.
+- Chuyen nut VI/EN vao khu vuc header-actions de nam o goc tren ben phai cung voi cac nut tren thanh dieu huong.
+- Giu nguyen logic Google Translate, mac dinh VI va co the chuyen sang EN.
+- Doi CSS cua nut VI/EN tu position fixed sang nut inline trong header de khong che noi dung va khong cham nut doi giao dien.
+- Doi version CSS va data.js sang 20260713-language-toggle-header de trinh duyet tai lai giao dien moi.
+- Da kiem tra localhost trang chu tra ve HTTP 200, CSS can bang dau ngoac va data.js can bang dau ngoac tron co ban.
+
+**File lien quan:**
+- data.js
+- styles.css
+- index.html
+- detail.html
+- category.html
+- prayer-request.html
+- accounts.html
+- admin.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+### **14.21. Can nut VI/EN sat ben trai nut sang toi**
+
+**Ngay cap nhat:** 13/07/2026
+
+**Chuc nang:**
+- Chuyen nut VI/EN ve dang nut noi co dinh o goc duoi ben phai, nam sat phia ben trai nut doi giao dien sang/toi.
+- Can VI/EN va nut sang/toi thang hang theo truc ngang: VI/EN bottom 28px, nut sang/toi giu vi tri goc phai.
+- Doi data.js de nut VI/EN duoc append vao body thay vi chen vao header-actions.
+- Dieu chinh style dark mode cua VI/EN de dong bo mau voi nut sang/toi.
+- Doi version CSS va data.js sang 20260713-language-theme-inline de trinh duyet tai lai giao dien moi.
+- Da kiem tra localhost trang chu tra ve HTTP 200, CSS can bang dau ngoac va data.js can bang dau ngoac tron co ban.
+
+**File lien quan:**
+- data.js
+- styles.css
+- index.html
+- detail.html
+- category.html
+- prayer-request.html
+- accounts.html
+- admin.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+### **14.22. Khoi phuc nut sang toi va can voi nut VI/EN**
+
+**Ngay cap nhat:** 13/07/2026
+
+**Chuc nang:**
+- Khoi phuc day du CSS base cua nut doi giao dien sang/toi sau khi bi mat position fixed va kich thuoc tron.
+- Nut sang/toi duoc dat co dinh o goc duoi ben phai voi right 22px, bottom 22px, width/height 46px va border-radius 50%.
+- Nut VI/EN giu vi tri co dinh sat ben trai nut sang/toi voi right 74px, bottom 28px de hai nut thang hang theo tam.
+- Doi version CSS sang 20260713-theme-toggle-restored de trinh duyet tai lai giao dien moi.
+- Da kiem tra localhost trang chu tra ve HTTP 200, CSS can bang dau ngoac va data.js can bang dau ngoac tron co ban.
+
+**File lien quan:**
+- styles.css
+- index.html
+- detail.html
+- category.html
+- prayer-request.html
+- accounts.html
+- admin.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+### **14.23. Giu tieng Anh khi quay lai bang Back va them khoang cach card trang chu**
+
+**Ngay cap nhat:** 13/07/2026
+
+**Chuc nang:**
+- Sua logic Google Translate de khi nguoi dung dang chon EN, vao man chi tiet/xem tat ca roi bam Back thi trang tu ap lai tieng Anh thay vi quay ve tieng Viet.
+- Them ham reapplyStoredGoogleLanguage de set lai cookie googtrans, nap Google Translate va retry combo ngon ngu sau khi widget san sang.
+- Goi lai reapplyStoredGoogleLanguage khi Google Translate khoi tao xong, khi trang setup nut ngon ngu va khi trinh duyet phat su kien pageshow sau Back/Forward cache.
+- Them padding rieng cho #articles .article-grid va #events .event-list de cac card trong Bai Viet & Suy Niem va Su Kien Sap Toi khong cham vao cac duong ke ngang/doc.
+- Doi version CSS va data.js sang 20260713-translate-back-card-spacing de trinh duyet tai lai code moi.
+- Da kiem tra localhost trang chu va trang chi tiet deu tra ve HTTP 200, CSS can bang dau ngoac va data.js can bang dau ngoac tron co ban.
+
+**File lien quan:**
+- data.js
+- styles.css
+- index.html
+- detail.html
+- category.html
+- prayer-request.html
+- accounts.html
+- admin.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+### **14.24. Sua loi Back mat tieng Anh tren trang chi tiet va xem tat ca**
+
+**Ngay cap nhat:** 13/07/2026
+
+**Chuc nang:**
+- Sua co che Google Translate de khi nguoi dung chon EN, bam vao man chi tiet/xem tat ca roi bam Back thi trang se tu ap lai tieng Anh.
+- Them initializeGoogleTranslateWidget de khoi tao lai widget neu script Google Translate da tai nhung combo ngon ngu chua san sang.
+- Cho reapplyStoredGoogleLanguage co the ep dispatch su kien change khi noi dung moi duoc render, ke ca khi combo dang o EN.
+- Them su kien kito:content-rendered sau khi render trang chi tiet va danh sach xem tat ca de Google Translate dich lai noi dung JavaScript moi.
+- Doi version data.js, detail.js va category.js sang 20260713-translate-back-fix2 de trinh duyet tai lai code moi.
+- Da kiem tra localhost trang chi tiet /cac-thanh/thanh-maria--saint-2 va trang xem tat ca /cac-thanh deu tra ve HTTP 200.
+
+**File lien quan:**
+- data.js
+- detail.js
+- category.js
+- index.html
+- detail.html
+- category.html
+- prayer-request.html
+- accounts.html
+- admin.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Cap nhat bo sung 14.24:**
+- Them cung su kien kito:content-rendered cho main.js sau khi trang chu render va sau khi Loi Chua moi ngay tu dong doi noi dung, giup trang chu giu EN khi quay lai bang Back.
+- Doi version main.js tren index.html sang 20260713-translate-back-fix2.
+
+### **14.25. Tang tuong phan trang quan ly dark mode va tang chu Loi Chua**
+
+**Ngay cap nhat:** 13/07/2026
+
+**Chuc nang:**
+- Chinh mau chu intro trang quan ly trong giao dien toi: eyebrow vang ro hon, tieu de sang hon va mo ta de doc hon.
+- Chinh nut Sua trong danh sach noi dung va nut Sua loi cau nguyen sang mau xanh diu, co nen/border rieng de tang tuong phan voi nen toi va tach biet voi nut Xoa.
+- Tang kich thuoc chu Loi Chua moi ngay tren trang chu them 20%: quote tu 11px len 13.2px, phan ref tu 10px len 12px.
+- Doi version styles.css sang 20260713-admin-contrast-daily-size de trinh duyet tai lai giao dien moi.
+- Da kiem tra localhost trang chu va admin.html deu tra ve HTTP 200.
+
+**File lien quan:**
+- styles.css
+- index.html
+- detail.html
+- category.html
+- prayer-request.html
+- accounts.html
+- admin.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt

@@ -175,6 +175,7 @@ function renderDaily() {
   document.querySelector("#dailyDots").innerHTML = dailyItems
     .map((_, index) => `<span class="${index === dailyIndex ? "active" : ""}"></span>`)
     .join("");
+  document.dispatchEvent(new Event("kito:content-rendered"));
 }
 
 function renderHeroBanner() {
@@ -199,6 +200,7 @@ function renderHome() {
   prayerList.innerHTML = prayerTrackItems.map(prayerTemplate).join("");
   restartPrayerMarquee();
   renderDaily();
+  document.dispatchEvent(new Event("kito:content-rendered"));
 }
 
 function restartPrayerMarquee() {
@@ -349,6 +351,7 @@ async function initHome() {
     renderDaily();
     startDailyAutoSlide();
     renderLoadError(error);
+    document.dispatchEvent(new Event("kito:content-rendered"));
     setupSearch();
   }
   setupComingSoonLinks();
@@ -356,6 +359,7 @@ async function initHome() {
 }
 
 initHome();
+
 
 
 

@@ -199,6 +199,7 @@ function renderCategoryView() {
   const keyword = document.querySelector("#categorySearch").value;
   const sortValue = document.querySelector("#categorySort").value;
   renderCategoryItems(sortCategoryItems(searchCategoryItems(allCategoryItems, keyword), sortValue));
+  document.dispatchEvent(new Event("kito:content-rendered"));
 }
 
 async function initCategory() {
@@ -246,6 +247,7 @@ async function initCategory() {
 }
 
 initCategory();
+
 
 
 
