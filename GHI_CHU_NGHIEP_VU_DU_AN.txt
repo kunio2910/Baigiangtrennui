@@ -1436,3 +1436,22 @@ Cac truong trong form tao/sua noi dung:
 **Cap nhat bo sung 14.33:**
 - Xoa cac nut phu tro vao /admin.html tren detail.html, category.html va prayer-request.html de trang public chi con icon thap gia la duong vao trang quan ly.
 - Kiem tra lai index/detail/category/prayer-request: link /admin.html chi nam tren .brand-admin-link.
+
+### **14.34. Upload Cloudinary tu dong dien URL anh**
+
+**Ngay cap nhat:** 15/07/2026
+
+**Chuc nang:**
+- Them file cloudinary-config.js de cau hinh cloudName, uploadPreset va folder Cloudinary.
+- Them Cloudinary Upload Widget vao trang quan ly.
+- Them nut Upload Cloudinary nam canh o URL hinh anh trong form noi dung.
+- Sau khi upload thanh cong, he thong lay secure_url tu Cloudinary va tu dong dien vao o URL hinh anh.
+- Dong thoi cap nhat anh xem truoc de admin co the kiem tra ngay truoc khi luu noi dung.
+- Neu chua cau hinh cloudName hoac uploadPreset, trang quan ly se hien thong bao can bo sung trong cloudinary-config.js.
+
+**File lien quan:**
+- admin.html
+- admin.js
+- styles.css
+- cloudinary-config.js
+- GHI_CHU_NGHIEP_VU_DU_AN.txt

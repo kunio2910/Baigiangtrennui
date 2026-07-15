@@ -3094,3 +3094,22 @@ textarea:disabled {
 
 
 
+
+.image-url-tools {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.image-url-tools .ghost-button {
+  min-height: 42px;
+  margin-top: 0;
+  white-space: nowrap;
+}
+
+@media (max-width: 680px) {
+  .image-url-tools {
+    grid-template-columns: 1fr;
+  }
+}

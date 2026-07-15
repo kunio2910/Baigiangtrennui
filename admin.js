@@ -29,6 +29,7 @@ const itemDate = document.querySelector("#itemDate");
 const itemCreatedDate = document.querySelector("#itemCreatedDate");
 const itemStatus = document.querySelector("#itemStatus");
 const itemImageUrl = document.querySelector("#itemImageUrl");
+const cloudinaryUploadButton = document.querySelector("#cloudinaryUploadButton");
 const itemSourceUrl = document.querySelector("#itemSourceUrl");
 const imagePreview = document.querySelector("#imagePreview");
 const filterType = document.querySelector("#filterType");
@@ -507,6 +508,74 @@ function prayerRequestById(id) {
   return prayerRequests.find((item) => item.id === id);
 }
 
+
+function getCloudinaryConfig() {
+  const config = window.KITO_CLOUDINARY_CONFIG || {};
+  return {
+    cloudName: String(config.cloudName || "").trim(),
+    uploadPreset: String(config.uploadPreset || "").trim(),
+    folder: String(config.folder || "kito").trim(),
+  };
+}
+
+function applyUploadedImageUrl(url) {
+  const secureUrl = String(url || "").trim();
+  if (!secureUrl) return;
+  currentImage = secureUrl;
+  currentImagePath = "";
+  itemImageUrl.value = secureUrl;
+  itemImageUrl.dispatchEvent(new Event("input", { bubbles: true }));
+  imagePreview.src = secureUrl;
+  imagePreview.classList.add("show");
+}
+
+function setupCloudinaryUpload() {
+  if (!cloudinaryUploadButton) return;
+
+  cloudinaryUploadButton.addEventListener("click", () => {
+    if (!canManageContent) {
+      alert("Chỉ tài khoản admin mới có quyền upload ảnh.");
+      return;
+    }
+
+    const config = getCloudinaryConfig();
+    if (!config.cloudName || !config.uploadPreset) {
+      contentMessage.textContent = "Chưa cấu hình Cloudinary. Hãy điền cloudName và uploadPreset trong cloudinary-config.js.";
+      return;
+    }
+
+    if (!window.cloudinary?.createUploadWidget) {
+      contentMessage.textContent = "Không thể tải Cloudinary Upload Widget. Vui lòng kiểm tra kết nối mạng.";
+      return;
+    }
+
+    const widget = window.cloudinary.createUploadWidget(
+      {
+        cloudName: config.cloudName,
+        uploadPreset: config.uploadPreset,
+        folder: config.folder || undefined,
+        sources: ["local", "url", "camera"],
+        multiple: false,
+        resourceType: "image",
+        clientAllowedFormats: ["jpg", "jpeg", "png", "webp", "gif"],
+      },
+      (error, result) => {
+        if (error) {
+          contentMessage.textContent = error.message || "Upload Cloudinary thất bại.";
+          return;
+        }
+
+        if (result?.event === "success") {
+          applyUploadedImageUrl(result.info?.secure_url);
+          contentMessage.textContent = "Đã upload Cloudinary và tự điền URL ảnh.";
+        }
+      }
+    );
+
+    widget.open();
+  });
+}
+
 function prayerTextToHtml(value) {
   return String(value || "")
     .split(/\r?\n/)
@@ -971,6 +1040,7 @@ function setEditorEnabled(enabled) {
 
 async function setupLogin() {
   setupAdminTabs();
+  setupCloudinaryUpload();
   await renderAuthStatus(document.querySelector("#adminAuthStatus"));
   const user = await getCurrentUser();
 
@@ -1073,6 +1143,12 @@ loginForm.addEventListener("submit", async (event) => {
 });
 
 setupLogin();
+
+
+
+
+
+
 
 
 
