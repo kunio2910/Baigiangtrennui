@@ -1334,3 +1334,105 @@ Cac truong trong form tao/sua noi dung:
 - accounts.html
 - admin.html
 - GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+### **14.29. Chinh co chu menu, mo ta banner va mau tim kiem dark mode**
+
+**Ngay cap nhat:** 15/07/2026
+
+**Chuc nang:**
+- Da doc lai GHI_CHU_NGHIEP_VU_DU_AN.txt truoc khi chinh sua theo yeu cau.
+- Giam co chu menu chinh Trang chu/Cac thanh/Nha tho/Bai viet/Su kien/Cau nguyen/Giao ly tu 15px xuong 12px, tuc giam 20%.
+- Tang co chu mo ta ngan tren banner chinh tu 13px len 15.6px; tren mobile tu 12px len 14.4px.
+- Chinh dark mode cho khung tim kiem header de input ben trong trong suot, khong con xen ke 2 mau nen.
+- Chinh dark mode cho search drawer va ket qua tim kiem dung cung tong mau nen toi #241b14, chu sang de dong bo giao dien toi.
+- Doi version styles.css sang 20260715-nav-hero-search-tune de trinh duyet tai lai CSS moi.
+
+**File lien quan:**
+- styles.css
+- index.html
+- detail.html
+- category.html
+- prayer-request.html
+- accounts.html
+- admin.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+### **14.30. Xoa du lieu mau va tat seed tu dong len Firestore**
+
+**Ngay cap nhat:** 15/07/2026
+
+**Chuc nang:**
+- Xoa toan bo noi dung mau trong defaultContent, chi giu cau truc rong theo cac loai noi dung.
+- Tat seedDefaultContentIfEmpty de khi chay localhost/test khong tu ghi noi dung mau vao collection contents cua Firestore.
+- Tat resetContent ve du lieu mau de tranh viec khoi phuc/ghi nguoc noi dung mau len Firestore.
+- Tat bo sung tieu su thanh mac dinh de khong ghi noi dung sinh san vao Firestore.
+- Xoa tai khoan mau admin/admin trong auth.js va tat seedDefaultUsersIfEmpty de khong tu tao user mau len collection users.
+- Cap nhat version data.js va auth.js sang 20260715-no-sample-seed de trinh duyet tai lai code moi.
+
+**File lien quan:**
+- data.js
+- auth.js
+- index.html
+- detail.html
+- category.html
+- prayer-request.html
+- accounts.html
+- admin.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+### **14.31. Xoa phan intro lon trong trang quan ly**
+
+**Ngay cap nhat:** 15/07/2026
+
+**Chuc nang:**
+- Xoa section admin-intro trong admin.html gom cac dong: Trang quan ly, Them/sua/xoa hinh anh va noi dung truyen giao, va mo ta nhap noi dung.
+- Doi diem chen thong bao tai khoan chi xem trong admin.js tu .admin-intro sang .admin-tabs de tranh loi khi section intro da bi xoa.
+- Doi version admin.js sang 20260715-remove-admin-intro de trinh duyet tai lai script moi.
+
+**File lien quan:**
+- admin.html
+- admin.js
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+### **14.32. Them khoang dem chu trong o tim kiem header**
+
+**Ngay cap nhat:** 15/07/2026
+
+**Chuc nang:**
+- Tang gap trong .header-search tu 6px len 8px de chu khong sat icon tim kiem.
+- Them padding ngang 8px cho .header-search input o ca giao dien sang va toi de text nhap khong dung le trai/phai, tranh bi mat chu.
+- Doi version styles.css sang 20260715-search-input-padding de trinh duyet tai lai CSS moi.
+
+**File lien quan:**
+- styles.css
+- index.html
+- detail.html
+- category.html
+- prayer-request.html
+- accounts.html
+- admin.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+### **14.33. Chi icon thap gia mo trang quan ly**
+
+**Ngay cap nhat:** 15/07/2026
+
+**Chuc nang:**
+- Doi logo tren cac trang public de ca cum thuong hieu khong con la link vao trang quan ly.
+- Chi rieng icon thap gia duoc boc bang link /admin.html voi aria-label Mo trang quan ly.
+- Chu Truyen Giao Kito ben canh chi con la text, click vao chu se khong mo trang quan ly.
+- Them CSS .brand-admin-link de icon thap gia giu dung hinh thuc logo va co trang thai hover/focus.
+- Doi version styles.css tren cac trang public sang 20260715-cross-only-admin-link.
+
+**File lien quan:**
+- index.html
+- detail.html
+- category.html
+- prayer-request.html
+- accounts.html
+- styles.css
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Cap nhat bo sung 14.33:**
+- Xoa cac nut phu tro vao /admin.html tren detail.html, category.html va prayer-request.html de trang public chi con icon thap gia la duong vao trang quan ly.
+- Kiem tra lai index/detail/category/prayer-request: link /admin.html chi nam tren .brand-admin-link.

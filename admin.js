@@ -989,7 +989,7 @@ async function setupLogin() {
   }
 
   if (!canManageContent) {
-    document.querySelector(".admin-intro").insertAdjacentHTML(
+    document.querySelector(".admin-tabs").insertAdjacentHTML(
       "afterend",
       `
         <section class="notice-panel">
@@ -1073,6 +1073,7 @@ loginForm.addEventListener("submit", async (event) => {
 });
 
 setupLogin();
+
 
 
 

@@ -23,14 +23,14 @@
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/favicon.png" />
-    <link rel="stylesheet" href="styles.css?v=20260715-top-panel-height" />
+    <link rel="stylesheet" href="styles.css?v=20260715-cross-only-admin-link" />
   </head>
   <body>
     <header class="site-header">
-      <a class="brand" href="/" aria-label="Truyền Giáo Kitô">
-        <span class="brand-mark">✝</span>
+      <div class="brand" aria-label="Truyền Giáo Kitô">
+        <a class="brand-mark brand-admin-link" href="/admin.html" aria-label="Mở trang quản lý">✝</a>
         <span>Truyền Giáo<br />Kitô</span>
-      </a>
+      </div>
       <nav class="main-nav" aria-label="Điều hướng chính">
         <a href="/">Trang chủ</a>
         <a href="/cac-thanh">Các Thánh</a>
@@ -40,9 +40,6 @@
         <a href="/cau-nguyen">Cầu Nguyện</a>
         <a href="/giao-ly">Giáo Lý</a>
       </nav>
-      <div class="header-actions">
-        <a class="login-button" href="/admin.html">Đăng nhập</a>
-      </div>
     </header>
 
     <main class="category-shell">
@@ -83,11 +80,16 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-storage-compat.js"></script>
     <script src="firebase-config.js"></script>
-    <script src="data.js?v=20260715-backup-json"></script>
+    <script src="data.js?v=20260715-no-sample-seed"></script>
     <script src="category.js?v=20260713-translate-back-fix2"></script>
     <script defer src="/_vercel/insights/script.js"></script>
   </body>
 </html>
+
+
+
+
+
 
 
 

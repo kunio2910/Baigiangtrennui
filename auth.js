@@ -1,34 +1,14 @@
 ﻿const SESSION_KEY = "kito-session-v1";
 
-const defaultUsers = [
-  {
-    id: "user-admin",
-    username: "admin",
-    password: "admin",
-    role: "admin",
-    name: "Quản trị viên",
-    createdAt: "2026-01-01",
-  },
-];
+const defaultUsers = [];
 
 function getAuthDb() {
   return requireFirebase().db;
 }
 
 async function seedDefaultUsersIfEmpty() {
-  const db = getAuthDb();
-  const sample = await db.collection("users").limit(1).get();
-  if (!sample.empty) return;
-
-  const batch = db.batch();
-  defaultUsers.forEach((user) => {
-    batch.set(db.collection("users").doc(user.id), {
-      ...user,
-      createdAt: user.createdAt,
-      updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-    });
-  });
-  await batch.commit();
+  // Automatic account seeding is disabled. Create admin users directly in Firestore or Firebase Auth.
+  return;
 }
 
 async function getUsers() {
@@ -173,3 +153,5 @@ async function renderAuthStatus(container) {
     });
   }
 }
+
+
