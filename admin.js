@@ -42,6 +42,10 @@ const visitStatsList = document.querySelector("#visitStatsList");
 const visitSearch = document.querySelector("#visitSearch");
 const visitSort = document.querySelector("#visitSort");
 const resetVisitStatsButton = document.querySelector("#resetVisitStats");
+const exportBackupButton = document.querySelector("#exportBackup");
+const importBackupButton = document.querySelector("#importBackup");
+const backupFileInput = document.querySelector("#backupFile");
+const backupMessage = document.querySelector("#backupMessage");
 const adminTabButtons = document.querySelectorAll("[data-admin-tab]");
 const adminTabPanels = document.querySelectorAll("[data-admin-panel]");
 const loginPanel = document.querySelector("#loginPanel");
@@ -257,6 +261,42 @@ function displayCreatedDate(item) {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
+  });
+}
+
+function backupFileName() {
+  const now = new Date();
+  const stamp = now
+    .toLocaleString("sv-SE", { hour12: false })
+    .replace(/[-:]/g, "")
+    .replace(" ", "-");
+  return `baigiangtrennui-backup-${stamp}.json`;
+}
+
+function downloadJsonFile(data, fileName) {
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = fileName;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+}
+
+function readJsonFile(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.addEventListener("load", () => {
+      try {
+        resolve(JSON.parse(String(reader.result || "{}")));
+      } catch (error) {
+        reject(new Error("File backup không phải JSON hợp lệ."));
+      }
+    });
+    reader.addEventListener("error", () => reject(new Error("Không thể đọc file backup.")));
+    reader.readAsText(file, "utf-8");
   });
 }
 
@@ -784,6 +824,68 @@ visitSearch?.addEventListener("input", () => {
 visitSort?.addEventListener("change", () => {
   renderVisitStats();
 });
+
+exportBackupButton?.addEventListener("click", async () => {
+  if (!canManageContent) {
+    alert("Chỉ tài khoản admin mới có quyền xuất backup.");
+    return;
+  }
+
+  exportBackupButton.disabled = true;
+  if (backupMessage) backupMessage.textContent = "Đang xuất dữ liệu backup...";
+
+  try {
+    const backup = await exportFirestoreBackup();
+    const total = Object.values(backup.collections || {}).reduce((sum, items) => sum + items.length, 0);
+    downloadJsonFile(backup, backupFileName());
+    if (backupMessage) backupMessage.textContent = `Đã xuất backup JSON gồm ${total.toLocaleString("vi-VN")} document.`;
+  } catch (error) {
+    if (backupMessage) backupMessage.textContent = error.message;
+    alert(error.message);
+  } finally {
+    exportBackupButton.disabled = false;
+  }
+});
+
+importBackupButton?.addEventListener("click", async () => {
+  if (!canManageContent) {
+    alert("Chỉ tài khoản admin mới có quyền nhập backup.");
+    return;
+  }
+
+  const file = backupFileInput?.files?.[0];
+  if (!file) {
+    if (backupMessage) backupMessage.textContent = "Vui lòng chọn file backup JSON.";
+    return;
+  }
+
+  const confirmed = confirm("Nhập backup sẽ ghi đè các document cùng ID bằng dữ liệu trong file. Bạn có muốn tiếp tục?");
+  if (!confirmed) return;
+
+  importBackupButton.disabled = true;
+  if (backupMessage) backupMessage.textContent = "Đang nhập dữ liệu backup...";
+
+  try {
+    const backup = await readJsonFile(file);
+    const restoredCount = await importFirestoreBackup(backup);
+    content = await getContent();
+    feedbackItems = await getContentFeedbacks();
+    prayerRequests = await getPrayerRequests();
+    visitStatsItems = await getVisitStats();
+    renderAdminList();
+    renderFeedbackList();
+    renderPrayerReviewList();
+    renderVisitStats(visitStatsItems);
+    if (backupFileInput) backupFileInput.value = "";
+    if (backupMessage) backupMessage.textContent = `Đã nhập backup thành công: ${restoredCount.toLocaleString("vi-VN")} document.`;
+  } catch (error) {
+    if (backupMessage) backupMessage.textContent = error.message;
+    alert(error.message);
+  } finally {
+    importBackupButton.disabled = false;
+  }
+});
+
 feedbackList?.addEventListener("click", async (event) => {
   const button = event.target.closest("button");
   if (!button || button.dataset.action !== "delete-feedback") return;

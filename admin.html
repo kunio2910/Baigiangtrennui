@@ -7,7 +7,7 @@
     <meta name="robots" content="noindex, nofollow" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/favicon.png" />
-    <link rel="stylesheet" href="styles.css?v=20260714-toggle-size-safe" />
+    <link rel="stylesheet" href="styles.css?v=20260715-header-search-size" />
   </head>
   <body class="admin-page">
     <header class="site-header admin-header">
@@ -57,6 +57,7 @@
         <button class="admin-tab-button" type="button" data-admin-tab="visits">Thống kê truy cập</button>
         <button class="admin-tab-button" type="button" data-admin-tab="feedback">Ý kiến đóng góp</button>
         <button class="admin-tab-button" type="button" data-admin-tab="prayers">Duyệt lời cầu nguyện</button>
+        <button class="admin-tab-button" type="button" data-admin-tab="backup">Backup dữ liệu</button>
       </nav>
 
       <section class="manager-layout admin-tab-panel active" id="contentManager" data-admin-panel="content">
@@ -199,6 +200,32 @@
         <div class="prayer-review-list" id="prayerReviewList"></div>
       </section>
 
+      <section class="backup-panel admin-tab-panel" data-admin-panel="backup" hidden>
+        <div class="section-heading">
+          <h2>Backup dữ liệu</h2>
+        </div>
+        <div class="backup-card">
+          <div>
+            <h3>Xuất dữ liệu Firestore</h3>
+            <p>Tải về file JSON gồm nội dung, tài khoản, ý kiến đóng góp, lời cầu nguyện và thống kê truy cập.</p>
+            <p class="backup-warning">File backup có chứa dữ liệu tài khoản, hãy lưu ở nơi riêng tư và không chia sẻ công khai.</p>
+          </div>
+          <button class="primary-button" type="button" id="exportBackup">Xuất backup JSON</button>
+        </div>
+        <div class="backup-card">
+          <div>
+            <h3>Nhập dữ liệu backup</h3>
+            <p>Chọn file JSON đã xuất trước đó để khôi phục dữ liệu. Dữ liệu trong file sẽ được ghi đè vào document cùng ID, không tự xóa dữ liệu khác.</p>
+          </div>
+          <label class="backup-file-label">
+            <span>File backup JSON</span>
+            <input id="backupFile" type="file" accept="application/json,.json" />
+          </label>
+          <button class="ghost-button" type="button" id="importBackup">Nhập backup JSON</button>
+        </div>
+        <p class="form-message" id="backupMessage"></p>
+      </section>
+
       </div>
     </main>
 
@@ -206,12 +233,16 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-storage-compat.js"></script>
     <script src="firebase-config.js"></script>
-    <script src="data.js?v=20260715-mojibake-fix2"></script>
+    <script src="data.js?v=20260715-backup-json"></script>
     <script src="auth.js"></script>
-    <script src="admin.js?v=20260713-prayer-review-hide"></script>
+    <script src="admin.js?v=20260715-backup-json"></script>
     <script defer src="/_vercel/insights/script.js"></script>
   </body>
 </html>
+
+
+
+
 
 
 

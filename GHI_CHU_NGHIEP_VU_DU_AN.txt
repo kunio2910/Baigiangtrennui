@@ -720,6 +720,81 @@ Cac truong trong form tao/sua noi dung:
 - prayer-request.html
 - GHI_CHU_NGHIEP_VU_DU_AN.txt
 
+-------------------------------------------------------------------------------
+
+### **14.30. Them backup JSON va tang tuong phan muc Cau Nguyen dark mode**
+
+**Ngay cap nhat:** 15/07/2026
+
+**Chuc nang:**
+- Them tab `Backup du lieu` trong trang quan ly.
+- Them nut `Xuat backup JSON` de tai ve du lieu Firestore gom cac collection: contents, users, feedbacks, prayerRequests va analytics.
+- Them nut `Nhap backup JSON` de khoi phuc du lieu tu file backup da xuat truoc do.
+- Khi nhap backup, he thong ghi de cac document cung ID bang du lieu trong file, khong tu dong xoa cac document khac de tranh mat du lieu ngoai y muon.
+- Ho tro chuyen doi Firestore Timestamp sang dinh dang JSON an toan khi xuat va khoi phuc lai Timestamp khi nhap.
+- Them canh bao file backup co chua du lieu tai khoan, can luu noi rieng tu va khong chia se cong khai.
+- Trong giao dien toi, cac card thuoc muc `Cau Nguyen` tren trang chu duoc chuyen sang chu trang va them text-shadow de tang tuong phan, de doc hon.
+- Doi version `data.js`, `admin.js` va `styles.css` de trinh duyet tai lai code/giao dien moi.
+
+**File lien quan:**
+- data.js
+- admin.html
+- admin.js
+- styles.css
+- index.html
+- accounts.html
+- category.html
+- detail.html
+- prayer-request.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+-------------------------------------------------------------------------------
+
+### **14.31. Doi cach vao trang quan ly tu logo trang chu**
+
+**Ngay cap nhat:** 15/07/2026
+
+**Chuc nang:**
+- Bo nut `Dang nhap` tren header trang chu.
+- Doi link cua logo/brand `Truyen Giao Kito` tren trang chu sang `/admin.html`.
+- Khi nguoi dung click vao logo o goc trai tren trang chu, website se chuyen den man hinh dang nhap trang quan ly.
+- Giu nguyen format, kich thuoc va CSS header hien tai, chi thay doi HTML can thiet.
+
+**File lien quan:**
+- index.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+-------------------------------------------------------------------------------
+
+### **14.32. Them khung tim kiem truc tiep tren header trang chu**
+
+**Ngay cap nhat:** 15/07/2026
+
+**Chuc nang:**
+- Thay nut icon tim kiem tren header trang chu bang khung nhap tim kiem truc tiep.
+- Icon tim kiem nam ben trai ben trong khung nhap.
+- Khi nguoi dung nhap tu khoa, hop ket qua tim kiem hien ben duoi khung va van dung du lieu tim kiem hien co.
+- Click ra ngoai hoac bam Escape se dong hop ket qua.
+- Giu nguyen format header hien tai, chi them CSS cuc bo cho `.header-search` va cap nhat logic tim kiem lien quan.
+- Doi version `main.js` va `styles.css` sang `20260715-header-search` de trinh duyet tai lai code/giao dien moi.
+
+**File lien quan:**
+- index.html
+- main.js
+- styles.css
+- accounts.html
+- admin.html
+- category.html
+- detail.html
+- prayer-request.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Cap nhat bo sung 14.32:**
+- Tang chieu rong khung tim kiem tren header trang chu tu 168px len 230px.
+- Tang kich thuoc icon tim kiem trong khung tu 17px len 24px.
+- Tang nhe chieu cao/padding cua khung de icon lon hon nhung van giu bo cuc header hien tai.
+- Doi version CSS sang `20260715-header-search-size`.
+
 ### **14.12. Giam opacity nen vang dong o giao dien toi xuong 20%**
 
 **Ngay cap nhat:** 13/07/2026

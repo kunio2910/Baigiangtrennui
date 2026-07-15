@@ -242,27 +242,36 @@ function setupSearch() {
   const drawer = document.querySelector("#searchDrawer");
   const input = document.querySelector("#searchInput");
   const resultBox = document.querySelector("#searchResults");
-  const searchToggle = document.querySelector("#searchToggle");
+  const searchBox = document.querySelector("#headerSearchBox");
   const allItems = ["saints", "churches", "articles", "events", "prayers", "catechism"].flatMap((type) =>
     activeItems(content[type]).map((item) => ({ ...item, type }))
   );
+
+  function positionSearchDrawer() {
+    const rect = searchBox.getBoundingClientRect();
+    drawer.style.top = `${Math.round(rect.bottom + 8)}px`;
+    drawer.style.left = `${Math.round(rect.left)}px`;
+    drawer.style.right = "auto";
+    drawer.style.width = `${Math.round(Math.max(rect.width, 300))}px`;
+  }
+
+  function openSearchDrawer() {
+    positionSearchDrawer();
+    drawer.classList.add("open");
+    drawer.setAttribute("aria-hidden", "false");
+  }
 
   function closeSearchDrawer() {
     drawer.classList.remove("open");
     drawer.setAttribute("aria-hidden", "true");
   }
 
-  searchToggle.addEventListener("click", (event) => {
+  searchBox.addEventListener("click", (event) => {
     event.stopPropagation();
-    const open = drawer.classList.toggle("open");
-    drawer.setAttribute("aria-hidden", String(!open));
-    if (open) {
-      const rect = searchToggle.getBoundingClientRect();
-      drawer.style.top = `${Math.round(rect.top)}px`;
-      drawer.style.left = `${Math.round(rect.right + 10)}px`;
-      drawer.style.right = "auto";
-      input.focus();
-    }
+  });
+
+  input.addEventListener("focus", () => {
+    if (input.value.trim()) openSearchDrawer();
   });
 
   drawer.addEventListener("click", (event) => {
@@ -271,12 +280,16 @@ function setupSearch() {
 
   document.addEventListener("click", (event) => {
     if (!drawer.classList.contains("open")) return;
-    if (drawer.contains(event.target) || searchToggle.contains(event.target)) return;
+    if (drawer.contains(event.target) || searchBox.contains(event.target)) return;
     closeSearchDrawer();
   });
 
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") closeSearchDrawer();
+  });
+
+  window.addEventListener("resize", () => {
+    if (drawer.classList.contains("open")) positionSearchDrawer();
   });
 
   input.addEventListener("input", () => {
@@ -288,6 +301,11 @@ function setupSearch() {
     resultBox.innerHTML = keyword
       ? matches.map((item) => `<a href="${detailLink(item.type, item)}"><strong>${item.title}</strong><span>${summarizeText(item.description, 120)}</span></a>`).join("")
       : "";
+    if (keyword && matches.length) {
+      openSearchDrawer();
+    } else {
+      closeSearchDrawer();
+    }
   });
 }
 

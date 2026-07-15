@@ -97,6 +97,20 @@ a {
   background: rgba(216, 154, 53, 0.72);
 }
 
+:root[data-theme="dark"] .header-search {
+  border-color: rgba(216, 154, 53, 0.5);
+  background: rgba(52, 39, 29, 0.9);
+  color: #ffc46b;
+}
+
+:root[data-theme="dark"] .header-search input {
+  color: #fff4df;
+}
+
+:root[data-theme="dark"] .header-search input::placeholder {
+  color: rgba(255, 224, 178, 0.64);
+}
+
 .brand {
   display: flex;
   align-items: center;
@@ -169,6 +183,40 @@ a {
   gap: 10px;
   flex: 0 0 auto;
   margin-left: auto;
+}
+
+.header-search {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: 230px;
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid rgba(189, 123, 27, 0.26);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.82);
+  color: var(--gold-dark);
+}
+
+.header-search span {
+  flex: 0 0 auto;
+  font-size: 24px;
+  line-height: 1;
+}
+
+.header-search input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 12px;
+}
+
+.header-search input::placeholder {
+  color: rgba(80, 53, 31, 0.58);
 }
 
 .icon-button,
@@ -801,6 +849,7 @@ body {
 :root[data-theme="dark"] .admin-item,
 :root[data-theme="dark"] .feedback-item,
 :root[data-theme="dark"] .visit-card,
+:root[data-theme="dark"] .backup-card,
 :root[data-theme="dark"] .lead-box,
 :root[data-theme="dark"] .rating-panel {
   border-color: var(--line);
@@ -829,6 +878,14 @@ body {
 :root[data-theme="dark"] .daily-card small {
   color: #ffffff;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.72);
+}
+
+:root[data-theme="dark"] #prayers .prayer-card,
+:root[data-theme="dark"] #prayers .prayer-card h3,
+:root[data-theme="dark"] #prayers .prayer-card p,
+:root[data-theme="dark"] #prayers .prayer-card div {
+  color: #ffffff;
+  text-shadow: 0 2px 9px rgba(0, 0, 0, 0.78);
 }
 
 :root[data-theme="dark"] .hero::after,
@@ -1952,6 +2009,49 @@ textarea {
   margin-top: 26px;
 }
 
+.backup-panel {
+  display: grid;
+  gap: 16px;
+  margin-top: 26px;
+}
+
+.backup-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: center;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--white);
+  box-shadow: var(--shadow);
+}
+
+.backup-card h3 {
+  margin: 0 0 6px;
+  font-family: var(--font-heading);
+  font-size: 18px;
+}
+
+.backup-card p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.backup-warning {
+  margin-top: 8px !important;
+  color: #9a321d !important;
+  font-weight: 700;
+}
+
+.backup-file-label {
+  min-width: min(100%, 320px);
+}
+
+.backup-file-label input {
+  width: 100%;
+}
+
 .feedback-list {
   display: grid;
   gap: 12px;
@@ -2605,6 +2705,10 @@ textarea:disabled {
   .quick-links,
   .manager-layout,
   .admin-list-tools {
+    grid-template-columns: 1fr;
+  }
+
+  .backup-card {
     grid-template-columns: 1fr;
   }
 

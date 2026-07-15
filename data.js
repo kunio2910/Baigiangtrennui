@@ -1159,6 +1159,96 @@ async function resetVisitStats() {
   await batch.commit();
   clearLocalVisitCooldowns();
 }
+
+const BACKUP_COLLECTIONS = ["contents", "users", "feedbacks", "prayerRequests", "analytics"];
+
+function serializeBackupValue(value) {
+  if (value?.toDate && typeof value.toDate === "function") {
+    return {
+      __type: "timestamp",
+      value: value.toDate().toISOString(),
+    };
+  }
+
+  if (Array.isArray(value)) return value.map(serializeBackupValue);
+
+  if (value && typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value).map(([key, entryValue]) => [key, serializeBackupValue(entryValue)])
+    );
+  }
+
+  return value;
+}
+
+function restoreBackupValue(value) {
+  if (Array.isArray(value)) return value.map(restoreBackupValue);
+
+  if (value && typeof value === "object") {
+    if (value.__type === "timestamp" && value.value) {
+      return firebase.firestore.Timestamp.fromDate(new Date(value.value));
+    }
+
+    return Object.fromEntries(
+      Object.entries(value).map(([key, entryValue]) => [key, restoreBackupValue(entryValue)])
+    );
+  }
+
+  return value;
+}
+
+async function exportFirestoreBackup() {
+  const { db } = requireFirebase();
+  const backup = {
+    app: "Baigiangtrennui",
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    collections: {},
+  };
+
+  for (const collectionName of BACKUP_COLLECTIONS) {
+    const snapshot = await db.collection(collectionName).get();
+    backup.collections[collectionName] = [];
+    snapshot.forEach((doc) => {
+      backup.collections[collectionName].push({
+        id: doc.id,
+        data: serializeBackupValue(doc.data()),
+      });
+    });
+  }
+
+  return backup;
+}
+
+async function importFirestoreBackup(backup) {
+  if (!backup?.collections || typeof backup.collections !== "object") {
+    throw new Error("File backup không đúng định dạng.");
+  }
+
+  const { db } = requireFirebase();
+  let restoredCount = 0;
+
+  for (const collectionName of BACKUP_COLLECTIONS) {
+    const documents = backup.collections[collectionName];
+    if (!Array.isArray(documents) || !documents.length) continue;
+
+    for (let index = 0; index < documents.length; index += 400) {
+      const batch = db.batch();
+      documents.slice(index, index + 400).forEach((documentItem) => {
+        if (!documentItem?.id || !documentItem.data || typeof documentItem.data !== "object") return;
+        batch.set(
+          db.collection(collectionName).doc(String(documentItem.id)),
+          restoreBackupValue(documentItem.data),
+          { merge: true }
+        );
+        restoredCount += 1;
+      });
+      await batch.commit();
+    }
+  }
+
+  return restoredCount;
+}
 function formatDateParts(value) {
   const rawValue = String(value || "").trim();
   if (!rawValue) return { day: "--", month: "THÁNG --", display: "" };
