@@ -1,4 +1,4 @@
-﻿const fallbackImage = "/Default.jpg";
+const fallbackImage = "/Default.jpg";
 const CONTENT_TYPES = ["saints", "churches", "articles", "events", "prayers", "catechism", "daily", "banners"];
 const CONTENT_TYPE_PATHS = {
   saints: "cac-thanh",
@@ -729,10 +729,15 @@ async function saveFaithDiscoverySettings(settings = {}) {
   const questions = Array.isArray(settings.questions) ? settings.questions : [];
   const sets = Array.isArray(settings.sets) ? settings.sets : [];
   const infographicUrl = String(settings.infographicUrl || "").trim();
+  const bannerImageUrl = String(settings.bannerImageUrl || "").trim();
+  const pickerImageUrl = String(settings.pickerImageUrl || "").trim();
 
   await db.collection("siteSettings").doc("faithDiscovery").set(
     {
       infographicUrl,
+      
+      bannerImageUrl,
+      pickerImageUrl,
       questions,
       sets,
       activeSetId: settings.activeSetId || "",
@@ -780,6 +785,47 @@ function restoreBackupValue(value) {
   return value;
 }
 
+function summarizeFaithDiscoveryBackup(settings) {
+  if (!settings || typeof settings !== "object") {
+    return {
+      hasData: false,
+      activeSetId: "",
+      setCount: 0,
+      questionCount: 0,
+      sets: [],
+    };
+  }
+
+  const sets = Array.isArray(settings.sets) ? settings.sets : [];
+  const legacyQuestions = Array.isArray(settings.questions) ? settings.questions : [];
+  const normalizedSets = sets.map((set, index) => ({
+    id: String(set?.id || `faith-set-${index + 1}`),
+    title: String(set?.title || `Bộ ${index + 1}`),
+    hasPickerImage: Boolean(String(set?.pickerImageUrl || "").trim()),
+    hasBanner: Boolean(String(set?.bannerImageUrl || "").trim()),
+    hasInfographic: Boolean(String(set?.infographicUrl || "").trim()),
+    questionCount: Array.isArray(set?.questions) ? set.questions.length : 0,
+  }));
+
+  if (!normalizedSets.length && legacyQuestions.length) {
+    normalizedSets.push({
+      id: "legacy-faith-set",
+      title: String(settings.title || "Khám Phá Đức Tin"),
+      hasPickerImage: Boolean(String(settings.pickerImageUrl || "").trim()),
+      hasBanner: Boolean(String(settings.bannerImageUrl || "").trim()),
+      hasInfographic: Boolean(String(settings.infographicUrl || "").trim()),
+      questionCount: legacyQuestions.length,
+    });
+  }
+
+  return {
+    hasData: normalizedSets.length > 0,
+    activeSetId: String(settings.activeSetId || ""),
+    setCount: normalizedSets.length,
+    questionCount: normalizedSets.reduce((sum, set) => sum + set.questionCount, 0),
+    sets: normalizedSets,
+  };
+}
 async function exportFirestoreBackup() {
   const { db } = requireFirebase();
   const backup = {
@@ -799,7 +845,10 @@ async function exportFirestoreBackup() {
       });
     });
   }
-
+  const faithDiscoveryDoc = backup.collections.siteSettings?.find((doc) => doc.id === "faithDiscovery");
+  backup.metadata = backup.metadata || {};
+  backup.metadata.faithDiscovery = summarizeFaithDiscoveryBackup(faithDiscoveryDoc?.data);
+  backup.faithDiscovery = faithDiscoveryDoc?.data || null;
   return backup;
 }
 
@@ -810,6 +859,14 @@ async function importFirestoreBackup(backup) {
 
   const { db } = requireFirebase();
   let restoredCount = 0;
+  if (backup.faithDiscovery && !backup.collections.siteSettings) {
+    backup.collections.siteSettings = [
+      {
+        id: "faithDiscovery",
+        data: backup.faithDiscovery,
+      },
+    ];
+  }
 
   for (const collectionName of BACKUP_COLLECTIONS) {
     const documents = backup.collections[collectionName];
@@ -1122,6 +1179,17 @@ function rememberCurrentPage(title = document.title) {
     // Session history is a small enhancement; navigation still works without it.
   }
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 

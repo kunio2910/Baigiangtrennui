@@ -1,4 +1,4 @@
-﻿:root {
+:root {
   --font-main: Tahoma, "Segoe UI", Arial, sans-serif;
   --font-body: var(--font-main);
   --font-heading: "Segoe UI", Tahoma, Arial, sans-serif;
@@ -4165,4 +4165,1108 @@ body.faith-page {
     width: 23px;
     height: 17px;
   }
+}
+
+/* 14.41. Faith visual tune - scoped to Kham Pha Duc Tin only */
+body.faith-page .faith-hero-panel {
+  grid-template-columns: 156px minmax(0, 1fr);
+  align-items: start;
+  background: linear-gradient(105deg, rgba(255, 251, 238, 0.78), rgba(255, 239, 195, 0.9));
+}
+
+body.faith-page .faith-hero-panel::before,
+body.faith-page .faith-hero-panel::after {
+  display: none;
+}
+
+body.faith-page .faith-back-button {
+  width: auto;
+  min-width: 136px;
+  height: 46px;
+  aspect-ratio: auto;
+  padding: 0 16px;
+  font-size: 14px;
+  line-height: 1.2;
+  white-space: nowrap;
+  text-align: center;
+}
+
+body.faith-page .faith-visual-card .faith-score-card {
+  width: fit-content;
+  min-height: 52px;
+  margin: 16px auto 0;
+  padding: 10px 18px;
+}
+
+body.faith-page .faith-visual-card .faith-score-card span {
+  width: 34px;
+}
+
+body.faith-page .faith-visual-card .faith-score-card b {
+  font-size: 26px;
+}
+
+body.faith-page .faith-mask-tile {
+  background: linear-gradient(135deg, rgba(45, 30, 22, 0.94), rgba(104, 71, 45, 0.92));
+}
+
+body.faith-page .faith-mask-tile span {
+  width: auto;
+  aspect-ratio: auto;
+  min-width: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: #fff8ec;
+  font-size: 28px;
+  font-weight: 900;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+}
+
+body.faith-page .faith-mask-tile span::before,
+body.faith-page .faith-mask-tile span::after {
+  display: none;
+  content: none;
+}
+
+:root[data-theme="dark"] body.faith-page {
+  background:
+    linear-gradient(180deg, rgba(24, 16, 11, 0.98), rgba(16, 11, 8, 0.98)),
+    radial-gradient(circle at 78% 0%, rgba(184, 121, 40, 0.14), transparent 30%);
+}
+
+:root[data-theme="dark"] body.faith-page .faith-hero-panel,
+:root[data-theme="dark"] body.faith-page .faith-question-card,
+:root[data-theme="dark"] body.faith-page .faith-visual-card {
+  background: linear-gradient(180deg, #2a1d14, #21160f);
+  border-color: rgba(184, 121, 40, 0.58);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.34);
+}
+
+:root[data-theme="dark"] body.faith-page .faith-hero-copy h1,
+:root[data-theme="dark"] body.faith-page .faith-question-card h2,
+:root[data-theme="dark"] body.faith-page .faith-question-head strong {
+  color: #ffe1a8;
+}
+
+:root[data-theme="dark"] body.faith-page .faith-hero-copy .eyebrow,
+:root[data-theme="dark"] body.faith-page .faith-hero-copy p:last-of-type,
+:root[data-theme="dark"] body.faith-page .faith-progress,
+:root[data-theme="dark"] body.faith-page .faith-feedback,
+:root[data-theme="dark"] body.faith-page .faith-feedback-box strong {
+  color: #f6ddbb;
+}
+
+:root[data-theme="dark"] body.faith-page .faith-back-button,
+:root[data-theme="dark"] body.faith-page .faith-score-card,
+:root[data-theme="dark"] body.faith-page .faith-feedback-box {
+  background: #382514;
+  border-color: rgba(222, 157, 58, 0.72);
+  color: #fff2dc;
+}
+
+:root[data-theme="dark"] body.faith-page .faith-score-card b,
+:root[data-theme="dark"] body.faith-page .faith-set-switcher button.active,
+:root[data-theme="dark"] body.faith-page .faith-set-switcher button:hover {
+  color: #ffd98a;
+}
+
+:root[data-theme="dark"] body.faith-page .faith-set-switcher button,
+:root[data-theme="dark"] body.faith-page .faith-option {
+  background: #302116;
+  border-color: rgba(184, 121, 40, 0.58);
+  color: #fff4e3;
+}
+
+:root[data-theme="dark"] body.faith-page .faith-option span {
+  background: #432b17;
+  border-color: rgba(222, 157, 58, 0.58);
+  color: #ffd98a;
+}
+
+:root[data-theme="dark"] body.faith-page .faith-progress-track,
+:root[data-theme="dark"] body.faith-page .faith-infographic-wrap,
+:root[data-theme="dark"] body.faith-page .faith-infographic-wrap img {
+  background: #1c130d;
+  border-color: rgba(184, 121, 40, 0.58);
+}
+
+:root[data-theme="dark"] body.faith-page .faith-mask-tile {
+  background: linear-gradient(135deg, rgba(22, 14, 9, 0.96), rgba(78, 48, 24, 0.94));
+  border-color: rgba(222, 157, 58, 0.46);
+}
+
+@media (max-width: 1180px) {
+  body.faith-page .faith-hero-panel {
+    grid-template-columns: 156px minmax(0, 1fr);
+  }
+
+  body.faith-page .faith-score-card {
+    grid-column: auto;
+    justify-self: center;
+  }
+}
+
+@media (max-width: 680px) {
+  body.faith-page .faith-hero-panel {
+    grid-template-columns: 1fr;
+  }
+
+  body.faith-page .faith-back-button {
+    justify-self: start;
+    min-width: 126px;
+    height: 42px;
+    font-size: 13px;
+  }
+
+  body.faith-page .faith-mask-tile span {
+    width: auto;
+    font-size: 20px;
+  }
+}
+
+/* 14.42. Faith per-set banner image */
+body.faith-page .faith-hero-panel.has-banner-image {
+  background-image:
+    linear-gradient(90deg, rgba(20, 12, 8, 0.45), rgba(255, 246, 220, 0.24)),
+    linear-gradient(180deg, rgba(255, 247, 224, 0.22), rgba(255, 234, 184, 0.24)),
+    var(--faith-banner-image);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+body.faith-page .faith-hero-panel.has-banner-image .faith-hero-copy h1,
+body.faith-page .faith-hero-panel.has-banner-image .faith-hero-copy .eyebrow {
+  color: #fff1d2;
+  text-shadow: 0 3px 14px rgba(0, 0, 0, 0.68);
+}
+
+body.faith-page .faith-hero-panel.has-banner-image .faith-hero-copy p:last-of-type {
+  color: #fff8e8;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.74);
+}
+
+body.faith-page .faith-hero-panel.has-banner-image .faith-set-switcher button,
+body.faith-page .faith-hero-panel.has-banner-image .faith-back-button {
+  background: rgba(38, 23, 13, 0.72);
+  border-color: rgba(255, 210, 126, 0.68);
+  color: #fff0cf;
+  backdrop-filter: blur(3px);
+}
+
+body.faith-page .faith-hero-panel.has-banner-image .faith-set-switcher button.active,
+body.faith-page .faith-hero-panel.has-banner-image .faith-set-switcher button:hover {
+  background: rgba(184, 121, 40, 0.84);
+  color: #fff9e8;
+}
+
+:root[data-theme="dark"] body.faith-page .faith-hero-panel.has-banner-image {
+  background-image:
+    linear-gradient(90deg, rgba(12, 8, 5, 0.72), rgba(46, 28, 14, 0.46)),
+    var(--faith-banner-image);
+}
+
+/* 14.43. Faith question picker and question style tune */
+body.faith-page .faith-question-picker {
+  margin-bottom: 18px;
+  padding: 24px;
+  border: 2px solid rgba(213, 151, 54, 0.55);
+  border-radius: 20px;
+  background: linear-gradient(180deg, rgba(255, 253, 244, 0.98), rgba(255, 247, 228, 0.98));
+  box-shadow: 0 16px 36px rgba(117, 74, 21, 0.14);
+}
+
+body.faith-page .faith-question-picker[hidden] {
+  display: none;
+}
+
+body.faith-page .faith-picker-head {
+  max-width: 720px;
+  margin: 0 auto 18px;
+  text-align: center;
+}
+
+body.faith-page .faith-picker-head .eyebrow {
+  margin: 0 0 4px;
+  color: #8a4f13;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+body.faith-page .faith-picker-head h2 {
+  margin: 0 0 8px;
+  font-family: Cambria, "Palatino Linotype", "Times New Roman", serif;
+  font-size: clamp(26px, 3vw, 42px);
+  color: #5d2f19;
+}
+
+body.faith-page .faith-picker-head p:last-child {
+  margin: 0;
+  color: #6b4a2c;
+  font-size: 15px;
+}
+
+body.faith-page .faith-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+body.faith-page .faith-picker-item {
+  display: grid;
+  gap: 7px;
+  min-height: 112px;
+  padding: 14px;
+  border: 1px solid rgba(183, 132, 62, 0.36);
+  border-radius: 14px;
+  background: rgba(255, 252, 242, 0.96);
+  color: #4b2a17;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(105, 66, 20, 0.08);
+}
+
+body.faith-page .faith-picker-item:hover {
+  border-color: rgba(184, 121, 40, 0.82);
+  transform: translateY(-1px);
+}
+
+body.faith-page .faith-picker-item span {
+  width: fit-content;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: #fff1cf;
+  color: #8a4f13;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+body.faith-page .faith-picker-item strong {
+  font-family: var(--font-heading);
+  font-size: 15px;
+  line-height: 1.25;
+}
+
+body.faith-page .faith-picker-item small {
+  color: #86613c;
+  font-weight: 700;
+}
+
+body.faith-page .faith-picker-item.is-open {
+  border-color: #3f9b58;
+  background: #edf8ef;
+}
+
+body.faith-page .faith-picker-item.is-open span {
+  background: #dff3e3;
+  color: #206d37;
+}
+
+body.faith-page .faith-question-head strong {
+  font-size: 24px;
+  color: #865017;
+}
+
+body.faith-page .faith-question-card h2 {
+  max-width: 92%;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: Cambria, "Palatino Linotype", "Times New Roman", serif;
+  font-size: clamp(18px, 1.65vw, 28px);
+  font-weight: 700;
+  line-height: 1.35;
+  color: #5a351f;
+}
+
+body.faith-page .faith-mask-tile {
+  background: linear-gradient(135deg, rgba(22, 14, 9, 0.985), rgba(69, 42, 21, 0.975));
+}
+
+body.faith-page .faith-mask-tile::before {
+  background: rgba(0, 0, 0, 0.12);
+}
+
+body.faith-page .faith-back-button {
+  align-self: start;
+  margin: 0;
+  background: rgba(255, 249, 232, 0.7);
+  box-shadow: 0 8px 18px rgba(107, 67, 22, 0.14);
+}
+
+body.faith-page .faith-hero-panel.has-banner-image .faith-back-button {
+  background: rgba(38, 23, 13, 0.7);
+}
+
+:root[data-theme="dark"] body.faith-page .faith-question-picker {
+  background: linear-gradient(180deg, #2a1d14, #21160f);
+  border-color: rgba(184, 121, 40, 0.58);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.34);
+}
+
+:root[data-theme="dark"] body.faith-page .faith-picker-head h2,
+:root[data-theme="dark"] body.faith-page .faith-question-card h2,
+:root[data-theme="dark"] body.faith-page .faith-question-head strong {
+  color: #ffe1a8;
+}
+
+:root[data-theme="dark"] body.faith-page .faith-picker-head .eyebrow,
+:root[data-theme="dark"] body.faith-page .faith-picker-head p:last-child {
+  color: #f6ddbb;
+}
+
+:root[data-theme="dark"] body.faith-page .faith-picker-item {
+  background: #302116;
+  border-color: rgba(184, 121, 40, 0.58);
+  color: #fff4e3;
+}
+
+:root[data-theme="dark"] body.faith-page .faith-picker-item span {
+  background: #432b17;
+  color: #ffd98a;
+}
+
+:root[data-theme="dark"] body.faith-page .faith-picker-item small {
+  color: #d8bd97;
+}
+
+:root[data-theme="dark"] body.faith-page .faith-picker-item.is-open {
+  background: #183b22;
+  border-color: #5abc72;
+}
+
+:root[data-theme="dark"] body.faith-page .faith-mask-tile {
+  background: linear-gradient(135deg, rgba(11, 7, 5, 0.99), rgba(45, 27, 14, 0.985));
+}
+
+@media (max-width: 680px) {
+  body.faith-page .faith-question-picker {
+    padding: 14px;
+    border-radius: 14px;
+  }
+
+  body.faith-page .faith-picker-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  body.faith-page .faith-question-head strong {
+    font-size: 18px;
+  }
+
+  body.faith-page .faith-question-card h2 {
+    font-size: 18px;
+  }
+}
+
+body.faith-page .faith-set-picker {
+  margin-bottom: 18px;
+  padding: 24px;
+  border: 2px solid rgba(213, 151, 54, 0.55);
+  border-radius: 20px;
+  background: linear-gradient(180deg, rgba(255, 253, 244, 0.98), rgba(255, 247, 228, 0.98));
+  box-shadow: 0 16px 36px rgba(117, 74, 21, 0.14);
+}
+
+body.faith-page .faith-set-picker[hidden] {
+  display: none;
+}
+
+:root[data-theme="dark"] body.faith-page .faith-set-picker {
+  background: linear-gradient(180deg, #2a1d14, #21160f);
+  border-color: rgba(184, 121, 40, 0.58);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.34);
+}
+
+@media (max-width: 680px) {
+  body.faith-page .faith-set-picker {
+    padding: 14px;
+    border-radius: 14px;
+  }
+}
+
+/* 14.45. Faith set picker only and question frame */
+body.faith-page.faith-choosing-set .faith-hero-panel,
+body.faith-page.faith-choosing-set .site-footer {
+  display: none;
+}
+
+body.faith-page.faith-choosing-set .faith-shell {
+  min-height: calc(100vh - 62px);
+  display: grid;
+  place-items: center;
+  padding-top: 22px;
+}
+
+body.faith-page.faith-choosing-set .faith-set-picker {
+  width: min(100%, 940px);
+  margin: 0 auto;
+}
+
+body.faith-page .faith-question-card {
+  min-height: 520px;
+  padding: 76px 58px 40px;
+  border: 0;
+  border-radius: 0;
+  background:
+    linear-gradient(180deg, rgba(255, 250, 232, 0.16), rgba(255, 250, 232, 0.2)),
+    url("assets/panel-cau-hoi.png") center / 100% 100% no-repeat;
+  box-shadow: none;
+}
+
+body.faith-page .faith-question-card .faith-question-badge {
+  min-width: 260px;
+  margin: -38px auto 34px;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  color: #fff5d1;
+  text-shadow: 0 2px 8px rgba(104, 55, 4, 0.5);
+  font-size: 16px;
+}
+
+body.faith-page .faith-question-head {
+  margin-bottom: 10px;
+}
+
+body.faith-page .faith-question-head strong {
+  font-size: 20px;
+  color: #986018;
+}
+
+body.faith-page .faith-question-card h2 {
+  min-height: 145px;
+  max-width: 84%;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 18px;
+  color: #5c3418;
+}
+
+body.faith-page .faith-question-card .faith-options {
+  max-width: 86%;
+  margin: 0 auto;
+}
+
+body.faith-page .faith-question-card .faith-feedback-box,
+body.faith-page .faith-question-card .faith-actions {
+  max-width: 86%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+:root[data-theme="dark"] body.faith-page .faith-question-card {
+  background:
+    linear-gradient(180deg, rgba(36, 24, 15, 0.2), rgba(36, 24, 15, 0.34)),
+    url("assets/panel-cau-hoi.png") center / 100% 100% no-repeat;
+}
+
+@media (max-width: 680px) {
+  body.faith-page .faith-question-card {
+    min-height: 470px;
+    padding: 56px 22px 28px;
+    background-size: 100% 100%;
+  }
+
+  body.faith-page .faith-question-card .faith-question-badge {
+    min-width: 0;
+    margin-top: -28px;
+    margin-bottom: 24px;
+    font-size: 13px;
+  }
+
+  body.faith-page .faith-question-card h2,
+  body.faith-page .faith-question-card .faith-options,
+  body.faith-page .faith-question-card .faith-feedback-box,
+  body.faith-page .faith-question-card .faith-actions {
+    max-width: 92%;
+  }
+}
+
+/* 14.46. Faith set picker clean screen and original question card */
+body.faith-page.faith-choosing-set .faith-game,
+body.faith-page.faith-choosing-set .faith-hero-panel,
+body.faith-page.faith-choosing-set .site-footer {
+  display: none !important;
+}
+
+body.faith-page.faith-choosing-set .faith-shell {
+  min-height: calc(100vh - 62px);
+  display: grid;
+  place-items: center;
+  padding: 24px 18px;
+}
+
+body.faith-page.faith-choosing-set .faith-set-picker {
+  width: min(100%, 940px);
+  margin: 0 auto;
+}
+
+body.faith-page .faith-question-card {
+  min-height: 0;
+  padding: 28px;
+  border: 2px solid rgba(213, 151, 54, 0.55);
+  border-radius: 20px;
+  background: linear-gradient(180deg, rgba(255, 253, 244, 0.98), rgba(255, 247, 228, 0.98));
+  box-shadow: 0 16px 36px rgba(117, 74, 21, 0.14);
+}
+
+body.faith-page .faith-question-card .faith-question-badge {
+  min-width: 0;
+  margin: 0 auto 18px;
+  border: 1px solid rgba(255, 255, 255, 0.36);
+  background: linear-gradient(180deg, #c88928, #a66a12);
+  box-shadow: inset 0 0 0 2px rgba(255, 240, 176, 0.28), 0 10px 20px rgba(158, 98, 12, 0.2);
+  color: #fff8df;
+}
+
+body.faith-page .faith-question-card h2 {
+  min-height: 0;
+  max-width: 92%;
+  display: block;
+  margin: 0 auto 26px;
+  color: #5d2f19;
+}
+
+body.faith-page .faith-question-card .faith-options,
+body.faith-page .faith-question-card .faith-feedback-box,
+body.faith-page .faith-question-card .faith-actions {
+  max-width: none;
+}
+
+:root[data-theme="dark"] body.faith-page .faith-question-card {
+  background: linear-gradient(180deg, #2a1d14, #21160f);
+  border-color: rgba(184, 121, 40, 0.58);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.34);
+}
+
+@media (max-width: 680px) {
+  body.faith-page .faith-question-card {
+    min-height: 0;
+    padding: 14px;
+    border-radius: 14px;
+  }
+
+  body.faith-page .faith-question-card .faith-question-badge {
+    margin-top: 0;
+    margin-bottom: 14px;
+  }
+
+  body.faith-page .faith-question-card h2,
+  body.faith-page .faith-question-card .faith-options,
+  body.faith-page .faith-question-card .faith-feedback-box,
+  body.faith-page .faith-question-card .faith-actions {
+    max-width: none;
+  }
+}
+
+/* 14.47. Prevent faith quiz flash before set picker is ready */
+body.faith-page .faith-game[hidden],
+body.faith-page .faith-set-picker[hidden] {
+  display: none !important;
+}
+
+body.faith-page.faith-choosing-set .faith-game,
+body.faith-page.faith-choosing-set .faith-hero-panel,
+body.faith-page.faith-choosing-set .site-footer {
+  display: none !important;
+}
+
+/* 14.48. Larger faith set picker with home button */
+body.faith-page.faith-choosing-set .faith-shell {
+  min-height: calc(100vh - 62px);
+  padding: 28px clamp(16px, 3vw, 42px);
+  align-items: stretch;
+}
+
+body.faith-page.faith-choosing-set .faith-set-picker {
+  position: relative;
+  width: min(100%, 1280px);
+  min-height: calc(100vh - 118px);
+  padding: clamp(28px, 4vw, 56px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(22px, 3vw, 36px);
+}
+
+body.faith-page .faith-picker-home {
+  position: absolute;
+  top: clamp(18px, 2.2vw, 28px);
+  left: clamp(18px, 2.2vw, 28px);
+  display: inline-flex;
+  align-items: center;
+  min-height: 42px;
+  padding: 0 18px;
+  border: 1px solid rgba(184, 121, 40, 0.48);
+  border-radius: 999px;
+  background: rgba(255, 250, 236, 0.82);
+  color: #8a4f13;
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: 0 10px 22px rgba(117, 74, 21, 0.12);
+}
+
+body.faith-page .faith-picker-home:hover {
+  color: #5d2f19;
+  border-color: rgba(184, 121, 40, 0.78);
+}
+
+body.faith-page.faith-choosing-set .faith-picker-head {
+  max-width: 860px;
+  margin: 0 auto;
+  padding-top: 26px;
+}
+
+body.faith-page.faith-choosing-set .faith-picker-head h2 {
+  font-size: clamp(34px, 4.2vw, 64px);
+}
+
+body.faith-page.faith-choosing-set .faith-picker-head p:last-child {
+  font-size: clamp(16px, 1.25vw, 20px);
+}
+
+body.faith-page.faith-choosing-set .faith-picker-grid {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: clamp(16px, 2vw, 26px);
+}
+
+body.faith-page.faith-choosing-set .faith-picker-item {
+  min-height: 168px;
+  padding: 22px;
+}
+
+:root[data-theme="dark"] body.faith-page .faith-picker-home {
+  background: rgba(48, 33, 22, 0.88);
+  color: #ffd27c;
+  border-color: rgba(184, 121, 40, 0.72);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.28);
+}
+
+@media (max-width: 680px) {
+  body.faith-page.faith-choosing-set .faith-shell {
+    padding: 14px;
+  }
+
+  body.faith-page.faith-choosing-set .faith-set-picker {
+    min-height: calc(100vh - 90px);
+    padding: 74px 16px 18px;
+    justify-content: flex-start;
+  }
+
+  body.faith-page .faith-picker-home {
+    min-height: 38px;
+    padding: 0 14px;
+    font-size: 13px;
+  }
+
+  body.faith-page.faith-choosing-set .faith-picker-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 14.49. Clean faith picker heading and lock mask image */
+body.faith-page.faith-choosing-set .faith-set-picker {
+  justify-content: flex-start;
+}
+
+body.faith-page.faith-choosing-set .faith-picker-head {
+  max-width: 980px;
+  margin: clamp(58px, 7vh, 86px) auto 0;
+  padding-top: 0;
+}
+
+body.faith-page.faith-choosing-set .faith-picker-head .eyebrow,
+body.faith-page.faith-choosing-set .faith-picker-head p {
+  display: none;
+}
+
+body.faith-page.faith-choosing-set .faith-picker-head h2 {
+  margin: 0;
+  font-size: clamp(42px, 5.2vw, 82px);
+  line-height: 1.04;
+}
+
+body.faith-page.faith-choosing-set .faith-picker-grid {
+  width: 100%;
+  margin-top: clamp(28px, 5vh, 56px);
+}
+
+body.faith-page .faith-mask-tile span {
+  display: grid;
+  place-items: center;
+  width: clamp(44px, 8vw, 86px);
+  aspect-ratio: 1;
+}
+
+body.faith-page .faith-mask-tile span img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.32));
+  pointer-events: none;
+}
+
+@media (max-width: 680px) {
+  body.faith-page.faith-choosing-set .faith-picker-head {
+    margin-top: 54px;
+  }
+
+  body.faith-page.faith-choosing-set .faith-picker-head h2 {
+    font-size: clamp(30px, 10vw, 46px);
+  }
+
+  body.faith-page .faith-mask-tile span {
+    width: clamp(34px, 12vw, 54px);
+  }
+}
+
+/* 14.50. Clean faith quiz banner, lock icon, and panel spacing */
+body.faith-page:not(.faith-choosing-set) .faith-hero-panel.has-banner-image {
+  min-height: clamp(180px, 23vw, 310px);
+  grid-template-columns: 1fr;
+  background-image: var(--faith-banner-image) !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  overflow: hidden;
+}
+
+body.faith-page:not(.faith-choosing-set) .faith-hero-panel.has-banner-image .faith-back-button,
+body.faith-page:not(.faith-choosing-set) .faith-hero-panel.has-banner-image .faith-hero-copy,
+body.faith-page:not(.faith-choosing-set) .faith-hero-panel.has-banner-image .faith-set-switcher {
+  display: none !important;
+}
+
+body.faith-page:not(.faith-choosing-set) .faith-game {
+  padding: 0 clamp(14px, 1.8vw, 26px) 26px;
+  box-sizing: border-box;
+}
+
+body.faith-page .faith-mask-tile .faith-lock-icon {
+  display: block !important;
+  width: clamp(42px, 7.5vw, 82px) !important;
+  height: clamp(42px, 7.5vw, 82px) !important;
+  min-width: 0 !important;
+  aspect-ratio: 1 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: url("/assets/faith-lock.png") center / contain no-repeat !important;
+  box-shadow: none !important;
+  filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.34));
+}
+
+body.faith-page .faith-mask-tile .faith-lock-icon::before,
+body.faith-page .faith-mask-tile .faith-lock-icon::after {
+  display: none !important;
+  content: none !important;
+}
+
+@media (max-width: 680px) {
+  body.faith-page:not(.faith-choosing-set) .faith-game {
+    padding: 0 12px 18px;
+  }
+
+  body.faith-page .faith-mask-tile .faith-lock-icon {
+    width: clamp(32px, 11vw, 52px) !important;
+    height: clamp(32px, 11vw, 52px) !important;
+  }
+}
+
+/* 14.51. Quiz panel fit, compact locks, and return button */
+body.faith-page:not(.faith-choosing-set) .faith-shell {
+  padding-left: clamp(10px, 1.4vw, 22px);
+  padding-right: clamp(10px, 1.4vw, 22px);
+}
+
+body.faith-page:not(.faith-choosing-set) .faith-hero-panel.has-banner-image {
+  margin-left: clamp(10px, 1.4vw, 22px);
+  margin-right: clamp(10px, 1.4vw, 22px);
+  width: auto;
+}
+
+body.faith-page:not(.faith-choosing-set) .faith-game {
+  align-items: stretch;
+  padding-left: clamp(10px, 1.4vw, 22px);
+  padding-right: clamp(10px, 1.4vw, 22px);
+}
+
+body.faith-page:not(.faith-choosing-set) .faith-question-card,
+body.faith-page:not(.faith-choosing-set) .faith-visual-card {
+  height: 100%;
+}
+
+body.faith-page:not(.faith-choosing-set) .faith-question-card {
+  position: static;
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+}
+
+body.faith-page:not(.faith-choosing-set) .faith-visual-card {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+}
+
+body.faith-page:not(.faith-choosing-set) .faith-infographic-wrap {
+  flex: 1 1 auto;
+  min-height: clamp(420px, 48vw, 720px);
+}
+
+body.faith-page:not(.faith-choosing-set) .faith-infographic-wrap img {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  object-fit: cover;
+  object-position: center;
+}
+
+body.faith-page .faith-mask-tile .faith-lock-icon {
+  width: clamp(13px, 2.25vw, 25px) !important;
+  height: clamp(13px, 2.25vw, 25px) !important;
+  opacity: 0.7;
+}
+
+body.faith-page .faith-return-button {
+  width: min(100%, 220px);
+  min-height: 44px;
+  margin: auto auto 0;
+  justify-content: center;
+  font-weight: 800;
+}
+
+@media (max-width: 1180px) {
+  body.faith-page:not(.faith-choosing-set) .faith-question-card,
+  body.faith-page:not(.faith-choosing-set) .faith-visual-card {
+    height: auto;
+  }
+}
+
+@media (max-width: 680px) {
+  body.faith-page:not(.faith-choosing-set) .faith-shell,
+  body.faith-page:not(.faith-choosing-set) .faith-game {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  body.faith-page:not(.faith-choosing-set) .faith-hero-panel.has-banner-image {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  body.faith-page:not(.faith-choosing-set) .faith-infographic-wrap {
+    min-height: 320px;
+  }
+
+  body.faith-page .faith-mask-tile .faith-lock-icon {
+    width: clamp(10px, 3.3vw, 16px) !important;
+    height: clamp(10px, 3.3vw, 16px) !important;
+  }
+}
+
+/* 14.52. Faith set picker home button and smaller title */
+body.faith-page.faith-choosing-set .faith-picker-home {
+  display: inline-flex;
+}
+
+body.faith-page.faith-choosing-set .faith-picker-head h2 {
+  font-size: clamp(34px, 4.16vw, 66px);
+}
+
+@media (max-width: 680px) {
+  body.faith-page.faith-choosing-set .faith-picker-head h2 {
+    font-size: clamp(24px, 8vw, 37px);
+  }
+}
+/* 14.53. Stable quiz panels and uncropped infographic */
+body.faith-page:not(.faith-choosing-set) .faith-question-card .faith-options,
+body.faith-page:not(.faith-choosing-set) .faith-question-card .faith-feedback-box {
+  width: 100%;
+  max-width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+  box-sizing: border-box;
+}
+
+body.faith-page:not(.faith-choosing-set) .faith-question-card .faith-option {
+  height: 68px;
+  min-height: 68px;
+  max-height: 68px;
+  overflow: hidden;
+}
+
+body.faith-page:not(.faith-choosing-set) .faith-question-card .faith-feedback-box {
+  height: 126px;
+  min-height: 126px;
+  max-height: 126px;
+  overflow: hidden;
+}
+
+body.faith-page:not(.faith-choosing-set) .faith-question-card .faith-feedback {
+  max-height: 96px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+body.faith-page:not(.faith-choosing-set) .faith-infographic-wrap {
+  flex: 0 0 auto;
+  min-height: 0;
+}
+
+body.faith-page:not(.faith-choosing-set) .faith-infographic-wrap img {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  object-fit: contain;
+  object-position: center;
+}
+
+body.faith-page .faith-mask-tile .faith-lock-icon {
+  width: clamp(26px, 4.5vw, 50px) !important;
+  height: clamp(26px, 4.5vw, 50px) !important;
+}
+
+@media (max-width: 680px) {
+  body.faith-page:not(.faith-choosing-set) .faith-question-card .faith-option {
+    height: 64px;
+    min-height: 64px;
+    max-height: 64px;
+  }
+
+  body.faith-page:not(.faith-choosing-set) .faith-question-card .faith-feedback-box {
+    height: 112px;
+    min-height: 112px;
+    max-height: 112px;
+  }
+
+  body.faith-page:not(.faith-choosing-set) .faith-question-card .faith-feedback {
+    max-height: 82px;
+  }
+
+  body.faith-page .faith-mask-tile .faith-lock-icon {
+    width: clamp(20px, 6.6vw, 32px) !important;
+    height: clamp(20px, 6.6vw, 32px) !important;
+  }
+}
+/* 14.54. Balanced faith quiz actions */
+body.faith-page:not(.faith-choosing-set) .faith-question-card .faith-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(128px, 1fr));
+  width: 100%;
+  max-width: 100%;
+  margin: 18px 0 0;
+  gap: 12px;
+}
+
+body.faith-page:not(.faith-choosing-set) .faith-question-card .faith-actions .primary-button,
+body.faith-page:not(.faith-choosing-set) .faith-question-card .faith-actions .ghost-button {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  margin: 0;
+  justify-content: center;
+  border-radius: 999px;
+}
+
+body.faith-page:not(.faith-choosing-set) .faith-question-card .faith-return-button {
+  position: static;
+  display: inline-flex;
+  align-items: center;
+  height: 44px;
+  padding: 0 18px;
+  border: 1px solid rgba(184, 121, 40, 0.48);
+  background: rgba(255, 250, 236, 0.82);
+  color: #8a4f13;
+  box-shadow: 0 10px 22px rgba(117, 74, 21, 0.12);
+  font-weight: 800;
+}
+
+body.faith-page:not(.faith-choosing-set) .faith-question-card .faith-return-button:hover {
+  color: #5d2f19;
+  border-color: rgba(184, 121, 40, 0.78);
+}
+
+:root[data-theme="dark"] body.faith-page:not(.faith-choosing-set) .faith-question-card .faith-return-button {
+  background: rgba(48, 33, 22, 0.88);
+  color: #ffd27c;
+  border-color: rgba(184, 121, 40, 0.72);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.28);
+}
+
+@media (max-width: 680px) {
+  body.faith-page:not(.faith-choosing-set) .faith-question-card .faith-actions {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}
+/* 14.56. Hide banner in faith quiz */
+body.faith-page:not(.faith-choosing-set) .faith-hero-panel {
+  display: none !important;
+}
+
+body.faith-page:not(.faith-choosing-set) .faith-game {
+  margin-top: 0;
+  padding-top: 0;
+}
+/* 14.60. Per-set image inside faith picker card */
+body.faith-page.faith-choosing-set .faith-picker-item.has-image {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  align-content: space-between;
+  background: #2d2016;
+  color: #ffffff;
+}
+
+body.faith-page.faith-choosing-set .faith-picker-item.has-image::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(25, 15, 9, 0.18), rgba(25, 15, 9, 0.76));
+  pointer-events: none;
+}
+
+body.faith-page.faith-choosing-set .faith-picker-item-image {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  pointer-events: none;
+}
+
+body.faith-page.faith-choosing-set .faith-picker-item.has-image > span,
+body.faith-page.faith-choosing-set .faith-picker-item.has-image > strong {
+  position: relative;
+  z-index: 2;
+}
+
+body.faith-page.faith-choosing-set .faith-picker-item.has-image > span {
+  background: rgba(74, 39, 16, 0.86);
+  color: #ffe19a;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.22);
+}
+
+body.faith-page.faith-choosing-set .faith-picker-item.has-image > strong {
+  color: #ffffff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.82);
+}
+
+:root[data-theme="dark"] body.faith-page.faith-choosing-set .faith-picker-item.has-image {
+  background: #24170f;
+  border-color: rgba(218, 154, 55, 0.78);
+}
+/* 14.61. Image-only faith picker card */
+body.faith-page.faith-choosing-set .faith-picker-item.has-image {
+  padding: 0;
+}
+
+body.faith-page.faith-choosing-set .faith-picker-item.has-image::after {
+  display: none;
 }

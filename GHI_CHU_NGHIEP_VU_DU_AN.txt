@@ -1,4 +1,4 @@
-﻿# **GHI CHU NGHIEP VU VA CHUC NANG DU AN BAI GIANG TREN NUI**
+# **GHI CHU NGHIEP VU VA CHUC NANG DU AN BAI GIANG TREN NUI**
 ------------------------------------------------------------
 Cap nhat: 13/07/2026
 
@@ -1780,3 +1780,687 @@ Vi du neu dap an dung la **C**, truong answer phai la:
 - data.js
 - styles.css
 - GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+---
+
+### **14.41. Dieu chinh Kham Pha Duc Tin va backup**
+
+**Ngay cap nhat:** 16/07/2026
+
+**Chuc nang:**
+- Backup JSON tiep tuc xuat collection siteSettings va bo sung them truong top-level `faithDiscovery` de de nhin thay noi dung Kham Pha Duc Tin trong file backup.
+- Them `metadata.faithDiscovery` trong file backup de tom tat activeSetId, so bo cau hoi, tong so cau hoi va trang thai co infographic.
+- Import backup ho tro tuong thich neu file backup co truong `faithDiscovery` top-level nhung thieu `collections.siteSettings`.
+- Chinh nut Quay lai Trang chu trong man hinh Kham Pha Duc Tin thanh dang pill nho gon, khong con bi ep chu trong nut tron.
+- Bo hai hieu ung vong tron trang tri trong banner Kham Pha Duc Tin.
+- Chuyen o diem xuong duoi hinh infographic va canh giua.
+- Lop che infographic chi hien so thu tu, bo icon khoa/cham tron trang tri.
+- Dieu chinh dark mode rieng cho body.faith-page, panel, nut, tien trinh va infographic de hai hoa voi tong mau toi cua website.
+- Cap nhat version CSS/data/faith-discovery de trinh duyet tai lai file moi.
+
+**File lien quan:**
+- faith-discovery.html
+- styles.css
+- data.js
+- index.html
+- detail.html
+- category.html
+- prayer-request.html
+- accounts.html
+- admin.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Da kiem tra so dau ngoac CSS: `{` = 637 va `}` = 637.
+- Chua chay duoc `node --check` vi may hien khong nhan lenh node trong terminal.
+
+---
+
+### **14.42. Banner rieng theo tung bo cau hoi Kham Pha Duc Tin**
+
+**Ngay cap nhat:** 16/07/2026
+
+**Chuc nang:**
+- Them truong URL hinh banner trong tab Kham Pha Duc Tin cua trang quan ly.
+- Admin co the upload banner bang Cloudinary rieng cho tung bo cau hoi, tu dong dien URL vao o banner va xem truoc anh.
+- Moi bo cau hoi luu them truong `bannerImageUrl` ben canh `infographicUrl` va `questions`.
+- Trang Kham Pha Duc Tin tu dong lay `bannerImageUrl` cua bo cau hoi dang chon de hien lam anh nen banner.
+- Khi nguoi xem doi bo cau hoi, banner cung doi theo bo do.
+- Neu bo cau hoi chua co banner, trang quay ve nen banner mac dinh hien tai.
+- File backup/metadata bo sung thong tin `hasBanner` cho tung bo cau hoi.
+- Cap nhat version CSS/JS/data sang `20260716-faith-banner-image` de trinh duyet tai lai file moi.
+
+**File lien quan:**
+- admin.html
+- admin.js
+- faith-discovery.js
+- data.js
+- styles.css
+- index.html
+- detail.html
+- category.html
+- prayer-request.html
+- accounts.html
+- faith-discovery.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Da kiem tra CSS can ngoac: `{` = 643 va `}` = 643.
+- Chua chay duoc `node --check` vi may hien khong nhan lenh node trong terminal.
+
+---
+
+### **14.43. Man hinh chon cau hoi Kham Pha Duc Tin**
+
+**Ngay cap nhat:** 16/07/2026
+
+**Chuc nang:**
+- Giu tieu de banner Kham Pha Duc Tin co dinh la "Kham Pha Duc Tin", khong hien ten bo cau hoi trong banner.
+- Them man hinh chon cau hoi truoc khi nguoi xem vao tra loi.
+- Moi cau hoi trong man hinh chon co nut rieng, bam vao se nhay dung cau hoi tuong ung.
+- Cac cau hoi da tra loi dung duoc danh dau trang thai "Da mo" trong man hinh chon cau hoi.
+- Them nut "Chon cau hoi" trong man hinh tra loi de quay lai danh sach cau hoi.
+- Sau khi tra loi het cau hoi, nut quay lai man hinh chon cau hoi van hien de nguoi xem quay lai xem cac cau da hoan thanh.
+- Giam co chu cau hoi trong card tra loi khoang 30% va doi sang font serif trang trong hon.
+- Tang do toi cua lop che infographic de cac manh chua mo ro hon.
+- Chinh nut Quay lai Trang chu nam gon trong khung banner va giam do trong suot xuong muc 30%.
+- Cap nhat version faith-discovery.js va styles.css sang `20260716-faith-question-picker` de trinh duyet tai lai file moi.
+
+**File lien quan:**
+- faith-discovery.html
+- faith-discovery.js
+- styles.css
+- index.html
+- detail.html
+- category.html
+- prayer-request.html
+- accounts.html
+- admin.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Da kiem tra JS can ngoac: `{` = 98, `}` = 98, `(` = 286, `)` = 286.
+- Da kiem tra CSS can ngoac: `{` = 676 va `}` = 676.
+- Chua chay duoc `node --check` vi may hien khong nhan lenh node trong terminal.
+
+---
+
+### **14.44. Rollback chon cau hoi thanh chon bo cau hoi**
+
+**Ngay cap nhat:** 16/07/2026
+
+**Chuc nang:**
+- Rollback y tuong man hinh chon tung cau hoi vi khong dung yeu cau.
+- Tao man hinh dau vao de chon ten bo cau hoi trong Kham Pha Duc Tin.
+- Khi nguoi xem bam vao ten bo cau hoi, he thong moi chuyen sang man hinh tra loi cau hoi cua bo do.
+- Sau khi chon bo cau hoi, quiz bat dau tu cau dau tien cua bo da chon va infographic/banner tuong ung duoc nap theo bo.
+- Xoa nut/logic "Chon cau hoi" trong man hinh tra loi.
+- Giu cac tinh chinh da dung: banner khong hien ten bo cau hoi, chu cau hoi nho hon, lop che toi hon, nut quay lai nam gon trong banner.
+- Cap nhat version faith-discovery.js va styles.css sang `20260716-faith-set-picker` de trinh duyet tai lai file moi.
+
+**File lien quan:**
+- faith-discovery.html
+- faith-discovery.js
+- styles.css
+- index.html
+- detail.html
+- category.html
+- prayer-request.html
+- accounts.html
+- admin.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Da kiem tra khong con cac dau vet QuestionPicker/faithQuestionPicker/faithPickerButton/renderQuestionPicker/startFaithQuestion.
+- Da kiem tra JS can ngoac: `{` = 97, `}` = 97, `(` = 289, `)` = 289.
+- Da kiem tra CSS can ngoac: `{` = 681 va `}` = 681.
+- Chua chay duoc `node --check` vi may hien khong nhan lenh node trong terminal.
+
+---
+
+### **14.45. Chi hien panel chon bo cau hoi va dung khung anh cho cau hoi**
+
+**Ngay cap nhat:** 16/07/2026
+
+**Chuc nang:**
+- Sao chep anh `Pannel cau hoi.png` vao source tai `assets/panel-cau-hoi.png` de dung lam khung hien thi cau hoi trong trang Kham Pha Duc Tin.
+- Khi moi vao Kham Pha Duc Tin, man hinh chi hien panel chon bo cau hoi trong phan noi dung, an banner gioi thieu va footer cua trang faith de giao dien tap trung dung yeu cau.
+- Khi nguoi xem chon mot bo cau hoi, he thong go trang thai chon bo va chuyen sang man hinh tra loi cau hoi nhu quy trinh cu.
+- Thay nen/khung cua the cau hoi bang anh `assets/panel-cau-hoi.png`, co style rieng cho giao dien sang, toi va mobile.
+- Cap nhat cache version CSS/JS sang `20260716-faith-panel-frame`.
+
+**File lien quan:**
+- faith-discovery.html
+- faith-discovery.js
+- styles.css
+- assets/panel-cau-hoi.png
+- index.html
+- detail.html
+- category.html
+- prayer-request.html
+- accounts.html
+- admin.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Da kiem tra file `assets/panel-cau-hoi.png` ton tai trong source.
+- Da kiem tra `showSetPicker()` co them class `faith-choosing-set` va `startFaithSet()` go class nay khi bat dau quiz.
+- Da kiem tra JS can ngoac: `{` = 97, `}` = 97, `(` = 291, `)` = 291.
+- Chua chay duoc `node --check` vi may hien khong nhan lenh node trong terminal.
+
+---
+
+### **14.46. Don man chon bo cau hoi va rollback khung cau hoi ban dau**
+
+**Ngay cap nhat:** 16/07/2026
+
+**Chuc nang:**
+- An hoan toan khu vuc tra loi cau hoi va infographic khi trang Kham Pha Duc Tin dang o trang thai chon bo cau hoi, de man hinh chi con panel chon bo cau hoi.
+- Giu luong chon bo cau hoi: sau khi bam vao mot bo, he thong moi hien man hinh tra loi cau hoi.
+- Rollback khung hien thi cau hoi ve dang card ban dau, khong dung anh `assets/panel-cau-hoi.png` lam background cho the cau hoi nua.
+- Them override dark mode va mobile cho khung cau hoi sau khi rollback.
+- Cap nhat cache version CSS/JS sang `20260716-faith-picker-clean`.
+
+**File lien quan:**
+- faith-discovery.html
+- faith-discovery.js
+- styles.css
+- index.html
+- detail.html
+- category.html
+- prayer-request.html
+- accounts.html
+- admin.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Da kiem tra CSS can ngoac: `{` = 708 va `}` = 708.
+- Da kiem tra JS can ngoac: `{` = 97, `}` = 97, `(` = 291, `)` = 291.
+- Chua chay duoc `node --check` vi may hien khong nhan lenh node trong terminal.
+
+---
+
+### **14.47. Chan hien thoang man cau hoi truoc khi vao chon bo cau hoi**
+
+**Ngay cap nhat:** 16/07/2026
+
+**Chuc nang:**
+- Them class `faith-choosing-set` ngay tren the `body` cua `faith-discovery.html` de trang Kham Pha Duc Tin vao dung trang thai chon bo cau hoi tu lan render dau tien.
+- Them CSS `body.faith-page .faith-game[hidden]` voi `display: none !important` de thuoc tinh `hidden` khong bi rule `.faith-game { display: grid; }` ghi de.
+- Giu nguyen luong cu: sau khi nguoi xem chon bo cau hoi, JS go class `faith-choosing-set` va hien man hinh tra loi.
+- Cap nhat cache version CSS/JS sang `20260716-faith-picker-initial`.
+
+**File lien quan:**
+- faith-discovery.html
+- faith-discovery.js
+- styles.css
+- index.html
+- detail.html
+- category.html
+- prayer-request.html
+- accounts.html
+- admin.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Da kiem tra `body` cua faith-discovery co class `faith-page faith-choosing-set`.
+- Da kiem tra section `.faith-game` van co thuoc tinh `hidden` luc dau.
+- Da kiem tra CSS can ngoac: `{` = 710 va `}` = 710.
+- Da kiem tra JS can ngoac: `{` = 97, `}` = 97, `(` = 291, `)` = 291.
+- Chua chay duoc `node --check` vi may hien khong nhan lenh node trong terminal.
+
+---
+
+### **14.48. Tang kich thuoc panel chon bo cau hoi va them nut ve trang chu**
+
+**Ngay cap nhat:** 16/07/2026
+
+**Chuc nang:**
+- Mo rong panel chon bo cau hoi trong trang Kham Pha Duc Tin de gan nhu day man hinh, giup khu vuc chon bo cau hoi trong rong rai hon.
+- Them nut `Quay lai Trang chu` nam trong panel chon bo cau hoi, lien ket ve `/`.
+- Tang kich thuoc tieu de, mo ta, luoi va item trong man hinh chon bo cau hoi; them style rieng cho giao dien toi va mobile.
+- Cap nhat cache version CSS/JS sang `20260716-faith-picker-full`.
+
+**File lien quan:**
+- faith-discovery.html
+- styles.css
+- index.html
+- detail.html
+- category.html
+- prayer-request.html
+- accounts.html
+- admin.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Da kiem tra nut `faith-picker-home` da duoc them vao trong `faith-set-picker`.
+- Da kiem tra version cache trong cac file HTML da doi sang `20260716-faith-picker-full`.
+- Da kiem tra CSS can ngoac: `{` = 725 va `}` = 725.
+- Chua chay duoc `node --check` vi may hien khong nhan lenh node trong terminal.
+
+---
+
+### **14.49. Rut gon tieu de chon bo cau hoi va thay so bang anh o khoa**
+
+**Ngay cap nhat:** 16/07/2026
+
+**Chuc nang:**
+- Trong man hinh chon bo cau hoi cua Kham Pha Duc Tin, chi giu lai dong `Chon chu de muon kham pha`, bo dong eyebrow `Chon bo cau hoi` va dong mo ta ben duoi.
+- Dua tieu de chon bo cau hoi len cao hon trong panel, nhung van nam thap hon nut `Quay lai Trang chu`.
+- Sao chep anh `o khoa.png` vao source tai `assets/faith-lock.png`.
+- Thay cac so tren lop che infographic bang anh o khoa `assets/faith-lock.png`.
+- Cap nhat cache version CSS/JS sang `20260716-faith-lock-picker`.
+
+**File lien quan:**
+- faith-discovery.html
+- faith-discovery.js
+- styles.css
+- assets/faith-lock.png
+- index.html
+- detail.html
+- category.html
+- prayer-request.html
+- accounts.html
+- admin.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Da kiem tra `assets/faith-lock.png` ton tai trong source.
+- Da kiem tra HTML cua `faith-set-picker` chi con the `h2` trong `faith-picker-head`.
+- Da kiem tra JS render mask tile bang anh o khoa thay vi so.
+- Da kiem tra CSS can ngoac: `{` = 736 va `}` = 736.
+- Da kiem tra JS can ngoac: `{` = 96, `}` = 96, `(` = 291, `)` = 291.
+- Chua chay duoc `node --check` vi may hien khong nhan lenh node trong terminal.
+
+
+---
+
+### **14.50. Lam sach banner quiz va sua icon o khoa**
+
+**Ngay cap nhat:** 16/07/2026
+
+**Chuc nang:**
+- Bo nut `Quay lai Trang chu` trong panel chon bo cau hoi.
+- Khi da vao man hinh tra loi va banner co hinh, an nut quay lai, tieu de `Kham pha duc tin`, mo ta va nut chon bo trong banner; banner chi con hien hinh anh va fill day panel.
+- Doi cach hien o khoa tren lop che infographic tu the `img` sang class `faith-lock-icon` dung CSS background `/assets/faith-lock.png` de tranh loi khong hien anh.
+- Them padding hai ben cho khu vuc panel cau hoi/infographic de cac panel khong cham vao duong ke trai, phai.
+- Cap nhat cache version CSS/JS sang `20260716-faith-clean-banner-lock`.
+
+**File lien quan:**
+- faith-discovery.html
+- faith-discovery.js
+- styles.css
+- assets/faith-lock.png
+- index.html
+- detail.html
+- category.html
+- prayer-request.html
+- accounts.html
+- admin.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Da kiem tra `assets/faith-lock.png` ton tai trong source.
+- Da kiem tra mask tile render bang `faith-lock-icon`.
+- Da kiem tra banner quiz dung `background-image: var(--faith-banner-image)` va an chu/nut khi co banner.
+- Da kiem tra CSS can ngoac: `{` = 744 va `}` = 744.
+- Da kiem tra JS can ngoac: `{` = 96, `}` = 96, `(` = 291, `)` = 291.
+- Chua chay duoc `node --check` vi may hien khong nhan lenh node trong terminal.
+
+---
+
+### **14.51. Fill infographic, thu nho o khoa va them nut quay lai chon bo**
+
+**Ngay cap nhat:** 16/07/2026
+
+**Chuc nang:**
+- Chinh hinh infographic trong man hinh tra loi cau hoi sang `object-fit: cover` va cho wrap linh hoat chieu cao de hinh fill day panel.
+- Giam kich thuoc icon o khoa con khoang 30% so voi truoc va dat opacity 70%.
+- Chinh panel cau hoi va panel infographic trong man hinh tra loi cung stretch chieu cao tren desktop.
+- Them nut `Quay Lai` o phia duoi panel cau hoi; khi bam nut nay se reset tien do cau hoi hien tai va quay ve man hinh chon bo cau hoi.
+- Them padding hai ben cho banner lon va khu vuc panel tra loi de khong cham vao duong ke trai, phai.
+- Cap nhat cache version CSS/JS sang `20260716-faith-quiz-panel-fit`.
+
+**File lien quan:**
+- faith-discovery.html
+- faith-discovery.js
+- styles.css
+- index.html
+- detail.html
+- category.html
+- prayer-request.html
+- accounts.html
+- admin.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Da kiem tra nut `faithBackToSetsButton` co trong HTML va duoc gan event `returnToFaithSetPicker`.
+- Da kiem tra CSS can ngoac: `{` = 761 va `}` = 761.
+- Da kiem tra JS can ngoac: `{` = 97, `}` = 97, `(` = 301, `)` = 301.
+- Chua chay duoc `node --check` vi may hien khong nhan lenh node trong terminal.
+
+
+---
+
+### **14.52. Them nut ve trang chu va giam chu tieu de chon bo**
+
+**Ngay cap nhat:** 16/07/2026
+
+**Chuc nang:**
+- Them lai nut `Quay lai Trang chu` trong man hinh chon bo cau hoi cua Kham Pha Duc Tin.
+- Giam kich thuoc chu `Chon chu de muon kham pha` khoang 20% so voi truoc, co responsive rieng cho mobile.
+- Cap nhat cache version CSS/JS sang `20260716-faith-picker-home-title`.
+
+**File lien quan:**
+- faith-discovery.html
+- styles.css
+- index.html
+- detail.html
+- category.html
+- prayer-request.html
+- accounts.html
+- admin.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Da kiem tra nut `faithPickerHomeButton` co trong `faith-set-picker`.
+- Da kiem tra CSS can ngoac: `{` = 765 va `}` = 765.
+- Da kiem tra JS can ngoac: `{` = 97, `}` = 97, `(` = 301, `)` = 301.
+- Chua chay duoc `node --check` vi may hien khong nhan lenh node trong terminal.
+---
+
+### **14.53. Co dinh panel dap an, giai thich va hien day du infographic**
+
+**Ngay cap nhat:** 16/07/2026
+
+**Chuc nang:**
+- Tang kich thuoc hinh o khoa tren cac manh che infographic len gap doi tren desktop va mobile, giu opacity 70% nhu truoc.
+- Chinh khu vuc dap an va panel giai thich cung chieu rong 100% trong panel cau hoi.
+- Co dinh chieu cao moi dap an de cac lua chon khong thay doi kich thuoc theo noi dung.
+- Co dinh panel giai thich; noi dung dai se cuon ben trong thay vi lam thay doi kich thuoc panel.
+- Doi infographic tu object-fit cover sang hien thi theo ty le goc voi object-fit contain va height auto, tranh cat mat noi dung hoac keo gian anh.
+- Cap nhat cache version CSS sang 20260716-faith-quiz-fixed-panels.
+
+**File lien quan:**
+- styles.css
+- accounts.html
+- admin.html
+- category.html
+- detail.html
+- faith-discovery.html
+- index.html
+- prayer-request.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Localhost http://localhost:5500/faith-discovery.html tra ve HTTP 200 va da nhan cache version CSS moi.
+- CSS can ngoac: { = 777 va } = 777.
+- Da xac nhan rule cuoi cung dat o khoa desktop 26-50px, mobile 20-32px.
+- Da xac nhan dap an co dinh 68px (mobile 64px), panel giai thich 126px (mobile 112px).
+- Da xac nhan infographic dung height auto va object-fit contain.
+- Chua chup duoc anh kiem thu bang trinh duyet tich hop do plugin bi Windows chan quyen ACL; da kiem tra bang localhost va cau truc CSS.
+---
+
+### **14.54. Bo nut goi y va sap xep lai nut hanh dong**
+
+**Ngay cap nhat:** 16/07/2026
+
+**Chuc nang:**
+- Bo nut Goi y khoi man hinh tra loi cau hoi.
+- Xoa ham showFaithHint va event click cua nut Goi y trong JavaScript.
+- Chuyen nut Quay Lai vao cung nhom voi nut Cau tiep theo va Choi lai.
+- Sap xep cac nut thanh cac cot bang nhau; tu dong chuyen tu 2 sang 3 cot theo trang thai nut Choi lai.
+- Tren mobile, cac nut xep thanh mot cot de tranh chen chu va giu khoang cach de bam.
+- Chinh nut Quay Lai thanh dang pill, mau nen, vien, bo goc va bong do giong nut Quay lai Trang chu; co mau rieng cho giao dien toi.
+- Cap nhat cache version CSS va JavaScript sang 20260716-faith-quiz-actions.
+
+**File lien quan:**
+- faith-discovery.html
+- faith-discovery.js
+- styles.css
+- accounts.html
+- admin.html
+- category.html
+- detail.html
+- index.html
+- prayer-request.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Localhost faith-discovery.html va styles.css deu tra ve HTTP 200.
+- Da xac nhan khong con faithHintButton va showFaithHint trong source.
+- Da xac nhan faithBackToSetsButton van ton tai va event quay lai bo cau hoi van hoat dong.
+- CSS can ngoac: { = 784 va } = 784.
+- JavaScript can ngoac: { = 95, } = 95, ( = 296 va ) = 296.
+- Chua chay duoc node --check vi may hien khong nhan lenh node trong terminal.
+---
+
+### **14.55. Banner 16:9 nam duoi panel cau hoi va infographic**
+
+**Ngay cap nhat:** 16/07/2026
+
+**Chuc nang:**
+- Tang panel banner cua man hinh tra loi thanh ty le co dinh 16:9.
+- Chuyen banner thanh lop nen nam cung vung luoi va phia duoi panel cau hoi cung panel infographic.
+- Dat panel cau hoi va infographic o lop tren bang z-index de hai panel hien thi chong len banner.
+- Chi kich hoat bo cuc chong lop khi bo cau hoi co URL banner.
+- Khi bo cau hoi khong co banner, giu nguyen bo cuc cu va khong tao khoang trong.
+- Khi quay lai man hinh chon bo, tu dong xoa trang thai banner khoi body.
+- Cap nhat cache version CSS va JavaScript sang 20260716-faith-banner-layer.
+
+**File lien quan:**
+- faith-discovery.js
+- styles.css
+- accounts.html
+- admin.html
+- category.html
+- detail.html
+- faith-discovery.html
+- index.html
+- prayer-request.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Da xac nhan body duoc them/xoa class faith-has-banner theo URL banner.
+- Da xac nhan banner co aspect-ratio 16/9, z-index 0; khu vuc game co z-index 1.
+- Localhost faith-discovery.html va styles.css deu tra ve HTTP 200.
+- CSS can ngoac: { = 790 va } = 790.
+- JavaScript can ngoac: { = 95, } = 95, ( = 298 va ) = 298.
+- Chua chay duoc node --check vi may hien khong nhan lenh node trong terminal.
+---
+
+### **14.56. Bo banner khoi man hinh tra loi cau hoi**
+
+**Ngay cap nhat:** 16/07/2026
+
+**Chuc nang:**
+- Bo hoan toan panel banner hinh anh khoi man hinh tra loi cau hoi.
+- Go bo bo cuc banner 16:9 nam chong duoi panel cau hoi va infographic.
+- Dua panel cau hoi va infographic tro lai bo cuc binh thuong, khong de lai khoang trong phia tren.
+- Giu nguyen du lieu URL banner va chuc nang quan ly banner; chi an banner o man hinh tra loi.
+- Xoa class trang thai faith-has-banner khong con su dung trong JavaScript.
+- Cap nhat cache version CSS va JavaScript sang 20260716-faith-quiz-no-banner.
+
+**File lien quan:**
+- faith-discovery.js
+- styles.css
+- accounts.html
+- admin.html
+- category.html
+- detail.html
+- faith-discovery.html
+- index.html
+- prayer-request.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Da xac nhan khong con rule 14.55 va class faith-has-banner trong source.
+- Da xac nhan man hinh tra loi an faith-hero-panel bang display none.
+- Localhost faith-discovery.html va styles.css deu tra ve HTTP 200.
+- CSS can ngoac: { = 786 va } = 786.
+- JavaScript can ngoac: { = 95, } = 95, ( = 296 va ) = 296.
+---
+
+### **14.57. Them nen Puzzle cho man hinh chon chu de**
+
+**Ngay cap nhat:** 16/07/2026
+
+**Chuc nang:**
+- Sao chep anh Puzzle.webp vao assets/faith-picker-puzzle.webp de su dung noi bo trong source.
+- Chen anh lam background cua panel chon chu de trong man hinh Kham Pha Duc Tin.
+- Cho anh phu day panel bang background-size cover.
+- Lam mo anh voi blur 4px va opacity thap de khong lan at tieu de, nut va cac the chu de.
+- Them lop phu mau rieng cho giao dien sang va toi de duy tri do tuong phan.
+- Dat toan bo noi dung cua panel len lop z-index cao hon background.
+- Cap nhat cache version CSS sang 20260716-faith-picker-puzzle-bg.
+
+**File lien quan:**
+- assets/faith-picker-puzzle.webp
+- styles.css
+- accounts.html
+- admin.html
+- category.html
+- detail.html
+- faith-discovery.html
+- index.html
+- prayer-request.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Localhost tra ve HTTP 200 cho faith-discovery.html, styles.css va assets/faith-picker-puzzle.webp.
+- Kich thuoc file anh trong source: 27260 bytes.
+- CSS can ngoac: { = 793 va } = 793.
+- Da xac nhan background chi ap dung khi body co class faith-choosing-set.
+---
+
+### **14.58. Tang opacity nen Puzzle va bo nhan banner**
+
+**Ngay cap nhat:** 16/07/2026
+
+**Chuc nang:**
+- Tang opacity hinh nen Puzzle tu 30% len 48% trong giao dien sang.
+- Tang opacity hinh nen Puzzle tu 34% len 52% trong giao dien toi.
+- Bo hoan toan dong chu Co banner va Banner mac dinh khoi cac the chon chu de.
+- Xoa the small tao nhan banner trong ham renderSetPicker de khong con chiem khoang trong.
+- Cap nhat cache version CSS va JavaScript sang 20260716-faith-picker-clean-cards.
+
+**File lien quan:**
+- faith-discovery.js
+- styles.css
+- accounts.html
+- admin.html
+- category.html
+- detail.html
+- faith-discovery.html
+- index.html
+- prayer-request.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Localhost tra ve HTTP 200 cho HTML, CSS va JavaScript.
+- Da xac nhan CSS co opacity 0.48 va 0.52.
+- Da xac nhan JavaScript khong con chu Co banner hoac Banner mac dinh.
+- CSS can ngoac: { = 793 va } = 793.
+- JavaScript can ngoac: { = 94 va } = 94.
+---
+
+### **14.59. Rollback background Puzzle cua man hinh chon chu de**
+
+**Ngay cap nhat:** 16/07/2026
+
+**Chuc nang:**
+- Go hoan toan hinh background Puzzle khoi panel chon chu de.
+- Xoa cac lop pseudo-element, blur, opacity va lop phu mau da them cho background.
+- Khoi phuc nen mau tron ban dau cua panel trong giao dien sang va toi.
+- Xoa file assets/faith-picker-puzzle.webp vi khong con duoc su dung.
+- Giu nguyen thay doi bo chu Co banner va Banner mac dinh theo yeu cau truoc.
+- Cap nhat cache version CSS sang 20260716-faith-picker-plain.
+
+**File lien quan:**
+- styles.css
+- accounts.html
+- admin.html
+- category.html
+- detail.html
+- faith-discovery.html
+- index.html
+- prayer-request.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Da xac nhan CSS khong con tham chieu faith-picker-puzzle hoac section 14.57.
+- Da xac nhan file assets/faith-picker-puzzle.webp da duoc xoa.
+- Da xac nhan JavaScript van khong hien chu Co banner hoac Banner mac dinh.
+- Localhost faith-discovery.html va styles.css deu tra ve HTTP 200.
+- CSS can ngoac: { = 786 va } = 786.
+---
+
+### **14.60. Them anh rieng cho card chon bo cau hoi**
+
+**Ngay cap nhat:** 16/07/2026
+
+**Chuc nang:**
+- Sao chep anh banner Maria vao assets/faith-picker-maria.jpg.
+- Hien thi anh phu day ben trong card cua bo 12 cau hoi, co lop gradient toi de badge va tieu de de doc.
+- Card khong co anh tiep tuc dung giao dien mau tron hien tai.
+- Them thuoc tinh pickerImageUrl rieng cho tung bo cau hoi.
+- Trong trang quan ly Kham Pha Duc Tin, them o URL, nut Upload Cloudinary va anh xem truoc cho Anh khung chon chu de.
+- Noi pickerImageUrl vao quy trinh chon bo, tao bo moi, xem truoc, upload Cloudinary, luu Firestore va backup.
+- Anh admin upload duoc uu tien; anh Maria cuc bo chi la fallback cho bo 12 cau hoi va khong tu dong ghi len Firestore.
+- Cap nhat cache version CSS, data.js, admin.js va faith-discovery.js sang 20260716-faith-picker-card-image.
+
+**File lien quan:**
+- assets/faith-picker-maria.jpg
+- faith-discovery.html
+- faith-discovery.js
+- admin.html
+- admin.js
+- data.js
+- styles.css
+- accounts.html
+- category.html
+- detail.html
+- index.html
+- prayer-request.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Localhost tra ve HTTP 200 cho faith-discovery.html, admin.html va assets/faith-picker-maria.jpg.
+- Da xac nhan admin co faithPickerImageUrl, nut Cloudinary va anh xem truoc.
+- Da xac nhan fallback anh Maria chi ap dung cho bo co 12 cau hoi khi pickerImageUrl trong.
+- CSS can ngoac: { = 793 va } = 793.
+- faith-discovery.js can ngoac: { = 95, } = 95, ( = 306 va ) = 306.
+- admin.js can ngoac: { = 344 va } = 344.
+- data.js can ngoac: { = 281 va } = 281.
+---
+
+### **14.61. Card chon chu de chi hien thi hinh anh**
+
+**Ngay cap nhat:** 16/07/2026
+
+**Chuc nang:**
+- Voi card co pickerImageUrl hoac anh fallback, bo dong so luong cau hoi va ten chu de khoi DOM sau khi chen anh.
+- Card co hinh chi con hien thi anh, vien va bo goc.
+- Bo lop gradient toi phu tren anh vi khong con noi dung chu.
+- Giu ten bo cau hoi trong aria-label de ho tro trinh doc man hinh.
+- Card chua co anh van giu so cau hoi va ten de tranh hien thi o trong.
+- Cap nhat cache version CSS va faith-discovery.js sang 20260716-faith-picker-image-only.
+
+**File lien quan:**
+- faith-discovery.js
+- styles.css
+- accounts.html
+- admin.html
+- category.html
+- detail.html
+- faith-discovery.html
+- index.html
+- prayer-request.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Localhost tra ve HTTP 200 cho HTML, CSS va JavaScript.
+- Da xac nhan JavaScript xoa span va strong khoi card co anh.
+- Da xac nhan CSS an lop overlay va dat padding card co anh ve 0.
+- CSS can ngoac: { = 795 va } = 795.
+- faith-discovery.js can ngoac: { = 95, } = 95, ( = 311 va ) = 311.

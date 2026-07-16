@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="vi">
   <head>
     <meta charset="UTF-8" />
@@ -7,7 +7,7 @@
     <meta name="robots" content="noindex, nofollow" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/favicon.png" />
-    <link rel="stylesheet" href="styles.css?v=20260716-source-audit" />
+    <link rel="stylesheet" href="styles.css?v=20260716-faith-picker-image-only" />
   </head>
   <body class="admin-page">
     <header class="site-header admin-header">
@@ -211,6 +211,22 @@
             <input id="faithSetTitle" type="text" placeholder="Ví dụ: Cuộc đời Đức Mẹ Maria" />
           </label>
           <label>
+            <span>Ảnh khung chọn chủ đề</span>
+            <div class="image-url-tools">
+              <input id="faithPickerImageUrl" type="url" placeholder="https://..." />
+              <button class="ghost-button" type="button" id="faithPickerCloudinaryUploadButton">Upload Cloudinary</button>
+            </div>
+          </label>
+          <img class="image-preview" id="faithPickerPreview" alt="Xem trước ảnh khung chọn chủ đề" />
+          <label>
+            <span>URL hình banner</span>
+            <div class="image-url-tools">
+              <input id="faithBannerImageUrl" type="url" placeholder="https://..." />
+              <button class="ghost-button" type="button" id="faithBannerCloudinaryUploadButton">Upload Cloudinary</button>
+            </div>
+          </label>
+          <img class="image-preview" id="faithBannerPreview" alt="Xem trước banner Khám Phá Đức Tin" />
+          <label>
             <span>URL hình infographic</span>
             <div class="image-url-tools">
               <input id="faithInfographicUrl" type="url" placeholder="https://..." />
@@ -279,12 +295,28 @@
     <script src="firebase-config.js"></script>
     <script src="cloudinary-config.js"></script>
     <script src="https://upload-widget.cloudinary.com/latest/global/all.js"></script>
-    <script src="data.js?v=20260716-faith-no-sample"></script>
+    <script src="data.js?v=20260716-faith-picker-card-image"></script>
     <script src="auth.js?v=20260715-no-sample-seed"></script>
-    <script src="admin.js?v=20260716-faith-no-sample"></script>
+    <script src="admin.js?v=20260716-faith-picker-card-image"></script>
     <script defer src="/_vercel/insights/script.js"></script>
   </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

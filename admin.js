@@ -1,4 +1,4 @@
-﻿let content = null;
+let content = null;
 let currentImage = "";
 let currentImagePath = "";
 let canManageContent = false;
@@ -53,6 +53,13 @@ const newFaithSetButton = document.querySelector("#newFaithSetButton");
 const deleteFaithSetButton = document.querySelector("#deleteFaithSetButton");
 const faithSetId = document.querySelector("#faithSetId");
 const faithSetTitle = document.querySelector("#faithSetTitle");
+
+const faithPickerImageUrl = document.querySelector("#faithPickerImageUrl");
+const faithPickerCloudinaryUploadButton = document.querySelector("#faithPickerCloudinaryUploadButton");
+const faithPickerPreview = document.querySelector("#faithPickerPreview");
+const faithBannerImageUrl = document.querySelector("#faithBannerImageUrl");
+const faithBannerCloudinaryUploadButton = document.querySelector("#faithBannerCloudinaryUploadButton");
+const faithBannerPreview = document.querySelector("#faithBannerPreview");
 const faithInfographicUrl = document.querySelector("#faithInfographicUrl");
 const faithCloudinaryUploadButton = document.querySelector("#faithCloudinaryUploadButton");
 const faithImagePreview = document.querySelector("#faithImagePreview");
@@ -371,6 +378,9 @@ function normalizeAdminFaithSet(set, index) {
   return {
     id: String(set?.id || uniqueFaithSetId()).trim(),
     title: String(set?.title || `Bộ ${index + 1}`).trim(),
+    
+    pickerImageUrl: String(set?.pickerImageUrl || "").trim(),
+    bannerImageUrl: String(set?.bannerImageUrl || "").trim(),
     infographicUrl: String(set?.infographicUrl || "").trim(),
     questions,
   };
@@ -388,6 +398,9 @@ function settingsToAdminFaithSets(settings) {
       {
         id: "legacy-faith-set",
         title: String(settings?.title || "Khám Phá Đức Tin").trim() || "Khám Phá Đức Tin",
+        
+        pickerImageUrl: String(settings?.pickerImageUrl || "").trim(),
+        bannerImageUrl: String(settings?.bannerImageUrl || "").trim(),
         infographicUrl: String(settings?.infographicUrl || "").trim(),
         questions: settings.questions.map((question, index) => normalizeAdminFaithQuestion(question, index)),
       },
@@ -423,8 +436,14 @@ function fillFaithSetForm(set) {
   activeFaithAdminSetId = selectedSet?.id || "";
   faithSetId.value = selectedSet?.id || "";
   faithSetTitle.value = selectedSet?.title || "";
+  
+  faithPickerImageUrl.value = selectedSet?.pickerImageUrl || "";
+  faithBannerImageUrl.value = selectedSet?.bannerImageUrl || "";
   faithInfographicUrl.value = selectedSet?.infographicUrl || "";
   faithQuestionsJson.value = stringifyFaithQuestions(selectedSet?.questions || []);
+  
+  updateFaithPickerPreview();
+  updateFaithBannerPreview();
   updateFaithImagePreview();
   renderFaithSetList();
 }
@@ -433,6 +452,28 @@ function selectedFaithSet() {
   return faithDiscoverySets.find((set) => set.id === activeFaithAdminSetId) || null;
 }
 
+function updateFaithPickerPreview() {
+  if (!faithPickerPreview || !faithPickerImageUrl) return;
+  const imageUrl = faithPickerImageUrl.value.trim();
+  if (imageUrl) {
+    faithPickerPreview.src = imageUrl;
+    faithPickerPreview.classList.add("show");
+  } else {
+    faithPickerPreview.removeAttribute("src");
+    faithPickerPreview.classList.remove("show");
+  }
+}
+function updateFaithBannerPreview() {
+  if (!faithBannerPreview || !faithBannerImageUrl) return;
+  const imageUrl = faithBannerImageUrl.value.trim();
+  if (imageUrl) {
+    faithBannerPreview.src = imageUrl;
+    faithBannerPreview.classList.add("show");
+  } else {
+    faithBannerPreview.removeAttribute("src");
+    faithBannerPreview.classList.remove("show");
+  }
+}
 function updateFaithImagePreview() {
   if (!faithImagePreview || !faithInfographicUrl) return;
   const imageUrl = faithInfographicUrl.value.trim();
@@ -737,55 +778,76 @@ function setupCloudinaryUpload() {
   });
 }
 
+function openFaithCloudinaryUpload(targetInput, afterUpload, successMessage) {
+  if (!targetInput) return;
+  if (!canManageContent) {
+    alert("Chỉ tài khoản admin mới có quyền upload ảnh.");
+    return;
+  }
+
+  const config = getCloudinaryConfig();
+  if (!config.cloudName || !config.uploadPreset) {
+    if (faithDiscoveryMessage) {
+      faithDiscoveryMessage.textContent = "Chưa cấu hình Cloudinary. Hãy điền cloudName và uploadPreset trong cloudinary-config.js.";
+    }
+    return;
+  }
+
+  if (!window.cloudinary?.createUploadWidget) {
+    if (faithDiscoveryMessage) {
+      faithDiscoveryMessage.textContent = "Không thể tải Cloudinary Upload Widget. Vui lòng kiểm tra kết nối mạng.";
+    }
+    return;
+  }
+
+  const widget = window.cloudinary.createUploadWidget(
+    {
+      cloudName: config.cloudName,
+      uploadPreset: config.uploadPreset,
+      folder: config.folder || undefined,
+      sources: ["local", "url", "camera"],
+      multiple: false,
+      resourceType: "image",
+      clientAllowedFormats: ["jpg", "jpeg", "png", "webp", "gif"],
+    },
+    (error, result) => {
+      if (error) {
+        if (faithDiscoveryMessage) faithDiscoveryMessage.textContent = error.message || "Upload Cloudinary thất bại.";
+        return;
+      }
+
+      if (result?.event === "success") {
+        targetInput.value = result.info?.secure_url || "";
+        afterUpload?.();
+        if (faithDiscoveryMessage) faithDiscoveryMessage.textContent = successMessage;
+      }
+    }
+  );
+
+  widget.open();
+}
 function setupFaithCloudinaryUpload() {
-  if (!faithCloudinaryUploadButton) return;
-
-  faithCloudinaryUploadButton.addEventListener("click", () => {
-    if (!canManageContent) {
-      alert("Chỉ tài khoản admin mới có quyền upload ảnh.");
-      return;
-    }
-
-    const config = getCloudinaryConfig();
-    if (!config.cloudName || !config.uploadPreset) {
-      if (faithDiscoveryMessage) {
-        faithDiscoveryMessage.textContent = "Chưa cấu hình Cloudinary. Hãy điền cloudName và uploadPreset trong cloudinary-config.js.";
-      }
-      return;
-    }
-
-    if (!window.cloudinary?.createUploadWidget) {
-      if (faithDiscoveryMessage) {
-        faithDiscoveryMessage.textContent = "Không thể tải Cloudinary Upload Widget. Vui lòng kiểm tra kết nối mạng.";
-      }
-      return;
-    }
-
-    const widget = window.cloudinary.createUploadWidget(
-      {
-        cloudName: config.cloudName,
-        uploadPreset: config.uploadPreset,
-        folder: config.folder || undefined,
-        sources: ["local", "url", "camera"],
-        multiple: false,
-        resourceType: "image",
-        clientAllowedFormats: ["jpg", "jpeg", "png", "webp", "gif"],
-      },
-      (error, result) => {
-        if (error) {
-          if (faithDiscoveryMessage) faithDiscoveryMessage.textContent = error.message || "Upload Cloudinary thất bại.";
-          return;
-        }
-
-        if (result?.event === "success") {
-          faithInfographicUrl.value = result.info?.secure_url || "";
-          updateFaithImagePreview();
-          if (faithDiscoveryMessage) faithDiscoveryMessage.textContent = "Đã upload Cloudinary và tự điền URL infographic.";
-        }
-      }
+  faithPickerCloudinaryUploadButton?.addEventListener("click", () => {
+    openFaithCloudinaryUpload(
+      faithPickerImageUrl,
+      updateFaithPickerPreview,
+      "Đã upload Cloudinary và tự điền URL ảnh khung chọn chủ đề."
     );
+  });
+  faithBannerCloudinaryUploadButton?.addEventListener("click", () => {
+    openFaithCloudinaryUpload(
+      faithBannerImageUrl,
+      updateFaithBannerPreview,
+      "Đã upload Cloudinary và tự điền URL banner."
+    );
+  });
 
-    widget.open();
+  faithCloudinaryUploadButton?.addEventListener("click", () => {
+    openFaithCloudinaryUpload(
+      faithInfographicUrl,
+      updateFaithImagePreview,
+      "Đã upload Cloudinary và tự điền URL infographic."
+    );
   });
 }
 
@@ -1169,6 +1231,8 @@ importBackupButton?.addEventListener("click", async () => {
   }
 });
 
+faithPickerImageUrl?.addEventListener("input", updateFaithPickerPreview);
+faithBannerImageUrl?.addEventListener("input", updateFaithBannerPreview);
 faithInfographicUrl?.addEventListener("input", updateFaithImagePreview);
 
 faithSetList?.addEventListener("click", (event) => {
@@ -1183,8 +1247,14 @@ newFaithSetButton?.addEventListener("click", () => {
   activeFaithAdminSetId = "";
   faithSetId.value = "";
   faithSetTitle.value = "";
+  
+  faithPickerImageUrl.value = "";
+  faithBannerImageUrl.value = "";
   faithInfographicUrl.value = "";
   faithQuestionsJson.value = "";
+  
+  updateFaithPickerPreview();
+  updateFaithBannerPreview();
   updateFaithImagePreview();
   renderFaithSetList();
   if (faithDiscoveryMessage) faithDiscoveryMessage.textContent = "Đang tạo bộ câu hỏi mới.";
@@ -1264,6 +1334,8 @@ faithDiscoveryForm?.addEventListener("submit", async (event) => {
     const nextSet = {
       id,
       title,
+      pickerImageUrl: faithPickerImageUrl.value.trim(),
+      bannerImageUrl: faithBannerImageUrl.value.trim(),
       infographicUrl: faithInfographicUrl.value.trim(),
       questions,
     };
@@ -1487,6 +1559,10 @@ loginForm.addEventListener("submit", async (event) => {
 });
 
 setupLogin();
+
+
+
+
 
 
 

@@ -19,7 +19,7 @@ function normalizeFaithQuestion(question) {
   }
 
   return {
-    topic: topic || `Câu hỏi ${activeFaithQuestions.length + 1}`,
+    topic: topic || `CÃ¢u há»i ${activeFaithQuestions.length + 1}`,
     question: questionText,
     options,
     answer,
@@ -48,7 +48,10 @@ function normalizeFaithSet(set, index) {
 
   return {
     id: String(set.id || `faith-set-${index + 1}`).trim(),
-    title: String(set.title || `Bộ ${index + 1}`).trim(),
+    title: String(set.title || `Bá»™ ${index + 1}`).trim(),
+    
+    pickerImageUrl: String(set.pickerImageUrl || "").trim(),
+    bannerImageUrl: String(set.bannerImageUrl || "").trim(),
     infographicUrl: String(set.infographicUrl || "").trim(),
     questions,
   };
@@ -66,7 +69,10 @@ function settingsToFaithSets(settings) {
     return [
       {
         id: "legacy-faith-set",
-        title: String(settings?.title || "Khám Phá Đức Tin").trim() || "Khám Phá Đức Tin",
+        title: String(settings?.title || "KhÃ¡m PhÃ¡ Äá»©c Tin").trim() || "KhÃ¡m PhÃ¡ Äá»©c Tin",
+        
+        pickerImageUrl: String(settings?.pickerImageUrl || "").trim(),
+        bannerImageUrl: String(settings?.bannerImageUrl || "").trim(),
         infographicUrl: String(settings?.infographicUrl || "").trim(),
         questions: legacyQuestions,
       },
@@ -86,7 +92,7 @@ async function loadFaithDiscoverySettings() {
     activeFaithSetIndex = activeIndex >= 0 ? activeIndex : 0;
     applyFaithSet(activeFaithSetIndex, { reset: false });
   } catch (error) {
-    console.warn("Không thể tải cấu hình Khám Phá Đức Tin.", error);
+    console.warn("KhÃ´ng thá»ƒ táº£i cáº¥u hÃ¬nh KhÃ¡m PhÃ¡ Äá»©c Tin.", error);
   }
 }
 
@@ -116,6 +122,86 @@ function renderFaithSetSwitcher() {
   });
 }
 
+function setFaithHeroBanner(imageUrl) {
+  const hero = document.querySelector(".faith-hero-panel");
+  if (!hero) return;
+
+  const bannerUrl = String(imageUrl || "").trim();
+  if (!bannerUrl) {
+    hero.classList.remove("has-banner-image");
+    hero.style.removeProperty("--faith-banner-image");
+    return;
+  }
+
+  const safeUrl = bannerUrl.replace(/"/g, "%22");
+  hero.style.setProperty("--faith-banner-image", `url("${safeUrl}")`);
+  hero.classList.add("has-banner-image");
+}
+
+function renderSetPicker() {
+  const grid = document.getElementById("faithSetPickerGrid");
+  if (!grid) return;
+
+  if (!faithSets.length) {
+    grid.innerHTML = `<p class="admin-empty-note">Chưa có bộ câu hỏi để chọn.</p>`;
+    return;
+  }
+
+  grid.innerHTML = faithSets
+    .map((set, index) => `
+      <button class="faith-picker-item" type="button" data-index="${index}">
+        <span>${set.questions.length} câu hỏi</span>
+        <strong>${escapeFaithHtml(set.title || `Bộ ${index + 1}`)}</strong>
+      </button>
+    `)
+    .join("");
+
+  grid.querySelectorAll("button[data-index]").forEach((button) => {
+    const set = faithSets[Number(button.dataset.index)];
+    const pickerImageUrl = set?.pickerImageUrl || (set?.questions.length === 12 ? "/assets/faith-picker-maria.jpg" : "");
+
+    if (pickerImageUrl) {
+      const image = document.createElement("img");
+      image.className = "faith-picker-item-image";
+      image.src = pickerImageUrl;
+      image.alt = "";
+      image.decoding = "async";
+      image.loading = "eager";
+      button.classList.add("has-image");
+      button.prepend(image);
+      button.querySelector("span")?.remove();
+      button.querySelector("strong")?.remove();
+      button.setAttribute("aria-label", set?.title || "Bộ câu hỏi");
+    }
+
+    button.addEventListener("click", () => startFaithSet(Number(button.dataset.index)));
+  });
+}
+
+function showSetPicker() {
+  const picker = document.getElementById("faithSetPicker");
+  const game = document.querySelector(".faith-game");
+  document.body.classList.add("faith-choosing-set");
+  if (picker) picker.hidden = false;
+  if (game) game.hidden = true;
+  setFaithHeroBanner("");
+  renderSetPicker();
+}
+
+function startFaithSet(index) {
+  applyFaithSet(index, { reset: false });
+  faithCurrentIndex = 0;
+  openedPieces = new Set();
+  document.querySelectorAll(".faith-mask-tile").forEach((tile) => tile.classList.remove("is-open"));
+  buildFaithMasks();
+  updateFaithProgress();
+  const picker = document.getElementById("faithSetPicker");
+  const game = document.querySelector(".faith-game");
+  document.body.classList.remove("faith-choosing-set");
+  if (picker) picker.hidden = true;
+  if (game) game.hidden = false;
+  renderFaithQuestion();
+}
 function applyFaithSet(index, options = {}) {
   const selectedSet = faithSets[index] || faithSets[0];
   if (!selectedSet) {
@@ -127,8 +213,9 @@ function applyFaithSet(index, options = {}) {
   activeFaithQuestions = selectedSet.questions;
   const title = document.getElementById("faithPageTitle");
   const subtitle = document.getElementById("faithPageSubtitle");
-  if (title) title.textContent = selectedSet.title || "Khám Phá Đức Tin";
-  if (subtitle) subtitle.textContent = "Trả lời đúng từng câu hỏi để mở các mảnh hình trong infographic đã được chuẩn bị.";
+  if (title) title.textContent = "Khám Phá Đức Tin";
+  if (subtitle) subtitle.textContent = "Tráº£ lá»i Ä‘Ãºng tá»«ng cÃ¢u há»i Ä‘á»ƒ má»Ÿ cÃ¡c máº£nh hÃ¬nh trong infographic Ä‘Ã£ Ä‘Æ°á»£c chuáº©n bá»‹.";
+  setFaithHeroBanner(selectedSet.bannerImageUrl);
   const image = document.getElementById("faithInfographicImage");
   if (image) {
     if (selectedSet.infographicUrl) {
@@ -164,20 +251,21 @@ function renderEmptyFaithState() {
   const nextButton = document.getElementById("faithNextButton");
   const restartButton = document.getElementById("faithRestartButton");
 
-  if (step) step.textContent = "Chưa có bộ";
-  if (topic) topic.textContent = "Cần cấu hình";
-  if (badge) badge.textContent = "Chưa có câu hỏi";
-  if (question) question.textContent = "Chưa có bộ câu hỏi Khám Phá Đức Tin. Vui lòng thêm trong trang quản lý.";
+  if (step) step.textContent = "ChÆ°a cÃ³ bá»™";
+  if (topic) topic.textContent = "Cáº§n cáº¥u hÃ¬nh";
+  if (badge) badge.textContent = "ChÆ°a cÃ³ cÃ¢u há»i";
+  if (question) question.textContent = "ChÆ°a cÃ³ bá»™ cÃ¢u há»i KhÃ¡m PhÃ¡ Äá»©c Tin. Vui lÃ²ng thÃªm trong trang quáº£n lÃ½.";
   if (options) options.innerHTML = "";
   if (feedback) {
     feedback.textContent = "";
     feedback.className = "faith-feedback";
   }
-  if (progressText) progressText.textContent = "Đã mở 0/0 mảnh";
+  if (progressText) progressText.textContent = "ÄÃ£ má»Ÿ 0/0 máº£nh";
   if (progressBar) progressBar.style.width = "0%";
   if (score) score.textContent = "0";
-  if (title) title.textContent = "Khám Phá Đức Tin";
-  if (subtitle) subtitle.textContent = "Vui lòng thêm bộ câu hỏi và infographic trong trang quản lý.";
+  if (title) title.textContent = "KhÃ¡m PhÃ¡ Äá»©c Tin";
+  if (subtitle) subtitle.textContent = "Vui lÃ²ng thÃªm bá»™ cÃ¢u há»i vÃ  infographic trong trang quáº£n lÃ½.";
+  setFaithHeroBanner("");
   if (maskGrid) maskGrid.innerHTML = "";
   if (image) {
     image.removeAttribute("src");
@@ -218,7 +306,7 @@ function buildFaithMasks() {
           data-index="${index}"
           style="left:${left}%;top:${top}%;width:${width}%;height:${height}%"
         >
-          <span>${index + 1}</span>
+          <span class="faith-lock-icon" aria-hidden="true"></span>
         </span>
       `;
     })
@@ -234,7 +322,7 @@ function updateFaithProgress() {
   const percent = (opened / total) * 100;
 
   if (progressText) {
-    progressText.textContent = `Đã mở ${opened}/${activeFaithQuestions.length} mảnh`;
+    progressText.textContent = `ÄÃ£ má»Ÿ ${opened}/${activeFaithQuestions.length} máº£nh`;
   }
   if (progressBar) {
     progressBar.style.width = `${percent}%`;
@@ -260,8 +348,8 @@ function renderFaithQuestion() {
     return;
   }
 
-  if (step) step.textContent = `Câu ${faithCurrentIndex + 1}/${activeFaithQuestions.length}`;
-  if (badge) badge.textContent = `Câu hỏi ${faithCurrentIndex + 1}/${activeFaithQuestions.length}`;
+  if (step) step.textContent = `CÃ¢u ${faithCurrentIndex + 1}/${activeFaithQuestions.length}`;
+  if (badge) badge.textContent = `CÃ¢u há»i ${faithCurrentIndex + 1}/${activeFaithQuestions.length}`;
   if (topic) topic.textContent = item.topic;
   if (question) question.textContent = item.question;
   if (feedback) {
@@ -271,14 +359,20 @@ function renderFaithQuestion() {
   if (nextButton) nextButton.disabled = true;
   if (restartButton) restartButton.hidden = true;
 
+  const isAnswered = openedPieces.has(faithCurrentIndex);
   options.innerHTML = item.options
     .map((option, index) => `
-      <button class="faith-option" type="button" data-index="${index}">
+      <button class="faith-option ${isAnswered && index === item.answer ? "is-correct" : ""}" type="button" data-index="${index}" ${isAnswered ? "disabled" : ""}>
         <span>${letters[index]}</span>
-        ${option}
+        ${escapeFaithHtml(option)}
       </button>
     `)
     .join("");
+
+  if (isAnswered && feedback) {
+    feedback.textContent = "Câu này đã hoàn thành. Bạn có thể chọn câu khác để tiếp tục.";
+    feedback.className = "faith-feedback is-correct";
+  }
 
   options.querySelectorAll(".faith-option").forEach((button) => {
     button.addEventListener("click", () => chooseFaithAnswer(Number(button.dataset.index)));
@@ -301,7 +395,7 @@ function chooseFaithAnswer(selectedIndex) {
       selectedButton.disabled = true;
     }
     if (feedback) {
-      feedback.textContent = "Chưa đúng, bạn thử lại nhé.";
+      feedback.textContent = "ChÆ°a Ä‘Ãºng, báº¡n thá»­ láº¡i nhÃ©.";
       feedback.className = "faith-feedback is-wrong";
     }
     return;
@@ -317,30 +411,23 @@ function chooseFaithAnswer(selectedIndex) {
   if (maskTile) maskTile.classList.add("is-open");
 
   updateFaithProgress();
+  renderSetPicker();
 
   if (feedback) {
-    feedback.textContent = `Đúng rồi! ${item.explanation}`;
+    feedback.textContent = `ÄÃºng rá»“i! ${item.explanation}`;
     feedback.className = "faith-feedback is-correct";
   }
 
-  if (faithCurrentIndex >= activeFaithQuestions.length - 1) {
+  if (openedPieces.size >= activeFaithQuestions.length) {
     if (nextButton) nextButton.disabled = true;
     if (restartButton) restartButton.hidden = false;
     if (feedback) {
-      feedback.textContent = "Bạn đã mở toàn bộ infographic. Hãy tin và theo Chúa!";
+      feedback.textContent = "Báº¡n Ä‘Ã£ má»Ÿ toÃ n bá»™ infographic. HÃ£y tin vÃ  theo ChÃºa!";
     }
     return;
   }
 
   if (nextButton) nextButton.disabled = false;
-}
-
-function showFaithHint() {
-  const item = activeFaithQuestions[faithCurrentIndex];
-  const feedback = document.getElementById("faithFeedback");
-  if (!item || !feedback) return;
-  feedback.textContent = `Gợi ý: hãy đọc kỹ chủ đề "${item.topic}" và các đáp án đang hiển thị.`;
-  feedback.className = "faith-feedback";
 }
 
 function goToNextFaithQuestion() {
@@ -350,20 +437,28 @@ function goToNextFaithQuestion() {
   }
 }
 
+
+function returnToFaithSetPicker() {
+  faithCurrentIndex = 0;
+  openedPieces = new Set();
+  document.querySelectorAll(".faith-mask-tile").forEach((tile) => tile.classList.remove("is-open"));
+  updateFaithProgress();
+  showSetPicker();
+}
 function restartFaithGame() {
   faithCurrentIndex = 0;
   openedPieces = new Set();
   document.querySelectorAll(".faith-mask-tile").forEach((tile) => tile.classList.remove("is-open"));
   updateFaithProgress();
-  renderFaithQuestion();
+  showSetPicker();
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
   if (typeof rememberCurrentPage === "function") {
-    rememberCurrentPage("Khám Phá Đức Tin");
+    rememberCurrentPage("KhÃ¡m PhÃ¡ Äá»©c Tin");
   }
   if (typeof setupBackLink === "function") {
-    setupBackLink("/", "Trang chủ", { useStored: false });
+    setupBackLink("/", "Trang chá»§", { useStored: false });
   }
 
   await loadFaithDiscoverySettings();
@@ -374,10 +469,23 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
   buildFaithMasks();
   updateFaithProgress();
-  renderFaithQuestion();
-
-  document.getElementById("faithHintButton")?.addEventListener("click", showFaithHint);
+  showSetPicker();
   document.getElementById("faithNextButton")?.addEventListener("click", goToNextFaithQuestion);
   document.getElementById("faithRestartButton")?.addEventListener("click", restartFaithGame);
+  document.getElementById("faithBackToSetsButton")?.addEventListener("click", returnToFaithSetPicker);
   document.dispatchEvent(new CustomEvent("kito:content-rendered"));
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
