@@ -3535,3 +3535,634 @@ textarea:disabled {
     grid-template-columns: 1fr;
   }
 }
+
+/* Kham Pha Duc Tin - visual redesign, scoped to this page only. */
+body.faith-page {
+  background:
+    linear-gradient(180deg, rgba(255, 247, 228, 0.96), rgba(250, 241, 225, 0.98)),
+    radial-gradient(circle at 18% 10%, rgba(255, 217, 126, 0.34), transparent 28%),
+    radial-gradient(circle at 88% 8%, rgba(134, 183, 218, 0.22), transparent 32%);
+}
+
+.faith-page .faith-shell {
+  width: min(1480px, calc(100% - 32px));
+  padding: 20px 0 44px;
+}
+
+.faith-page .faith-hero-panel {
+  position: relative;
+  min-height: 210px;
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr) 180px;
+  gap: 18px;
+  align-items: start;
+  margin-bottom: 18px;
+  padding: 24px 26px;
+  overflow: hidden;
+  border: 1px solid rgba(198, 132, 35, 0.45);
+  border-radius: 18px;
+  background:
+    linear-gradient(105deg, rgba(255, 251, 238, 0.72), rgba(255, 239, 195, 0.88)),
+    radial-gradient(circle at 12% 24%, rgba(255, 255, 255, 0.88), transparent 24%),
+    radial-gradient(circle at 84% 18%, rgba(255, 216, 129, 0.48), transparent 30%);
+  box-shadow: 0 18px 42px rgba(123, 78, 21, 0.16);
+}
+
+.faith-page .faith-hero-panel::before,
+.faith-page .faith-hero-panel::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.72;
+}
+
+.faith-page .faith-hero-panel::before {
+  left: 20px;
+  bottom: -28px;
+  width: 230px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.82), rgba(255, 210, 98, 0.1) 62%, transparent 64%);
+}
+
+.faith-page .faith-hero-panel::after {
+  right: -26px;
+  top: -40px;
+  width: 320px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 248, 220, 0.92), rgba(203, 141, 50, 0.16) 58%, transparent 60%);
+}
+
+.faith-page .faith-back-button {
+  position: relative;
+  z-index: 1;
+  width: 58px;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border: 2px solid rgba(191, 128, 31, 0.58);
+  border-radius: 999px;
+  background: rgba(255, 249, 232, 0.94);
+  box-shadow: 0 10px 22px rgba(107, 67, 22, 0.16);
+  color: #8f5514;
+  font-size: 46px;
+  line-height: 1;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.faith-page .faith-hero-copy {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+.faith-page .faith-hero-copy .eyebrow {
+  margin-bottom: 2px;
+  color: #6f361d;
+  font-size: 28px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.faith-page .faith-hero-copy h1 {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: clamp(48px, 6vw, 92px);
+  line-height: 0.95;
+  color: #173e78;
+  text-shadow: 0 3px 0 rgba(255, 255, 255, 0.72);
+}
+
+.faith-page .faith-hero-copy h1::after {
+  content: "✝";
+  display: block;
+  width: min(520px, 70%);
+  margin: 12px auto 10px;
+  border-bottom: 2px solid rgba(202, 135, 31, 0.66);
+  color: #b87617;
+  font-size: 24px;
+  line-height: 0;
+}
+
+.faith-page .faith-hero-copy p:last-of-type {
+  max-width: 820px;
+  margin: 0 auto;
+  color: #263a5e;
+  font-family: var(--font-heading);
+  font-size: clamp(18px, 2vw, 28px);
+  font-style: italic;
+}
+
+.faith-page .faith-score-card {
+  position: relative;
+  z-index: 1;
+  min-height: 62px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  border: 2px solid rgba(202, 135, 31, 0.48);
+  border-radius: 999px;
+  background: rgba(255, 249, 232, 0.95);
+  box-shadow: 0 12px 24px rgba(112, 68, 17, 0.14);
+  color: #4c2f1d;
+  font-size: 22px;
+}
+
+.faith-page .faith-score-card span {
+  display: grid;
+  width: 42px;
+  aspect-ratio: 1;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff2a3;
+  background: #d88a13;
+  text-shadow: 0 1px 0 #8e520f;
+}
+
+.faith-page .faith-score-card b {
+  font-size: 30px;
+  color: #4b2417;
+}
+
+.faith-page .faith-set-switcher {
+  position: relative;
+  z-index: 2;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.faith-page .faith-set-switcher button {
+  min-height: 42px;
+  border: 1px solid rgba(195, 127, 26, 0.55);
+  background: rgba(255, 250, 238, 0.92);
+  box-shadow: 0 8px 18px rgba(114, 75, 24, 0.1);
+}
+
+.faith-page .faith-game {
+  grid-template-columns: minmax(360px, 0.78fr) minmax(0, 1.22fr);
+  gap: 18px;
+}
+
+.faith-page .faith-question-card,
+.faith-page .faith-visual-card {
+  border: 2px solid rgba(213, 151, 54, 0.55);
+  border-radius: 20px;
+  background:
+    linear-gradient(180deg, rgba(255, 253, 244, 0.98), rgba(255, 247, 228, 0.98));
+  box-shadow: 0 16px 36px rgba(117, 74, 21, 0.14);
+}
+
+.faith-page .faith-question-card {
+  padding: 28px;
+}
+
+.faith-page .faith-question-badge,
+.faith-page .faith-unlock-title {
+  width: fit-content;
+  margin: -10px auto 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 28px;
+  border: 2px solid rgba(255, 224, 136, 0.82);
+  border-radius: 999px;
+  background: linear-gradient(180deg, #b36c18, #8a4f13);
+  box-shadow: inset 0 0 0 2px rgba(255, 247, 221, 0.22), 0 10px 22px rgba(111, 61, 13, 0.18);
+  color: #fff6df;
+  font-size: 22px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.faith-page .faith-question-card .faith-question-badge {
+  display: flex;
+}
+
+.faith-page .faith-question-head {
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+.faith-page .faith-question-head span {
+  display: none;
+}
+
+.faith-page .faith-question-head strong {
+  min-height: auto;
+  padding: 0;
+  background: transparent;
+  color: #7d4615;
+  font-family: var(--font-heading);
+  font-size: 34px;
+  text-transform: none;
+}
+
+.faith-page .faith-question-card h2 {
+  margin-bottom: 26px;
+  text-align: center;
+  color: #5d2f19;
+  font-size: clamp(25px, 2.35vw, 40px);
+}
+
+.faith-page .faith-options {
+  gap: 12px;
+}
+
+.faith-page .faith-option {
+  grid-template-columns: 54px minmax(0, 1fr);
+  min-height: 68px;
+  padding: 12px 18px;
+  border: 2px solid rgba(183, 132, 62, 0.34);
+  border-radius: 999px;
+  background: rgba(255, 252, 242, 0.95);
+  color: #1f2436;
+  box-shadow: 0 8px 18px rgba(105, 66, 20, 0.08);
+  font-size: 18px;
+}
+
+.faith-page .faith-option.is-correct {
+  grid-template-columns: 54px minmax(0, 1fr) 34px;
+}
+
+.faith-page .faith-option span {
+  width: 46px;
+  background: #fff8ed;
+  color: #6a371b;
+  border: 1px solid rgba(183, 132, 62, 0.34);
+  box-shadow: inset 0 -2px 0 rgba(136, 77, 21, 0.08);
+  font-size: 20px;
+}
+
+.faith-page .faith-option.is-correct {
+  background: linear-gradient(180deg, #4da44e, #20783a);
+  border-color: #11672d;
+  color: #ffffff;
+}
+
+.faith-page .faith-option.is-correct span {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.55);
+  color: #ffffff;
+}
+
+.faith-page .faith-option.is-correct::after {
+  content: "✓";
+  display: grid;
+  width: 34px;
+  aspect-ratio: 1;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  color: #247536;
+  font-weight: 900;
+}
+
+.faith-page .faith-option.is-wrong {
+  background: #fff1ec;
+  border-color: #d66d58;
+}
+
+.faith-page .faith-feedback-box {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  min-height: 72px;
+  margin-top: 18px;
+  padding: 14px 18px;
+  border: 1px solid rgba(206, 143, 45, 0.42);
+  border-radius: 14px;
+  background: rgba(255, 248, 232, 0.9);
+}
+
+.faith-page .faith-feedback-box strong {
+  color: #7e4a16;
+}
+
+.faith-page .faith-feedback {
+  min-height: auto;
+  margin: 0;
+  color: #4c3722;
+  line-height: 1.6;
+}
+
+.faith-page .faith-actions {
+  justify-content: center;
+  margin-top: 18px;
+}
+
+.faith-page .faith-actions .primary-button,
+.faith-page .faith-actions .ghost-button {
+  min-width: 138px;
+  min-height: 44px;
+  border-radius: 999px;
+}
+
+.faith-page .faith-visual-card {
+  padding: 24px;
+}
+
+.faith-page .faith-unlock-title {
+  display: flex;
+  margin: -8px auto 16px;
+  font-size: 18px;
+}
+
+.faith-page .faith-unlock-title span {
+  display: grid;
+  width: 34px;
+  aspect-ratio: 1;
+  place-items: center;
+  border-radius: 10px;
+  background: rgba(255, 244, 214, 0.18);
+}
+
+.faith-page .faith-progress {
+  margin-bottom: 14px;
+  color: #6a3d18;
+}
+
+.faith-page .faith-progress-track {
+  height: 12px;
+  background: rgba(255, 246, 224, 0.95);
+}
+
+.faith-page .faith-infographic-wrap {
+  border: 2px solid rgba(195, 127, 26, 0.45);
+  border-radius: 18px;
+  background: #fffaf0;
+  box-shadow: inset 0 0 0 5px rgba(255, 248, 232, 0.65);
+}
+
+.faith-page .faith-infographic-wrap img {
+  min-height: 420px;
+  object-fit: contain;
+  background: #fffaf0;
+}
+
+.faith-page .faith-mask-tile {
+  padding: 6px;
+  background:
+    linear-gradient(135deg, rgba(45, 30, 22, 0.94), rgba(104, 71, 45, 0.92)),
+    radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.14), transparent 35%);
+  border: 1px solid rgba(255, 238, 189, 0.48);
+}
+
+.faith-page .faith-mask-tile::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(255, 244, 214, 0.5);
+  border-radius: 14px;
+}
+
+.faith-page .faith-mask-tile span {
+  position: relative;
+  z-index: 1;
+  width: 62px;
+  border: 0;
+  background: rgba(255, 248, 232, 0.18);
+  color: #fff8ec;
+  font-family: var(--font-main);
+  font-size: 22px;
+}
+
+.faith-page .faith-mask-tile span::before,
+.faith-page .faith-mask-tile span::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.faith-page .faith-mask-tile span::before {
+  bottom: 14px;
+  width: 18px;
+  height: 14px;
+  border: 3px solid rgba(255, 248, 236, 0.94);
+  border-bottom: 0;
+  border-radius: 10px 10px 0 0;
+}
+
+.faith-page .faith-mask-tile span::after {
+  bottom: 6px;
+  width: 30px;
+  height: 22px;
+  border-radius: 7px;
+  background: rgba(255, 248, 236, 0.94);
+  box-shadow: inset 0 -3px 0 rgba(108, 67, 25, 0.16);
+}
+
+.faith-page .faith-mask-tile.is-open {
+  opacity: 0;
+  transform: scale(0.92);
+}
+
+:root[data-theme="dark"] body.faith-page {
+  background:
+    linear-gradient(180deg, rgba(29, 20, 14, 0.98), rgba(20, 14, 10, 0.98)),
+    radial-gradient(circle at 20% 8%, rgba(165, 98, 25, 0.22), transparent 28%);
+}
+
+:root[data-theme="dark"] .faith-page .faith-hero-panel,
+:root[data-theme="dark"] .faith-page .faith-question-card,
+:root[data-theme="dark"] .faith-page .faith-visual-card {
+  background: linear-gradient(180deg, #2d2016, #24180f);
+  border-color: #7b5529;
+}
+
+:root[data-theme="dark"] .faith-page .faith-hero-copy h1,
+:root[data-theme="dark"] .faith-page .faith-question-card h2,
+:root[data-theme="dark"] .faith-page .faith-question-head strong {
+  color: #ffe3ad;
+  text-shadow: none;
+}
+
+:root[data-theme="dark"] .faith-page .faith-hero-copy .eyebrow,
+:root[data-theme="dark"] .faith-page .faith-hero-copy p:last-of-type,
+:root[data-theme="dark"] .faith-page .faith-progress,
+:root[data-theme="dark"] .faith-page .faith-feedback {
+  color: #fff2db;
+}
+
+:root[data-theme="dark"] .faith-page .faith-score-card,
+:root[data-theme="dark"] .faith-page .faith-back-button,
+:root[data-theme="dark"] .faith-page .faith-feedback-box {
+  background: #342416;
+  border-color: #9f6b28;
+  color: #fff2db;
+}
+
+:root[data-theme="dark"] .faith-page .faith-score-card b {
+  color: #ffd58a;
+}
+
+:root[data-theme="dark"] .faith-page .faith-set-switcher button,
+:root[data-theme="dark"] .faith-page .faith-option {
+  background: #2e2117;
+  border-color: #805727;
+  color: #fff5e4;
+}
+
+:root[data-theme="dark"] .faith-page .faith-set-switcher button:hover,
+:root[data-theme="dark"] .faith-page .faith-set-switcher button.active {
+  background: #3a2919;
+  border-color: #ffc46b;
+  color: #ffd58a;
+}
+
+:root[data-theme="dark"] .faith-page .faith-option span {
+  background: #432c18;
+  border-color: #9f6b28;
+  color: #ffd58a;
+}
+
+:root[data-theme="dark"] .faith-page .faith-option.is-correct {
+  background: linear-gradient(180deg, #3f9b58, #1f6f36);
+  border-color: #6ce28a;
+  color: #ffffff;
+}
+
+:root[data-theme="dark"] .faith-page .faith-option.is-wrong {
+  background: #51251a;
+  border-color: #d66d58;
+  color: #fff2e8;
+}
+
+:root[data-theme="dark"] .faith-page .faith-infographic-wrap,
+:root[data-theme="dark"] .faith-page .faith-infographic-wrap img {
+  background: #24180f;
+  border-color: #805727;
+}
+
+@media (max-width: 1180px) {
+  .faith-page .faith-hero-panel {
+    grid-template-columns: 58px minmax(0, 1fr);
+  }
+
+  .faith-page .faith-score-card {
+    grid-column: 2;
+    justify-self: center;
+  }
+
+  .faith-page .faith-game {
+    grid-template-columns: 1fr;
+  }
+
+  .faith-page .faith-question-card {
+    position: static;
+  }
+}
+
+@media (max-width: 680px) {
+  .faith-page .faith-shell {
+    width: calc(100% - 20px);
+    padding-top: 12px;
+  }
+
+  .faith-page .faith-hero-panel {
+    min-height: auto;
+    grid-template-columns: 48px minmax(0, 1fr);
+    padding: 16px 14px 18px;
+    border-radius: 14px;
+  }
+
+  .faith-page .faith-back-button {
+    width: 46px;
+    font-size: 36px;
+  }
+
+  .faith-page .faith-hero-copy {
+    text-align: left;
+  }
+
+  .faith-page .faith-hero-copy .eyebrow {
+    font-size: 17px;
+  }
+
+  .faith-page .faith-hero-copy h1 {
+    font-size: 40px;
+  }
+
+  .faith-page .faith-hero-copy h1::after {
+    width: 90%;
+    margin-left: 0;
+  }
+
+  .faith-page .faith-hero-copy p:last-of-type {
+    font-size: 16px;
+  }
+
+  .faith-page .faith-score-card {
+    grid-column: 1 / -1;
+    justify-self: stretch;
+    min-height: 50px;
+    font-size: 18px;
+  }
+
+  .faith-page .faith-question-card,
+  .faith-page .faith-visual-card {
+    padding: 14px;
+    border-radius: 14px;
+  }
+
+  .faith-page .faith-question-badge,
+  .faith-page .faith-unlock-title {
+    padding: 10px 16px;
+    font-size: 15px;
+  }
+
+  .faith-page .faith-question-head strong {
+    font-size: 25px;
+  }
+
+  .faith-page .faith-question-card h2 {
+    font-size: 24px;
+  }
+
+  .faith-page .faith-option {
+    grid-template-columns: 44px minmax(0, 1fr);
+    min-height: 60px;
+    border-radius: 18px;
+    font-size: 15px;
+  }
+
+  .faith-page .faith-option.is-correct {
+    grid-template-columns: 44px minmax(0, 1fr) 30px;
+  }
+
+  .faith-page .faith-option span {
+    width: 38px;
+  }
+
+  .faith-page .faith-feedback-box {
+    grid-template-columns: 1fr;
+  }
+
+  .faith-page .faith-infographic-wrap img {
+    min-height: 280px;
+  }
+
+  .faith-page .faith-mask-tile span {
+    width: 40px;
+    font-size: 15px;
+  }
+
+  .faith-page .faith-mask-tile span::before {
+    bottom: 10px;
+    width: 14px;
+    height: 10px;
+    border-width: 2px;
+  }
+
+  .faith-page .faith-mask-tile span::after {
+    bottom: 4px;
+    width: 23px;
+    height: 17px;
+  }
+}

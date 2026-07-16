@@ -125,6 +125,10 @@ function applyFaithSet(index, options = {}) {
 
   activeFaithSetIndex = faithSets[index] ? index : 0;
   activeFaithQuestions = selectedSet.questions;
+  const title = document.getElementById("faithPageTitle");
+  const subtitle = document.getElementById("faithPageSubtitle");
+  if (title) title.textContent = selectedSet.title || "Khám Phá Đức Tin";
+  if (subtitle) subtitle.textContent = "Trả lời đúng từng câu hỏi để mở các mảnh hình trong infographic đã được chuẩn bị.";
   const image = document.getElementById("faithInfographicImage");
   if (image) {
     if (selectedSet.infographicUrl) {
@@ -146,11 +150,15 @@ function renderEmptyFaithState() {
   activeFaithQuestions = [];
   const step = document.getElementById("faithStep");
   const topic = document.getElementById("faithTopic");
+  const badge = document.getElementById("faithQuestionBadge");
   const question = document.getElementById("faithQuestion");
   const options = document.getElementById("faithOptions");
   const feedback = document.getElementById("faithFeedback");
   const progressText = document.getElementById("faithProgressText");
   const progressBar = document.getElementById("faithProgressBar");
+  const score = document.getElementById("faithScore");
+  const title = document.getElementById("faithPageTitle");
+  const subtitle = document.getElementById("faithPageSubtitle");
   const maskGrid = document.getElementById("faithMaskGrid");
   const image = document.getElementById("faithInfographicImage");
   const nextButton = document.getElementById("faithNextButton");
@@ -158,6 +166,7 @@ function renderEmptyFaithState() {
 
   if (step) step.textContent = "Chưa có bộ";
   if (topic) topic.textContent = "Cần cấu hình";
+  if (badge) badge.textContent = "Chưa có câu hỏi";
   if (question) question.textContent = "Chưa có bộ câu hỏi Khám Phá Đức Tin. Vui lòng thêm trong trang quản lý.";
   if (options) options.innerHTML = "";
   if (feedback) {
@@ -166,6 +175,9 @@ function renderEmptyFaithState() {
   }
   if (progressText) progressText.textContent = "Đã mở 0/0 mảnh";
   if (progressBar) progressBar.style.width = "0%";
+  if (score) score.textContent = "0";
+  if (title) title.textContent = "Khám Phá Đức Tin";
+  if (subtitle) subtitle.textContent = "Vui lòng thêm bộ câu hỏi và infographic trong trang quản lý.";
   if (maskGrid) maskGrid.innerHTML = "";
   if (image) {
     image.removeAttribute("src");
@@ -216,6 +228,7 @@ function buildFaithMasks() {
 function updateFaithProgress() {
   const progressText = document.getElementById("faithProgressText");
   const progressBar = document.getElementById("faithProgressBar");
+  const score = document.getElementById("faithScore");
   const opened = openedPieces.size;
   const total = activeFaithQuestions.length || 1;
   const percent = (opened / total) * 100;
@@ -226,12 +239,16 @@ function updateFaithProgress() {
   if (progressBar) {
     progressBar.style.width = `${percent}%`;
   }
+  if (score) {
+    score.textContent = String(opened);
+  }
 }
 
 function renderFaithQuestion() {
   const item = activeFaithQuestions[faithCurrentIndex];
   const step = document.getElementById("faithStep");
   const topic = document.getElementById("faithTopic");
+  const badge = document.getElementById("faithQuestionBadge");
   const question = document.getElementById("faithQuestion");
   const options = document.getElementById("faithOptions");
   const feedback = document.getElementById("faithFeedback");
@@ -244,6 +261,7 @@ function renderFaithQuestion() {
   }
 
   if (step) step.textContent = `Câu ${faithCurrentIndex + 1}/${activeFaithQuestions.length}`;
+  if (badge) badge.textContent = `Câu hỏi ${faithCurrentIndex + 1}/${activeFaithQuestions.length}`;
   if (topic) topic.textContent = item.topic;
   if (question) question.textContent = item.question;
   if (feedback) {

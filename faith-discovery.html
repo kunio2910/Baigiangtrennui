@@ -23,9 +23,9 @@
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/favicon.png" />
-    <link rel="stylesheet" href="styles.css?v=20260716-source-audit" />
+    <link rel="stylesheet" href="styles.css?v=20260716-faith-redesign" />
   </head>
-  <body>
+  <body class="faith-page">
     <header class="site-header">
       <div class="brand" aria-label="Truyền Giáo Kitô">
         <a class="brand-mark brand-admin-link" href="/admin.html" aria-label="Mở trang quản lý">✝</a>
@@ -43,23 +43,33 @@
     </header>
 
     <main class="faith-shell">
-      <a class="back-link" href="/">← Quay lại Trang chủ</a>
-      <section class="faith-intro">
-        <p class="eyebrow">Trắc nghiệm tương tác</p>
-        <h1>Khám Phá Đức Tin</h1>
-        <p>Trả lời đúng từng câu hỏi để mở các mảnh hình trong infographic đã được chuẩn bị.</p>
-        <div class="faith-set-switcher" id="faithSetSwitcher" aria-label="Chọn bộ khám phá"></div>
+      <section class="faith-hero-panel">
+        <a class="back-link faith-back-button" href="/" aria-label="Quay lại Trang chủ">‹</a>
+        <div class="faith-hero-copy">
+          <p class="eyebrow">Khám phá đức tin</p>
+          <h1 id="faithPageTitle">Khám Phá Đức Tin</h1>
+          <p id="faithPageSubtitle">Trả lời đúng từng câu hỏi để mở các mảnh hình trong infographic đã được chuẩn bị.</p>
+          <div class="faith-set-switcher" id="faithSetSwitcher" aria-label="Chọn bộ khám phá"></div>
+        </div>
+        <div class="faith-score-card" aria-label="Điểm hiện tại">
+          <span aria-hidden="true">★</span>
+          <strong>Điểm: <b id="faithScore">0</b></strong>
+        </div>
       </section>
 
       <section class="faith-game" aria-label="Khám phá Đức Tin">
         <aside class="faith-question-card">
+          <div class="faith-question-badge" id="faithQuestionBadge">Câu hỏi 1/14</div>
           <div class="faith-question-head">
             <span id="faithStep">Câu 1/14</span>
             <strong id="faithTopic">Chủ đề</strong>
           </div>
           <h2 id="faithQuestion">Đang tải bộ câu hỏi...</h2>
           <div class="faith-options" id="faithOptions"></div>
-          <p class="faith-feedback" id="faithFeedback" role="status" aria-live="polite"></p>
+          <div class="faith-feedback-box">
+            <strong>Giải thích:</strong>
+            <p class="faith-feedback" id="faithFeedback" role="status" aria-live="polite"></p>
+          </div>
           <div class="faith-actions">
             <button class="ghost-button" type="button" id="faithHintButton">Gợi ý</button>
             <button class="primary-button" type="button" id="faithNextButton" disabled>Câu tiếp theo</button>
@@ -68,6 +78,10 @@
         </aside>
 
         <div class="faith-visual-card">
+          <div class="faith-unlock-title">
+            <span aria-hidden="true">▣</span>
+            <strong>Hình ảnh sẽ được mở khóa theo từng câu trả lời đúng</strong>
+          </div>
           <div class="faith-progress">
             <span id="faithProgressText">Đã mở 0/14 mảnh</span>
             <div class="faith-progress-track" aria-hidden="true">
@@ -99,7 +113,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-storage-compat.js"></script>
     <script src="firebase-config.js"></script>
     <script src="data.js?v=20260716-faith-no-sample"></script>
-    <script src="faith-discovery.js?v=20260716-source-audit"></script>
+    <script src="faith-discovery.js?v=20260716-faith-redesign"></script>
     <script defer src="/_vercel/insights/script.js"></script>
   </body>
 </html>

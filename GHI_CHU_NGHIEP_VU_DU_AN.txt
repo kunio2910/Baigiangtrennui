@@ -1546,6 +1546,27 @@ Cac truong trong form tao/sua noi dung:
 
 ---
 
+### **14.40. Thiet ke lai man hinh Kham Pha Duc Tin**
+
+**Ngay cap nhat:** 16/07/2026
+
+**Chuc nang:**
+- Thiet ke lai rieng man hinh **Kham Pha Duc Tin** theo phong cach minh hoa vang kem, co banner dau trang, nut quay lai tron va bang diem.
+- Giu bo cuc desktop: cau hoi nam ben trai, infographic nam ben phai.
+- Them nhan **Cau hoi x/y**, bang diem, khung giai thich va thanh thong bao mo khoa hinh anh.
+- Lop che infographic duoc lam dam hon, phu kin tung manh va icon khoa duoc ve bang CSS de tranh loi font emoji.
+- Cap nhat responsive rieng cho dien thoai, khong anh huong layout cac trang chu, danh muc, chi tiet va quan ly.
+- Bo sung mau rieng cho dark mode cua nut dap an, nut chon bo cau hoi va khung infographic de giu do tuong phan.
+- Cap nhat version CSS/JS cua `faith-discovery.html` de trinh duyet tai lai giao dien moi.
+
+**File lien quan:**
+- faith-discovery.html
+- faith-discovery.js
+- styles.css
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+---
+
 ### **14.39. Xoa bo mau Chua Jesu trong Kham Pha Duc Tin**
 
 **Ngay cap nhat:** 16/07/2026
