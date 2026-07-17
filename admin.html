@@ -7,7 +7,7 @@
     <meta name="robots" content="noindex, nofollow" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/favicon.png" />
-    <link rel="stylesheet" href="styles.css?v=20260717-faith-mask-count" />
+    <link rel="stylesheet" href="styles.css?v=20260717-faith-mask-params" />
   </head>
   <body class="admin-page">
     <header class="site-header admin-header">
@@ -219,14 +219,6 @@
           </label>
           <img class="image-preview" id="faithPickerPreview" alt="Xem trước ảnh khung chọn chủ đề" />
           <label>
-            <span>URL hình banner</span>
-            <div class="image-url-tools">
-              <input id="faithBannerImageUrl" type="url" placeholder="https://..." />
-              <button class="ghost-button" type="button" id="faithBannerCloudinaryUploadButton">Upload Cloudinary</button>
-            </div>
-          </label>
-          <img class="image-preview" id="faithBannerPreview" alt="Xem trước banner Khám Phá Đức Tin" />
-          <label>
             <span>URL hình infographic</span>
             <div class="image-url-tools">
               <input id="faithInfographicUrl" type="url" placeholder="https://..." />
@@ -238,7 +230,7 @@
             <div class="faith-mask-admin-head">
               <div>
                 <h3>Chỉnh vùng che</h3>
-                <p>Kéo từng ô để canh đúng vị trí thẻ trong infographic. Kéo góc dưới phải để đổi kích thước ô.</p>
+                <p>Kéo từng ô để canh đúng vị trí thẻ trong infographic. Giữ Ctrl rồi click để chọn nhiều ô; kéo cạnh hoặc góc để đổi kích thước ô.</p>
               </div>
               <div class="faith-mask-admin-actions">
                 <label class="faith-mask-count-field">
@@ -248,6 +240,22 @@
                 <button class="ghost-button" type="button" id="generateFaithMasksButton">Tạo vùng che tự động</button>
                 <button class="ghost-button" type="button" id="clearFaithMasksButton">Xóa vùng che</button>
               </div>
+            </div>
+            <div class="faith-mask-params">
+              <strong id="faithMaskSelectedLabel">Chọn một ô che</strong>
+              <label>
+                <span>Vị trí X,Y (%)</span>
+                <input id="faithMaskPosition" type="text" placeholder="Ví dụ: 12, 25" />
+              </label>
+              <label>
+                <span>Chiều dài (%)</span>
+                <input id="faithMaskLength" type="number" min="3" max="100" step="0.1" placeholder="Cao" />
+              </label>
+              <label>
+                <span>Chiều rộng (%)</span>
+                <input id="faithMaskWidth" type="number" min="3" max="100" step="0.1" placeholder="Rộng" />
+              </label>
+              <button class="ghost-button" type="button" id="applyFaithMaskParams">OK</button>
             </div>
             <div class="faith-mask-editor" id="faithMaskEditor">
               <img id="faithMaskEditorImage" alt="Ảnh chỉnh vùng che" />
@@ -318,7 +326,7 @@
     <script src="https://upload-widget.cloudinary.com/latest/global/all.js"></script>
     <script src="data.js?v=20260717-url-infographic-size"></script>
     <script src="auth.js?v=20260715-no-sample-seed"></script>
-    <script src="admin.js?v=20260717-faith-picker-no-sample"></script>
+    <script src="admin.js?v=20260717-faith-mask-multiselect"></script>
     <script defer src="/_vercel/insights/script.js"></script>
   </body>
 </html>

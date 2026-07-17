@@ -395,11 +395,16 @@ main {
 
 .hero h1 {
   margin: 0 0 14px;
-  font-family: var(--font-heading);
-  font-weight: 800;
+  font-family: Cambria, Georgia, "Times New Roman", serif;
+  font-weight: 700;
   font-size: clamp(36px, 4.2vw, 58px);
-  line-height: 1.14;
+  line-height: 1.12;
+  letter-spacing: 0;
   color: #563615;
+  text-shadow:
+    0 2px 1px rgba(255, 238, 190, 0.34),
+    0 4px 8px rgba(38, 22, 10, 0.52),
+    0 12px 26px rgba(38, 22, 10, 0.38);
 }
 
 .hero p {
@@ -622,7 +627,7 @@ main {
 }
 
 .prayer-grid.is-ready {
-  animation: prayer-marquee 50s linear infinite;
+  animation: prayer-marquee 41.67s linear infinite;
 }
 
 .prayer-marquee {
@@ -3333,11 +3338,11 @@ textarea:disabled {
 
   
 .prayer-grid {
-    animation-duration: 55s;
+    animation-duration: 45.83s;
   }
 
   .prayer-grid.is-ready {
-    animation-duration: 55s;
+    animation-duration: 45.83s;
   }
 
   .hero {
@@ -5677,6 +5682,49 @@ body.faith-page:not(.faith-choosing-set) .faith-mask-grid {
   justify-content: flex-end;
 }
 
+.faith-mask-params {
+  display: grid;
+  grid-template-columns: minmax(110px, auto) minmax(180px, 1fr) minmax(120px, 0.6fr) minmax(120px, 0.6fr) auto;
+  align-items: end;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid rgba(184, 121, 40, 0.32);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.62);
+}
+
+.faith-mask-params strong {
+  align-self: center;
+  color: var(--brown);
+  font-size: 13px;
+}
+
+.faith-mask-params label {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+}
+
+.faith-mask-params span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.faith-mask-params input {
+  min-height: 40px;
+  padding: 0 12px;
+}
+
+.faith-mask-params button {
+  min-height: 40px;
+}
+
+:root[data-theme="dark"] .faith-mask-params {
+  border-color: rgba(224, 160, 49, 0.38);
+  background: rgba(184, 121, 40, 0.1);
+}
+
 .faith-mask-count-field {
   display: grid;
   min-width: 140px;
@@ -5737,6 +5785,11 @@ body.faith-page:not(.faith-choosing-set) .faith-mask-grid {
   font-weight: 800;
 }
 
+.faith-mask-editor-tile.is-active {
+  border-color: #fff1a8;
+  box-shadow: 0 0 0 3px rgba(224, 160, 49, 0.34), 0 10px 24px rgba(0, 0, 0, 0.22);
+}
+
 .faith-mask-editor-tile span {
   display: grid;
   width: 28px;
@@ -5763,6 +5816,7 @@ body.faith-page:not(.faith-choosing-set) .faith-mask-grid {
   font-weight: 900;
   line-height: 1;
   cursor: pointer;
+  z-index: 4;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.24);
 }
 
@@ -5773,16 +5827,82 @@ body.faith-page:not(.faith-choosing-set) .faith-mask-grid {
   outline-offset: 2px;
 }
 
-.faith-mask-editor-tile i {
+.faith-mask-editor-handle {
   position: absolute;
-  right: 0;
-  bottom: 0;
-  width: 18px;
-  height: 18px;
-  border-top: 2px solid rgba(255, 255, 255, 0.9);
-  border-left: 2px solid rgba(255, 255, 255, 0.9);
-  background: rgba(199, 131, 24, 0.9);
+  z-index: 3;
+  display: block;
+  border: 1px solid rgba(255, 255, 255, 0.92);
+  background: rgba(199, 131, 24, 0.94);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
+}
+
+.faith-mask-editor-handle-n,
+.faith-mask-editor-handle-s {
+  left: 50%;
+  width: 36px;
+  height: 10px;
+  border-radius: 999px;
+  transform: translateX(-50%);
+  cursor: ns-resize;
+}
+
+.faith-mask-editor-handle-n {
+  top: 3px;
+}
+
+.faith-mask-editor-handle-s {
+  bottom: 3px;
+}
+
+.faith-mask-editor-handle-e,
+.faith-mask-editor-handle-w {
+  top: 50%;
+  width: 10px;
+  height: 36px;
+  border-radius: 999px;
+  transform: translateY(-50%);
+  cursor: ew-resize;
+}
+
+.faith-mask-editor-handle-e {
+  right: 3px;
+}
+
+.faith-mask-editor-handle-w {
+  left: 3px;
+}
+
+.faith-mask-editor-handle-nw,
+.faith-mask-editor-handle-ne,
+.faith-mask-editor-handle-se,
+.faith-mask-editor-handle-sw {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+}
+
+.faith-mask-editor-handle-nw {
+  top: 3px;
+  left: 3px;
   cursor: nwse-resize;
+}
+
+.faith-mask-editor-handle-ne {
+  top: 3px;
+  right: 3px;
+  cursor: nesw-resize;
+}
+
+.faith-mask-editor-handle-se {
+  right: 3px;
+  bottom: 3px;
+  cursor: nwse-resize;
+}
+
+.faith-mask-editor-handle-sw {
+  bottom: 3px;
+  left: 3px;
+  cursor: nesw-resize;
 }
 
 body.faith-page .faith-visual-card .faith-score-card {
@@ -5815,7 +5935,12 @@ body.faith-page .faith-visual-card .faith-score-card strong {
     justify-content: stretch;
   }
 
-  .faith-mask-admin-actions button {
+  .faith-mask-params {
+    grid-template-columns: 1fr;
+  }
+
+  .faith-mask-admin-actions button,
+  .faith-mask-params button {
     width: 100%;
   }
 

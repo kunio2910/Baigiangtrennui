@@ -3328,3 +3328,145 @@ Vi du neu dap an dung la **C**, truong answer phai la:
 - faith-discovery.js
 - styles.css
 - GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+---
+
+### **14.87. Resize vung che theo canh va bo URL banner trong admin Kham Pha Duc Tin**
+
+**Ngay cap nhat:** 17/07/2026
+
+**Chuc nang:**
+- Trong tab **Kham Pha Duc Tin** cua trang quan ly, bo truong nhap **URL hinh banner** va nut upload Cloudinary cho banner.
+- Khi luu bo cau hoi, `bannerImageUrl` duoc ghi rong de tranh tiep tuc dung URL banner cu.
+- Cap nhat huong dan vung che: co the keo canh hoac goc de doi kich thuoc o.
+- Doi cong cu chinh vung che tu mot tay nam o goc duoi phai sang 8 tay nam: tren, duoi, trai, phai va 4 goc.
+- Khi keo canh trai/phai chi doi chieu ngang va giu canh doi dien; khi keo canh tren/duoi chi doi chieu cao va giu canh doi dien.
+- Them lop CSS rieng cho cac tay nam resize va dam bao nut xoa vung che nam tren cac tay nam.
+- Cap nhat cache version trong `admin.html` sang `20260717-faith-edge-resize` cho `styles.css` va `admin.js`.
+
+**File lien quan:**
+- admin.html
+- admin.js
+- styles.css
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- `rg` khong con tim thay `faithBannerImageUrl`, `faithBannerPreview`, `faithBannerCloudinaryUploadButton` trong `admin.html`.
+- Da kiem tra `admin.js` co `resizeFaithMaskByDirection`, `data-resize` va luu `bannerImageUrl: ""`.
+- Da kiem tra CSS co cac class `faith-mask-editor-handle-*` cho 8 huong resize.
+- Can ngoac: `admin.js` { = 402, } = 402, ( = 1129, ) = 1129.
+- Can ngoac: `styles.css` { = 988, } = 988, ( = 946, ) = 946.
+- Can ngoac: `admin.html` { = 1, } = 1.
+- Khong chay duoc `node --check` vi may hien khong co lenh `node` trong PATH.
+- Localhost tra ve HTTP 200 cho admin.html, admin.js?v=20260717-faith-edge-resize va styles.css?v=20260717-faith-edge-resize.
+
+---
+
+### **14.88. Nhap thong so thu cong cho vung che Kham Pha Duc Tin**
+
+**Ngay cap nhat:** 17/07/2026
+
+**Chuc nang:**
+- Trong tab **Kham Pha Duc Tin** cua trang quan ly, them cum nhap thong so cho vung che.
+- Nguoi quan tri bam vao mot o che tren anh de chon o can sua.
+- Form hien thong so cua o dang chon gom:
+  - `Vi tri X,Y (%)`: toa do goc tren trai cua o che theo phan tram khung anh.
+  - `Chieu dai (%)`: chieu cao cua o che.
+  - `Chieu rong (%)`: chieu ngang cua o che.
+- Khi bam **OK**, o che dang chon se cap nhat ngay theo thong so vua nhap.
+- Neu nhap thong so vuot khung anh, he thong tu gioi han lai trong vung 0-100% va kich thuoc toi thieu 3%.
+- O che dang chon co vien/sang ro hon de de nhan biet.
+- Cac truong thong so tu dong tat khi chua co o che nao duoc chon.
+- Cap nhat cache version trong `admin.html` sang `20260717-faith-mask-params` cho `styles.css` va `admin.js`.
+
+**File lien quan:**
+- admin.html
+- admin.js
+- styles.css
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Da kiem tra `admin.html` co cum `faith-mask-params` va cac input `faithMaskPosition`, `faithMaskLength`, `faithMaskWidth`.
+- Da kiem tra `admin.js` co `applyFaithMaskParams`, `syncFaithMaskParamsForm` va `selectFaithMask`.
+- Da kiem tra CSS co `.faith-mask-params` va `.faith-mask-editor-tile.is-active`.
+- Can ngoac: `admin.js` { = 433, } = 433, ( = 1218, ) = 1218.
+- Can ngoac: `styles.css` { = 997, } = 997, ( = 958, ) = 958.
+- Can ngoac: `admin.html` { = 1, } = 1, ( = 3, ) = 3.
+- Localhost tra ve HTTP 200 cho admin.html, admin.js?v=20260717-faith-mask-params va styles.css?v=20260717-faith-mask-params.
+---
+
+### **14.89. Chon nhieu o che bang Ctrl click trong Kham Pha Duc Tin**
+
+**Ngay cap nhat:** 17/07/2026
+
+**Chuc nang:**
+- Trong cong cu **Chinh vung che** cua tab Kham Pha Duc Tin, them chuc nang chon nhieu o che bang **Ctrl + click**.
+- Click binh thuong van chon mot o che va giu luong keo/resize cu.
+- Giu Ctrl roi click vao tung o de them/bo o khoi danh sach dang chon.
+- Khi chon nhieu o, nhan biet bang vien sang `.is-active` tren tung o duoc chon.
+- Khi chon nhieu o, truong `Vi tri X,Y (%)` bi khoa va hien `Nhieu vi tri` de tranh ap dung cung toa do lam cac o chong len nhau.
+- Truong `Chieu dai (%)` va `Chieu rong (%)` co the nhap de ap dung dong loat cho tat ca o dang chon.
+- Neu cac o dang chon co cung chieu dai/chieu rong, form tu hien gia tri chung; neu khac nhau thi de trong de nguoi quan tri nhap gia tri moi.
+- Nut **OK** cap nhat tat ca o dang chon va giu lai vi tri rieng cua tung o.
+- Cap nhat cache version `admin.js` trong `admin.html` sang `20260717-faith-mask-multiselect`.
+
+**File lien quan:**
+- admin.html
+- admin.js
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Da kiem tra `admin.js` co `selectedFaithMaskIndices`, `selectedFaithMaskList`, `Ctrl/meta click` va ap dung thong so cho nhieu o.
+- Da kiem tra `admin.html` co huong dan giu Ctrl de chon nhieu o va cache `admin.js?v=20260717-faith-mask-multiselect`.
+- Can ngoac: `admin.js` { = 449, } = 449, ( = 1288, ) = 1288.
+- Can ngoac: `admin.html` { = 1, } = 1, ( = 3, ) = 3.
+- Can ngoac: `styles.css` { = 997, } = 997, ( = 958, ) = 958.
+- Localhost tra ve HTTP 200 cho admin.html, admin.js?v=20260717-faith-mask-multiselect va styles.css?v=20260717-faith-mask-params.
+- Khong chay `node --check` vi may hien khong co lenh `node` trong PATH.
+---
+
+### **14.90. Lam noi bat tieu de banner va tang toc Cau Nguyen**
+
+**Ngay cap nhat:** 17/07/2026
+
+**Chuc nang:**
+- Them `text-shadow` cho tieu de banner trang chu `Duc Kito la anh sang the gian` de chu noi hon tren anh nen.
+- Tang toc do di chuyen card **Cau Nguyen** them 20%:
+  - Desktop: animation `prayer-marquee` tu 50s xuong 41.67s.
+  - Mobile: animation-duration tu 55s xuong 45.83s.
+- Cap nhat cache CSS trong `index.html` sang `20260717-hero-shadow-prayer-speed`.
+- Ghi nhan quy uoc lam viec moi: file nghiep vu chi can doc mot lan dau phien lam viec, khong can doc lai truoc moi lan chinh sua trong cung phien.
+
+**File lien quan:**
+- index.html
+- styles.css
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Da kiem tra `.hero h1` co `text-shadow` dung block.
+- Da kiem tra `.prayer-grid.is-ready` dung `41.67s` va mobile override dung `45.83s`.
+- Can ngoac: `styles.css` { = 997, } = 997, ( = 961, ) = 961.
+- Can ngoac: `index.html` { = 3, } = 3, ( = 6, ) = 6.
+- Localhost tra ve HTTP 200 cho trang chu va `styles.css?v=20260717-hero-shadow-prayer-speed`.
+---
+
+### **14.91. Doi font tieu de banner trang chu sang co dien**
+
+**Ngay cap nhat:** 18/07/2026
+
+**Chuc nang:**
+- Doi font rieng cho tieu de banner trang chu `Duc Kito la anh sang the gian` sang nhom serif co dien: `Cambria, Georgia, "Times New Roman", serif`.
+- Giam font-weight tu 800 xuong 700 va line-height tu 1.14 xuong 1.12 de chu trang trong, gon va hop nen anh hon.
+- Giu lai `text-shadow` da them truoc do de chu van noi bat tren background.
+- Cap nhat cache CSS trong `index.html` sang `20260718-hero-classic-font`.
+
+**File lien quan:**
+- index.html
+- styles.css
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiem tra:**
+- Da kiem tra `.hero h1` dung font `Cambria, Georgia, "Times New Roman", serif`.
+- Can ngoac: `styles.css` { = 997, } = 997, ( = 960, ) = 960.
+- Can ngoac: `index.html` { = 3, } = 3, ( = 6, ) = 6.
+- Localhost tra ve HTTP 200 cho trang chu va `styles.css?v=20260718-hero-classic-font`.

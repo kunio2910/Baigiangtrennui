@@ -69,6 +69,11 @@ const faithMaskEditorLayer = document.querySelector("#faithMaskEditorLayer");
 const faithMaskCount = document.querySelector("#faithMaskCount");
 const generateFaithMasksButton = document.querySelector("#generateFaithMasksButton");
 const clearFaithMasksButton = document.querySelector("#clearFaithMasksButton");
+const faithMaskSelectedLabel = document.querySelector("#faithMaskSelectedLabel");
+const faithMaskPositionInput = document.querySelector("#faithMaskPosition");
+const faithMaskLengthInput = document.querySelector("#faithMaskLength");
+const faithMaskWidthInput = document.querySelector("#faithMaskWidth");
+const applyFaithMaskParamsButton = document.querySelector("#applyFaithMaskParams");
 const faithQuestionsFile = document.querySelector("#faithQuestionsFile");
 const faithQuestionsJson = document.querySelector("#faithQuestionsJson");
 const formatFaithQuestionsButton = document.querySelector("#formatFaithQuestions");
@@ -84,6 +89,8 @@ let draggedItem = null;
 let faithDiscoverySets = [];
 let activeFaithAdminSetId = "";
 let faithAdminMasks = [];
+let selectedFaithMaskIndex = -1;
+let selectedFaithMaskIndices = new Set();
 let activeFaithMaskDrag = null;
 const legacyFaithPickerSampleImages = ["/assets/faith-picker-maria.jpg", "assets/faith-picker-maria.jpg"];
 
@@ -446,6 +453,146 @@ function clampFaithMask(mask) {
   return next;
 }
 
+function formatFaithMaskNumber(value) {
+  return Number(Number(value || 0).toFixed(3)).toString();
+}
+
+function setFaithMaskParamsDisabled(disabled) {
+  [faithMaskPositionInput, faithMaskLengthInput, faithMaskWidthInput, applyFaithMaskParamsButton].forEach((control) => {
+    if (control) control.disabled = disabled;
+  });
+}
+
+function selectedFaithMaskList() {
+  return [...selectedFaithMaskIndices]
+    .filter((index) => Boolean(faithAdminMasks[index]))
+    .sort((a, b) => a - b);
+}
+
+function sameFaithMaskValue(indices, key) {
+  if (!indices.length) return "";
+  const firstValue = formatFaithMaskNumber(clampFaithMask(faithAdminMasks[indices[0]])[key]);
+  return indices.every((index) => formatFaithMaskNumber(clampFaithMask(faithAdminMasks[index])[key]) === firstValue)
+    ? firstValue
+    : "";
+}
+
+function syncFaithMaskParamsForm() {
+  const selectedIndices = selectedFaithMaskList();
+  selectedFaithMaskIndices = new Set(selectedIndices);
+  selectedFaithMaskIndex = selectedIndices[0] ?? -1;
+
+  if (!selectedIndices.length) {
+    if (faithMaskSelectedLabel) faithMaskSelectedLabel.textContent = "Chọn một ô che";
+    if (faithMaskPositionInput) {
+      faithMaskPositionInput.value = "";
+      faithMaskPositionInput.disabled = true;
+    }
+    if (faithMaskLengthInput) faithMaskLengthInput.value = "";
+    if (faithMaskWidthInput) faithMaskWidthInput.value = "";
+    setFaithMaskParamsDisabled(true);
+    return;
+  }
+
+  setFaithMaskParamsDisabled(false);
+
+  if (selectedIndices.length > 1) {
+    if (faithMaskSelectedLabel) faithMaskSelectedLabel.textContent = `Đã chọn ${selectedIndices.length} ô che`;
+    if (faithMaskPositionInput) {
+      faithMaskPositionInput.value = "Nhiều vị trí";
+      faithMaskPositionInput.disabled = true;
+    }
+    if (faithMaskLengthInput) faithMaskLengthInput.value = sameFaithMaskValue(selectedIndices, "h");
+    if (faithMaskWidthInput) faithMaskWidthInput.value = sameFaithMaskValue(selectedIndices, "w");
+    return;
+  }
+
+  const safeMask = clampFaithMask(faithAdminMasks[selectedIndices[0]]);
+  if (faithMaskSelectedLabel) faithMaskSelectedLabel.textContent = `Ô che ${selectedIndices[0] + 1}`;
+  if (faithMaskPositionInput) {
+    faithMaskPositionInput.disabled = false;
+    faithMaskPositionInput.value = `${formatFaithMaskNumber(safeMask.x)}, ${formatFaithMaskNumber(safeMask.y)}`;
+  }
+  if (faithMaskLengthInput) faithMaskLengthInput.value = formatFaithMaskNumber(safeMask.h);
+  if (faithMaskWidthInput) faithMaskWidthInput.value = formatFaithMaskNumber(safeMask.w);
+}
+
+function selectFaithMask(index, additive = false) {
+  if (!faithAdminMasks[index]) {
+    selectedFaithMaskIndices = new Set();
+  } else if (additive) {
+    const nextSelection = new Set(selectedFaithMaskIndices);
+    if (nextSelection.has(index)) {
+      nextSelection.delete(index);
+    } else {
+      nextSelection.add(index);
+    }
+    selectedFaithMaskIndices = nextSelection;
+  } else {
+    selectedFaithMaskIndices = new Set([index]);
+  }
+
+  const selectedIndices = selectedFaithMaskList();
+  selectedFaithMaskIndex = selectedIndices[0] ?? -1;
+  faithMaskEditorLayer?.querySelectorAll(".faith-mask-editor-tile").forEach((tile) => {
+    tile.classList.toggle("is-active", selectedFaithMaskIndices.has(Number(tile.dataset.index)));
+  });
+  syncFaithMaskParamsForm();
+}
+
+function parseFaithMaskPosition(value) {
+  const parts = String(value || "").trim().split(/[,;\s]+/).filter(Boolean);
+  if (parts.length !== 2) {
+    throw new Error("Vui lòng nhập vị trí theo dạng X,Y. Ví dụ: 12, 25.");
+  }
+  const x = Number(parts[0]);
+  const y = Number(parts[1]);
+  if ([x, y].some((number) => Number.isNaN(number))) {
+    throw new Error("Vị trí X,Y phải là số.");
+  }
+  return { x, y };
+}
+
+function applyFaithMaskParams() {
+  const selectedIndices = selectedFaithMaskList();
+  if (!selectedIndices.length) {
+    if (faithDiscoveryMessage) faithDiscoveryMessage.textContent = "Vui lòng chọn một hoặc nhiều ô che trước khi nhập thông số.";
+    return;
+  }
+
+  try {
+    const isMultiSelect = selectedIndices.length > 1;
+    const heightRaw = String(faithMaskLengthInput?.value || "").trim();
+    const widthRaw = String(faithMaskWidthInput?.value || "").trim();
+    const height = heightRaw ? Number(heightRaw) : null;
+    const width = widthRaw ? Number(widthRaw) : null;
+
+    if (!height && !width) {
+      throw new Error("Vui lòng nhập chiều dài hoặc chiều rộng cần áp dụng.");
+    }
+    if ([height, width].some((number) => number !== null && (Number.isNaN(number) || number <= 0))) {
+      throw new Error("Chiều dài và chiều rộng phải là số lớn hơn 0.");
+    }
+
+    const position = isMultiSelect ? null : parseFaithMaskPosition(faithMaskPositionInput?.value);
+    selectedIndices.forEach((index) => {
+      const currentMask = clampFaithMask(faithAdminMasks[index]);
+      faithAdminMasks[index] = clampFaithMask({
+        x: position ? position.x : currentMask.x,
+        y: position ? position.y : currentMask.y,
+        w: width ?? currentMask.w,
+        h: height ?? currentMask.h,
+      });
+    });
+    renderFaithMaskEditor();
+    if (faithDiscoveryMessage) {
+      const countText = selectedIndices.length === 1 ? `ô che ${selectedIndices[0] + 1}` : `${selectedIndices.length} ô che`;
+      faithDiscoveryMessage.textContent = `Đã cập nhật thông số ${countText}. Bấm Lưu bộ câu hỏi để lưu thay đổi.`;
+    }
+  } catch (error) {
+    if (faithDiscoveryMessage) faithDiscoveryMessage.textContent = error.message;
+  }
+}
 function uniqueFaithSetId() {
   return `faith-set-${Date.now()}`;
 }
@@ -520,9 +667,11 @@ function fillFaithSetForm(set) {
   faithSetTitle.value = selectedSet?.title || "";
   
   faithPickerImageUrl.value = selectedSet?.pickerImageUrl || "";
-  faithBannerImageUrl.value = selectedSet?.bannerImageUrl || "";
+  if (faithBannerImageUrl) faithBannerImageUrl.value = "";
   faithInfographicUrl.value = selectedSet?.infographicUrl || "";
   faithAdminMasks = normalizeFaithMasks(selectedSet?.masks);
+  selectedFaithMaskIndex = faithAdminMasks.length ? 0 : -1;
+    selectedFaithMaskIndices = faithAdminMasks.length ? new Set([0]) : new Set();
   if (faithMaskCount) {
     faithMaskCount.value = faithAdminMasks.length || selectedSet?.questions?.length || "";
   }
@@ -574,6 +723,35 @@ function updateFaithImagePreview() {
   renderFaithMaskEditor();
 }
 
+function resizeFaithMaskByDirection(original, dx, dy, direction = "se") {
+  const minSize = 3;
+  let left = original.x;
+  let top = original.y;
+  let right = original.x + original.w;
+  let bottom = original.y + original.h;
+  const resizeDirection = String(direction || "se");
+
+  if (resizeDirection.includes("e")) {
+    right = Math.max(left + minSize, Math.min(100, right + dx));
+  }
+  if (resizeDirection.includes("s")) {
+    bottom = Math.max(top + minSize, Math.min(100, bottom + dy));
+  }
+  if (resizeDirection.includes("w")) {
+    left = Math.min(right - minSize, Math.max(0, left + dx));
+  }
+  if (resizeDirection.includes("n")) {
+    top = Math.min(bottom - minSize, Math.max(0, top + dy));
+  }
+
+  return {
+    x: left,
+    y: top,
+    w: right - left,
+    h: bottom - top,
+  };
+}
+
 function updateFaithMaskFromPointer(event) {
   if (!activeFaithMaskDrag || !faithMaskEditorLayer) return;
   event.preventDefault();
@@ -583,11 +761,7 @@ function updateFaithMaskFromPointer(event) {
   const original = activeFaithMaskDrag.original;
   const next =
     activeFaithMaskDrag.mode === "resize"
-      ? {
-          ...original,
-          w: original.w + dx,
-          h: original.h + dy,
-        }
+      ? resizeFaithMaskByDirection(original, dx, dy, activeFaithMaskDrag.direction)
       : {
           ...original,
           x: original.x + dx,
@@ -603,13 +777,19 @@ function stopFaithMaskDrag() {
   window.removeEventListener("pointerup", stopFaithMaskDrag);
 }
 
-function startFaithMaskDrag(event, index, mode) {
+function startFaithMaskDrag(event, index, mode, direction = "") {
   if (!faithAdminMasks[index]) return;
   event.preventDefault();
   event.stopPropagation();
+  if (mode === "move" && (event.ctrlKey || event.metaKey)) {
+    selectFaithMask(index, true);
+    return;
+  }
+  selectFaithMask(index);
   activeFaithMaskDrag = {
     index,
     mode,
+    direction,
     startX: event.clientX,
     startY: event.clientY,
     original: { ...faithAdminMasks[index] },
@@ -625,17 +805,38 @@ function renderFaithMaskEditor() {
     faithMaskEditor.classList.remove("show");
     faithMaskEditorImage.removeAttribute("src");
     faithMaskEditorLayer.innerHTML = "";
+    selectedFaithMaskIndex = -1;
+    selectedFaithMaskIndices = new Set();
+    syncFaithMaskParamsForm();
     return;
   }
 
   faithMaskEditor.classList.add("show");
   faithMaskEditorImage.src = imageUrl;
+  const validSelection = selectedFaithMaskList();
+  if (!faithAdminMasks.length) {
+    selectedFaithMaskIndex = -1;
+    selectedFaithMaskIndices = new Set();
+  } else if (!validSelection.length) {
+    selectedFaithMaskIndex = 0;
+    selectedFaithMaskIndices = new Set([0]);
+  } else {
+    selectedFaithMaskIndex = validSelection[0];
+    selectedFaithMaskIndices = new Set(validSelection);
+  }
+  const resizeHandles = ["nw", "n", "ne", "e", "se", "s", "sw", "w"]
+    .map(
+      (direction) =>
+        `<i class="faith-mask-editor-handle faith-mask-editor-handle-${direction}" data-resize="${direction}" aria-hidden="true"></i>`
+    )
+    .join("");
+
   faithMaskEditorLayer.innerHTML = faithAdminMasks
     .map((mask, index) => {
       const safeMask = clampFaithMask(mask);
       return `
         <button
-          class="faith-mask-editor-tile"
+          class="faith-mask-editor-tile ${selectedFaithMaskIndices.has(index) ? "is-active" : ""}"
           type="button"
           data-index="${index}"
           style="left:${safeMask.x}%;top:${safeMask.y}%;width:${safeMask.w}%;height:${safeMask.h}%"
@@ -643,7 +844,7 @@ function renderFaithMaskEditor() {
         >
           <span>${index + 1}</span>
           <em class="faith-mask-editor-delete" role="button" tabindex="0" aria-label="Xóa vùng che ${index + 1}">×</em>
-          <i aria-hidden="true"></i>
+          ${resizeHandles}
         </button>
       `;
     })
@@ -652,12 +853,25 @@ function renderFaithMaskEditor() {
   faithMaskEditorLayer.querySelectorAll(".faith-mask-editor-tile").forEach((tile) => {
     const index = Number(tile.dataset.index);
     tile.addEventListener("pointerdown", (event) => startFaithMaskDrag(event, index, "move"));
-    tile.querySelector("i")?.addEventListener("pointerdown", (event) => startFaithMaskDrag(event, index, "resize"));
+    tile.querySelectorAll("[data-resize]").forEach((handle) => {
+      handle.addEventListener("pointerdown", (event) =>
+        startFaithMaskDrag(event, index, "resize", handle.dataset.resize || "se")
+      );
+    });
     const deleteButton = tile.querySelector(".faith-mask-editor-delete");
     const deleteMask = (event) => {
       event.preventDefault();
       event.stopPropagation();
       faithAdminMasks.splice(index, 1);
+      const nextSelection = [...selectedFaithMaskIndices]
+        .filter((selectedIndex) => selectedIndex !== index)
+        .map((selectedIndex) => (selectedIndex > index ? selectedIndex - 1 : selectedIndex))
+        .filter((selectedIndex) => Boolean(faithAdminMasks[selectedIndex]));
+      if (!nextSelection.length && faithAdminMasks.length) {
+        nextSelection.push(Math.min(index, faithAdminMasks.length - 1));
+      }
+      selectedFaithMaskIndices = new Set(nextSelection);
+      selectedFaithMaskIndex = nextSelection[0] ?? -1;
       renderFaithMaskEditor();
       if (faithDiscoveryMessage) faithDiscoveryMessage.textContent = `Đã xóa vùng che ${index + 1}. Bấm Lưu bộ câu hỏi để lưu thay đổi.`;
     };
@@ -670,6 +884,7 @@ function renderFaithMaskEditor() {
       if (event.key === "Enter" || event.key === " ") deleteMask(event);
     });
   });
+  syncFaithMaskParamsForm();
 }
 
 async function loadFaithDiscoveryAdmin() {
@@ -1420,6 +1635,16 @@ importBackupButton?.addEventListener("click", async () => {
 faithPickerImageUrl?.addEventListener("input", updateFaithPickerPreview);
 faithBannerImageUrl?.addEventListener("input", updateFaithBannerPreview);
 faithInfographicUrl?.addEventListener("input", updateFaithImagePreview);
+applyFaithMaskParamsButton?.addEventListener("click", applyFaithMaskParams);
+faithMaskPositionInput?.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") applyFaithMaskParams();
+});
+faithMaskLengthInput?.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") applyFaithMaskParams();
+});
+faithMaskWidthInput?.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") applyFaithMaskParams();
+});
 
 faithSetList?.addEventListener("click", (event) => {
   const button = event.target.closest("button[data-id]");
@@ -1435,9 +1660,11 @@ newFaithSetButton?.addEventListener("click", () => {
   faithSetTitle.value = "";
   
   faithPickerImageUrl.value = "";
-  faithBannerImageUrl.value = "";
+  if (faithBannerImageUrl) faithBannerImageUrl.value = "";
   faithInfographicUrl.value = "";
   faithAdminMasks = [];
+  selectedFaithMaskIndex = -1;
+  selectedFaithMaskIndices = new Set();
   if (faithMaskCount) faithMaskCount.value = "";
   faithQuestionsJson.value = "";
   
@@ -1516,6 +1743,8 @@ generateFaithMasksButton?.addEventListener("click", () => {
     const maskCount = faithMaskCountValue(questionCount);
     if (faithMaskCount) faithMaskCount.value = String(maskCount);
     faithAdminMasks = generateFaithDefaultMasks(maskCount);
+    selectedFaithMaskIndex = faithAdminMasks.length ? 0 : -1;
+    selectedFaithMaskIndices = faithAdminMasks.length ? new Set([0]) : new Set();
     renderFaithMaskEditor();
     if (faithDiscoveryMessage) {
       faithDiscoveryMessage.textContent = `Đã tạo ${faithAdminMasks.length} vùng che tự động. Hãy kéo chỉnh cho khớp ảnh.`;
@@ -1527,6 +1756,8 @@ generateFaithMasksButton?.addEventListener("click", () => {
 
 clearFaithMasksButton?.addEventListener("click", () => {
   faithAdminMasks = [];
+  selectedFaithMaskIndex = -1;
+  selectedFaithMaskIndices = new Set();
   renderFaithMaskEditor();
   if (faithDiscoveryMessage) faithDiscoveryMessage.textContent = "Đã xóa toàn bộ vùng che của bộ hiện tại.";
 });
@@ -1550,7 +1781,7 @@ faithDiscoveryForm?.addEventListener("submit", async (event) => {
       id,
       title,
       pickerImageUrl: faithPickerImageUrl.value.trim(),
-      bannerImageUrl: faithBannerImageUrl.value.trim(),
+      bannerImageUrl: "",
       infographicUrl: faithInfographicUrl.value.trim(),
       masks: normalizeFaithMasks(faithAdminMasks),
       questions,
