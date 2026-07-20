@@ -755,6 +755,27 @@ async function saveFaithDiscoverySettings(settings = {}) {
   );
 }
 
+async function getJourneyBibleSettings() {
+  const { db } = requireFirebase();
+  const snapshot = await db.collection("siteSettings").doc("journeyBible").get();
+  if (!snapshot.exists) return null;
+  return normalizeContentItem({ id: snapshot.id, ...snapshot.data() });
+}
+
+async function saveJourneyBibleSettings(settings = {}) {
+  const { db } = requireFirebase();
+  const topics = Array.isArray(settings.topics) ? settings.topics : [];
+
+  await db.collection("siteSettings").doc("journeyBible").set(
+    {
+      topics,
+      activeTopicId: settings.activeTopicId || topics[0]?.id || "",
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      updatedAtText: new Date().toISOString(),
+    },
+    { merge: true }
+  );
+}
 const BACKUP_COLLECTIONS = ["contents", "users", "feedbacks", "prayerRequests", "analytics", "siteSettings"];
 
 function serializeBackupValue(value) {
@@ -833,6 +854,41 @@ function summarizeFaithDiscoveryBackup(settings) {
     sets: normalizedSets,
   };
 }
+function summarizeJourneyBibleBackup(settings) {
+  if (!settings || typeof settings !== "object") {
+    return {
+      hasData: false,
+      activeTopicId: "",
+      topicCount: 0,
+      milestoneCount: 0,
+      challengeCount: 0,
+      topics: [],
+    };
+  }
+
+  const topics = Array.isArray(settings.topics) ? settings.topics : [];
+  const normalizedTopics = topics.map((topic, index) => {
+    const milestones = Array.isArray(topic?.milestones) ? topic.milestones : [];
+    const challenges = topic?.challenges && typeof topic.challenges === "object" ? topic.challenges : {};
+    return {
+      id: String(topic?.id || `journey-topic-${index + 1}`),
+      title: String(topic?.title || `Chủ đề ${index + 1}`),
+      hasPickerImage: Boolean(String(topic?.pickerImageUrl || "").trim()),
+      milestoneCount: milestones.length,
+      mapCardImageCount: milestones.filter((milestone) => String(milestone?.cardImageUrl || "").trim()).length,
+      challengeCount: Object.keys(challenges).length,
+    };
+  });
+
+  return {
+    hasData: normalizedTopics.length > 0,
+    activeTopicId: String(settings.activeTopicId || ""),
+    topicCount: normalizedTopics.length,
+    milestoneCount: normalizedTopics.reduce((sum, topic) => sum + topic.milestoneCount, 0),
+    challengeCount: normalizedTopics.reduce((sum, topic) => sum + topic.challengeCount, 0),
+    topics: normalizedTopics,
+  };
+}
 async function exportFirestoreBackup() {
   const { db } = requireFirebase();
   const backup = {
@@ -853,9 +909,12 @@ async function exportFirestoreBackup() {
     });
   }
   const faithDiscoveryDoc = backup.collections.siteSettings?.find((doc) => doc.id === "faithDiscovery");
+  const journeyBibleDoc = backup.collections.siteSettings?.find((doc) => doc.id === "journeyBible");
   backup.metadata = backup.metadata || {};
   backup.metadata.faithDiscovery = summarizeFaithDiscoveryBackup(faithDiscoveryDoc?.data);
+  backup.metadata.journeyBible = summarizeJourneyBibleBackup(journeyBibleDoc?.data);
   backup.faithDiscovery = faithDiscoveryDoc?.data || null;
+  backup.journeyBible = journeyBibleDoc?.data || null;
   return backup;
 }
 
@@ -866,13 +925,22 @@ async function importFirestoreBackup(backup) {
 
   const { db } = requireFirebase();
   let restoredCount = 0;
-  if (backup.faithDiscovery && !backup.collections.siteSettings) {
-    backup.collections.siteSettings = [
-      {
-        id: "faithDiscovery",
-        data: backup.faithDiscovery,
-      },
-    ];
+  if ((backup.faithDiscovery || backup.journeyBible) && !backup.collections.siteSettings) {
+    backup.collections.siteSettings = [];
+  }
+
+  if (backup.faithDiscovery && !backup.collections.siteSettings.some((doc) => doc.id === "faithDiscovery")) {
+    backup.collections.siteSettings.push({
+      id: "faithDiscovery",
+      data: backup.faithDiscovery,
+    });
+  }
+
+  if (backup.journeyBible && !backup.collections.siteSettings.some((doc) => doc.id === "journeyBible")) {
+    backup.collections.siteSettings.push({
+      id: "journeyBible",
+      data: backup.journeyBible,
+    });
   }
 
   for (const collectionName of BACKUP_COLLECTIONS) {

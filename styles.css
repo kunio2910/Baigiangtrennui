@@ -6569,3 +6569,2158 @@ body.journey-page .journey-empty {
 :root[data-theme="dark"] body.journey-page .journey-empty {
   color: #f0cf9a;
 }
+
+/* 14.97. Prototype man choi Hanh trinh theo dau chan Chua Giesu */
+body.journey-page .journey-game[hidden] {
+  display: none !important;
+}
+
+body.journey-page.journey-playing .journey-shell {
+  max-width: none;
+  padding: 0;
+}
+
+body.journey-page .journey-game {
+  display: block;
+  width: 100%;
+}
+
+body.journey-page .journey-map-stage {
+  position: relative;
+  min-height: calc(100vh - 58px);
+  overflow: hidden;
+  padding: 18px;
+  border: 2px solid rgba(111, 69, 25, 0.58);
+  background:
+    radial-gradient(circle at 18% 36%, rgba(36, 137, 157, 0.45), transparent 23%),
+    radial-gradient(circle at 48% 34%, rgba(99, 160, 86, 0.44), transparent 28%),
+    radial-gradient(circle at 82% 42%, rgba(193, 145, 78, 0.48), transparent 30%),
+    linear-gradient(110deg, #356d7c 0%, #d9bc80 38%, #bf965a 66%, #e0c087 100%);
+  box-shadow: inset 0 0 0 6px rgba(255, 233, 176, 0.42), inset 0 0 80px rgba(78, 44, 17, 0.35);
+  color: #3f230e;
+}
+
+body.journey-page .journey-map-stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.14) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(255, 255, 255, 0.12) 1px, transparent 1px),
+    radial-gradient(circle at 54% 57%, rgba(42, 83, 45, 0.22), transparent 18%);
+  background-size: 76px 76px, 76px 76px, auto;
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+body.journey-page .journey-map-stage::after {
+  content: "Galilê\A Samaria\A Giêrusalem\A Đồng vắng";
+  white-space: pre;
+  position: absolute;
+  inset: 25% 12% auto auto;
+  width: 60%;
+  color: rgba(82, 47, 18, 0.32);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(22px, 2.2vw, 38px);
+  font-weight: 800;
+  line-height: 3.2;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  pointer-events: none;
+}
+
+body.journey-page .journey-menu-button,
+body.journey-page .journey-back-to-topics {
+  position: absolute;
+  z-index: 15;
+  border: 2px solid rgba(255, 225, 154, 0.82);
+  background: linear-gradient(180deg, #5b3518, #2f190b);
+  color: #fff2c8;
+  box-shadow: 0 8px 18px rgba(34, 19, 8, 0.35);
+}
+
+body.journey-page .journey-menu-button {
+  top: 20px;
+  left: 20px;
+  display: grid;
+  width: 54px;
+  aspect-ratio: 1;
+  place-items: center;
+  border-radius: 50%;
+  font-size: 28px;
+  line-height: 1;
+}
+
+body.journey-page .journey-back-to-topics {
+  right: 22px;
+  bottom: 22px;
+  min-height: 42px;
+  padding: 0 18px;
+  border-radius: 999px;
+  font-weight: 800;
+}
+
+body.journey-page .journey-scroll-title {
+  position: absolute;
+  z-index: 6;
+  top: 24px;
+  left: 86px;
+  width: min(390px, 28vw);
+  padding: 18px 28px 22px;
+  border: 2px solid rgba(108, 62, 21, 0.38);
+  border-radius: 18px 18px 28px 28px;
+  background:
+    linear-gradient(90deg, rgba(103, 62, 25, 0.18), transparent 14%, transparent 86%, rgba(103, 62, 25, 0.18)),
+    linear-gradient(180deg, #f4dbad, #c8944c);
+  text-align: center;
+  box-shadow: 0 14px 28px rgba(62, 34, 13, 0.32);
+}
+
+body.journey-page .journey-scroll-title p,
+body.journey-page .journey-scroll-title span {
+  margin: 0;
+  font-weight: 800;
+}
+
+body.journey-page .journey-scroll-title p {
+  font-size: 18px;
+  color: #613519;
+  text-transform: uppercase;
+}
+
+body.journey-page .journey-scroll-title h1 {
+  margin: 4px 0 10px;
+  color: #4a220e;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(34px, 3.2vw, 62px);
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+
+body.journey-page .journey-scroll-title span {
+  display: inline-block;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: #5e3515;
+  color: #ffe2a0;
+  font-size: 15px;
+}
+
+body.journey-page .journey-hud {
+  position: absolute;
+  z-index: 8;
+  top: 20px;
+  left: 50%;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(150px, 1fr));
+  overflow: hidden;
+  min-width: min(560px, 44vw);
+  border: 2px solid rgba(255, 226, 150, 0.72);
+  border-radius: 18px;
+  background: linear-gradient(180deg, #6a411f, #32190b);
+  color: #fff1ca;
+  transform: translateX(-50%);
+  box-shadow: 0 10px 24px rgba(43, 24, 9, 0.36);
+}
+
+body.journey-page .journey-hud div {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0 10px;
+  align-items: center;
+  padding: 12px 18px;
+  border-right: 1px solid rgba(255, 226, 150, 0.25);
+}
+
+body.journey-page .journey-hud div:last-child {
+  border-right: 0;
+}
+
+body.journey-page .journey-hud strong {
+  grid-row: span 2;
+  color: #f0a722;
+  font-size: 34px;
+}
+
+body.journey-page .journey-hud span {
+  color: #f7d7a4;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+body.journey-page .journey-hud b {
+  color: #fff8df;
+  font-size: 28px;
+}
+
+body.journey-page .journey-actions {
+  position: absolute;
+  z-index: 9;
+  top: 22px;
+  right: 128px;
+  display: flex;
+  gap: 14px;
+}
+
+body.journey-page .journey-actions button {
+  display: grid;
+  width: 76px;
+  min-height: 72px;
+  place-items: center;
+  border: 2px solid rgba(255, 226, 150, 0.72);
+  border-radius: 50%;
+  background: linear-gradient(180deg, #6a411f, #32190b);
+  color: #fff0c4;
+  font-size: 12px;
+  font-weight: 800;
+  box-shadow: 0 10px 22px rgba(38, 21, 8, 0.36);
+}
+
+body.journey-page .journey-compass {
+  position: absolute;
+  z-index: 5;
+  top: 110px;
+  right: 44px;
+  display: grid;
+  width: 106px;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 4px double rgba(78, 46, 18, 0.72);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 235, 176, 0.75), rgba(105, 63, 24, 0.28));
+  color: #4c2b10;
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 900;
+}
+
+body.journey-page .journey-compass::before,
+body.journey-page .journey-compass::after {
+  content: "";
+  position: absolute;
+  background: rgba(74, 42, 14, 0.72);
+}
+
+body.journey-page .journey-compass::before {
+  width: 6px;
+  height: 82px;
+}
+
+body.journey-page .journey-compass::after {
+  width: 82px;
+  height: 6px;
+}
+
+body.journey-page .journey-compass span {
+  position: absolute;
+  z-index: 2;
+}
+
+body.journey-page .journey-compass span:nth-child(1) { top: 5px; }
+body.journey-page .journey-compass span:nth-child(2) { right: 6px; }
+body.journey-page .journey-compass span:nth-child(3) { bottom: 5px; }
+body.journey-page .journey-compass span:nth-child(4) { left: 6px; }
+
+body.journey-page .journey-road-svg {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+body.journey-page .journey-road-svg polyline {
+  fill: none;
+  stroke: rgba(86, 49, 18, 0.34);
+  stroke-width: 2.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+body.journey-page .journey-road-svg polyline + polyline {
+  stroke: rgba(255, 236, 181, 0.75);
+  stroke-width: 1.4;
+  stroke-dasharray: 2 2;
+}
+
+body.journey-page .journey-milestones {
+  position: absolute;
+  z-index: 7;
+  inset: 0;
+}
+
+body.journey-page .journey-step-card {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  display: grid;
+  width: clamp(106px, 8.4vw, 148px);
+  min-height: clamp(128px, 9.4vw, 164px);
+  padding: 8px 9px 10px;
+  border: 2px solid rgba(124, 76, 26, 0.38);
+  border-radius: 12px;
+  background: linear-gradient(180deg, #fff2d1, #d09a50);
+  color: #42220c;
+  text-align: center;
+  box-shadow: 0 10px 22px rgba(66, 36, 12, 0.34);
+  transform: translate(-50%, -50%);
+  transition: transform 160ms ease, box-shadow 160ms ease, filter 160ms ease;
+}
+
+body.journey-page .journey-step-card:hover,
+body.journey-page .journey-step-card.selected {
+  transform: translate(-50%, -50%) scale(1.04);
+  box-shadow: 0 14px 30px rgba(66, 36, 12, 0.44), 0 0 0 4px rgba(255, 240, 174, 0.48);
+}
+
+body.journey-page .journey-step-card.locked {
+  filter: saturate(0.45) brightness(0.82);
+}
+
+body.journey-page .journey-step-card.upcoming {
+  filter: saturate(0.72);
+}
+
+body.journey-page .journey-step-number,
+body.journey-page .journey-step-lock {
+  position: absolute;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  border: 2px solid #fff4cd;
+  border-radius: 50%;
+  color: #fff;
+  font-weight: 900;
+  box-shadow: 0 4px 10px rgba(38, 20, 6, 0.28);
+}
+
+body.journey-page .journey-step-number {
+  top: -18px;
+  left: -12px;
+  width: 38px;
+  aspect-ratio: 1;
+  background: #23729f;
+  font-size: 20px;
+}
+
+body.journey-page .journey-step-card.completed .journey-step-number {
+  background: #4b9932;
+}
+
+body.journey-page .journey-step-card.upcoming .journey-step-number,
+body.journey-page .journey-step-card.locked .journey-step-number {
+  background: #6a4b9b;
+}
+
+body.journey-page .journey-step-lock {
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  aspect-ratio: 1;
+  background: rgba(74, 43, 18, 0.82);
+  font-size: 16px;
+}
+
+body.journey-page .journey-step-card.completed .journey-step-lock {
+  background: #6aa734;
+}
+
+body.journey-page .journey-step-visual {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1.12;
+  overflow: hidden;
+  border-radius: 10px 10px 4px 4px;
+  background:
+    radial-gradient(circle at 52% 34%, rgba(255, 246, 199, 0.95), transparent 17%),
+    radial-gradient(circle at 48% 48%, rgba(116, 70, 28, 0.88), transparent 18%),
+    linear-gradient(135deg, #71a9c9, #f2d293 54%, #9b5d25);
+}
+
+body.journey-page .journey-step-visual[data-scene="nativity"] { background: radial-gradient(circle at 62% 44%, #fff6c9, transparent 19%), linear-gradient(135deg, #315b85, #f3c875 58%, #6e3a16); }
+body.journey-page .journey-step-visual[data-scene="temple"] { background: linear-gradient(135deg, #8c6a42, #f0d5a4 52%, #3f2d1c); }
+body.journey-page .journey-step-visual[data-scene="baptism"] { background: radial-gradient(circle at 50% 22%, #fffbd7, transparent 18%), linear-gradient(135deg, #5aa4b5, #7fbf82 52%, #815223); }
+body.journey-page .journey-step-visual[data-scene="desert"] { background: linear-gradient(135deg, #e5c079, #b47735 58%, #5a3218); }
+body.journey-page .journey-step-visual[data-scene="preaching"] { background: radial-gradient(circle at 62% 30%, #fff5c2, transparent 18%), linear-gradient(135deg, #6ea7c9, #c7a45f 58%, #70401a); }
+body.journey-page .journey-step-visual[data-scene="boat"] { background: linear-gradient(135deg, #1e6f8c, #7ec7d6 48%, #6d4b2b); }
+body.journey-page .journey-step-visual[data-scene="cana"] { background: linear-gradient(135deg, #86542b, #f4d5a0 54%, #742e23); }
+body.journey-page .journey-step-visual[data-scene="mount"] { background: linear-gradient(135deg, #82a66a, #dde5b4 52%, #4f6a3c); }
+body.journey-page .journey-step-visual[data-scene="miracle"] { background: radial-gradient(circle at 56% 34%, #fff8ce, transparent 17%), linear-gradient(135deg, #6c8f5a, #d6bb73 58%, #543218); }
+body.journey-page .journey-step-visual[data-scene="parable"] { background: linear-gradient(135deg, #9b7c3e, #efd7a1 54%, #6a4724); }
+body.journey-page .journey-step-visual[data-scene="jerusalem"] { background: linear-gradient(135deg, #6da069, #e8ca8f 48%, #775331); }
+body.journey-page .journey-step-visual[data-scene="supper"] { background: linear-gradient(135deg, #4b2716, #c07b37 50%, #26140d); }
+body.journey-page .journey-step-visual[data-scene="garden"] { background: linear-gradient(135deg, #172d29, #315b40 48%, #0f1714); }
+body.journey-page .journey-step-visual[data-scene="cross"] { background: linear-gradient(135deg, #2d1720, #87542e 52%, #0e0b0b); }
+body.journey-page .journey-step-visual[data-scene="resurrection"] { background: radial-gradient(circle at 54% 30%, #fff9d8, transparent 19%), linear-gradient(135deg, #f5e4b0, #7fa2c7 52%, #5b4b6b); }
+body.journey-page .journey-step-visual[data-scene="ascension"] { background: radial-gradient(circle at 54% 36%, #fffbe2, transparent 24%), linear-gradient(135deg, #7fb5d4, #f4d88f 52%, #8b6a40); }
+
+body.journey-page .journey-step-card strong {
+  margin-top: 8px;
+  font-size: clamp(13px, 0.92vw, 16px);
+  line-height: 1.12;
+}
+
+body.journey-page .journey-step-card small {
+  color: #4f2c12;
+  font-size: clamp(11px, 0.76vw, 13px);
+  font-weight: 800;
+}
+
+body.journey-page .journey-legend,
+body.journey-page .journey-verse,
+body.journey-page .journey-guide,
+body.journey-page .journey-bottom-nav {
+  position: absolute;
+  z-index: 10;
+  border: 2px solid rgba(126, 77, 26, 0.32);
+  background: rgba(255, 237, 197, 0.83);
+  box-shadow: 0 10px 22px rgba(64, 36, 13, 0.25);
+}
+
+body.journey-page .journey-legend {
+  left: 26px;
+  bottom: 30px;
+  width: 210px;
+  padding: 16px;
+  border-radius: 16px;
+}
+
+body.journey-page .journey-legend h2 {
+  margin: 0 0 10px;
+  font-size: 17px;
+  text-transform: uppercase;
+}
+
+body.journey-page .journey-legend p {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin: 8px 0;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+body.journey-page .journey-legend span {
+  display: block;
+  width: 18px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 2px solid #fff5cf;
+}
+
+body.journey-page .journey-legend .completed { background: #4b9932; }
+body.journey-page .journey-legend .available { background: #23729f; }
+body.journey-page .journey-legend .upcoming { background: #6a4b9b; }
+body.journey-page .journey-legend .locked { background: #4d4033; }
+
+body.journey-page .journey-verse {
+  left: 250px;
+  bottom: 30px;
+  width: min(320px, 24vw);
+  min-height: 132px;
+  padding: 20px 24px;
+  border-radius: 16px;
+  color: #5b3317;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(16px, 1.15vw, 22px);
+  font-style: italic;
+  line-height: 1.35;
+}
+
+body.journey-page .journey-verse span {
+  display: block;
+  margin-top: 8px;
+  font-weight: 800;
+  text-align: center;
+}
+
+body.journey-page .journey-bottom-nav {
+  left: 50%;
+  bottom: 28px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(96px, 1fr));
+  overflow: hidden;
+  border-radius: 24px;
+  background: linear-gradient(180deg, #604020, #2d170b);
+  transform: translateX(-50%);
+}
+
+body.journey-page .journey-bottom-nav button {
+  min-height: 62px;
+  padding: 8px 14px;
+  border: 0;
+  border-right: 1px solid rgba(255, 223, 154, 0.22);
+  border-radius: 0;
+  background: transparent;
+  color: #ffe1a3;
+  font-weight: 900;
+}
+
+body.journey-page .journey-bottom-nav button:last-child {
+  border-right: 0;
+}
+
+body.journey-page .journey-bottom-nav button.active {
+  background: linear-gradient(180deg, #579d90, #2f726b);
+  color: #fff7dc;
+}
+
+body.journey-page .journey-guide {
+  right: 24px;
+  bottom: 28px;
+  width: min(340px, 24vw);
+  min-height: 138px;
+  border-radius: 18px;
+  background: rgba(255, 231, 183, 0.9);
+}
+
+body.journey-page .journey-guide-content {
+  display: grid;
+  gap: 5px;
+  padding: 16px 18px;
+}
+
+body.journey-page .journey-guide-content span {
+  color: #9c5b13;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+body.journey-page .journey-guide-content strong {
+  color: #3f210e;
+  font-size: clamp(16px, 1vw, 19px);
+  line-height: 1.14;
+}
+
+body.journey-page .journey-guide-content small,
+body.journey-page .journey-guide-content p,
+body.journey-page .journey-guide-content em {
+  color: #5f381a;
+  font-size: 13px;
+  line-height: 1.34;
+}
+
+body.journey-page .journey-guide-content p,
+body.journey-page .journey-guide-content em {
+  margin: 0;
+}
+
+body.journey-page .journey-start-challenge {
+  justify-self: start;
+  min-height: 34px;
+  margin-top: 4px;
+  padding: 0 14px;
+  border: 1px solid rgba(118, 69, 20, 0.34);
+  border-radius: 999px;
+  background: linear-gradient(180deg, #d99b2b, #9b5b12);
+  color: #fff7df;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+body.journey-page .journey-start-challenge:disabled {
+  opacity: 0.55;
+}
+
+:root[data-theme="dark"] body.journey-page .journey-map-stage {
+  border-color: rgba(224, 160, 49, 0.55);
+  background:
+    radial-gradient(circle at 18% 36%, rgba(33, 95, 102, 0.55), transparent 23%),
+    radial-gradient(circle at 48% 34%, rgba(80, 105, 57, 0.5), transparent 28%),
+    radial-gradient(circle at 82% 42%, rgba(146, 88, 36, 0.52), transparent 30%),
+    linear-gradient(110deg, #183239 0%, #6d562d 38%, #6c3e1e 66%, #8a612b 100%);
+  color: #fff2c8;
+}
+
+:root[data-theme="dark"] body.journey-page .journey-legend,
+:root[data-theme="dark"] body.journey-page .journey-verse,
+:root[data-theme="dark"] body.journey-page .journey-guide {
+  border-color: rgba(224, 160, 49, 0.42);
+  background: rgba(41, 25, 15, 0.88);
+  color: #fff3d0;
+}
+
+:root[data-theme="dark"] body.journey-page .journey-guide-content strong,
+:root[data-theme="dark"] body.journey-page .journey-guide-content small,
+:root[data-theme="dark"] body.journey-page .journey-guide-content p,
+:root[data-theme="dark"] body.journey-page .journey-guide-content em,
+:root[data-theme="dark"] body.journey-page .journey-verse,
+:root[data-theme="dark"] body.journey-page .journey-legend p,
+:root[data-theme="dark"] body.journey-page .journey-legend h2 {
+  color: #fff3d0;
+}
+
+@media (max-width: 1180px) {
+  body.journey-page .journey-map-stage {
+    min-height: 1100px;
+  }
+
+  body.journey-page .journey-scroll-title {
+    width: 330px;
+  }
+
+  body.journey-page .journey-hud {
+    top: 128px;
+    min-width: min(560px, 74vw);
+  }
+
+  body.journey-page .journey-actions {
+    top: 128px;
+    right: 24px;
+  }
+
+  body.journey-page .journey-step-card {
+    width: 122px;
+  }
+
+  body.journey-page .journey-bottom-nav {
+    bottom: 204px;
+  }
+
+  body.journey-page .journey-guide {
+    right: 24px;
+    bottom: 28px;
+    width: min(560px, calc(100% - 48px));
+  }
+
+  body.journey-page .journey-legend,
+  body.journey-page .journey-verse {
+    bottom: 112px;
+  }
+}
+
+@media (max-width: 760px) {
+  body.journey-page .journey-map-stage {
+    min-height: 1320px;
+    padding: 14px;
+  }
+
+  body.journey-page .journey-scroll-title {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: calc(100% - 76px);
+    margin-left: 68px;
+  }
+
+  body.journey-page .journey-scroll-title h1 {
+    font-size: 34px;
+  }
+
+  body.journey-page .journey-hud {
+    top: 178px;
+    left: 14px;
+    right: 14px;
+    grid-template-columns: 1fr;
+    min-width: 0;
+    transform: none;
+  }
+
+  body.journey-page .journey-hud div {
+    border-right: 0;
+    border-bottom: 1px solid rgba(255, 226, 150, 0.25);
+  }
+
+  body.journey-page .journey-actions,
+  body.journey-page .journey-compass {
+    display: none;
+  }
+
+  body.journey-page .journey-milestones,
+  body.journey-page .journey-road-svg {
+    top: 360px;
+    height: 620px;
+  }
+
+  body.journey-page .journey-step-card {
+    width: 108px;
+    min-height: 130px;
+  }
+
+  body.journey-page .journey-step-card strong {
+    font-size: 12px;
+  }
+
+  body.journey-page .journey-legend,
+  body.journey-page .journey-verse,
+  body.journey-page .journey-bottom-nav,
+  body.journey-page .journey-guide,
+  body.journey-page .journey-back-to-topics {
+    left: 14px;
+    right: 14px;
+    width: auto;
+    transform: none;
+  }
+
+  body.journey-page .journey-legend {
+    bottom: 278px;
+  }
+
+  body.journey-page .journey-verse {
+    bottom: 146px;
+  }
+
+  body.journey-page .journey-bottom-nav {
+    bottom: 78px;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  body.journey-page .journey-guide {
+    bottom: 358px;
+    min-height: 0;
+  }
+
+  body.journey-page .journey-back-to-topics {
+    bottom: 18px;
+  }
+}
+/* 14.98. Chuyen man ban do game sang bo cuc doc va thu nho thanh phan */
+body.journey-page.journey-playing .journey-shell {
+  max-width: 680px;
+  padding: 10px 10px 26px;
+}
+
+body.journey-page .journey-scroll-title,
+body.journey-page .journey-bottom-nav {
+  display: none !important;
+}
+
+body.journey-page .journey-map-stage {
+  min-height: 1860px;
+  overflow: hidden;
+  padding: 12px;
+  border-width: 1px;
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at 52% 14%, rgba(78, 154, 132, 0.38), transparent 18%),
+    radial-gradient(circle at 45% 48%, rgba(108, 147, 74, 0.36), transparent 22%),
+    radial-gradient(circle at 54% 77%, rgba(189, 139, 74, 0.46), transparent 24%),
+    linear-gradient(180deg, #75a7bd 0%, #d9bd80 31%, #b98d54 68%, #e2c08c 100%);
+  box-shadow: inset 0 0 0 4px rgba(255, 233, 176, 0.32), inset 0 0 52px rgba(78, 44, 17, 0.3);
+}
+
+body.journey-page .journey-map-stage::after {
+  inset: 17% 9% auto auto;
+  width: 78%;
+  font-size: clamp(15px, 4vw, 26px);
+  line-height: 8.2;
+  opacity: 0.62;
+}
+
+body.journey-page .journey-menu-button {
+  top: 12px;
+  left: 12px;
+  width: 40px;
+  border-width: 1px;
+  font-size: 21px;
+}
+
+body.journey-page .journey-back-to-topics {
+  right: 12px;
+  bottom: 14px;
+  min-height: 34px;
+  padding: 0 13px;
+  border-width: 1px;
+  font-size: 12px;
+}
+
+body.journey-page .journey-hud {
+  top: 12px;
+  right: 12px;
+  left: 58px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  min-width: 0;
+  border-width: 1px;
+  border-radius: 12px;
+  transform: none;
+}
+
+body.journey-page .journey-hud div {
+  gap: 0 5px;
+  padding: 7px 8px;
+}
+
+body.journey-page .journey-hud strong {
+  font-size: 20px;
+}
+
+body.journey-page .journey-hud span {
+  font-size: 10px;
+  line-height: 1.12;
+}
+
+body.journey-page .journey-hud b {
+  font-size: 17px;
+}
+
+body.journey-page .journey-actions {
+  top: 64px;
+  right: 12px;
+  gap: 7px;
+}
+
+body.journey-page .journey-actions button {
+  width: 48px;
+  min-height: 46px;
+  border-width: 1px;
+  font-size: 9px;
+  line-height: 1.08;
+}
+
+body.journey-page .journey-compass {
+  top: 72px;
+  left: 14px;
+  right: auto;
+  width: 58px;
+  border-width: 2px;
+  font-size: 10px;
+}
+
+body.journey-page .journey-compass::before {
+  width: 3px;
+  height: 44px;
+}
+
+body.journey-page .journey-compass::after {
+  width: 44px;
+  height: 3px;
+}
+
+body.journey-page .journey-road-svg,
+body.journey-page .journey-milestones {
+  inset: 118px 0 320px;
+}
+
+body.journey-page .journey-road-svg polyline {
+  stroke-width: 2.1;
+}
+
+body.journey-page .journey-step-card {
+  width: clamp(76px, 22vw, 104px);
+  min-height: clamp(92px, 25vw, 118px);
+  padding: 5px 6px 7px;
+  border-width: 1px;
+  border-radius: 10px;
+  box-shadow: 0 7px 16px rgba(66, 36, 12, 0.28);
+}
+
+body.journey-page .journey-step-card:hover,
+body.journey-page .journey-step-card.selected {
+  transform: translate(-50%, -50%) scale(1.035);
+  box-shadow: 0 10px 22px rgba(66, 36, 12, 0.36), 0 0 0 3px rgba(255, 240, 174, 0.42);
+}
+
+body.journey-page .journey-step-number {
+  top: -13px;
+  left: -9px;
+  width: 28px;
+  border-width: 1px;
+  font-size: 14px;
+}
+
+body.journey-page .journey-step-lock {
+  top: 5px;
+  right: 5px;
+  width: 22px;
+  border-width: 1px;
+  font-size: 12px;
+}
+
+body.journey-page .journey-step-visual {
+  border-radius: 8px 8px 3px 3px;
+}
+
+body.journey-page .journey-step-card strong {
+  margin-top: 5px;
+  font-size: clamp(10px, 2.7vw, 12px);
+  line-height: 1.08;
+}
+
+body.journey-page .journey-step-card small {
+  font-size: clamp(9px, 2.3vw, 11px);
+  line-height: 1.1;
+}
+
+body.journey-page .journey-legend,
+body.journey-page .journey-verse,
+body.journey-page .journey-guide {
+  border-width: 1px;
+  border-radius: 12px;
+  box-shadow: 0 7px 16px rgba(64, 36, 13, 0.2);
+}
+
+body.journey-page .journey-guide {
+  right: 12px;
+  bottom: 72px;
+  width: calc(100% - 24px);
+  min-height: 0;
+}
+
+body.journey-page .journey-guide-content {
+  gap: 3px;
+  padding: 10px 12px;
+}
+
+body.journey-page .journey-guide-content span {
+  font-size: 10px;
+}
+
+body.journey-page .journey-guide-content strong {
+  font-size: 14px;
+}
+
+body.journey-page .journey-guide-content small,
+body.journey-page .journey-guide-content p,
+body.journey-page .journey-guide-content em {
+  font-size: 11px;
+  line-height: 1.25;
+}
+
+body.journey-page .journey-start-challenge {
+  min-height: 28px;
+  padding: 0 10px;
+  font-size: 10px;
+}
+
+body.journey-page .journey-legend {
+  left: 12px;
+  bottom: 220px;
+  width: calc(50% - 18px);
+  padding: 10px;
+}
+
+body.journey-page .journey-legend h2 {
+  margin-bottom: 6px;
+  font-size: 12px;
+}
+
+body.journey-page .journey-legend p {
+  gap: 6px;
+  margin: 5px 0;
+  font-size: 10px;
+}
+
+body.journey-page .journey-legend span {
+  width: 13px;
+  border-width: 1px;
+}
+
+body.journey-page .journey-verse {
+  right: 12px;
+  left: auto;
+  bottom: 220px;
+  width: calc(50% - 18px);
+  min-height: 0;
+  padding: 12px;
+  font-size: 12px;
+  line-height: 1.25;
+}
+
+body.journey-page .journey-verse span {
+  margin-top: 5px;
+}
+
+@media (max-width: 760px) {
+  body.journey-page.journey-playing .journey-shell {
+    padding: 8px 8px 22px;
+  }
+
+  body.journey-page .journey-map-stage {
+    min-height: 1740px;
+  }
+
+  body.journey-page .journey-hud {
+    top: 10px;
+    right: 10px;
+    left: 56px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  body.journey-page .journey-hud div {
+    border-right: 1px solid rgba(255, 226, 150, 0.25);
+    border-bottom: 0;
+    padding: 6px 5px;
+  }
+
+  body.journey-page .journey-hud div:last-child {
+    border-right: 0;
+  }
+
+  body.journey-page .journey-actions,
+  body.journey-page .journey-compass {
+    display: none;
+  }
+
+  body.journey-page .journey-road-svg,
+  body.journey-page .journey-milestones {
+    top: 88px;
+    bottom: 324px;
+    height: auto;
+  }
+
+  body.journey-page .journey-step-card {
+    width: 82px;
+    min-height: 96px;
+  }
+
+  body.journey-page .journey-step-card strong {
+    font-size: 10px;
+  }
+
+  body.journey-page .journey-step-card small {
+    font-size: 9px;
+  }
+
+  body.journey-page .journey-legend {
+    left: 10px;
+    right: auto;
+    bottom: 214px;
+    width: calc(50% - 15px);
+  }
+
+  body.journey-page .journey-verse {
+    left: auto;
+    right: 10px;
+    bottom: 214px;
+    width: calc(50% - 15px);
+  }
+
+  body.journey-page .journey-guide {
+    left: 10px;
+    right: 10px;
+    bottom: 64px;
+    width: auto;
+    transform: none;
+  }
+
+  body.journey-page .journey-back-to-topics {
+    left: 10px;
+    right: 10px;
+    bottom: 14px;
+    width: auto;
+    transform: none;
+  }
+}
+/* 14.99. Dung anh map that va dat card vao cac diem danh so */
+body.journey-page.journey-playing .journey-shell {
+  max-width: 760px;
+  padding: 10px 10px 26px;
+}
+
+body.journey-page .journey-map-stage {
+  width: 100%;
+  min-height: auto;
+  aspect-ratio: 2 / 3;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid rgba(111, 69, 25, 0.58);
+  border-radius: 16px;
+  background:
+    linear-gradient(180deg, rgba(42, 24, 10, 0.04), rgba(42, 24, 10, 0.08)),
+    url("/assets/journey-jesus-map.png") center / 100% 100% no-repeat;
+  box-shadow: 0 14px 34px rgba(64, 36, 13, 0.24);
+}
+
+body.journey-page .journey-map-stage::before,
+body.journey-page .journey-map-stage::after,
+body.journey-page .journey-road-svg,
+body.journey-page .journey-hud,
+body.journey-page .journey-actions,
+body.journey-page .journey-compass,
+body.journey-page .journey-legend,
+body.journey-page .journey-verse {
+  display: none !important;
+}
+
+body.journey-page .journey-milestones {
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+}
+
+body.journey-page .journey-step-card {
+  width: clamp(58px, 11.5vw, 86px);
+  min-height: auto;
+  padding: 3px 4px 5px;
+  gap: 2px;
+  border: 1px solid rgba(96, 57, 18, 0.56);
+  border-radius: 8px;
+  background: rgba(255, 241, 207, 0.9);
+  color: #3f210c;
+  box-shadow: 0 5px 12px rgba(45, 25, 9, 0.28);
+  backdrop-filter: blur(1px);
+}
+
+body.journey-page .journey-step-card:hover,
+body.journey-page .journey-step-card.selected {
+  transform: translate(-50%, -50%) scale(1.045);
+  box-shadow: 0 8px 18px rgba(45, 25, 9, 0.34), 0 0 0 2px rgba(255, 242, 182, 0.75);
+}
+
+body.journey-page .journey-step-number {
+  top: -8px;
+  left: -7px;
+  width: 19px;
+  border-width: 1px;
+  font-size: 10px;
+}
+
+body.journey-page .journey-step-lock {
+  top: 3px;
+  right: 3px;
+  width: 17px;
+  border-width: 1px;
+  font-size: 9px;
+}
+
+body.journey-page .journey-step-visual {
+  width: 100%;
+  aspect-ratio: 1.22;
+  border-radius: 6px 6px 3px 3px;
+}
+
+body.journey-page .journey-step-card strong {
+  display: -webkit-box;
+  min-height: 1.98em;
+  margin-top: 2px;
+  overflow: hidden;
+  color: #3f210c;
+  font-size: clamp(7px, 1.28vw, 9px);
+  line-height: 0.99;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+body.journey-page .journey-step-card small {
+  color: #65401c;
+  font-size: clamp(6px, 1.05vw, 8px);
+  line-height: 1;
+}
+
+body.journey-page .journey-guide {
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  width: auto;
+  min-height: 0;
+  border: 1px solid rgba(126, 77, 26, 0.32);
+  border-radius: 10px;
+  background: rgba(255, 237, 197, 0.88);
+  box-shadow: 0 7px 16px rgba(64, 36, 13, 0.22);
+}
+
+body.journey-page .journey-guide-content {
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 3px 10px;
+  padding: 8px 10px;
+}
+
+body.journey-page .journey-guide-content span,
+body.journey-page .journey-guide-content small,
+body.journey-page .journey-guide-content em {
+  display: none;
+}
+
+body.journey-page .journey-guide-content strong {
+  font-size: 12px;
+}
+
+body.journey-page .journey-guide-content p {
+  margin: 0;
+  overflow: hidden;
+  color: #5f381a;
+  font-size: 10px;
+  line-height: 1.2;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+body.journey-page .journey-start-challenge {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: center;
+  min-height: 26px;
+  margin: 0;
+  padding: 0 9px;
+  font-size: 9px;
+  white-space: nowrap;
+}
+
+body.journey-page .journey-back-to-topics {
+  right: 10px;
+  bottom: auto;
+  top: 10px;
+  min-height: 30px;
+  padding: 0 10px;
+  border-width: 1px;
+  font-size: 11px;
+}
+
+body.journey-page .journey-menu-button {
+  top: 10px;
+  left: 10px;
+  width: 34px;
+  border-width: 1px;
+  font-size: 18px;
+}
+
+:root[data-theme="dark"] body.journey-page .journey-map-stage {
+  background:
+    linear-gradient(180deg, rgba(20, 11, 5, 0.14), rgba(20, 11, 5, 0.22)),
+    url("/assets/journey-jesus-map.png") center / 100% 100% no-repeat;
+}
+
+:root[data-theme="dark"] body.journey-page .journey-step-card {
+  background: rgba(50, 31, 18, 0.9);
+  border-color: rgba(224, 160, 49, 0.52);
+  color: #fff2c8;
+}
+
+:root[data-theme="dark"] body.journey-page .journey-step-card strong,
+:root[data-theme="dark"] body.journey-page .journey-step-card small {
+  color: #fff2c8;
+}
+
+@media (max-width: 760px) {
+  body.journey-page.journey-playing .journey-shell {
+    max-width: 100%;
+    padding: 8px 8px 18px;
+  }
+
+  body.journey-page .journey-map-stage {
+    border-radius: 12px;
+  }
+
+  body.journey-page .journey-step-card {
+    width: clamp(48px, 15.8vw, 64px);
+    padding: 2px 3px 4px;
+    border-radius: 7px;
+  }
+
+  body.journey-page .journey-step-number {
+    width: 17px;
+    font-size: 9px;
+  }
+
+  body.journey-page .journey-step-lock {
+    width: 15px;
+    font-size: 8px;
+  }
+
+  body.journey-page .journey-step-card strong {
+    font-size: 7px;
+  }
+
+  body.journey-page .journey-step-card small {
+    font-size: 6px;
+  }
+
+  body.journey-page .journey-guide {
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+  }
+
+  body.journey-page .journey-guide-content {
+    padding: 7px 8px;
+  }
+
+  body.journey-page .journey-guide-content strong {
+    font-size: 10px;
+  }
+
+  body.journey-page .journey-guide-content p {
+    font-size: 9px;
+    -webkit-line-clamp: 1;
+  }
+
+  body.journey-page .journey-start-challenge {
+    min-height: 24px;
+    padding: 0 7px;
+    font-size: 8px;
+  }
+
+  body.journey-page .journey-back-to-topics {
+    top: 8px;
+    right: 8px;
+    min-height: 28px;
+    font-size: 10px;
+  }
+
+  body.journey-page .journey-menu-button {
+    top: 8px;
+    left: 8px;
+    width: 30px;
+    font-size: 16px;
+  }
+}
+/* 14.100. Thu nho card, dua panel cot moc sang trai ban do */
+body.journey-page .journey-game-layout {
+  display: grid;
+  grid-template-columns: minmax(160px, 190px) minmax(0, 760px);
+  gap: 12px;
+  align-items: start;
+  width: 100%;
+}
+
+body.journey-page.journey-playing .journey-shell {
+  max-width: 980px;
+  padding: 10px 10px 26px;
+}
+
+body.journey-page .journey-menu-button {
+  display: none !important;
+}
+
+body.journey-page .journey-game-layout > .journey-guide {
+  position: sticky;
+  top: 70px;
+  left: auto;
+  right: auto;
+  bottom: auto;
+  z-index: 8;
+  width: 100%;
+  min-height: 0;
+  border: 1px solid rgba(126, 77, 26, 0.32);
+  border-radius: 12px;
+  background: rgba(255, 237, 197, 0.94);
+  box-shadow: 0 8px 18px rgba(64, 36, 13, 0.2);
+}
+
+body.journey-page .journey-game-layout > .journey-guide .journey-guide-content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 5px;
+  padding: 10px;
+}
+
+body.journey-page .journey-game-layout > .journey-guide .journey-guide-content span,
+body.journey-page .journey-game-layout > .journey-guide .journey-guide-content small,
+body.journey-page .journey-game-layout > .journey-guide .journey-guide-content em {
+  display: block;
+}
+
+body.journey-page .journey-game-layout > .journey-guide .journey-guide-content span {
+  color: #9c5b13;
+  font-size: 9px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+body.journey-page .journey-game-layout > .journey-guide .journey-guide-content strong {
+  color: #3f210e;
+  font-size: 13px;
+  line-height: 1.15;
+}
+
+body.journey-page .journey-game-layout > .journey-guide .journey-guide-content small,
+body.journey-page .journey-game-layout > .journey-guide .journey-guide-content p,
+body.journey-page .journey-game-layout > .journey-guide .journey-guide-content em {
+  color: #5f381a;
+  font-size: 10px;
+  line-height: 1.28;
+}
+
+body.journey-page .journey-game-layout > .journey-guide .journey-guide-content p,
+body.journey-page .journey-game-layout > .journey-guide .journey-guide-content em {
+  margin: 0;
+  display: block;
+  overflow: visible;
+  -webkit-line-clamp: initial;
+}
+
+body.journey-page .journey-game-layout > .journey-guide .journey-start-challenge {
+  grid-column: auto;
+  grid-row: auto;
+  justify-self: stretch;
+  min-height: 30px;
+  margin-top: 4px;
+  padding: 0 10px;
+  font-size: 10px;
+  white-space: normal;
+}
+
+body.journey-page .journey-map-stage {
+  grid-column: 2;
+  width: 100%;
+}
+
+body.journey-page .journey-step-card {
+  width: clamp(42px, 6vw, 56px);
+  padding: 2px 3px 3px;
+  gap: 1px;
+  border-radius: 6px;
+  background: rgba(255, 241, 207, 0.86);
+  transform: translate(-50%, calc(-100% - 4px));
+}
+
+body.journey-page .journey-step-card:hover,
+body.journey-page .journey-step-card.selected {
+  transform: translate(-50%, calc(-100% - 4px)) scale(1.05);
+}
+
+body.journey-page .journey-step-number {
+  top: -6px;
+  left: -6px;
+  width: 15px;
+  font-size: 8px;
+}
+
+body.journey-page .journey-step-lock {
+  top: 2px;
+  right: 2px;
+  width: 13px;
+  font-size: 7px;
+}
+
+body.journey-page .journey-step-visual {
+  aspect-ratio: 1.18;
+  border-radius: 5px 5px 2px 2px;
+}
+
+body.journey-page .journey-step-card strong {
+  min-height: 1.94em;
+  margin-top: 1px;
+  font-size: clamp(5.7px, 0.8vw, 7px);
+  line-height: 0.97;
+}
+
+body.journey-page .journey-step-card small {
+  font-size: clamp(5px, 0.68vw, 6px);
+}
+
+body.journey-page .journey-back-to-topics {
+  top: 8px;
+  right: 8px;
+  min-height: 26px;
+  padding: 0 9px;
+  font-size: 10px;
+}
+
+:root[data-theme="dark"] body.journey-page .journey-game-layout > .journey-guide {
+  border-color: rgba(224, 160, 49, 0.42);
+  background: rgba(41, 25, 15, 0.92);
+}
+
+:root[data-theme="dark"] body.journey-page .journey-game-layout > .journey-guide .journey-guide-content strong,
+:root[data-theme="dark"] body.journey-page .journey-game-layout > .journey-guide .journey-guide-content small,
+:root[data-theme="dark"] body.journey-page .journey-game-layout > .journey-guide .journey-guide-content p,
+:root[data-theme="dark"] body.journey-page .journey-game-layout > .journey-guide .journey-guide-content em {
+  color: #fff3d0;
+}
+
+@media (max-width: 760px) {
+  body.journey-page.journey-playing .journey-shell {
+    max-width: 100%;
+    padding: 8px 8px 18px;
+  }
+
+  body.journey-page .journey-game-layout {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  body.journey-page .journey-game-layout > .journey-guide {
+    position: sticky;
+    top: 56px;
+    width: 100%;
+    order: -1;
+  }
+
+  body.journey-page .journey-game-layout > .journey-guide .journey-guide-content {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 2px 8px;
+    padding: 7px 8px;
+  }
+
+  body.journey-page .journey-game-layout > .journey-guide .journey-guide-content span,
+  body.journey-page .journey-game-layout > .journey-guide .journey-guide-content small,
+  body.journey-page .journey-game-layout > .journey-guide .journey-guide-content em {
+    display: none;
+  }
+
+  body.journey-page .journey-game-layout > .journey-guide .journey-guide-content strong {
+    font-size: 11px;
+  }
+
+  body.journey-page .journey-game-layout > .journey-guide .journey-guide-content p {
+    display: -webkit-box;
+    overflow: hidden;
+    font-size: 9px;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+  }
+
+  body.journey-page .journey-game-layout > .journey-guide .journey-start-challenge {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: center;
+    min-height: 24px;
+    padding: 0 7px;
+    font-size: 8px;
+    white-space: nowrap;
+  }
+
+  body.journey-page .journey-map-stage {
+    grid-column: 1;
+  }
+
+  body.journey-page .journey-step-card {
+    width: clamp(34px, 10.8vw, 46px);
+    padding: 2px;
+    border-radius: 5px;
+  }
+
+  body.journey-page .journey-step-number {
+    width: 13px;
+    font-size: 7px;
+  }
+
+  body.journey-page .journey-step-lock {
+    width: 11px;
+    font-size: 6px;
+  }
+
+  body.journey-page .journey-step-card strong {
+    font-size: 5.8px;
+  }
+
+  body.journey-page .journey-step-card small {
+    font-size: 5px;
+  }
+}
+/* 14.101. Card map chi hien hinh, nho hon va che vong so */
+body.journey-page .journey-step-card {
+  width: clamp(34px, 4.8vw, 45px);
+  min-height: 0;
+  padding: 1px;
+  gap: 0;
+  border-radius: 6px;
+  background: rgba(255, 241, 207, 0.82);
+  transform: translate(-50%, -54%);
+}
+
+body.journey-page .journey-step-card:hover,
+body.journey-page .journey-step-card.selected {
+  transform: translate(-50%, -54%) scale(1.06);
+}
+
+body.journey-page .journey-step-number,
+body.journey-page .journey-step-lock,
+body.journey-page .journey-step-card strong,
+body.journey-page .journey-step-card small {
+  display: none !important;
+}
+
+body.journey-page .journey-step-visual {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 5px;
+}
+
+@media (max-width: 760px) {
+  body.journey-page .journey-step-card {
+    width: clamp(27px, 8.6vw, 37px);
+    padding: 1px;
+    border-radius: 5px;
+    transform: translate(-50%, -54%);
+  }
+
+  body.journey-page .journey-step-card:hover,
+  body.journey-page .journey-step-card.selected {
+    transform: translate(-50%, -54%) scale(1.06);
+  }
+
+  body.journey-page .journey-step-visual {
+    border-radius: 4px;
+  }
+}
+/* 14.102. Card map dang cua so va canh lai moc sat nhan */
+body.journey-page .journey-step-card {
+  width: clamp(31px, 4.25vw, 41px);
+  padding: 2px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 241, 207, 0.92);
+  border-bottom-color: rgba(140, 80, 22, 0.78);
+  border-radius: 999px 999px 8px 8px / 28px 28px 7px 7px;
+  background:
+    linear-gradient(135deg, rgba(255, 252, 230, 0.9), rgba(217, 154, 64, 0.55) 46%, rgba(79, 49, 26, 0.78)),
+    rgba(255, 241, 207, 0.75);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.72) inset,
+    0 0 0 2px rgba(151, 94, 26, 0.58),
+    0 5px 9px rgba(51, 31, 12, 0.32);
+  transform: translate(-50%, -72%);
+}
+
+body.journey-page .journey-step-card::before {
+  content: "";
+  position: absolute;
+  inset: 3px 4px auto auto;
+  width: 32%;
+  aspect-ratio: 1;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.2) 58%, transparent 70%);
+  pointer-events: none;
+  opacity: 0.72;
+}
+
+body.journey-page .journey-step-card:hover,
+body.journey-page .journey-step-card.selected {
+  transform: translate(-50%, -72%) scale(1.08);
+}
+
+body.journey-page .journey-step-card[data-step-number="7"],
+body.journey-page .journey-step-card[data-step-number="15"] {
+  transform: translate(-50%, -86%);
+}
+
+body.journey-page .journey-step-card[data-step-number="7"]:hover,
+body.journey-page .journey-step-card[data-step-number="7"].selected,
+body.journey-page .journey-step-card[data-step-number="15"]:hover,
+body.journey-page .journey-step-card[data-step-number="15"].selected {
+  transform: translate(-50%, -86%) scale(1.08);
+}
+
+body.journey-page .journey-step-visual {
+  display: block;
+  width: 100%;
+  aspect-ratio: 0.72;
+  border-radius: 999px 999px 6px 6px / 26px 26px 6px 6px;
+  box-shadow: 0 0 0 1px rgba(255, 238, 185, 0.82) inset;
+}
+
+@media (max-width: 760px) {
+  body.journey-page .journey-step-card {
+    width: clamp(26px, 7.1vw, 34px);
+    padding: 2px;
+    border-radius: 999px 999px 7px 7px / 24px 24px 6px 6px;
+    transform: translate(-50%, -72%);
+  }
+
+  body.journey-page .journey-step-card:hover,
+  body.journey-page .journey-step-card.selected {
+    transform: translate(-50%, -72%) scale(1.08);
+  }
+
+  body.journey-page .journey-step-card[data-step-number="7"],
+  body.journey-page .journey-step-card[data-step-number="15"] {
+    transform: translate(-50%, -86%);
+  }
+
+  body.journey-page .journey-step-card[data-step-number="7"]:hover,
+  body.journey-page .journey-step-card[data-step-number="7"].selected,
+  body.journey-page .journey-step-card[data-step-number="15"]:hover,
+  body.journey-page .journey-step-card[data-step-number="15"].selected {
+    transform: translate(-50%, -86%) scale(1.08);
+  }
+
+  body.journey-page .journey-step-visual {
+    aspect-ratio: 0.72;
+    border-radius: 999px 999px 5px 5px / 22px 22px 5px 5px;
+  }
+}
+/* 14.103. Thu thach Chua chiu phep rua */
+body.journey-page.journey-challenge-mode .journey-shell {
+  max-width: min(1180px, calc(100vw - 24px));
+}
+
+body.journey-page .journey-challenge-screen {
+  position: relative;
+  min-height: min(820px, calc(100vh - 42px));
+  padding: clamp(18px, 3vw, 34px);
+  border: 1px solid rgba(175, 107, 23, 0.72);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 22% 12%, rgba(238, 185, 88, 0.2), transparent 28%),
+    linear-gradient(145deg, rgba(255, 247, 224, 0.96), rgba(246, 223, 181, 0.9));
+  box-shadow: 0 20px 42px rgba(99, 62, 18, 0.16);
+  color: #4b2a18;
+  overflow: hidden;
+}
+
+body.journey-page .journey-challenge-back,
+body.journey-page .journey-return-map {
+  border: 1px solid rgba(173, 101, 15, 0.72);
+  border-radius: 999px;
+  background: rgba(255, 248, 232, 0.78);
+  color: #8a520f;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+body.journey-page .journey-challenge-back {
+  position: relative;
+  z-index: 2;
+  padding: 10px 16px;
+}
+
+body.journey-page .journey-challenge-hero {
+  max-width: 760px;
+  margin: 10px auto 24px;
+  text-align: center;
+}
+
+body.journey-page .journey-challenge-hero span {
+  display: inline-flex;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(184, 121, 40, 0.14);
+  color: #8a520f;
+  font-weight: 800;
+}
+
+body.journey-page .journey-challenge-hero h1 {
+  margin: 12px 0 6px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2rem, 5vw, 4.2rem);
+  line-height: 0.98;
+  color: #5b311a;
+}
+
+body.journey-page .journey-challenge-hero p {
+  margin: 0;
+  color: #71431e;
+  font-size: clamp(1rem, 2vw, 1.28rem);
+  font-weight: 700;
+}
+
+body.journey-page .journey-baptism-layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.95fr) minmax(320px, 1.05fr);
+  gap: clamp(16px, 2.5vw, 28px);
+  align-items: stretch;
+}
+
+body.journey-page .journey-baptism-scene,
+body.journey-page .journey-sign-board {
+  border: 1px solid rgba(169, 98, 17, 0.62);
+  border-radius: 16px;
+  background: rgba(255, 249, 234, 0.72);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.38);
+}
+
+body.journey-page .journey-baptism-scene {
+  position: relative;
+  min-height: 440px;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+body.journey-page .journey-baptism-sky {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 18%, rgba(255, 252, 217, 0.98), transparent 18%),
+    linear-gradient(180deg, #8dc7d4 0%, #f2db9e 55%, #8fb878 100%);
+}
+
+body.journey-page .journey-baptism-light {
+  position: absolute;
+  left: 50%;
+  top: 7%;
+  width: 44%;
+  height: 44%;
+  transform: translateX(-50%);
+  background: radial-gradient(circle, rgba(255, 255, 238, 0.92), rgba(255, 219, 115, 0.28) 48%, transparent 70%);
+  filter: blur(1px);
+}
+
+body.journey-page .journey-baptism-river {
+  position: absolute;
+  left: -12%;
+  right: -12%;
+  bottom: -12%;
+  height: 43%;
+  border-radius: 50% 50% 0 0;
+  background:
+    repeating-linear-gradient(168deg, rgba(255,255,255,0.35) 0 8px, transparent 8px 22px),
+    linear-gradient(135deg, #227990, #80c8c9 52%, #2d7088);
+  box-shadow: 0 -18px 36px rgba(37, 100, 95, 0.24);
+}
+
+body.journey-page .journey-baptism-figure {
+  position: absolute;
+  bottom: 20%;
+  width: 86px;
+  height: 170px;
+  border-radius: 48px 48px 18px 18px;
+  background: linear-gradient(150deg, #fff3c8, #d9a055 56%, #7c431f);
+  box-shadow: 0 12px 22px rgba(64, 36, 15, 0.28);
+}
+
+body.journey-page .journey-baptism-figure::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -24px;
+  width: 48px;
+  height: 48px;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: radial-gradient(circle, #ffe7b0, #b97935);
+}
+
+body.journey-page .journey-baptism-figure span {
+  position: absolute;
+  left: 50%;
+  top: 26px;
+  width: 70%;
+  height: 66%;
+  transform: translateX(-50%);
+  border-radius: 999px 999px 16px 16px;
+  background: rgba(255, 249, 230, 0.62);
+}
+
+body.journey-page .journey-baptism-figure.jesus {
+  left: 52%;
+}
+
+body.journey-page .journey-baptism-figure.john {
+  left: 24%;
+  background: linear-gradient(150deg, #7c522a, #b27839 58%, #4b2d18);
+  transform: scale(0.92);
+}
+
+body.journey-page .journey-baptism-scene p {
+  position: absolute;
+  left: 22px;
+  bottom: 18px;
+  margin: 0;
+  color: #fdf4d7;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  text-shadow: 0 2px 8px rgba(42, 22, 8, 0.58);
+}
+
+body.journey-page .journey-sign-board {
+  padding: clamp(16px, 2.4vw, 24px);
+}
+
+body.journey-page .journey-sign-head {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+body.journey-page .journey-sign-head > span {
+  display: grid;
+  width: 56px;
+  aspect-ratio: 1;
+  place-items: center;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #cc8a25, #8d5011);
+  color: #fff8e8;
+  font-weight: 900;
+}
+
+body.journey-page .journey-sign-head strong {
+  display: block;
+  color: #4f2b17;
+  font-size: 1.05rem;
+}
+
+body.journey-page .journey-sign-head small {
+  color: #7b512a;
+  font-weight: 700;
+}
+
+body.journey-page .journey-sign-slots {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+body.journey-page .journey-sign-slot {
+  min-height: 116px;
+  padding: 14px 12px;
+  border: 1px dashed rgba(151, 88, 16, 0.62);
+  border-radius: 14px;
+  background: rgba(255, 249, 232, 0.64);
+}
+
+body.journey-page .journey-sign-slot.filled {
+  border-style: solid;
+  background: linear-gradient(145deg, rgba(246, 216, 151, 0.84), rgba(255, 248, 226, 0.84));
+  box-shadow: 0 8px 18px rgba(107, 65, 19, 0.12);
+}
+
+body.journey-page .journey-sign-slot span,
+body.journey-page .journey-sign-option span {
+  display: grid;
+  width: 34px;
+  aspect-ratio: 1;
+  place-items: center;
+  border-radius: 999px;
+  background: #8d5011;
+  color: #fff2cf;
+  font-weight: 900;
+}
+
+body.journey-page .journey-sign-slot strong,
+body.journey-page .journey-sign-option strong {
+  display: block;
+  margin-top: 10px;
+  color: #432413;
+}
+
+body.journey-page .journey-sign-slot small,
+body.journey-page .journey-sign-option small {
+  display: block;
+  margin-top: 5px;
+  color: #725034;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+body.journey-page .journey-sign-options {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+}
+
+body.journey-page .journey-sign-option {
+  min-height: 126px;
+  padding: 12px 10px;
+  border: 1px solid rgba(151, 88, 16, 0.58);
+  border-radius: 14px;
+  background: rgba(255, 251, 240, 0.82);
+  text-align: left;
+  cursor: pointer;
+  transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+}
+
+body.journey-page .journey-sign-option:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 20px rgba(105, 60, 16, 0.16);
+}
+
+body.journey-page .journey-sign-option.selected,
+body.journey-page .journey-sign-option:disabled {
+  cursor: default;
+}
+
+body.journey-page .journey-sign-option.selected {
+  background: rgba(209, 144, 42, 0.22);
+}
+
+body.journey-page .journey-challenge-message {
+  min-height: 24px;
+  margin: 14px 0 0;
+  color: #7a4b1d;
+  font-weight: 800;
+}
+
+body.journey-page .journey-challenge-message.error {
+  color: #9f2f1e;
+}
+
+body.journey-page .journey-challenge-message.success {
+  color: #2f6f2b;
+}
+
+body.journey-page .journey-challenge-result {
+  margin-top: 16px;
+  padding: 16px;
+  border: 1px solid rgba(180, 106, 18, 0.58);
+  border-radius: 16px;
+  background: rgba(255, 248, 226, 0.84);
+}
+
+body.journey-page .journey-challenge-result blockquote {
+  margin: 0;
+  color: #4d2914;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.1rem, 2.5vw, 1.7rem);
+  font-weight: 800;
+  line-height: 1.32;
+}
+
+body.journey-page .journey-challenge-result blockquote span {
+  display: block;
+  margin-top: 6px;
+  color: #9c6117;
+  font-size: 0.72em;
+}
+
+body.journey-page .journey-challenge-result p {
+  margin: 10px 0 14px;
+  color: #71431e;
+  font-weight: 800;
+}
+
+body.journey-page .journey-return-map {
+  padding: 11px 18px;
+  background: linear-gradient(135deg, #d99a35, #a26116);
+  color: #fff8e8;
+}
+
+:root[data-theme="dark"] body.journey-page .journey-challenge-screen {
+  background:
+    radial-gradient(circle at 22% 12%, rgba(238, 185, 88, 0.16), transparent 28%),
+    linear-gradient(145deg, #20130c, #332114);
+  color: #fff0cc;
+}
+
+:root[data-theme="dark"] body.journey-page .journey-baptism-scene,
+:root[data-theme="dark"] body.journey-page .journey-sign-board,
+:root[data-theme="dark"] body.journey-page .journey-challenge-result {
+  background: rgba(58, 35, 19, 0.82);
+  border-color: rgba(184, 121, 40, 0.72);
+}
+
+:root[data-theme="dark"] body.journey-page .journey-challenge-hero h1,
+:root[data-theme="dark"] body.journey-page .journey-sign-head strong,
+:root[data-theme="dark"] body.journey-page .journey-sign-slot strong,
+:root[data-theme="dark"] body.journey-page .journey-sign-option strong,
+:root[data-theme="dark"] body.journey-page .journey-challenge-result blockquote {
+  color: #ffe8b4;
+}
+
+:root[data-theme="dark"] body.journey-page .journey-challenge-hero p,
+:root[data-theme="dark"] body.journey-page .journey-sign-head small,
+:root[data-theme="dark"] body.journey-page .journey-sign-slot small,
+:root[data-theme="dark"] body.journey-page .journey-sign-option small,
+:root[data-theme="dark"] body.journey-page .journey-challenge-message,
+:root[data-theme="dark"] body.journey-page .journey-challenge-result p {
+  color: #f3c66f;
+}
+
+:root[data-theme="dark"] body.journey-page .journey-sign-slot,
+:root[data-theme="dark"] body.journey-page .journey-sign-option {
+  background: rgba(38, 24, 15, 0.88);
+  border-color: rgba(184, 121, 40, 0.64);
+}
+
+@media (max-width: 820px) {
+  body.journey-page .journey-challenge-screen {
+    padding: 14px;
+    min-height: calc(100vh - 24px);
+  }
+
+  body.journey-page .journey-baptism-layout {
+    grid-template-columns: 1fr;
+  }
+
+  body.journey-page .journey-baptism-scene {
+    min-height: 300px;
+  }
+
+  body.journey-page .journey-sign-slots,
+  body.journey-page .journey-sign-options {
+    grid-template-columns: 1fr;
+  }
+
+  body.journey-page .journey-sign-slot,
+  body.journey-page .journey-sign-option {
+    min-height: 0;
+  }
+}
+/* 14.104. Admin Hanh trinh Kinh Thanh */
+.journey-admin-panel {
+  display: grid;
+  gap: 18px;
+}
+
+.journey-admin-form {
+  display: grid;
+  gap: 18px;
+  max-width: none;
+}
+
+.journey-admin-block {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+  border: 1px solid rgba(181, 119, 47, 0.3);
+  border-radius: 8px;
+  background: rgba(255, 250, 241, 0.78);
+}
+
+.journey-admin-block h3 {
+  margin: 0;
+  color: var(--brown);
+  font-size: 1.05rem;
+  text-transform: uppercase;
+}
+
+.journey-admin-form textarea {
+  resize: vertical;
+  min-height: 110px;
+  font-family: Consolas, "Courier New", monospace;
+  line-height: 1.45;
+}
+
+.journey-admin-form #journeyTopicDescription,
+.journey-admin-form #journeyMilestoneStory,
+.journey-admin-form #journeyMilestoneLesson,
+.journey-admin-form #journeyChallengeInstruction {
+  font-family: inherit;
+}
+
+.journey-admin-form .image-preview.show {
+  display: block;
+  max-height: 180px;
+  object-fit: contain;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+:root[data-theme="dark"] .journey-admin-block {
+  background: rgba(58, 35, 19, 0.82);
+  border-color: rgba(184, 121, 40, 0.46);
+}
+
+:root[data-theme="dark"] .journey-admin-block h3 {
+  color: #f4c66f;
+}
+
+@media (max-width: 760px) {
+  .journey-admin-block {
+    padding: 12px;
+  }
+}
+/* 14.105. Journey image data from admin */
+body.journey-page .journey-topic-image {
+  display: block;
+  width: 100%;
+  height: clamp(86px, 13vw, 150px);
+  margin: 0 0 12px;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0 8px 18px rgba(89, 52, 16, 0.18);
+}
+
+body.journey-page .journey-step-visual.has-image {
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+body.journey-page .journey-baptism-scene.has-custom-image {
+  min-height: 440px;
+  background: #24160d;
+}
+
+body.journey-page .journey-baptism-custom-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: inherit;
+  object-fit: cover;
+}
+
+@media (max-width: 820px) {
+  body.journey-page .journey-topic-image {
+    height: 120px;
+  }
+
+  body.journey-page .journey-baptism-scene.has-custom-image {
+    min-height: 300px;
+  }
+}

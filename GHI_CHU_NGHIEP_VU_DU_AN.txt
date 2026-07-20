@@ -3552,3 +3552,391 @@ Vi du neu dap an dung la **C**, truong answer phai la:
 **Luu y:**
 - Chua gan vao navigation/header chinh de tranh hien tinh nang dang thu nghiem tren website public.
 - Khi can dua ra production, co the doi trang test thanh route chinh va bo guard local-only.
+
+### **14.97. Prototype màn chơi Hành Trình Theo Dấu Chân Chúa Giêsu**
+
+**Ngày cập nhật:** 20/07/2026
+
+**Nguồn tham khảo:**
+- Đã đọc các ghi chú công việc ngày 20/07/2026 trong file nghiệp vụ.
+- Đã đọc file kịch bản `Kich_ban_Game_Hanh_Trinh_Theo_Dau_Chan_Chua_Giesu.docx`.
+- Dựa trên ảnh design bản đồ game do người dùng cung cấp: bản đồ hành trình, HUD điểm, mảnh Kinh Thánh, huy hiệu, cột mốc, chú thích, thanh điều hướng dưới.
+
+**Chức năng đã làm:**
+- Mở rộng trang local-only `hanh-trinh-kinh-thanh-test.html` thêm section `journeyGame` để chứa màn chơi.
+- Cập nhật `journey-test.js`: khi ở màn chọn chủ đề, bấm chủ đề `Hành trình theo dấu chân Chúa Giêsu` sẽ ẩn màn chọn chủ đề và mở màn chơi tương ứng.
+- Các chủ đề khác vẫn hiển thị thông báo đang chuẩn bị, để tập trung làm trước chủ đề Chúa Giêsu.
+- Dựng dữ liệu 16 cột mốc MVP theo kịch bản và ảnh design:
+  1. Giáng Sinh
+  2. Thời niên thiếu
+  3. Chúa chịu phép rửa
+  4. Chúa chịu cám dỗ
+  5. Bắt đầu rao giảng
+  6. Gọi các môn đệ
+  7. Phép lạ đầu tiên
+  8. Giảng trên núi
+  9. Các phép lạ
+  10. Các dụ ngôn
+  11. Chúa vào Giêrusalem
+  12. Bữa Tiệc Ly
+  13. Chúa cầu nguyện
+  14. Chúa chịu đóng đinh
+  15. Chúa Phục Sinh
+  16. Chúa Thăng Thiên
+- Mỗi cột mốc có tên, tham chiếu Kinh Thánh, vùng địa lý, mô tả ngắn và bài học đời sống.
+- Dựng UI prototype gồm: banner cuộn giấy, HUD điểm Đức Tin/Mảnh Kinh Thánh/Huy hiệu, bản đồ nền, đường hành trình, 16 cột mốc, trạng thái hoàn thành/mở khóa/sắp mở/chưa mở, chú thích, câu Kinh Thánh, thanh điều hướng dưới và panel hướng dẫn.
+- Bấm từng cột mốc sẽ cập nhật panel mô tả bên dưới/phải; cột mốc bị khóa sẽ hiển thị lời nhắc hoàn thành chặng trước.
+- Nút `Bắt đầu thử thách` hiện là placeholder, sẽ dùng cho bước tiếp theo khi thiết kế màn quiz/mini-game.
+- Thêm nút `Chọn chủ đề khác` để quay lại màn chọn chủ đề.
+- Cập nhật cache version sang `20260720-jesus-journey-map`.
+
+**File liên quan:**
+- hanh-trinh-kinh-thanh-test.html
+- journey-test.js
+- styles.css
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiểm tra:**
+- Đã khởi động localhost bằng `local-server.py` tại `http://127.0.0.1:5500/`.
+- `http://127.0.0.1:5500/hanh-trinh-kinh-thanh-test.html` trả về HTTP 200.
+- `journey-test.js?v=20260720-jesus-journey-map` trả về HTTP 200.
+- `styles.css?v=20260720-jesus-journey-map` trả về HTTP 200.
+- Kiểm tra tĩnh cân bằng ngoặc:
+  - `journey-test.js`: ngoặc tròn 118/118, ngoặc nhọn 95/95.
+  - `styles.css`: ngoặc tròn 1103/1103, ngoặc nhọn 1122/1122.
+- Chưa chạy được `node --check` vì máy hiện không nhận lệnh `node` trong PATH.
+
+**Ý tưởng bước tiếp theo để thảo luận:**
+- Bước 1: chốt bố cục bản đồ, màu sắc, kích thước cột mốc và trạng thái khóa/mở.
+- Bước 2: thiết kế modal/panel giới thiệu cột mốc trước khi vào thử thách.
+- Bước 3: làm màn quiz 3-5 câu cho một cột mốc mẫu, bắt đầu từ `Chúa chịu phép rửa`.
+- Bước 4: thêm logic điểm, mở khóa chặng tiếp theo và lưu tiến trình localStorage trước khi đưa lên Firebase.
+### **14.98. Chỉnh màn bản đồ game sang bố cục dọc, gọn hơn**
+
+**Ngày cập nhật:** 20/07/2026
+
+**Yêu cầu:**
+- Bỏ panel tiêu đề lớn `Hành trình theo dấu chân Chúa Giêsu` trong màn bản đồ.
+- Thu nhỏ kích thước các thành phần trong màn bản đồ.
+- Bỏ thanh điều hướng dưới gồm `Nhân vật`, `Bản đồ`, `Mảnh Kinh Thánh`, `Thành tựu`.
+- Chuyển bản đồ sang dạng dọc để dễ xem hơn trên điện thoại.
+
+**Chỉnh sửa:**
+- `journey-test.js`: bỏ render panel `journey-scroll-title` khỏi màn chơi.
+- `journey-test.js`: bỏ render `journey-bottom-nav` khỏi màn chơi.
+- `journey-test.js`: thêm bộ `verticalJourneyPositions` để ghi đè tọa độ 16 cột mốc sang đường đi dọc, các mốc luân phiên trái/phải quanh trục giữa.
+- `styles.css`: thêm override `14.98` cho màn bản đồ dọc:
+  - giới hạn chiều ngang màn chơi còn khoảng 680px;
+  - tăng chiều cao stage để cuộn dọc;
+  - thu nhỏ HUD, nút menu, nút tác vụ, la bàn, thẻ cột mốc, chú thích, câu Kinh Thánh và panel hướng dẫn;
+  - ẩn chắc chắn `journey-scroll-title` và `journey-bottom-nav` nếu CSS cũ còn tồn tại;
+  - thêm responsive riêng cho điện thoại, giữ HUD dạng ngang nhỏ và map theo chiều dọc.
+- `hanh-trinh-kinh-thanh-test.html`: đổi cache version CSS/JS sang `20260720-journey-vertical-map`.
+
+**File liên quan:**
+- hanh-trinh-kinh-thanh-test.html
+- journey-test.js
+- styles.css
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiểm tra:**
+- `http://127.0.0.1:5500/hanh-trinh-kinh-thanh-test.html` trả về HTTP 200.
+- `journey-test.js?v=20260720-journey-vertical-map` trả về HTTP 200.
+- `styles.css?v=20260720-journey-vertical-map` trả về HTTP 200.
+- Kiểm tra tĩnh cân bằng ngoặc:
+  - `journey-test.js`: ngoặc tròn 121/121, ngoặc nhọn 113/113.
+  - `styles.css`: ngoặc tròn 1134/1134, ngoặc nhọn 1175/1175.
+### **14.99. Dùng ảnh map thật cho màn chơi Hành Trình Chúa Giêsu**
+
+**Ngày cập nhật:** 20/07/2026
+
+**Yêu cầu:**
+- Màn hình bản đồ game dùng ảnh map do người dùng cung cấp `Hanh trinh chua Giesu.png`.
+- Tại mỗi vị trí được đánh số trên map, thêm card tương ứng.
+- Card có kích thước nhỏ, vừa đủ để thấy hình minh họa và chữ trên card.
+
+**Chỉnh sửa:**
+- Copy ảnh `C:\Users\PC\Downloads\Hanh trinh chua Giesu.png` vào source tại `assets/journey-jesus-map.png`.
+- Xác nhận kích thước ảnh: `1024 x 1536`, tỉ lệ `2:3`.
+- `styles.css`: đổi `.journey-map-stage` sang dùng ảnh thật làm background với `aspect-ratio: 2 / 3` và `background-size: 100% 100%`.
+- Ẩn các lớp bản đồ tự vẽ cũ để không trùng với ảnh map: đường SVG, HUD, tác vụ nhanh, la bàn, chú thích và câu Kinh Thánh overlay.
+- `journey-test.js`: đổi tọa độ cột mốc sang `journeyMapNumberPositions`, đặt 16 card theo phần trăm gần đúng tại các vòng số trên ảnh map.
+- Thu nhỏ card cột mốc: card nền giấy mờ, hình minh họa nhỏ, chữ giới hạn 2 dòng, tham chiếu Kinh Thánh nhỏ bên dưới.
+- Giữ panel mô tả cột mốc ở cuối map nhưng thu gọn để không che nhiều ảnh.
+- Cập nhật cache version CSS/JS sang `20260720-journey-map-image-cards`.
+
+**File liên quan:**
+- assets/journey-jesus-map.png
+- hanh-trinh-kinh-thanh-test.html
+- journey-test.js
+- styles.css
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiểm tra:**
+- `assets/journey-jesus-map.png` tồn tại trong source, dung lượng khoảng 3.38 MB.
+- `http://127.0.0.1:5500/assets/journey-jesus-map.png` trả về HTTP 200.
+- `http://127.0.0.1:5500/hanh-trinh-kinh-thanh-test.html` trả về HTTP 200.
+- `journey-test.js?v=20260720-journey-map-image-cards` trả về HTTP 200.
+- `styles.css?v=20260720-journey-map-image-cards` trả về HTTP 200.
+- Kiểm tra tĩnh cân bằng ngoặc:
+  - `journey-test.js`: ngoặc tròn 121/121, ngoặc nhọn 113/113.
+  - `styles.css`: ngoặc tròn 1163/1163, ngoặc nhọn 1212/1212.
+
+**Lưu ý:**
+- Tọa độ card hiện là ước lượng theo vị trí số trong ảnh. Nếu người dùng muốn khớp chính xác hơn, có thể tinh chỉnh từng tọa độ `x/y` trong `journeyMapNumberPositions`.
+### **14.100. Thu nhỏ card map và đưa panel cột mốc sang trái bản đồ**
+
+**Ngày cập nhật:** 20/07/2026
+
+**Yêu cầu:**
+- Các card trên map nhỏ hơn và hạn chế che các địa danh trên bản đồ.
+- Khung panel cột mốc đặt bên trái bản đồ để dễ nhìn, không cần kéo xuống cuối trang.
+- Panel không đè lên chữ địa danh trên bản đồ.
+- Bỏ icon 3 dấu gạch ngang ở góc trên bên trái.
+
+**Chỉnh sửa:**
+- `journey-test.js`: bỏ render nút `journey-menu-button` khỏi màn chơi.
+- `journey-test.js`: đưa `journey-guide` ra ngoài `journey-map-stage`, bọc bằng `journey-game-layout` để panel nằm thành cột riêng bên trái bản đồ trên desktop.
+- `styles.css`: thêm block `14.100`:
+  - tạo layout 2 cột: panel cột mốc trái, bản đồ phải;
+  - panel dùng `position: sticky` để vẫn thấy khi cuộn map;
+  - thu nhỏ card cột mốc hơn nữa;
+  - card được neo phía trên vị trí số bằng transform `translate(-50%, calc(-100% - 4px))` để giảm che nhãn sự kiện/địa danh phía dưới vòng số;
+  - ẩn chắc chắn `.journey-menu-button` bằng CSS để tránh bị hiện lại từ rule cũ;
+  - mobile chuyển về 1 cột, panel sticky nằm phía trên bản đồ để dễ thao tác trên màn hình nhỏ.
+- `hanh-trinh-kinh-thanh-test.html`: đổi cache version CSS/JS sang `20260720-journey-map-panel-left`.
+
+**File liên quan:**
+- hanh-trinh-kinh-thanh-test.html
+- journey-test.js
+- styles.css
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Kiểm tra:**
+- `http://127.0.0.1:5500/hanh-trinh-kinh-thanh-test.html` trả về HTTP 200.
+- `journey-test.js?v=20260720-journey-map-panel-left` trả về HTTP 200.
+- `styles.css?v=20260720-journey-map-panel-left` trả về HTTP 200.
+- Kiểm tra tĩnh cân bằng ngoặc:
+  - `journey-test.js`: ngoặc tròn 121/121, ngoặc nhọn 113/113.
+  - `styles.css`: ngoặc tròn 1182/1182, ngoặc nhọn 1249/1249.
+14.101. Card bản đồ hành trình chỉ hiển thị hình và che vòng số
+- Ngày chỉnh: 20/07/2026.
+- Màn hình: hanh-trinh-kinh-thanh-test.html, phần bản đồ Hành trình theo dấu chân Chúa Giêsu.
+- Thay đổi: giảm card mốc sự kiện thêm khoảng 20%, đặt tâm card phủ lên vòng tròn số trên bản đồ nhưng vẫn tránh che tên mốc sự kiện.
+- Thay đổi: ẩn số, icon khóa và chữ mô tả trên card; card chỉ còn hiển thị hình đại diện của mốc.
+- Cache asset: dùng version 20260720-journey-image-only-cards để trình duyệt lấy CSS/JS mới.
+- Kiểm tra: localhost trả về 200 cho HTML, CSS, JS; số ngoặc trong journey-test.js và styles.css cân bằng.
+14.102. Card bản đồ hành trình dạng cửa sổ
+- Ngày chỉnh: 20/07/2026.
+- Màn hình: hanh-trinh-kinh-thanh-test.html, bản đồ Hành trình theo dấu chân Chúa Giêsu.
+- Thay đổi: đổi card mốc sự kiện từ dạng ô vuông sang dạng cửa sổ bo vòm, chỉ hiển thị phần hình trên card.
+- Thay đổi: card nhỏ hơn, phủ lên vòng tròn số trên bản đồ; riêng mốc 7 và mốc 15 được đẩy lên để không che tên mốc sự kiện.
+- Kỹ thuật: thêm data-step-number trong journey-test.js để CSS có thể xử lý riêng từng mốc; cache asset dùng version 20260720-journey-window-cards.
+- Kiểm tra: localhost trả về 200 cho HTML, CSS, JS; số ngoặc trong journey-test.js và styles.css cân bằng.
+14.103. Màn thử thách Chúa chịu phép rửa
+- Ngày chỉnh: 20/07/2026.
+- Màn hình: hanh-trinh-kinh-thanh-test.html, chủ đề Hành trình theo dấu chân Chúa Giêsu.
+- Tính năng: khi vào bản đồ sẽ chọn sẵn mốc Chúa chịu phép rửa; bấm Bắt đầu thử thách ở mốc này sẽ mở màn thử thách riêng.
+- Gameplay: người chơi chọn 3 dấu chỉ đúng của biến cố phép rửa gồm Nước sông, Chim bồ câu và Tiếng từ trời; chọn sai sẽ hiện nhắc chọn lại.
+- Hoàn thành: mở câu Kinh Thánh Mt 3,17, cộng 50 điểm đức tin một lần và tăng 1 mảnh Kinh Thánh; có nút Tiếp tục hành trình để quay lại bản đồ.
+- Giao diện: thêm cảnh minh họa sông Giođan bằng CSS, panel dấu chỉ, slot kết quả, trạng thái đúng/sai, hỗ trợ giao diện tối và responsive điện thoại.
+- Kỹ thuật: thêm logic trong journey-test.js, CSS trong styles.css, cache asset dùng version 20260720-baptism-challenge.
+- Kiểm tra: node --check journey-test.js thành công bằng Node runtime nội bộ; localhost trả về 200 cho HTML, CSS, JS; số ngoặc trong journey-test.js và styles.css cân bằng.
+14.106. Trang quản lý Hành trình Kinh Thánh
+- Ngày chỉnh: 20/07/2026.
+- Trang quản lý: thêm tab "Hành trình Kinh Thánh" trong admin.html.
+- Chức năng quản lý: thêm/sửa ảnh và text màn hình chọn chủ đề; thêm/sửa ảnh card trên map; chỉnh text panel cột mốc; thêm/sửa ảnh và text màn hình chơi.
+- Form quản lý: có danh sách chủ đề, tạo chủ đề mới, xóa chủ đề, chỉnh cột mốc bằng form nhanh, chỉnh dữ liệu JSON cho cột mốc và màn chơi, upload Cloudinary cho ảnh chủ đề/card/màn chơi.
+- Lưu dữ liệu: thêm getJourneyBibleSettings và saveJourneyBibleSettings trong data.js, lưu vào Firestore tại siteSettings/journeyBible.
+- Backup: export backup kèm metadata.journeyBible và journeyBible; import backup hỗ trợ khôi phục document journeyBible nếu file backup cũ đưa dữ liệu ở cấp ngoài collections.
+- Màn game: hanh-trinh-kinh-thanh-test.html nạp Firebase + data.js; journey-test.js đọc cấu hình journeyBible nếu có và merge lên dữ liệu mặc định để thay ảnh/text chủ đề, card map, panel cột mốc và màn chơi Chúa chịu phép rửa.
+- Style: thêm CSS cho tab quản lý mới, ảnh chủ đề, ảnh card map và ảnh màn chơi do admin nhập.
+- Cache asset: dùng version 20260720-journey-admin cho admin.html, data.js, admin.js, styles.css và journey-test.js.
+- Kiểm tra: node --check thành công với admin.js, data.js, journey-test.js; localhost trả về 200 cho admin.html, hanh-trinh-kinh-thanh-test.html, styles.css, admin.js, data.js, journey-test.js.
+14.107. Quy tắc chơi và tổng kết công việc tối 20-21/07/2026
+- Ngày ghi chú: 21/07/2026.
+- Phạm vi: prototype game Hành trình Kinh Thánh, bắt đầu với chủ đề Hành trình theo dấu chân Chúa Giêsu.
+
+Quy tắc chơi tổng quát:
+- Người chơi vào màn hình chọn chủ đề, chọn một bộ hành trình để bắt đầu.
+- Mỗi chủ đề gồm nhiều cột mốc trên bản đồ; mỗi cột mốc đại diện cho một biến cố Kinh Thánh.
+- Trên bản đồ, card mốc chỉ hiển thị hình nhỏ dạng cửa sổ, phủ lên vòng tròn số nhưng không che tên mốc sự kiện.
+- Khi chọn một cột mốc, panel bên trái hiển thị trạng thái, số thứ tự, tên cột mốc, địa danh, trích dẫn Kinh Thánh, mô tả và bài học/suy niệm ngắn.
+- Chỉ cột mốc đã hoàn thành hoặc đang mở khóa mới bấm được nút Bắt đầu thử thách; các cột mốc chưa mở sẽ báo cần hoàn thành các mốc trước.
+- Khi hoàn thành thử thách, game cộng điểm đức tin, tăng mảnh Kinh Thánh và mở khóa cột mốc kế tiếp.
+- Điểm thưởng chỉ cộng một lần cho mỗi thử thách đã hoàn thành, tránh cộng lặp khi người chơi quay lại màn chơi.
+- Người chơi có thể quay lại bản đồ sau khi hoàn thành thử thách để tiếp tục hành trình.
+
+Quy tắc chơi chặng mẫu: Chúa chịu phép rửa:
+- Chặng mẫu là cột mốc số 3, tên Chúa chịu phép rửa, trích dẫn Mt 3,13-17.
+- Khi bấm Bắt đầu thử thách, màn chơi riêng mở ra với tên Ghép Dấu Chỉ Bên Sông Giođan.
+- Người chơi cần chọn đúng 3 dấu chỉ của biến cố: Nước sông, Chim bồ câu, Tiếng từ trời.
+- Các lựa chọn nhiễu như Ngọn núi, Đền thờ không được tính; khi chọn sai sẽ hiện thông báo nhắc chọn lại.
+- Khi chọn đủ 3 dấu chỉ đúng, màn chơi mở câu Kinh Thánh: “Đây là Con yêu dấu của Ta, Ta hài lòng về Người.” (Mt 3,17).
+- Hoàn thành chặng này thưởng 50 điểm đức tin và 1 mảnh Kinh Thánh, đồng thời đánh dấu cột mốc số 3 đã hoàn thành và mở khóa cột mốc số 4.
+
+Công việc đã làm tối nay:
+- Thiết kế và dựng màn chọn chủ đề cho Hành trình Kinh Thánh.
+- Dựng bản đồ dọc sử dụng ảnh bản đồ Hành trình theo dấu chân Chúa Giêsu do người dùng cung cấp.
+- Đặt card mốc sự kiện lên các vòng tròn số trên bản đồ, tinh chỉnh để card nhỏ, chỉ hiển thị hình, không che tên địa danh/mốc sự kiện.
+- Đổi card bản đồ sang dạng cửa sổ bo vòm, có highlight nhẹ, riêng mốc 7 và 15 được đẩy lên để không che nhãn mốc.
+- Tạo panel cột mốc nằm bên trái bản đồ để người chơi xem nội dung mốc mà không phải kéo xuống cuối trang.
+- Bỏ các phần chưa cần trong bản đồ như panel tiêu đề lớn, menu 3 gạch và bottom nav Nhân vật/Bản đồ/Mảnh Kinh Thánh/Thành tựu.
+- Tạo màn thử thách mẫu cho chặng Chúa chịu phép rửa với logic chọn dấu chỉ đúng/sai, thông báo phản hồi, phần thưởng và nút quay lại bản đồ.
+- Thêm tab Hành trình Kinh Thánh trong trang quản lý để admin quản lý ảnh/text màn chọn chủ đề, ảnh card map, text panel cột mốc, ảnh/text màn chơi.
+- Thêm upload Cloudinary cho ảnh chủ đề, ảnh card bản đồ và ảnh màn chơi trong tab Hành trình Kinh Thánh.
+- Thêm lưu/đọc cấu hình Firestore tại siteSettings/journeyBible bằng getJourneyBibleSettings và saveJourneyBibleSettings.
+- Cập nhật backup để xuất/nhập dữ liệu journeyBible kèm metadata tóm tắt.
+- Cập nhật màn game để đọc cấu hình admin nếu có và merge lên dữ liệu mặc định, giúp admin thay đổi ảnh/text mà không cần sửa code.
+- Cập nhật cache version 20260720-journey-admin cho admin, data, styles và journey-test để trình duyệt lấy file mới.
+
+Ghi nhớ cho phiên sau:
+- Ưu tiên kiểm tra trên điện thoại/màn hẹp sau mỗi thay đổi game vì bản đồ dọc và panel có nhiều lớp responsive.
+- Khi thêm chặng mới, nên làm theo mẫu dữ liệu của chặng số 3: milestone trong milestones, thử thách trong challenges theo key là số cột mốc.
+- Khi admin upload ảnh card map, cần bấm Cập nhật cột mốc vào JSON rồi bấm Lưu Hành trình Kinh Thánh để dữ liệu thật sự ghi lên Firestore.
+- Khi admin upload ảnh màn chơi, cần bấm Cập nhật màn chơi vào JSON rồi bấm Lưu Hành trình Kinh Thánh.
+- Tránh thêm dữ liệu mẫu tự ghi ngược lên Firestore; dữ liệu mẫu chỉ dùng làm fallback local trong code khi Firestore chưa có cấu hình.
+- Sau mỗi lần chỉnh giao diện, tính năng hoặc quy trình, tiếp tục ghi chú vào file này.
+14.108. Định dạng JSON cho game Hành trình Kinh Thánh
+- Ngày ghi chú: 21/07/2026.
+- Dữ liệu game được lưu trong Firestore tại collection siteSettings, document journeyBible.
+- Cấu trúc gốc của document journeyBible:
+```json
+{
+  "activeTopicId": "hanh-trinh-theo-dau-chan-chua-giesu",
+  "topics": [
+    {
+      "id": "hanh-trinh-theo-dau-chan-chua-giesu",
+      "title": "Hành trình theo dấu chân Chúa Giêsu",
+      "label": "Tân Ước",
+      "description": "Khám phá những cột mốc chính trong cuộc đời và sứ vụ của Chúa Giêsu.",
+      "enabled": true,
+      "pickerImageUrl": "https://...",
+      "milestones": [],
+      "challenges": {}
+    }
+  ]
+}
+```
+
+Định dạng JSON cho màn hình chọn chủ đề:
+- id: mã chủ đề, nên viết không dấu, dùng dấu gạch ngang. Ví dụ: hanh-trinh-theo-dau-chan-chua-giesu.
+- title: tên chủ đề hiển thị trên card chọn chủ đề.
+- label: nhãn nhỏ, ví dụ Tân Ước, Cựu Ước, Tin Mừng.
+- description: mô tả ngắn cho chủ đề.
+- enabled: true nếu cho hiển thị và chơi; false nếu muốn ẩn hoặc đang chuẩn bị.
+- pickerImageUrl: URL ảnh card chọn chủ đề, lấy từ Cloudinary secure_url.
+
+Định dạng milestones JSON:
+```json
+[
+  {
+    "number": 3,
+    "title": "Chúa chịu phép rửa",
+    "reference": "Mt 3,13-17",
+    "region": "Sông Giođan",
+    "scene": "baptism",
+    "story": "Tại sông Giođan, Chúa Giêsu nhận phép rửa và bắt đầu bước vào sứ vụ công khai.",
+    "lesson": "Người môn đệ được mời gọi sống khiêm nhường và lắng nghe tiếng Chúa Cha.",
+    "cardImageUrl": "https://...",
+    "x": 79.6,
+    "y": 23.2
+  }
+]
+```
+- number: số cột mốc trên bản đồ, dùng để liên kết với thử thách.
+- title: tên cột mốc hiển thị trong panel.
+- reference: trích dẫn Kinh Thánh.
+- region: địa danh hoặc khu vực.
+- scene: mã cảnh dùng fallback CSS nếu chưa có ảnh card; ví dụ baptism, nativity, temple, desert.
+- story: mô tả chính trong panel cột mốc.
+- lesson: bài học/suy niệm ngắn trong panel.
+- cardImageUrl: ảnh card nhỏ trên bản đồ, dùng Cloudinary secure_url.
+- x, y: tọa độ phần trăm trên bản đồ. Có thể bỏ trống nếu dùng tọa độ mặc định trong code; chỉ nhập khi cần tinh chỉnh vị trí.
+
+Định dạng challenges JSON:
+```json
+{
+  "3": {
+    "title": "Ghép Dấu Chỉ Bên Sông Giođan",
+    "instruction": "Chọn đúng 3 dấu chỉ xuất hiện trong biến cố Chúa chịu phép rửa.",
+    "verse": "Đây là Con yêu dấu của Ta, Ta hài lòng về Người.",
+    "verseRef": "Mt 3,17",
+    "rewardPoints": 50,
+    "sceneImageUrl": "https://...",
+    "targets": [],
+    "options": []
+  }
+}
+```
+- Key "3" là số cột mốc, phải trùng với milestone.number.
+- title: tên thử thách trong màn chơi.
+- instruction: hướng dẫn người chơi.
+- verse: câu Kinh Thánh mở khóa sau khi hoàn thành.
+- verseRef: trích dẫn câu Kinh Thánh.
+- rewardPoints: điểm đức tin cộng khi hoàn thành, chỉ cộng một lần.
+- sceneImageUrl: ảnh nền/màn chơi riêng, dùng Cloudinary secure_url. Nếu bỏ trống, game dùng cảnh minh họa CSS fallback.
+- targets: danh sách vị trí/dấu chỉ cần ghép đúng.
+- options: danh sách lựa chọn người chơi bấm chọn.
+
+Định dạng targets trong challenge:
+```json
+[
+  {
+    "signId": "water",
+    "label": "Nước",
+    "hint": "Dấu chỉ của phép rửa",
+    "reveal": "Nước sông Giođan"
+  },
+  {
+    "signId": "dove",
+    "label": "Thánh Thần",
+    "hint": "Ngự xuống trong hình chim bồ câu",
+    "reveal": "Chim bồ câu"
+  }
+]
+```
+- signId: mã liên kết với option.id; phải trùng chính xác.
+- label: tiêu đề ô cần ghép.
+- hint: gợi ý khi chưa chọn đúng.
+- reveal: nội dung hiện ra sau khi chọn đúng.
+
+Định dạng options trong challenge:
+```json
+[
+  {
+    "id": "water",
+    "label": "Nước sông",
+    "text": "Dòng sông Giođan",
+    "icon": "≈",
+    "correct": true
+  },
+  {
+    "id": "temple",
+    "label": "Đền thờ",
+    "text": "Không thuộc chặng này",
+    "icon": "▥",
+    "correct": false
+  }
+]
+```
+- id: mã lựa chọn. Nếu correct là true thì id phải trùng một target.signId.
+- label: chữ lớn trên nút lựa chọn.
+- text: mô tả nhỏ dưới label.
+- icon: ký hiệu ngắn hiển thị trên lựa chọn.
+- correct: true nếu là đáp án đúng, false nếu là đáp án nhiễu.
+
+Quy trình nhập trong trang quản lý:
+- Vào tab Hành trình Kinh Thánh.
+- Chỉnh thông tin chủ đề, ảnh chọn chủ đề.
+- Chọn cột mốc, nhập ảnh card map và text panel, bấm Cập nhật cột mốc vào JSON.
+- Nhập ảnh/text màn chơi, targets/options, bấm Cập nhật màn chơi vào JSON.
+- Bấm Lưu Hành trình Kinh Thánh để ghi vào Firestore.
+- Nếu chỉ upload ảnh mà chưa bấm Cập nhật vào JSON và Lưu Hành trình Kinh Thánh thì dữ liệu chưa được lưu thật.
+
+Lưu ý kỹ thuật:
+- JSON phải dùng dấu ngoặc kép double quote, không dùng single quote.
+- Không được có dấu phẩy dư ở phần tử cuối của array/object.
+- Các URL ảnh nên dùng Cloudinary secure_url.
+- Không thêm dữ liệu mẫu tự động ghi Firestore; code chỉ dùng fallback local khi Firestore chưa có journeyBible.
+- Khi đổi cấu trúc JSON, phải kiểm tra cả admin.js, data.js và journey-test.js để đảm bảo backup, admin form và màn game cùng hiểu một schema.

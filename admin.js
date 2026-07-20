@@ -80,6 +80,44 @@ const faithQuestionsFile = document.querySelector("#faithQuestionsFile");
 const faithQuestionsJson = document.querySelector("#faithQuestionsJson");
 const formatFaithQuestionsButton = document.querySelector("#formatFaithQuestions");
 const faithDiscoveryMessage = document.querySelector("#faithDiscoveryMessage");
+const journeyBibleForm = document.querySelector("#journeyBibleForm");
+const journeyTopicList = document.querySelector("#journeyTopicList");
+const newJourneyTopicButton = document.querySelector("#newJourneyTopicButton");
+const deleteJourneyTopicButton = document.querySelector("#deleteJourneyTopicButton");
+const journeyTopicId = document.querySelector("#journeyTopicId");
+const journeyTopicTitle = document.querySelector("#journeyTopicTitle");
+const journeyTopicLabel = document.querySelector("#journeyTopicLabel");
+const journeyTopicEnabled = document.querySelector("#journeyTopicEnabled");
+const journeyTopicDescription = document.querySelector("#journeyTopicDescription");
+const journeyPickerImageUrl = document.querySelector("#journeyPickerImageUrl");
+const journeyPickerUploadButton = document.querySelector("#journeyPickerUploadButton");
+const journeyPickerPreview = document.querySelector("#journeyPickerPreview");
+const journeyMilestoneSelect = document.querySelector("#journeyMilestoneSelect");
+const journeyMilestoneNumber = document.querySelector("#journeyMilestoneNumber");
+const journeyMapCardImageUrl = document.querySelector("#journeyMapCardImageUrl");
+const journeyMapCardUploadButton = document.querySelector("#journeyMapCardUploadButton");
+const journeyMapCardPreview = document.querySelector("#journeyMapCardPreview");
+const journeyMilestoneTitle = document.querySelector("#journeyMilestoneTitle");
+const journeyMilestoneReference = document.querySelector("#journeyMilestoneReference");
+const journeyMilestoneRegion = document.querySelector("#journeyMilestoneRegion");
+const journeyMilestoneStory = document.querySelector("#journeyMilestoneStory");
+const journeyMilestoneLesson = document.querySelector("#journeyMilestoneLesson");
+const updateJourneyMilestoneButton = document.querySelector("#updateJourneyMilestoneButton");
+const journeyMilestonesJson = document.querySelector("#journeyMilestonesJson");
+const journeyChallengeImageUrl = document.querySelector("#journeyChallengeImageUrl");
+const journeyChallengeUploadButton = document.querySelector("#journeyChallengeUploadButton");
+const journeyChallengePreview = document.querySelector("#journeyChallengePreview");
+const journeyChallengeTitle = document.querySelector("#journeyChallengeTitle");
+const journeyChallengeReward = document.querySelector("#journeyChallengeReward");
+const journeyChallengeInstruction = document.querySelector("#journeyChallengeInstruction");
+const journeyChallengeVerse = document.querySelector("#journeyChallengeVerse");
+const journeyChallengeVerseRef = document.querySelector("#journeyChallengeVerseRef");
+const journeyChallengeTargetsJson = document.querySelector("#journeyChallengeTargetsJson");
+const journeyChallengeOptionsJson = document.querySelector("#journeyChallengeOptionsJson");
+const updateJourneyChallengeButton = document.querySelector("#updateJourneyChallengeButton");
+const journeyChallengesJson = document.querySelector("#journeyChallengesJson");
+const formatJourneyJsonButton = document.querySelector("#formatJourneyJsonButton");
+const journeyBibleMessage = document.querySelector("#journeyBibleMessage");
 const adminTabButtons = document.querySelectorAll("[data-admin-tab]");
 const adminTabPanels = document.querySelectorAll("[data-admin-panel]");
 const loginPanel = document.querySelector("#loginPanel");
@@ -94,6 +132,8 @@ let faithAdminMasks = [];
 let selectedFaithMaskIndex = -1;
 let selectedFaithMaskIndices = new Set();
 let activeFaithMaskDrag = null;
+let journeyBibleTopics = [];
+let activeJourneyTopicId = "";
 const legacyFaithPickerSampleImages = ["/assets/faith-picker-maria.jpg", "assets/faith-picker-maria.jpg"];
 
 function cleanFaithPickerImageUrl(value) {
@@ -974,6 +1014,334 @@ async function loadFaithDiscoveryAdmin() {
   }
 }
 
+function defaultJourneyAdminTopic() {
+  return {
+    id: "hanh-trinh-theo-dau-chan-chua-giesu",
+    title: "Hành trình theo dấu chân Chúa Giêsu",
+    label: "Tân Ước",
+    description: "Khám phá những cột mốc chính trong cuộc đời và sứ vụ của Chúa Giêsu.",
+    enabled: true,
+    pickerImageUrl: "",
+    milestones: [
+      {
+        number: 3,
+        title: "Chúa chịu phép rửa",
+        reference: "Mt 3,13-17",
+        region: "Sông Giođan",
+        scene: "baptism",
+        story: "Tại sông Giođan, Chúa Giêsu nhận phép rửa và bắt đầu bước vào sứ vụ công khai.",
+        lesson: "Người môn đệ được mời gọi sống khiêm nhường và lắng nghe tiếng Chúa Cha.",
+        cardImageUrl: "",
+      },
+    ],
+    challenges: {
+      3: {
+        title: "Ghép Dấu Chỉ Bên Sông Giođan",
+        instruction: "Chọn đúng 3 dấu chỉ xuất hiện trong biến cố Chúa chịu phép rửa.",
+        verse: "Đây là Con yêu dấu của Ta, Ta hài lòng về Người.",
+        verseRef: "Mt 3,17",
+        rewardPoints: 50,
+        sceneImageUrl: "",
+        targets: [
+          { signId: "water", label: "Nước", hint: "Dấu chỉ của phép rửa", reveal: "Nước sông Giođan" },
+          { signId: "dove", label: "Thánh Thần", hint: "Ngự xuống trong hình chim bồ câu", reveal: "Chim bồ câu" },
+          { signId: "voice", label: "Tiếng Chúa Cha", hint: "Lời xác nhận từ trời", reveal: "Tiếng từ trời" },
+        ],
+        options: [
+          { id: "dove", label: "Chim bồ câu", text: "Thánh Thần ngự xuống", icon: "*", correct: true },
+          { id: "mountain", label: "Ngọn núi", text: "Không thuộc chặng này", icon: "△", correct: false },
+          { id: "water", label: "Nước sông", text: "Dòng sông Giođan", icon: "≈", correct: true },
+          { id: "temple", label: "Đền thờ", text: "Không thuộc chặng này", icon: "▥", correct: false },
+          { id: "voice", label: "Tiếng từ trời", text: "Lời Chúa Cha phán", icon: "○", correct: true },
+        ],
+      },
+    },
+  };
+}
+
+function uniqueJourneyTopicId() {
+  return `journey-topic-${Date.now()}`;
+}
+
+function cloneJson(value) {
+  return JSON.parse(JSON.stringify(value));
+}
+
+function parseJourneyJson(value, fallback, label) {
+  const rawValue = String(value || "").trim();
+  if (!rawValue) return cloneJson(fallback);
+  try {
+    return JSON.parse(rawValue);
+  } catch (error) {
+    throw new Error(`${label} không đúng định dạng JSON: ${error.message}`);
+  }
+}
+
+function normalizeAdminJourneyMilestone(milestone, index = 0) {
+  const number = Number(milestone?.number || index + 1);
+  if (!Number.isFinite(number) || number <= 0) return null;
+  const normalized = {
+    number,
+    title: String(milestone?.title || `Cột mốc ${number}`).trim(),
+    reference: String(milestone?.reference || "").trim(),
+    region: String(milestone?.region || "").trim(),
+    scene: String(milestone?.scene || "").trim(),
+    story: String(milestone?.story || "").trim(),
+    lesson: String(milestone?.lesson || "").trim(),
+    cardImageUrl: String(milestone?.cardImageUrl || "").trim(),
+  };
+
+  const x = Number(milestone?.x);
+  const y = Number(milestone?.y);
+  if (Number.isFinite(x)) normalized.x = x;
+  if (Number.isFinite(y)) normalized.y = y;
+  return normalized;
+}
+
+function normalizeAdminJourneyChallenge(challenge = {}) {
+  const rewardPoints = Number(challenge.rewardPoints);
+  const normalized = {
+    title: String(challenge.title || "").trim(),
+    instruction: String(challenge.instruction || "").trim(),
+    verse: String(challenge.verse || "").trim(),
+    verseRef: String(challenge.verseRef || "").trim(),
+    sceneImageUrl: String(challenge.sceneImageUrl || "").trim(),
+    targets: Array.isArray(challenge.targets) ? challenge.targets : [],
+    options: Array.isArray(challenge.options) ? challenge.options : [],
+  };
+  if (Number.isFinite(rewardPoints) && rewardPoints >= 0) normalized.rewardPoints = rewardPoints;
+  return normalized;
+}
+
+function normalizeAdminJourneyTopic(topic, index = 0) {
+  const fallback = defaultJourneyAdminTopic();
+  const rawTopic = topic || fallback;
+  const milestones = Array.isArray(rawTopic.milestones)
+    ? rawTopic.milestones.map(normalizeAdminJourneyMilestone).filter(Boolean).sort((a, b) => a.number - b.number)
+    : [];
+  const rawChallenges = rawTopic.challenges && typeof rawTopic.challenges === "object" ? rawTopic.challenges : {};
+  const challenges = Object.fromEntries(
+    Object.entries(rawChallenges)
+      .filter(([key]) => Number.isFinite(Number(key)))
+      .map(([key, value]) => [String(Number(key)), normalizeAdminJourneyChallenge(value)])
+  );
+
+  return {
+    id: String(rawTopic.id || uniqueJourneyTopicId()).trim(),
+    title: String(rawTopic.title || `Chủ đề ${index + 1}`).trim(),
+    label: String(rawTopic.label || "").trim(),
+    description: String(rawTopic.description || "").trim(),
+    enabled: rawTopic.enabled !== false,
+    pickerImageUrl: String(rawTopic.pickerImageUrl || "").trim(),
+    milestones,
+    challenges,
+  };
+}
+
+function settingsToAdminJourneyTopics(settings) {
+  const topics = Array.isArray(settings?.topics) ? settings.topics : [];
+  if (topics.length) return topics.map(normalizeAdminJourneyTopic);
+  return [defaultJourneyAdminTopic()].map(normalizeAdminJourneyTopic);
+}
+
+function selectedJourneyTopic() {
+  return journeyBibleTopics.find((topic) => topic.id === activeJourneyTopicId) || null;
+}
+
+function parseJourneyMilestonesFromForm() {
+  const payload = parseJourneyJson(journeyMilestonesJson?.value, [], "Dữ liệu cột mốc");
+  if (!Array.isArray(payload)) throw new Error("Dữ liệu cột mốc JSON phải là một mảng.");
+  return payload.map(normalizeAdminJourneyMilestone).filter(Boolean).sort((a, b) => a.number - b.number);
+}
+
+function parseJourneyChallengesFromForm() {
+  const payload = parseJourneyJson(journeyChallengesJson?.value, {}, "Dữ liệu màn chơi");
+  if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
+    throw new Error("Dữ liệu màn chơi JSON phải là object, ví dụ {\"3\": {...}}.");
+  }
+  return Object.fromEntries(
+    Object.entries(payload)
+      .filter(([key]) => Number.isFinite(Number(key)))
+      .map(([key, value]) => [String(Number(key)), normalizeAdminJourneyChallenge(value)])
+  );
+}
+
+function stringifyJourneyData(value) {
+  return JSON.stringify(value || {}, null, 2);
+}
+
+function renderJourneyTopicList() {
+  if (!journeyTopicList) return;
+  if (!journeyBibleTopics.length) {
+    journeyTopicList.innerHTML = `<p class="admin-empty-note">Chưa có chủ đề nào. Bấm Tạo chủ đề mới để bắt đầu.</p>`;
+    return;
+  }
+
+  journeyTopicList.innerHTML = journeyBibleTopics
+    .map(
+      (topic) => `
+        <button class="${topic.id === activeJourneyTopicId ? "active" : ""}" type="button" data-id="${escapeHtml(topic.id)}">
+          <strong>${escapeHtml(topic.title)}</strong>
+          <small>${topic.milestones.length} cột mốc · ${Object.keys(topic.challenges || {}).length} màn chơi</small>
+        </button>
+      `
+    )
+    .join("");
+}
+
+function updateJourneyImagePreview(input, preview) {
+  if (!input || !preview) return;
+  const imageUrl = input.value.trim();
+  if (imageUrl) {
+    preview.src = imageUrl;
+    preview.classList.add("show");
+  } else {
+    preview.removeAttribute("src");
+    preview.classList.remove("show");
+  }
+}
+
+function updateJourneyPickerPreview() {
+  updateJourneyImagePreview(journeyPickerImageUrl, journeyPickerPreview);
+}
+
+function updateJourneyMapCardPreview() {
+  updateJourneyImagePreview(journeyMapCardImageUrl, journeyMapCardPreview);
+}
+
+function updateJourneyChallengePreview() {
+  updateJourneyImagePreview(journeyChallengeImageUrl, journeyChallengePreview);
+}
+
+function renderJourneyMilestoneSelect(selectedNumber) {
+  if (!journeyMilestoneSelect) return;
+  const milestones = parseJourneyMilestonesFromForm();
+  if (!milestones.length) {
+    journeyMilestoneSelect.innerHTML = `<option value="">Chưa có cột mốc</option>`;
+    return;
+  }
+
+  journeyMilestoneSelect.innerHTML = milestones
+    .map((milestone) => `<option value="${milestone.number}">${milestone.number}. ${escapeHtml(milestone.title)}</option>`)
+    .join("");
+  if (selectedNumber) journeyMilestoneSelect.value = String(selectedNumber);
+}
+
+function fillJourneyMilestoneForm(number) {
+  if (!journeyBibleForm) return;
+  const milestones = parseJourneyMilestonesFromForm();
+  const milestone = milestones.find((item) => item.number === Number(number)) || milestones[0] || null;
+  journeyMilestoneNumber.value = milestone?.number || "";
+  journeyMilestoneTitle.value = milestone?.title || "";
+  journeyMilestoneReference.value = milestone?.reference || "";
+  journeyMilestoneRegion.value = milestone?.region || "";
+  journeyMilestoneStory.value = milestone?.story || "";
+  journeyMilestoneLesson.value = milestone?.lesson || "";
+  journeyMapCardImageUrl.value = milestone?.cardImageUrl || "";
+  updateJourneyMapCardPreview();
+
+  const challenge = milestone ? parseJourneyChallengesFromForm()[String(milestone.number)] || {} : {};
+  journeyChallengeTitle.value = challenge.title || "";
+  journeyChallengeInstruction.value = challenge.instruction || "";
+  journeyChallengeVerse.value = challenge.verse || "";
+  journeyChallengeVerseRef.value = challenge.verseRef || "";
+  journeyChallengeReward.value = Number.isFinite(Number(challenge.rewardPoints)) ? String(challenge.rewardPoints) : "";
+  journeyChallengeImageUrl.value = challenge.sceneImageUrl || "";
+  journeyChallengeTargetsJson.value = stringifyJourneyData(challenge.targets || []);
+  journeyChallengeOptionsJson.value = stringifyJourneyData(challenge.options || []);
+  updateJourneyChallengePreview();
+}
+
+function fillJourneyTopicForm(topic) {
+  if (!journeyBibleForm) return;
+  const selectedTopic = topic || defaultJourneyAdminTopic();
+  const normalizedTopic = normalizeAdminJourneyTopic(selectedTopic);
+  activeJourneyTopicId = normalizedTopic.id;
+  journeyTopicId.value = normalizedTopic.id;
+  journeyTopicTitle.value = normalizedTopic.title;
+  journeyTopicLabel.value = normalizedTopic.label;
+  journeyTopicEnabled.value = normalizedTopic.enabled ? "true" : "false";
+  journeyTopicDescription.value = normalizedTopic.description;
+  journeyPickerImageUrl.value = normalizedTopic.pickerImageUrl;
+  journeyMilestonesJson.value = stringifyJourneyData(normalizedTopic.milestones);
+  journeyChallengesJson.value = stringifyJourneyData(normalizedTopic.challenges);
+  updateJourneyPickerPreview();
+  renderJourneyMilestoneSelect(normalizedTopic.milestones[0]?.number);
+  fillJourneyMilestoneForm(normalizedTopic.milestones[0]?.number);
+  renderJourneyTopicList();
+}
+
+async function loadJourneyBibleAdmin() {
+  if (!journeyBibleForm) return;
+  try {
+    const settings = typeof getJourneyBibleSettings === "function" ? await getJourneyBibleSettings() : null;
+    journeyBibleTopics = settingsToAdminJourneyTopics(settings);
+    const activeTopic = journeyBibleTopics.find((topic) => topic.id === settings?.activeTopicId) || journeyBibleTopics[0] || defaultJourneyAdminTopic();
+    fillJourneyTopicForm(activeTopic);
+    if (journeyBibleMessage) {
+      journeyBibleMessage.textContent = settings?.topics?.length
+        ? `Đã tải ${journeyBibleTopics.length} chủ đề Hành trình Kinh Thánh.`
+        : "Chưa có cấu hình Firestore. Đang hiển thị dữ liệu mẫu để bạn chỉnh và lưu.";
+    }
+  } catch (error) {
+    if (journeyBibleMessage) journeyBibleMessage.textContent = error.message;
+  }
+}
+
+function updateJourneyMilestoneFromFields() {
+  try {
+    const milestones = parseJourneyMilestonesFromForm();
+    const number = Number(journeyMilestoneNumber?.value || journeyMilestoneSelect?.value);
+    if (!Number.isFinite(number) || number <= 0) throw new Error("Vui lòng nhập số cột mốc hợp lệ.");
+    const existing = milestones.find((item) => item.number === number) || {};
+    const nextMilestone = normalizeAdminJourneyMilestone({
+      ...existing,
+      number,
+      title: journeyMilestoneTitle.value.trim() || existing.title || `Cột mốc ${number}`,
+      reference: journeyMilestoneReference.value.trim(),
+      region: journeyMilestoneRegion.value.trim(),
+      story: journeyMilestoneStory.value.trim(),
+      lesson: journeyMilestoneLesson.value.trim(),
+      cardImageUrl: journeyMapCardImageUrl.value.trim(),
+    });
+    const nextMilestones = milestones.filter((item) => item.number !== number).concat(nextMilestone).sort((a, b) => a.number - b.number);
+    journeyMilestonesJson.value = stringifyJourneyData(nextMilestones);
+    renderJourneyMilestoneSelect(number);
+    fillJourneyMilestoneForm(number);
+    if (journeyBibleMessage) journeyBibleMessage.textContent = `Đã cập nhật cột mốc ${number} vào JSON. Bấm Lưu Hành trình Kinh Thánh để lưu Firestore.`;
+  } catch (error) {
+    if (journeyBibleMessage) journeyBibleMessage.textContent = error.message;
+  }
+}
+
+function updateJourneyChallengeFromFields() {
+  try {
+    const number = Number(journeyMilestoneNumber?.value || journeyMilestoneSelect?.value);
+    if (!Number.isFinite(number) || number <= 0) throw new Error("Vui lòng chọn cột mốc trước khi cập nhật màn chơi.");
+    const challenges = parseJourneyChallengesFromForm();
+    const targets = parseJourneyJson(journeyChallengeTargetsJson?.value, [], "Vị trí cần ghép");
+    const options = parseJourneyJson(journeyChallengeOptionsJson?.value, [], "Lựa chọn");
+    if (!Array.isArray(targets)) throw new Error("Vị trí cần ghép JSON phải là một mảng.");
+    if (!Array.isArray(options)) throw new Error("Lựa chọn JSON phải là một mảng.");
+    const rewardPoints = Number(journeyChallengeReward?.value || 0);
+    challenges[String(number)] = normalizeAdminJourneyChallenge({
+      ...(challenges[String(number)] || {}),
+      title: journeyChallengeTitle.value.trim(),
+      instruction: journeyChallengeInstruction.value.trim(),
+      verse: journeyChallengeVerse.value.trim(),
+      verseRef: journeyChallengeVerseRef.value.trim(),
+      sceneImageUrl: journeyChallengeImageUrl.value.trim(),
+      rewardPoints: Number.isFinite(rewardPoints) ? rewardPoints : 0,
+      targets,
+      options,
+    });
+    journeyChallengesJson.value = stringifyJourneyData(challenges);
+    fillJourneyMilestoneForm(number);
+    if (journeyBibleMessage) journeyBibleMessage.textContent = `Đã cập nhật màn chơi cho cột mốc ${number}. Bấm Lưu Hành trình Kinh Thánh để lưu Firestore.`;
+  } catch (error) {
+    if (journeyBibleMessage) journeyBibleMessage.textContent = error.message;
+  }
+}
 function itemTimeValue(item) {
   const createdDate = item.createdDate || item.createdAtText || item.createdAt;
   const createdTime = createdDate?.toDate ? createdDate.toDate().getTime() : Date.parse(String(createdDate || ""));
@@ -1322,6 +1690,80 @@ function setupFaithCloudinaryUpload() {
   });
 }
 
+function openJourneyCloudinaryUpload(targetInput, afterUpload, successMessage) {
+  if (!targetInput) return;
+  if (!canManageContent) {
+    alert("Chỉ tài khoản admin mới có quyền upload ảnh.");
+    return;
+  }
+
+  const config = getCloudinaryConfig();
+  if (!config.cloudName || !config.uploadPreset) {
+    if (journeyBibleMessage) {
+      journeyBibleMessage.textContent = "Chưa cấu hình Cloudinary. Hãy điền cloudName và uploadPreset trong cloudinary-config.js.";
+    }
+    return;
+  }
+
+  if (!window.cloudinary?.createUploadWidget) {
+    if (journeyBibleMessage) {
+      journeyBibleMessage.textContent = "Không thể tải Cloudinary Upload Widget. Vui lòng kiểm tra kết nối mạng.";
+    }
+    return;
+  }
+
+  const widget = window.cloudinary.createUploadWidget(
+    {
+      cloudName: config.cloudName,
+      uploadPreset: config.uploadPreset,
+      folder: config.folder || undefined,
+      sources: ["local", "url", "camera"],
+      multiple: false,
+      resourceType: "image",
+      clientAllowedFormats: ["jpg", "jpeg", "png", "webp", "gif"],
+    },
+    (error, result) => {
+      if (error) {
+        if (journeyBibleMessage) journeyBibleMessage.textContent = error.message || "Upload Cloudinary thất bại.";
+        return;
+      }
+
+      if (result?.event === "success") {
+        targetInput.value = result.info?.secure_url || "";
+        afterUpload?.();
+        if (journeyBibleMessage) journeyBibleMessage.textContent = successMessage;
+      }
+    }
+  );
+
+  widget.open();
+}
+
+function setupJourneyCloudinaryUpload() {
+  journeyPickerUploadButton?.addEventListener("click", () => {
+    openJourneyCloudinaryUpload(
+      journeyPickerImageUrl,
+      updateJourneyPickerPreview,
+      "Đã upload Cloudinary và tự điền ảnh khung chọn chủ đề."
+    );
+  });
+
+  journeyMapCardUploadButton?.addEventListener("click", () => {
+    openJourneyCloudinaryUpload(
+      journeyMapCardImageUrl,
+      updateJourneyMapCardPreview,
+      "Đã upload Cloudinary và tự điền ảnh card bản đồ. Bấm Cập nhật cột mốc vào JSON để áp dụng."
+    );
+  });
+
+  journeyChallengeUploadButton?.addEventListener("click", () => {
+    openJourneyCloudinaryUpload(
+      journeyChallengeImageUrl,
+      updateJourneyChallengePreview,
+      "Đã upload Cloudinary và tự điền ảnh màn chơi. Bấm Cập nhật màn chơi vào JSON để áp dụng."
+    );
+  });
+}
 function prayerTextToHtml(value) {
   return String(value || "")
     .split(/\r?\n/)
@@ -1692,6 +2134,7 @@ importBackupButton?.addEventListener("click", async () => {
     renderPrayerReviewList();
     renderVisitStats(visitStatsItems);
     await loadFaithDiscoveryAdmin();
+    await loadJourneyBibleAdmin();
     if (backupFileInput) backupFileInput.value = "";
     if (backupMessage) backupMessage.textContent = `Đã nhập backup thành công: ${restoredCount.toLocaleString("vi-VN")} document.`;
   } catch (error) {
@@ -1887,6 +2330,123 @@ faithDiscoveryForm?.addEventListener("submit", async (event) => {
   }
 });
 
+journeyPickerImageUrl?.addEventListener("input", updateJourneyPickerPreview);
+journeyMapCardImageUrl?.addEventListener("input", updateJourneyMapCardPreview);
+journeyChallengeImageUrl?.addEventListener("input", updateJourneyChallengePreview);
+
+journeyTopicList?.addEventListener("click", (event) => {
+  const button = event.target.closest("button[data-id]");
+  if (!button) return;
+  const topic = journeyBibleTopics.find((item) => item.id === button.dataset.id);
+  fillJourneyTopicForm(topic);
+  if (journeyBibleMessage) journeyBibleMessage.textContent = topic ? `Đang chỉnh sửa: ${topic.title}` : "";
+});
+
+newJourneyTopicButton?.addEventListener("click", () => {
+  const topic = normalizeAdminJourneyTopic({ ...defaultJourneyAdminTopic(), id: uniqueJourneyTopicId(), title: "" });
+  activeJourneyTopicId = "";
+  fillJourneyTopicForm(topic);
+  journeyTopicId.value = "";
+  journeyTopicTitle.focus();
+  if (journeyBibleMessage) journeyBibleMessage.textContent = "Đang tạo chủ đề Hành trình Kinh Thánh mới.";
+});
+
+journeyMilestoneSelect?.addEventListener("change", () => {
+  fillJourneyMilestoneForm(Number(journeyMilestoneSelect.value));
+});
+
+updateJourneyMilestoneButton?.addEventListener("click", updateJourneyMilestoneFromFields);
+updateJourneyChallengeButton?.addEventListener("click", updateJourneyChallengeFromFields);
+
+formatJourneyJsonButton?.addEventListener("click", () => {
+  try {
+    journeyMilestonesJson.value = stringifyJourneyData(parseJourneyMilestonesFromForm());
+    journeyChallengesJson.value = stringifyJourneyData(parseJourneyChallengesFromForm());
+    renderJourneyMilestoneSelect(Number(journeyMilestoneSelect?.value || journeyMilestoneNumber?.value));
+    if (journeyBibleMessage) journeyBibleMessage.textContent = "Đã định dạng JSON Hành trình Kinh Thánh.";
+  } catch (error) {
+    if (journeyBibleMessage) journeyBibleMessage.textContent = error.message;
+  }
+});
+
+journeyBibleForm?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  if (!canManageContent) {
+    alert("Chỉ tài khoản admin mới có quyền lưu Hành trình Kinh Thánh.");
+    return;
+  }
+
+  const submitButton = journeyBibleForm.querySelector("button[type='submit']");
+  submitButton.disabled = true;
+  if (journeyBibleMessage) journeyBibleMessage.textContent = "Đang lưu Hành trình Kinh Thánh...";
+
+  try {
+    updateJourneyMilestoneFromFields();
+    updateJourneyChallengeFromFields();
+    const milestones = parseJourneyMilestonesFromForm();
+    const challenges = parseJourneyChallengesFromForm();
+    const title = journeyTopicTitle.value.trim() || `Chủ đề ${journeyBibleTopics.length + 1}`;
+    const id = journeyTopicId.value.trim() || (typeof slugifyText === "function" ? slugifyText(title) : uniqueJourneyTopicId()) || uniqueJourneyTopicId();
+    const nextTopic = normalizeAdminJourneyTopic({
+      id,
+      title,
+      label: journeyTopicLabel.value.trim(),
+      enabled: journeyTopicEnabled.value !== "false",
+      description: journeyTopicDescription.value.trim(),
+      pickerImageUrl: journeyPickerImageUrl.value.trim(),
+      milestones,
+      challenges,
+    });
+
+    const existingIndex = journeyBibleTopics.findIndex((topic) => topic.id === id);
+    if (existingIndex >= 0) {
+      journeyBibleTopics[existingIndex] = nextTopic;
+    } else {
+      journeyBibleTopics.push(nextTopic);
+    }
+
+    await saveJourneyBibleSettings({
+      topics: journeyBibleTopics,
+      activeTopicId: id,
+    });
+    fillJourneyTopicForm(nextTopic);
+    if (journeyBibleMessage) {
+      journeyBibleMessage.textContent = `Đã lưu chủ đề "${title}" gồm ${milestones.length} cột mốc và ${Object.keys(challenges).length} màn chơi.`;
+    }
+  } catch (error) {
+    if (journeyBibleMessage) journeyBibleMessage.textContent = error.message;
+    alert(error.message);
+  } finally {
+    submitButton.disabled = false;
+  }
+});
+
+deleteJourneyTopicButton?.addEventListener("click", async () => {
+  if (!canManageContent) {
+    alert("Chỉ tài khoản admin mới có quyền xóa Hành trình Kinh Thánh.");
+    return;
+  }
+  const topic = selectedJourneyTopic();
+  if (!topic) {
+    if (journeyBibleMessage) journeyBibleMessage.textContent = "Chưa chọn chủ đề để xóa.";
+    return;
+  }
+  if (!confirm(`Bạn có chắc muốn xóa chủ đề "${topic.title}"?`)) return;
+
+  try {
+    journeyBibleTopics = journeyBibleTopics.filter((item) => item.id !== topic.id);
+    const nextTopic = journeyBibleTopics[0] || defaultJourneyAdminTopic();
+    await saveJourneyBibleSettings({
+      topics: journeyBibleTopics,
+      activeTopicId: journeyBibleTopics[0]?.id || "",
+    });
+    fillJourneyTopicForm(nextTopic);
+    if (journeyBibleMessage) journeyBibleMessage.textContent = "Đã xóa chủ đề Hành trình Kinh Thánh.";
+  } catch (error) {
+    if (journeyBibleMessage) journeyBibleMessage.textContent = error.message;
+    alert(error.message);
+  }
+});
 feedbackList?.addEventListener("click", async (event) => {
   const button = event.target.closest("button");
   if (!button || button.dataset.action !== "delete-feedback") return;
@@ -1971,6 +2531,9 @@ function setEditorEnabled(enabled) {
   faithDiscoveryForm?.querySelectorAll("input, textarea, button").forEach((control) => {
     control.disabled = !enabled;
   });
+  journeyBibleForm?.querySelectorAll("input, select, textarea, button").forEach((control) => {
+    control.disabled = !enabled;
+  });
   document.querySelectorAll(".faith-set-manager button").forEach((control) => {
     control.disabled = !enabled;
   });
@@ -1980,6 +2543,7 @@ async function setupLogin() {
   setupAdminTabs();
   setupCloudinaryUpload();
   setupFaithCloudinaryUpload();
+  setupJourneyCloudinaryUpload();
   await renderAuthStatus(document.querySelector("#adminAuthStatus"));
   const user = await getCurrentUser();
 
@@ -2034,6 +2598,7 @@ async function setupLogin() {
     renderFeedbackList();
     renderPrayerReviewList();
     await loadFaithDiscoveryAdmin();
+    await loadJourneyBibleAdmin();
   } catch (error) {
     document.querySelector("#adminList").innerHTML = `
       <article class="admin-item">
