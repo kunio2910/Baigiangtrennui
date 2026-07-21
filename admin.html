@@ -7,7 +7,7 @@
     <meta name="robots" content="noindex, nofollow" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/favicon.png" />
-    <link rel="stylesheet" href="styles.css?v=20260721-journey-map-panel-fix" />
+    <link rel="stylesheet" href="styles.css?v=20260721-journey-miracles-map" />
   </head>
   <body class="admin-page">
     <header class="site-header admin-header">
@@ -354,6 +354,7 @@
             </div>
             <div class="form-actions">
               <button class="ghost-button" type="button" id="newJourneyMilestoneButton">Tạo cột mốc mới</button>
+              <button class="danger-button" type="button" id="deleteJourneyMilestoneButton">Xóa cột mốc</button>
             </div>
             <label>
               <span>Ảnh panel cột mốc</span>
@@ -362,6 +363,7 @@
                 <button class="ghost-button" type="button" id="journeyMapCardUploadButton">Upload Cloudinary</button>
               </div>
             </label>
+            <p class="admin-field-hint">Ảnh này sẽ hiển thị trong popup thông tin khi người xem bấm vào vòng tròn cột mốc trên bản đồ.</p>
             <img class="image-preview" id="journeyMapCardPreview" alt="Xem trước ảnh panel cột mốc" />
             <div class="two-fields">
               <label>
@@ -369,85 +371,26 @@
                 <input id="journeyMilestoneTitle" type="text" placeholder="Ví dụ: Chúa chịu phép rửa" />
               </label>
               <label>
-                <span>Trích dẫn</span>
-                <input id="journeyMilestoneReference" type="text" placeholder="Ví dụ: Mt 3,13-17" />
+                <span>Trích dẫn (hỗ trợ HTML)</span>
+                <input id="journeyMilestoneReference" type="text" placeholder="Ví dụ: &lt;em&gt;Mt 3,13-17&lt;/em&gt;" />
               </label>
               <label>
-                <span>Địa danh</span>
-                <input id="journeyMilestoneRegion" type="text" placeholder="Ví dụ: Sông Giođan" />
+                <span>Địa danh (hỗ trợ HTML)</span>
+                <input id="journeyMilestoneRegion" type="text" placeholder="Ví dụ: &lt;strong&gt;Sông Giođan&lt;/strong&gt;" />
               </label>
             </div>
             <label>
-              <span>Nội dung panel cột mốc</span>
-              <textarea id="journeyMilestoneStory" rows="4" placeholder="Đoạn mô tả chính trong panel cột mốc..."></textarea>
+              <span>Nội dung panel cột mốc (hỗ trợ HTML)</span>
+              <textarea id="journeyMilestoneStory" rows="4" placeholder="Có thể nhập HTML, ví dụ: &lt;p&gt;Đoạn mô tả...&lt;/p&gt;"></textarea>
             </label>
             <label>
-              <span>Bài học / suy niệm ngắn</span>
-              <textarea id="journeyMilestoneLesson" rows="3" placeholder="Câu bài học hiển thị dưới mô tả..."></textarea>
-            </label>
-            <div class="form-actions">
-              <button class="ghost-button" type="button" id="updateJourneyMilestoneButton">Cập nhật cột mốc vào JSON</button>
-            </div>
-            <label>
-              <span>Dữ liệu cột mốc JSON</span>
-              <textarea id="journeyMilestonesJson" rows="10" placeholder='[{"number":3,"title":"Chúa chịu phép rửa","cardImageUrl":"https://..."}]'></textarea>
-            </label>
-          </div>
-
-          <div class="journey-admin-block">
-            <h3>Màn hình chơi</h3>
-            <label>
-              <span>Ảnh màn hình chơi</span>
-              <div class="image-url-tools">
-                <input id="journeyChallengeImageUrl" type="url" placeholder="https://..." />
-                <button class="ghost-button" type="button" id="journeyChallengeUploadButton">Upload Cloudinary</button>
-              </div>
-            </label>
-            <img class="image-preview" id="journeyChallengePreview" alt="Xem trước ảnh màn chơi" />
-            <div class="two-fields">
-              <label>
-                <span>Tiêu đề thử thách</span>
-                <input id="journeyChallengeTitle" type="text" placeholder="Ví dụ: Ghép Dấu Chỉ Bên Sông Giođan" />
-              </label>
-              <label>
-                <span>Điểm thưởng</span>
-                <input id="journeyChallengeReward" type="number" min="0" placeholder="50" />
-              </label>
-            </div>
-            <label>
-              <span>Hướng dẫn màn chơi</span>
-              <textarea id="journeyChallengeInstruction" rows="3" placeholder="Chọn đúng 3 dấu chỉ..."></textarea>
-            </label>
-            <div class="two-fields">
-              <label>
-                <span>Câu Kinh Thánh mở khóa</span>
-                <input id="journeyChallengeVerse" type="text" placeholder="Đây là Con yêu dấu của Ta..." />
-              </label>
-              <label>
-                <span>Trích dẫn câu</span>
-                <input id="journeyChallengeVerseRef" type="text" placeholder="Mt 3,17" />
-              </label>
-            </div>
-            <label>
-              <span>Vị trí cần ghép JSON</span>
-              <textarea id="journeyChallengeTargetsJson" rows="7" placeholder='[{"signId":"water","label":"Nước","hint":"Dấu chỉ của phép rửa","reveal":"Nước sông Giođan"}]'></textarea>
-            </label>
-            <label>
-              <span>Lựa chọn JSON</span>
-              <textarea id="journeyChallengeOptionsJson" rows="8" placeholder='[{"id":"water","label":"Nước sông","text":"Dòng sông Giođan","icon":"≈","correct":true}]'></textarea>
-            </label>
-            <div class="form-actions">
-              <button class="ghost-button" type="button" id="updateJourneyChallengeButton">Cập nhật màn chơi vào JSON</button>
-            </div>
-            <label>
-              <span>Dữ liệu màn chơi JSON</span>
-              <textarea id="journeyChallengesJson" rows="10" placeholder='{"3":{"title":"Ghép Dấu Chỉ Bên Sông Giođan","sceneImageUrl":"https://..."}}'></textarea>
+              <span>Bài học / suy niệm ngắn (hỗ trợ HTML)</span>
+              <textarea id="journeyMilestoneLesson" rows="3" placeholder="Có thể nhập HTML, ví dụ: &lt;strong&gt;Ghi nhớ:&lt;/strong&gt; ..."></textarea>
             </label>
           </div>
 
           <div class="form-actions">
             <button class="primary-button" type="submit">Lưu Hành trình Kinh Thánh</button>
-            <button class="ghost-button" type="button" id="formatJourneyJsonButton">Định dạng JSON</button>
             <button class="danger-button" type="button" id="deleteJourneyTopicButton">Xóa chủ đề này</button>
           </div>
           <p class="form-message" id="journeyBibleMessage"></p>
@@ -490,7 +433,7 @@
     <script src="https://upload-widget.cloudinary.com/latest/global/all.js"></script>
     <script src="data.js?v=20260721-journey-map-panel-fix"></script>
     <script src="auth.js?v=20260715-no-sample-seed"></script>
-    <script src="admin.js?v=20260721-journey-map-panel-fix"></script>
+    <script src="admin.js?v=20260721-journey-miracles-map"></script>
     <script defer src="/_vercel/insights/script.js"></script>
   </body>
 </html>

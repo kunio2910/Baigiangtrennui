@@ -94,6 +94,7 @@ const journeyPickerUploadButton = document.querySelector("#journeyPickerUploadBu
 const journeyPickerPreview = document.querySelector("#journeyPickerPreview");
 const journeyMilestoneSelect = document.querySelector("#journeyMilestoneSelect");
 const newJourneyMilestoneButton = document.querySelector("#newJourneyMilestoneButton");
+const deleteJourneyMilestoneButton = document.querySelector("#deleteJourneyMilestoneButton");
 const journeyMilestoneNumber = document.querySelector("#journeyMilestoneNumber");
 const journeyMapCardImageUrl = document.querySelector("#journeyMapCardImageUrl");
 const journeyMapCardUploadButton = document.querySelector("#journeyMapCardUploadButton");
@@ -103,21 +104,6 @@ const journeyMilestoneReference = document.querySelector("#journeyMilestoneRefer
 const journeyMilestoneRegion = document.querySelector("#journeyMilestoneRegion");
 const journeyMilestoneStory = document.querySelector("#journeyMilestoneStory");
 const journeyMilestoneLesson = document.querySelector("#journeyMilestoneLesson");
-const updateJourneyMilestoneButton = document.querySelector("#updateJourneyMilestoneButton");
-const journeyMilestonesJson = document.querySelector("#journeyMilestonesJson");
-const journeyChallengeImageUrl = document.querySelector("#journeyChallengeImageUrl");
-const journeyChallengeUploadButton = document.querySelector("#journeyChallengeUploadButton");
-const journeyChallengePreview = document.querySelector("#journeyChallengePreview");
-const journeyChallengeTitle = document.querySelector("#journeyChallengeTitle");
-const journeyChallengeReward = document.querySelector("#journeyChallengeReward");
-const journeyChallengeInstruction = document.querySelector("#journeyChallengeInstruction");
-const journeyChallengeVerse = document.querySelector("#journeyChallengeVerse");
-const journeyChallengeVerseRef = document.querySelector("#journeyChallengeVerseRef");
-const journeyChallengeTargetsJson = document.querySelector("#journeyChallengeTargetsJson");
-const journeyChallengeOptionsJson = document.querySelector("#journeyChallengeOptionsJson");
-const updateJourneyChallengeButton = document.querySelector("#updateJourneyChallengeButton");
-const journeyChallengesJson = document.querySelector("#journeyChallengesJson");
-const formatJourneyJsonButton = document.querySelector("#formatJourneyJsonButton");
 const journeyBibleMessage = document.querySelector("#journeyBibleMessage");
 const adminTabButtons = document.querySelectorAll("[data-admin-tab]");
 const adminTabPanels = document.querySelectorAll("[data-admin-panel]");
@@ -135,7 +121,85 @@ let selectedFaithMaskIndices = new Set();
 let activeFaithMaskDrag = null;
 let journeyBibleTopics = [];
 let activeJourneyTopicId = "";
+let currentJourneyMilestones = [];
 const legacyFaithPickerSampleImages = ["/assets/faith-picker-maria.jpg", "assets/faith-picker-maria.jpg"];
+const journeyAdminMapNumberPositions = [
+  { x: 29.5, y: 18.7 },
+  { x: 54.8, y: 20.9 },
+  { x: 79.6, y: 23.2 },
+  { x: 37.1, y: 31.4 },
+  { x: 70.5, y: 35.5 },
+  { x: 42.1, y: 42.6 },
+  { x: 70.1, y: 45.1 },
+  { x: 38.3, y: 52.7 },
+  { x: 68.6, y: 55.7 },
+  { x: 43.1, y: 61.7 },
+  { x: 35.5, y: 66.3 },
+  { x: 70.7, y: 67.2 },
+  { x: 76.8, y: 75.6 },
+  { x: 32.8, y: 77.0 },
+  { x: 58.7, y: 83.2 },
+  { x: 49.0, y: 91.0 },
+];
+const journeyAdminExodusMapNumberPositions = [
+  { x: 22.5, y: 8.7 },
+  { x: 25.5, y: 16.8 },
+  { x: 19.6, y: 25.6 },
+  { x: 52.0, y: 21.6 },
+  { x: 76.5, y: 17.2 },
+  { x: 81.7, y: 29.4 },
+  { x: 82.9, y: 39.1 },
+  { x: 13.3, y: 48.9 },
+  { x: 34.0, y: 50.3 },
+  { x: 57.7, y: 50.4 },
+  { x: 48.6, y: 60.7 },
+  { x: 27.8, y: 66.5 },
+  { x: 19.4, y: 75.2 },
+  { x: 48.8, y: 76.9 },
+  { x: 73.1, y: 80.6 },
+  { x: 52.3, y: 91.6 },
+];
+const journeyAdminCreationMapNumberPositions = [
+  { x: 28.8, y: 8.3 },
+  { x: 47.8, y: 17.7 },
+  { x: 40.7, y: 29.4 },
+  { x: 55.0, y: 41.6 },
+  { x: 42.7, y: 53.0 },
+  { x: 53.7, y: 64.0 },
+  { x: 38.6, y: 76.8 },
+];
+const journeyAdminStationsMapNumberPositions = [
+  { x: 22.6, y: 9.5 },
+  { x: 45.5, y: 15.9 },
+  { x: 60.3, y: 23.0 },
+  { x: 36.1, y: 29.4 },
+  { x: 58.8, y: 36.0 },
+  { x: 27.0, y: 43.2 },
+  { x: 57.4, y: 46.0 },
+  { x: 27.6, y: 53.1 },
+  { x: 66.5, y: 58.1 },
+  { x: 33.1, y: 63.2 },
+  { x: 58.1, y: 66.9 },
+  { x: 29.5, y: 73.0 },
+  { x: 65.2, y: 77.9 },
+  { x: 50.4, y: 91.3 },
+];
+const journeyAdminMiraclesMapNumberPositions = [
+  { x: 26.3, y: 6.2 },
+  { x: 48.3, y: 12.4 },
+  { x: 64.4, y: 21.0 },
+  { x: 27.6, y: 33.4 },
+  { x: 57.8, y: 35.4 },
+  { x: 23.4, y: 43.7 },
+  { x: 47.1, y: 46.2 },
+  { x: 79.3, y: 48.6 },
+  { x: 23.5, y: 58.1 },
+  { x: 69.7, y: 62.1 },
+  { x: 15.9, y: 70.4 },
+  { x: 48.2, y: 70.7 },
+  { x: 77.0, y: 75.0 },
+  { x: 49.0, y: 88.0 },
+];
 
 function setJourneyControlLabel(control, labelText) {
   const label = control?.closest("label");
@@ -143,13 +207,6 @@ function setJourneyControlLabel(control, labelText) {
   if (labelSpan) labelSpan.textContent = labelText;
 }
 
-setJourneyControlLabel(journeyMilestonesJson, "Ô nhập dữ liệu cột mốc");
-setJourneyControlLabel(journeyChallengeTargetsJson, "Ô nhập vị trí cần ghép");
-setJourneyControlLabel(journeyChallengeOptionsJson, "Ô nhập lựa chọn trả lời");
-setJourneyControlLabel(journeyChallengesJson, "Ô nhập dữ liệu màn chơi");
-if (updateJourneyMilestoneButton) updateJourneyMilestoneButton.textContent = "Cập nhật cột mốc vào ô dữ liệu";
-if (updateJourneyChallengeButton) updateJourneyChallengeButton.textContent = "Cập nhật màn chơi vào ô dữ liệu";
-if (formatJourneyJsonButton) formatJourneyJsonButton.textContent = "Định dạng dữ liệu";
 
 function cleanFaithPickerImageUrl(value) {
   const imageUrl = String(value || "").trim();
@@ -1031,46 +1088,14 @@ async function loadFaithDiscoveryAdmin() {
 
 function defaultJourneyAdminTopic() {
   return {
-    id: "hanh-trinh-theo-dau-chan-chua-giesu",
-    title: "Hành trình theo dấu chân Chúa Giêsu",
-    label: "Tân Ước",
-    description: "Khám phá những cột mốc chính trong cuộc đời và sứ vụ của Chúa Giêsu.",
+    id: "",
+    title: "",
+    label: "",
+    description: "",
     enabled: true,
     pickerImageUrl: "",
-    milestones: [
-      {
-        number: 3,
-        title: "Chúa chịu phép rửa",
-        reference: "Mt 3,13-17",
-        region: "Sông Giođan",
-        scene: "baptism",
-        story: "Tại sông Giođan, Chúa Giêsu nhận phép rửa và bắt đầu bước vào sứ vụ công khai.",
-        lesson: "Người môn đệ được mời gọi sống khiêm nhường và lắng nghe tiếng Chúa Cha.",
-        cardImageUrl: "",
-      },
-    ],
-    challenges: {
-      3: {
-        title: "Ghép Dấu Chỉ Bên Sông Giođan",
-        instruction: "Chọn đúng 3 dấu chỉ xuất hiện trong biến cố Chúa chịu phép rửa.",
-        verse: "Đây là Con yêu dấu của Ta, Ta hài lòng về Người.",
-        verseRef: "Mt 3,17",
-        rewardPoints: 50,
-        sceneImageUrl: "",
-        targets: [
-          { signId: "water", label: "Nước", hint: "Dấu chỉ của phép rửa", reveal: "Nước sông Giođan" },
-          { signId: "dove", label: "Thánh Thần", hint: "Ngự xuống trong hình chim bồ câu", reveal: "Chim bồ câu" },
-          { signId: "voice", label: "Tiếng Chúa Cha", hint: "Lời xác nhận từ trời", reveal: "Tiếng từ trời" },
-        ],
-        options: [
-          { id: "dove", label: "Chim bồ câu", text: "Thánh Thần ngự xuống", icon: "*", correct: true },
-          { id: "mountain", label: "Ngọn núi", text: "Không thuộc chặng này", icon: "△", correct: false },
-          { id: "water", label: "Nước sông", text: "Dòng sông Giođan", icon: "≈", correct: true },
-          { id: "temple", label: "Đền thờ", text: "Không thuộc chặng này", icon: "▥", correct: false },
-          { id: "voice", label: "Tiếng từ trời", text: "Lời Chúa Cha phán", icon: "○", correct: true },
-        ],
-      },
-    },
+    milestones: [],
+    challenges: {},
   };
 }
 
@@ -1156,7 +1181,7 @@ function normalizeAdminJourneyTopic(topic, index = 0) {
 function settingsToAdminJourneyTopics(settings) {
   const topics = Array.isArray(settings?.topics) ? settings.topics : [];
   if (topics.length) return topics.map(normalizeAdminJourneyTopic);
-  return [defaultJourneyAdminTopic()].map(normalizeAdminJourneyTopic);
+  return [];
 }
 
 function selectedJourneyTopic() {
@@ -1164,25 +1189,25 @@ function selectedJourneyTopic() {
 }
 
 function parseJourneyMilestonesFromForm() {
-  const payload = parseJourneyJson(journeyMilestonesJson?.value, [], "Dữ liệu cột mốc");
-  if (!Array.isArray(payload)) throw new Error("Dữ liệu cột mốc JSON phải là một mảng.");
-  return payload.map(normalizeAdminJourneyMilestone).filter(Boolean).sort((a, b) => a.number - b.number);
+  return currentJourneyMilestones.map(normalizeAdminJourneyMilestone).filter(Boolean).sort((a, b) => a.number - b.number);
 }
 
-function parseJourneyChallengesFromForm() {
-  const payload = parseJourneyJson(journeyChallengesJson?.value, {}, "Dữ liệu màn chơi");
-  if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
-    throw new Error("Dữ liệu màn chơi JSON phải là object, ví dụ {\"3\": {...}}.");
-  }
-  return Object.fromEntries(
-    Object.entries(payload)
-      .filter(([key]) => Number.isFinite(Number(key)))
-      .map(([key, value]) => [String(Number(key)), normalizeAdminJourneyChallenge(value)])
-  );
+function getExistingChallengesForActiveTopic() {
+  const topic = journeyBibleTopics.find((item) => item.id === activeJourneyTopicId);
+  return topic && topic.challenges && typeof topic.challenges === "object" ? topic.challenges : {};
 }
 
 function stringifyJourneyData(value) {
   return JSON.stringify(value || {}, null, 2);
+}
+
+function normalizeJourneyAdminText(value) {
+  return String(value || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/g, "d")
+    .replace(/Đ/g, "D")
+    .toLowerCase();
 }
 
 function renderJourneyTopicList() {
@@ -1197,7 +1222,7 @@ function renderJourneyTopicList() {
       (topic) => `
         <button class="${topic.id === activeJourneyTopicId ? "active" : ""}" type="button" data-id="${escapeHtml(topic.id)}">
           <strong>${escapeHtml(topic.title)}</strong>
-          <small>${topic.milestones.length} cột mốc · ${Object.keys(topic.challenges || {}).length} màn chơi</small>
+          <small>${topic.milestones.length} cột mốc</small>
         </button>
       `
     )
@@ -1224,10 +1249,6 @@ function updateJourneyMapCardPreview() {
   updateJourneyImagePreview(journeyMapCardImageUrl, journeyMapCardPreview);
 }
 
-function updateJourneyChallengePreview() {
-  updateJourneyImagePreview(journeyChallengeImageUrl, journeyChallengePreview);
-}
-
 function renderJourneyMilestoneSelect(selectedNumber) {
   if (!journeyMilestoneSelect) return;
   const milestones = parseJourneyMilestonesFromForm();
@@ -1240,10 +1261,27 @@ function renderJourneyMilestoneSelect(selectedNumber) {
   }
 
   journeyMilestoneSelect.innerHTML = milestones
-    .map((milestone) => `<option value="${milestone.number}">${milestone.number}. ${escapeHtml(milestone.title)}</option>`)
+    .map((milestone) => `<option value="${milestone.number}">${escapeHtml(milestone.title)}</option>`)
     .concat(`<option value="__new__">+ Tạo cột mốc mới</option>`)
     .join("");
   if (selectedNumber) journeyMilestoneSelect.value = String(selectedNumber);
+}
+
+function journeyDefaultPositionForNumber(number) {
+  const numericNumber = Number(number);
+  const activeTopicText = `${journeyTopicId?.value || activeJourneyTopicId || ""} ${journeyTopicTitle?.value || ""}`;
+  const normalizedTopicText = normalizeJourneyAdminText(activeTopicText);
+  let positions = journeyAdminMapNumberPositions;
+  if (normalizedTopicText.includes("xuat hanh") || normalizedTopicText.includes("mo se") || normalizedTopicText.includes("mose")) {
+    positions = journeyAdminExodusMapNumberPositions;
+  } else if (normalizedTopicText.includes("chua tao dung troi dat") || normalizedTopicText.includes("tao dung") || normalizedTopicText.includes("sang the")) {
+    positions = journeyAdminCreationMapNumberPositions;
+  } else if (normalizedTopicText.includes("14 chang dang thanh gia") || normalizedTopicText.includes("14 chan dang thanh gia") || normalizedTopicText.includes("dang thanh gia")) {
+    positions = journeyAdminStationsMapNumberPositions;
+  } else if (normalizedTopicText.includes("chua lam phep la") || normalizedTopicText.includes("cac phep la") || normalizedTopicText.includes("phep la")) {
+    positions = journeyAdminMiraclesMapNumberPositions;
+  }
+  return positions[numericNumber - 1] || { x: 50, y: 50 };
 }
 
 function fillJourneyMilestoneForm(number) {
@@ -1258,17 +1296,6 @@ function fillJourneyMilestoneForm(number) {
   journeyMilestoneLesson.value = milestone?.lesson || "";
   journeyMapCardImageUrl.value = milestone?.cardImageUrl || "";
   updateJourneyMapCardPreview();
-
-  const challenge = milestone ? parseJourneyChallengesFromForm()[String(milestone.number)] || {} : {};
-  journeyChallengeTitle.value = challenge.title || "";
-  journeyChallengeInstruction.value = challenge.instruction || "";
-  journeyChallengeVerse.value = challenge.verse || "";
-  journeyChallengeVerseRef.value = challenge.verseRef || "";
-  journeyChallengeReward.value = Number.isFinite(Number(challenge.rewardPoints)) ? String(challenge.rewardPoints) : "";
-  journeyChallengeImageUrl.value = challenge.sceneImageUrl || "";
-  journeyChallengeTargetsJson.value = stringifyJourneyData(challenge.targets || []);
-  journeyChallengeOptionsJson.value = stringifyJourneyData(challenge.options || []);
-  updateJourneyChallengePreview();
 }
 
 function fillJourneyTopicForm(topic) {
@@ -1282,8 +1309,7 @@ function fillJourneyTopicForm(topic) {
   journeyTopicEnabled.value = normalizedTopic.enabled ? "true" : "false";
   journeyTopicDescription.value = normalizedTopic.description;
   journeyPickerImageUrl.value = normalizedTopic.pickerImageUrl;
-  journeyMilestonesJson.value = stringifyJourneyData(normalizedTopic.milestones);
-  journeyChallengesJson.value = stringifyJourneyData(normalizedTopic.challenges);
+  currentJourneyMilestones = normalizedTopic.milestones;
   updateJourneyPickerPreview();
   renderJourneyMilestoneSelect(normalizedTopic.milestones[0]?.number);
   fillJourneyMilestoneForm(normalizedTopic.milestones[0]?.number);
@@ -1298,21 +1324,23 @@ async function loadJourneyBibleAdmin() {
     const activeTopic = journeyBibleTopics.find((topic) => topic.id === settings?.activeTopicId) || journeyBibleTopics[0] || defaultJourneyAdminTopic();
     fillJourneyTopicForm(activeTopic);
     if (journeyBibleMessage) {
-      journeyBibleMessage.textContent = settings?.topics?.length
+      journeyBibleMessage.textContent = journeyBibleTopics.length
         ? `Đã tải ${journeyBibleTopics.length} chủ đề Hành trình Kinh Thánh.`
-        : "Chưa có cấu hình Firestore. Đang hiển thị dữ liệu mẫu để bạn chỉnh và lưu.";
+        : "Chưa có chủ đề Hành trình Kinh Thánh. Hãy tạo chủ đề và cột mốc mới để bắt đầu.";
     }
   } catch (error) {
     if (journeyBibleMessage) journeyBibleMessage.textContent = error.message;
   }
 }
 
-function updateJourneyMilestoneFromFields() {
+function updateJourneyMilestoneFromFields(options = {}) {
+  const silent = Boolean(options.silent);
   try {
     const milestones = parseJourneyMilestonesFromForm();
     const number = Number(journeyMilestoneNumber?.value || journeyMilestoneSelect?.value);
     if (!Number.isFinite(number) || number <= 0) throw new Error("Vui lòng nhập số cột mốc hợp lệ.");
     const existing = milestones.find((item) => item.number === number) || {};
+    const defaultPosition = journeyDefaultPositionForNumber(number);
     const nextMilestone = normalizeAdminJourneyMilestone({
       ...existing,
       number,
@@ -1322,33 +1350,45 @@ function updateJourneyMilestoneFromFields() {
       story: journeyMilestoneStory.value.trim(),
       lesson: journeyMilestoneLesson.value.trim(),
       cardImageUrl: journeyMapCardImageUrl.value.trim(),
+      x: Number.isFinite(existing.x) ? existing.x : defaultPosition.x,
+      y: Number.isFinite(existing.y) ? existing.y : defaultPosition.y,
     });
     const nextMilestones = milestones.filter((item) => item.number !== number).concat(nextMilestone).sort((a, b) => a.number - b.number);
-    journeyMilestonesJson.value = stringifyJourneyData(nextMilestones);
+    currentJourneyMilestones = nextMilestones;
     renderJourneyMilestoneSelect(number);
     if (journeyMilestoneSelect) journeyMilestoneSelect.value = String(number);
-    if (journeyBibleMessage) journeyBibleMessage.textContent = `Đã cập nhật cột mốc ${number} vào ô dữ liệu. Bấm Lưu Hành trình Kinh Thánh để lưu Firestore.`;
+    if (!silent && journeyBibleMessage) journeyBibleMessage.textContent = `Đã cập nhật cột mốc ${number}. Bấm Lưu Hành trình Kinh Thánh để lưu Firestore.`;
   } catch (error) {
-    if (journeyBibleMessage) journeyBibleMessage.textContent = error.message;
+    if (!silent && journeyBibleMessage) journeyBibleMessage.textContent = error.message;
   }
 }
 
-function startNewJourneyMilestone() {
+function startNewJourneyMilestone(useTypedNumber = true) {
   try {
     const milestones = parseJourneyMilestonesFromForm();
-    const nextNumber = milestones.reduce((max, milestone) => Math.max(max, Number(milestone.number) || 0), 0) + 1;
+    const typedNumber = Number(journeyMilestoneNumber?.value);
+    const nextNumber = useTypedNumber && Number.isFinite(typedNumber) && typedNumber > 0
+      ? typedNumber
+      : milestones.reduce((max, milestone) => Math.max(max, Number(milestone.number) || 0), 0) + 1;
+    const existing = milestones.find((milestone) => milestone.number === nextNumber);
+    if (existing) {
+      renderJourneyMilestoneSelect(nextNumber);
+      fillJourneyMilestoneForm(nextNumber);
+      if (journeyBibleMessage) journeyBibleMessage.textContent = `Cột mốc ${nextNumber} đã có. Hệ thống đã mở cột mốc này để bạn chỉnh sửa.`;
+      return;
+    }
+    const defaultPosition = journeyDefaultPositionForNumber(nextNumber);
     const nextMilestone = normalizeAdminJourneyMilestone({
       number: nextNumber,
       title: `Cột mốc ${nextNumber}`,
       reference: "",
       region: "",
-      scene: "",
       story: "",
       lesson: "",
+      x: defaultPosition.x,
+      y: defaultPosition.y,
     });
-    journeyMilestonesJson.value = stringifyJourneyData(
-      milestones.concat(nextMilestone).sort((a, b) => a.number - b.number)
-    );
+    currentJourneyMilestones = milestones.concat(nextMilestone).sort((a, b) => a.number - b.number);
     renderJourneyMilestoneSelect(nextNumber);
     journeyMilestoneNumber.value = String(nextNumber);
     journeyMilestoneTitle.value = "";
@@ -1358,46 +1398,28 @@ function startNewJourneyMilestone() {
     journeyMilestoneLesson.value = "";
     journeyMapCardImageUrl.value = "";
     updateJourneyMapCardPreview();
-    journeyChallengeTitle.value = "";
-    journeyChallengeInstruction.value = "";
-    journeyChallengeVerse.value = "";
-    journeyChallengeVerseRef.value = "";
-    journeyChallengeReward.value = "";
-    journeyChallengeImageUrl.value = "";
-    journeyChallengeTargetsJson.value = "[]";
-    journeyChallengeOptionsJson.value = "[]";
-    updateJourneyChallengePreview();
     journeyMilestoneTitle.focus();
-    if (journeyBibleMessage) journeyBibleMessage.textContent = `Đang tạo cột mốc ${nextNumber}. Nhập nội dung rồi bấm Cập nhật cột mốc vào ô dữ liệu.`;
+    if (journeyBibleMessage) journeyBibleMessage.textContent = `Đang tạo cột mốc ${nextNumber}. Nhập nội dung rồi bấm Lưu Hành trình Kinh Thánh.`;
   } catch (error) {
     if (journeyBibleMessage) journeyBibleMessage.textContent = error.message;
   }
 }
 
-function updateJourneyChallengeFromFields() {
+function deleteJourneyMilestoneFromFields() {
   try {
+    const milestones = parseJourneyMilestonesFromForm();
     const number = Number(journeyMilestoneNumber?.value || journeyMilestoneSelect?.value);
-    if (!Number.isFinite(number) || number <= 0) throw new Error("Vui lòng chọn cột mốc trước khi cập nhật màn chơi.");
-    const challenges = parseJourneyChallengesFromForm();
-    const targets = parseJourneyJson(journeyChallengeTargetsJson?.value, [], "Vị trí cần ghép");
-    const options = parseJourneyJson(journeyChallengeOptionsJson?.value, [], "Lựa chọn");
-    if (!Array.isArray(targets)) throw new Error("Vị trí cần ghép JSON phải là một mảng.");
-    if (!Array.isArray(options)) throw new Error("Lựa chọn JSON phải là một mảng.");
-    const rewardPoints = Number(journeyChallengeReward?.value || 0);
-    challenges[String(number)] = normalizeAdminJourneyChallenge({
-      ...(challenges[String(number)] || {}),
-      title: journeyChallengeTitle.value.trim(),
-      instruction: journeyChallengeInstruction.value.trim(),
-      verse: journeyChallengeVerse.value.trim(),
-      verseRef: journeyChallengeVerseRef.value.trim(),
-      sceneImageUrl: journeyChallengeImageUrl.value.trim(),
-      rewardPoints: Number.isFinite(rewardPoints) ? rewardPoints : 0,
-      targets,
-      options,
-    });
-    journeyChallengesJson.value = stringifyJourneyData(challenges);
-    fillJourneyMilestoneForm(number);
-    if (journeyBibleMessage) journeyBibleMessage.textContent = `Đã cập nhật màn chơi cho cột mốc ${number}. Bấm Lưu Hành trình Kinh Thánh để lưu Firestore.`;
+    if (!Number.isFinite(number) || number <= 0) throw new Error("Vui lòng chọn cột mốc cần xóa.");
+    const existing = milestones.find((item) => item.number === number);
+    if (!existing) throw new Error(`Không tìm thấy cột mốc ${number} trong ô dữ liệu.`);
+    if (!confirm(`Xóa cột mốc ${number}. ${existing.title || ""}?`)) return;
+
+    const nextMilestones = milestones.filter((item) => item.number !== number);
+    currentJourneyMilestones = nextMilestones;
+    const nextSelectedNumber = nextMilestones[0]?.number || "";
+    renderJourneyMilestoneSelect(nextSelectedNumber);
+    fillJourneyMilestoneForm(nextSelectedNumber);
+    if (journeyBibleMessage) journeyBibleMessage.textContent = `Đã xóa cột mốc ${number}. Bấm Lưu Hành trình Kinh Thánh để lưu Firestore.`;
   } catch (error) {
     if (journeyBibleMessage) journeyBibleMessage.textContent = error.message;
   }
@@ -1812,15 +1834,7 @@ function setupJourneyCloudinaryUpload() {
     openJourneyCloudinaryUpload(
       journeyMapCardImageUrl,
       updateJourneyMapCardPreview,
-      "Đã upload Cloudinary và tự điền ảnh panel cột mốc. Bấm Cập nhật cột mốc vào JSON để áp dụng."
-    );
-  });
-
-  journeyChallengeUploadButton?.addEventListener("click", () => {
-    openJourneyCloudinaryUpload(
-      journeyChallengeImageUrl,
-      updateJourneyChallengePreview,
-      "Đã upload Cloudinary và tự điền ảnh màn chơi. Bấm Cập nhật màn chơi vào JSON để áp dụng."
+      "Đã upload Cloudinary và tự điền ảnh panel cột mốc. Bấm Lưu Hành trình Kinh Thánh để áp dụng."
     );
   });
 }
@@ -2391,7 +2405,6 @@ faithDiscoveryForm?.addEventListener("submit", async (event) => {
 });
 
 journeyPickerImageUrl?.addEventListener("input", updateJourneyPickerPreview);
-journeyChallengeImageUrl?.addEventListener("input", updateJourneyChallengePreview);
 
 journeyTopicList?.addEventListener("click", (event) => {
   const button = event.target.closest("button[data-id]");
@@ -2411,38 +2424,29 @@ newJourneyTopicButton?.addEventListener("click", () => {
 });
 
 newJourneyMilestoneButton?.addEventListener("click", () => {
-  startNewJourneyMilestone();
+  startNewJourneyMilestone(true);
 });
 
 journeyMilestoneSelect?.addEventListener("change", () => {
   if (journeyMilestoneSelect.value === "__new__") {
-    startNewJourneyMilestone();
+    startNewJourneyMilestone(false);
     return;
   }
   fillJourneyMilestoneForm(Number(journeyMilestoneSelect.value));
 });
 
-journeyMilestonesJson?.addEventListener("blur", () => {
-  try {
-    renderJourneyMilestoneSelect(Number(journeyMilestoneSelect?.value || journeyMilestoneNumber?.value));
-  } catch (error) {
-    if (journeyBibleMessage) journeyBibleMessage.textContent = error.message;
-  }
+[
+  journeyMilestoneTitle,
+  journeyMilestoneReference,
+  journeyMilestoneRegion,
+  journeyMilestoneStory,
+  journeyMilestoneLesson,
+  journeyMapCardImageUrl,
+].forEach((control) => {
+  control?.addEventListener("input", () => updateJourneyMilestoneFromFields({ silent: true }));
 });
 
-updateJourneyMilestoneButton?.addEventListener("click", updateJourneyMilestoneFromFields);
-updateJourneyChallengeButton?.addEventListener("click", updateJourneyChallengeFromFields);
-
-formatJourneyJsonButton?.addEventListener("click", () => {
-  try {
-    journeyMilestonesJson.value = stringifyJourneyData(parseJourneyMilestonesFromForm());
-    journeyChallengesJson.value = stringifyJourneyData(parseJourneyChallengesFromForm());
-    renderJourneyMilestoneSelect(Number(journeyMilestoneSelect?.value || journeyMilestoneNumber?.value));
-    if (journeyBibleMessage) journeyBibleMessage.textContent = "Đã định dạng dữ liệu Hành trình Kinh Thánh.";
-  } catch (error) {
-    if (journeyBibleMessage) journeyBibleMessage.textContent = error.message;
-  }
-});
+deleteJourneyMilestoneButton?.addEventListener("click", deleteJourneyMilestoneFromFields);
 
 journeyBibleForm?.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -2457,9 +2461,8 @@ journeyBibleForm?.addEventListener("submit", async (event) => {
 
   try {
     updateJourneyMilestoneFromFields();
-    updateJourneyChallengeFromFields();
     const milestones = parseJourneyMilestonesFromForm();
-    const challenges = parseJourneyChallengesFromForm();
+    const challenges = getExistingChallengesForActiveTopic();
     const title = journeyTopicTitle.value.trim() || `Chủ đề ${journeyBibleTopics.length + 1}`;
     const id = journeyTopicId.value.trim() || (typeof slugifyText === "function" ? slugifyText(title) : uniqueJourneyTopicId()) || uniqueJourneyTopicId();
     const nextTopic = normalizeAdminJourneyTopic({
@@ -2486,7 +2489,7 @@ journeyBibleForm?.addEventListener("submit", async (event) => {
     });
     fillJourneyTopicForm(nextTopic);
     if (journeyBibleMessage) {
-      journeyBibleMessage.textContent = `Đã lưu chủ đề "${title}" gồm ${milestones.length} cột mốc và ${Object.keys(challenges).length} màn chơi.`;
+      journeyBibleMessage.textContent = `Đã lưu chủ đề "${title}" gồm ${milestones.length} cột mốc.`;
     }
   } catch (error) {
     if (journeyBibleMessage) journeyBibleMessage.textContent = error.message;

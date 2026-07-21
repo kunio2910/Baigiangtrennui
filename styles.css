@@ -1688,9 +1688,15 @@ textarea {
 }
 
 .faith-set-list small,
-.admin-empty-note {
+.admin-empty-note,
+.admin-field-hint {
   color: var(--muted);
   font-size: 12px;
+}
+
+.admin-field-hint {
+  margin: -6px 0 10px;
+  line-height: 1.4;
 }
 
 .faith-admin-form textarea {
@@ -6618,10 +6624,6 @@ body.journey-page .journey-step-card.journey-step-hotspot small {
   display: none !important;
 }
 
-body.admin-page #newJourneyMilestoneButton {
-  display: none !important;
-}
-
 /* 14.111. Journey topic card image full and text below */
 body.journey-page.faith-choosing-set .journey-topic-card {
   display: flex;
@@ -7722,7 +7724,7 @@ body.journey-page .journey-map-stage {
   border-radius: 16px;
   background:
     linear-gradient(180deg, rgba(42, 24, 10, 0.04), rgba(42, 24, 10, 0.08)),
-    url("/assets/journey-jesus-map.png") center / 100% 100% no-repeat;
+    var(--journey-map-image, url("/assets/journey-jesus-map.png")) center / 100% 100% no-repeat;
   box-shadow: 0 14px 34px rgba(64, 36, 13, 0.24);
 }
 
@@ -7873,7 +7875,7 @@ body.journey-page .journey-menu-button {
 :root[data-theme="dark"] body.journey-page .journey-map-stage {
   background:
     linear-gradient(180deg, rgba(20, 11, 5, 0.14), rgba(20, 11, 5, 0.22)),
-    url("/assets/journey-jesus-map.png") center / 100% 100% no-repeat;
+    var(--journey-map-image, url("/assets/journey-jesus-map.png")) center / 100% 100% no-repeat;
 }
 
 :root[data-theme="dark"] body.journey-page .journey-step-card {
@@ -8763,8 +8765,7 @@ body.journey-page .journey-return-map {
 
 .journey-admin-form #journeyTopicDescription,
 .journey-admin-form #journeyMilestoneStory,
-.journey-admin-form #journeyMilestoneLesson,
-.journey-admin-form #journeyChallengeInstruction {
+.journey-admin-form #journeyMilestoneLesson {
   font-family: inherit;
 }
 
@@ -8934,10 +8935,11 @@ body.journey-page .journey-milestone-panel {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: minmax(260px, 42%) 1fr;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
   overflow: hidden;
-  width: min(920px, 94vw);
-  max-height: min(78vh, 720px);
+  width: min(420px, 90vw);
+  max-height: min(80vh, 620px);
   border: 1px solid rgba(203, 135, 31, 0.56);
   border-radius: 18px;
   background: linear-gradient(145deg, #fffaf0, #fff2dc);
@@ -8964,8 +8966,7 @@ body.journey-page .journey-milestone-close {
 
 body.journey-page .journey-milestone-image {
   width: 100%;
-  height: 100%;
-  min-height: 320px;
+  height: clamp(140px, 30vh, 200px);
   object-fit: cover;
   object-position: center;
   background: #f8ead2;
@@ -8975,58 +8976,47 @@ body.journey-page .journey-milestone-image.placeholder {
   display: grid;
   place-items: center;
   color: #c48219;
-  font-size: clamp(72px, 12vw, 140px);
+  font-size: clamp(48px, 10vw, 80px);
   font-weight: 900;
 }
 
 body.journey-page .journey-milestone-content {
   overflow: auto;
-  padding: clamp(24px, 4vw, 46px);
+  padding: clamp(16px, 3vw, 26px);
   color: #442613;
 }
 
-body.journey-page .journey-milestone-kicker {
-  display: inline-flex;
-  margin-bottom: 10px;
-  padding: 7px 12px;
-  border-radius: 999px;
-  background: rgba(196, 126, 22, 0.12);
-  color: #a16013;
-  font-size: 13px;
-  font-weight: 900;
-  text-transform: uppercase;
-}
-
 body.journey-page .journey-milestone-content h2 {
-  margin: 0 0 10px;
+  margin: 0 0 8px;
   color: #402413;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(34px, 4.5vw, 58px);
-  line-height: 1.02;
+  font-size: clamp(20px, 4vw, 26px);
+  line-height: 1.15;
 }
 
 body.journey-page .journey-milestone-meta {
-  margin: 0 0 20px;
+  margin: 0 0 12px;
   color: #a16013;
+  font-size: 13px;
   font-weight: 800;
 }
 
 body.journey-page .journey-milestone-content p {
-  margin: 0 0 18px;
-  font-size: 17px;
-  line-height: 1.75;
+  margin: 0 0 12px;
+  font-size: 13.5px;
+  line-height: 1.6;
 }
 
 body.journey-page .journey-milestone-content blockquote {
-  margin: 20px 0 0;
-  padding: 18px 20px;
+  margin: 12px 0 0;
+  padding: 12px 14px;
   border-left: 4px solid #c78318;
   border-radius: 10px;
   background: rgba(196, 126, 22, 0.1);
   color: #5d3518;
-  font-size: 17px;
+  font-size: 13px;
   font-weight: 800;
-  line-height: 1.65;
+  line-height: 1.5;
 }
 
 :root[data-theme="dark"] body.journey-page .journey-milestone-panel {
@@ -9046,12 +9036,257 @@ body.journey-page .journey-milestone-content blockquote {
 
 @media (max-width: 760px) {
   body.journey-page .journey-milestone-panel {
-    grid-template-columns: 1fr;
-    max-height: 84vh;
+    width: min(360px, 92vw);
+    max-height: 82vh;
   }
 
   body.journey-page .journey-milestone-image {
-    min-height: 220px;
-    max-height: 280px;
+    height: clamp(120px, 26vh, 160px);
+  }
+}
+
+/* 14.119. Journey popup formal typography and map header action */
+body.journey-page .journey-map-info-layout {
+  align-items: start !important;
+}
+
+body.journey-page .journey-map-info-layout > .journey-back-to-topics {
+  position: relative !important;
+  z-index: 5 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  justify-self: start !important;
+  top: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  min-height: 42px !important;
+  margin: 0 0 14px !important;
+  padding: 0 16px !important;
+  border: 1px solid rgba(184, 121, 40, 0.55) !important;
+  border-radius: 999px !important;
+  background: rgba(255, 248, 232, 0.92) !important;
+  color: #a46112 !important;
+  box-shadow: 0 10px 22px rgba(107, 67, 22, 0.14) !important;
+  font: inherit !important;
+  font-weight: 800 !important;
+}
+
+body.journey-page .journey-map-info-layout > .journey-back-to-topics:hover {
+  color: #5d2f19 !important;
+  border-color: rgba(184, 121, 40, 0.78) !important;
+  background: #fff8ed !important;
+}
+
+body.journey-page .journey-map-guide-panel {
+  justify-self: center;
+  max-width: min(100%, 420px);
+  margin: -4px 0 16px;
+  padding: 12px 16px;
+  border: 1px solid rgba(184, 121, 40, 0.34);
+  border-radius: 12px;
+  background: rgba(255, 248, 232, 0.86);
+  color: #633916;
+  box-shadow: 0 10px 22px rgba(107, 67, 22, 0.1);
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 800;
+  line-height: 1.45;
+}
+
+body.journey-page .journey-milestone-content {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(151, 91, 22, 0.58) rgba(250, 231, 196, 0.72);
+}
+
+body.journey-page .journey-milestone-content::-webkit-scrollbar {
+  width: 10px;
+}
+
+body.journey-page .journey-milestone-content::-webkit-scrollbar-track {
+  background: rgba(250, 231, 196, 0.72);
+  border-radius: 999px;
+}
+
+body.journey-page .journey-milestone-content::-webkit-scrollbar-thumb {
+  min-height: 36px;
+  border: 2px solid rgba(250, 231, 196, 0.88);
+  border-radius: 999px;
+  background: rgba(151, 91, 22, 0.58);
+}
+
+body.journey-page .journey-milestone-content,
+body.journey-page .journey-milestone-meta,
+body.journey-page .journey-milestone-html,
+body.journey-page .journey-milestone-content blockquote {
+  font-family: "Palatino Linotype", "Book Antiqua", Georgia, "Times New Roman", serif;
+}
+
+body.journey-page .journey-milestone-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+}
+
+body.journey-page .journey-milestone-content h2 {
+  font-family: "Palatino Linotype", "Book Antiqua", Georgia, "Times New Roman", serif;
+  letter-spacing: 0;
+}
+
+body.journey-page .journey-milestone-html p,
+body.journey-page .journey-milestone-html ul,
+body.journey-page .journey-milestone-html ol {
+  margin: 0 0 12px;
+}
+
+body.journey-page .journey-milestone-html :last-child {
+  margin-bottom: 0;
+}
+
+:root[data-theme="dark"] body.journey-page .journey-milestone-content {
+  scrollbar-color: rgba(222, 167, 82, 0.62) rgba(73, 46, 26, 0.76);
+}
+
+:root[data-theme="dark"] body.journey-page .journey-map-info-layout > .journey-back-to-topics {
+  background: rgba(48, 33, 22, 0.88) !important;
+  color: #ffd27c !important;
+  border-color: rgba(218, 154, 55, 0.72) !important;
+}
+
+:root[data-theme="dark"] body.journey-page .journey-map-guide-panel {
+  border-color: rgba(218, 154, 55, 0.42);
+  background: rgba(48, 33, 22, 0.86);
+  color: #ffe1a3;
+}
+
+@media (max-width: 680px) {
+  body.journey-page .journey-map-info-layout > .journey-back-to-topics {
+    width: 100% !important;
+    justify-self: stretch !important;
+    margin-bottom: 12px !important;
+  }
+
+  body.journey-page .journey-map-guide-panel {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+/* 14.125. Journey topic picker stable aligned cards */
+body.journey-page.faith-choosing-set .journey-topic-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important;
+  align-items: stretch !important;
+  gap: clamp(18px, 2vw, 28px) !important;
+}
+
+body.journey-page.faith-choosing-set .journey-topic-card,
+body.journey-page.faith-choosing-set .journey-topic-card.has-image {
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  aspect-ratio: auto !important;
+  gap: 0 !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  border: 1px solid rgba(201, 136, 40, 0.32) !important;
+  border-radius: 8px !important;
+  background: rgba(255, 250, 238, 0.9) !important;
+  color: #5a2d16 !important;
+  box-shadow: 0 14px 30px rgba(94, 50, 18, 0.12) !important;
+  text-align: left !important;
+}
+
+body.journey-page.faith-choosing-set .journey-topic-card:hover,
+body.journey-page.faith-choosing-set .journey-topic-card.has-image:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 18px 36px rgba(94, 50, 18, 0.18) !important;
+}
+
+body.journey-page.faith-choosing-set .journey-topic-card::after,
+body.journey-page.faith-choosing-set .journey-topic-card.has-image::after {
+  display: none !important;
+}
+
+body.journey-page.faith-choosing-set .journey-topic-image {
+  position: static !important;
+  z-index: auto !important;
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 16 / 9 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  opacity: 1 !important;
+  box-shadow: none !important;
+  pointer-events: none !important;
+}
+
+body.journey-page.faith-choosing-set .journey-topic-card > span,
+body.journey-page.faith-choosing-set .journey-topic-card > strong,
+body.journey-page.faith-choosing-set .journey-topic-card > small {
+  position: relative !important;
+  z-index: 1 !important;
+  margin-left: 16px !important;
+  margin-right: 16px !important;
+}
+
+body.journey-page.faith-choosing-set .journey-topic-card > span {
+  width: fit-content !important;
+  margin-top: 14px !important;
+  margin-bottom: 10px !important;
+  padding: 5px 10px !important;
+  border-radius: 999px !important;
+  background: rgba(255, 241, 207, 0.95) !important;
+  color: #9b5b12 !important;
+  font-size: 12px !important;
+  font-weight: 900 !important;
+  line-height: 1.2 !important;
+  text-shadow: none !important;
+}
+
+body.journey-page.faith-choosing-set .journey-topic-card > strong {
+  flex: 1 1 auto !important;
+  margin-top: 0 !important;
+  margin-bottom: 10px !important;
+  color: #5a2d16 !important;
+  font-size: clamp(20px, 2vw, 28px) !important;
+  line-height: 1.16 !important;
+  text-shadow: none !important;
+}
+
+body.journey-page.faith-choosing-set .journey-topic-card > small {
+  margin-top: auto !important;
+  margin-bottom: 16px !important;
+  color: #80512b !important;
+  font-weight: 800 !important;
+}
+
+:root[data-theme="dark"] body.journey-page.faith-choosing-set .journey-topic-card,
+:root[data-theme="dark"] body.journey-page.faith-choosing-set .journey-topic-card.has-image {
+  border-color: rgba(218, 154, 55, 0.36) !important;
+  background: rgba(48, 33, 22, 0.92) !important;
+  color: #ffe6b5 !important;
+}
+
+:root[data-theme="dark"] body.journey-page.faith-choosing-set .journey-topic-card > strong {
+  color: #ffe6b5 !important;
+}
+
+:root[data-theme="dark"] body.journey-page.faith-choosing-set .journey-topic-card > small {
+  color: #f0cf9a !important;
+}
+
+@media (max-width: 680px) {
+  body.journey-page.faith-choosing-set .journey-topic-grid {
+    grid-template-columns: 1fr !important;
   }
 }

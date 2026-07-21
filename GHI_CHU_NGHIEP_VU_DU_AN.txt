@@ -4019,6 +4019,299 @@ Lưu ý kỹ thuật:
 - styles.css
 - GHI_CHU_NGHIEP_VU_DU_AN.txt
 ------------------------------------------------------------
+## 14.126. Sửa Nhận Diện Chủ Đề Có Chữ Đ/đ Cho Bản Đồ Đàng Thánh Giá
+
+**Ngày cập nhật:** 21/07/2026
+
+**Chức năng:**
+- Sửa lỗi click chủ đề **14 Chặng Đàng Thánh Giá** bị mở nhầm bản đồ mặc định **Hành trình theo dấu chân Chúa Giêsu**.
+- Nguyên nhân: hàm chuẩn hóa tiếng Việt trước đó dùng `.normalize("NFD")` và xóa dấu thanh, nhưng chữ `Đ/đ` không tự đổi thành `D/d`. Vì vậy tiêu đề `14 Chặng Đàng Thánh Giá` vẫn còn dạng `14 chang đang thanh gia`, không khớp điều kiện `dang thanh gia`.
+- Cập nhật `normalizeText` trong `journey-test.js` để thay `đ -> d`, `Đ -> D` trước khi so khớp id/tiêu đề chủ đề.
+- Cập nhật `normalizeJourneyAdminText` trong `admin.js` cùng quy tắc để tọa độ ẩn trong admin cũng nhận diện đúng các chủ đề có chữ Đ/đ.
+- Đổi version cache sang `20260721-journey-vietnamese-d-map-match`.
+
+**File liên quan:**
+- journey-test.js
+- admin.js
+- admin.html
+- hanh-trinh-kinh-thanh-test.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Lưu ý:**
+- Khi thêm bản đồ/chủ đề tiếng Việt mới, mọi logic so khớp không dấu phải xử lý riêng chữ `Đ/đ`, vì Unicode normalization không tự chuyển ký tự này.
+
+------------------------------------------------------------
+## 14.125. Căn Lại Grid Chọn Chủ Đề Hành Trình Kinh Thánh
+
+**Ngày cập nhật:** 21/07/2026
+
+**Chức năng:**
+- Sửa màn hình chọn chủ đề Hành trình Kinh Thánh bị các chủ đề chồng/lệch nhau do kế thừa style overlay của `.faith-picker-item` từ mục **Khám phá Đức tin**.
+- Thêm override riêng cho `body.journey-page.faith-choosing-set` để Journey dùng card ổn định: ảnh 16:9 nằm trên, nhãn/tiêu đề/số cột mốc nằm dưới trong cùng một khung.
+- Grid chọn chủ đề đổi sang `repeat(auto-fill, minmax(280px, 1fr))`, các card `align-items: stretch`, `height: 100%`, giúp thẳng hàng và không đè nhau.
+- Bỏ overlay/opacity/position absolute kế thừa từ card có ảnh của Khám phá Đức tin đối với Journey topic card.
+- Mobile giữ 1 cột để tránh chồng text/ảnh.
+- Đổi version cache sang `20260721-journey-topic-grid-align`.
+
+**File liên quan:**
+- styles.css
+- admin.html
+- hanh-trinh-kinh-thanh-test.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Lưu ý:**
+- Chỉ override scoped cho `body.journey-page.faith-choosing-set`; không đổi giao diện **Khám phá Đức tin**.
+
+------------------------------------------------------------
+## 14.124. Thêm Bản Đồ 14 Chặng Đàng Thánh Giá
+
+**Ngày cập nhật:** 21/07/2026
+
+**Chức năng:**
+- Thêm ảnh bản đồ **14 Chặng Đàng Thánh Giá** vào source tại `assets/journey-stations-cross-map.png`.
+- `journey-test.js` nhận diện chủ đề 14 chặng nếu `id` là `14-chang-dang-thanh-gia` hoặc tiêu đề/id chứa `14 chang dang thanh gia`, `14 chan dang thanh gia`, `dang thanh gia`.
+- Thêm bộ tọa độ chuẩn riêng `stationsMapNumberPositions` gồm 14 vị trí, bám theo 14 vòng tròn số có sẵn trên bản đồ Đàng Thánh Giá.
+- Thêm bộ 14 cột mốc fallback `stationsMilestones` tương ứng 14 chặng. Khi click các vòng tròn số, popup thông tin mở giống các bản đồ Hành trình Kinh Thánh khác.
+- Nếu Firestore chưa có đủ cột mốc cho chủ đề 14 chặng, front-end dùng fallback 14 cột mốc để người xem click được ngay, không ghi dữ liệu mẫu lên Firestore.
+- Trang quản lý thêm bộ tọa độ ẩn `journeyAdminStationsMapNumberPositions`; khi admin tạo cột mốc trong chủ đề 14 chặng, `x/y` mặc định khớp vòng tròn số trên bản đồ này.
+- Đổi version cache sang `20260721-journey-stations-cross-map`.
+
+**File liên quan:**
+- assets/journey-stations-cross-map.png
+- admin.html
+- admin.js
+- journey-test.js
+- hanh-trinh-kinh-thanh-test.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Lưu ý:**
+- Tiếp tục áp dụng quy tắc: mỗi bản đồ có một bộ tọa độ chuẩn riêng dựa vào vòng tròn số trên ảnh bản đồ đó.
+- Schema Firestore không đổi; fallback 14 chặng chỉ dùng ở front-end để hiển thị/popup khi dữ liệu Firestore chưa đủ.
+
+------------------------------------------------------------
+## 14.123. Thêm Bản Đồ Chúa Tạo Dựng Trời Đất
+
+**Ngày cập nhật:** 21/07/2026
+
+**Chức năng:**
+- Thêm ảnh bản đồ **Chúa tạo dựng trời đất** vào source tại `assets/journey-creation-map.png`.
+- `journey-test.js` nhận diện chủ đề tạo dựng nếu `id` là `chua-tao-dung-troi-dat` hoặc tiêu đề/id chứa `chua tao dung troi dat`, `tao dung`, `sang the`.
+- Thêm bộ tọa độ chuẩn riêng `creationMapNumberPositions` gồm 7 vị trí, bám theo 7 vòng tròn số có sẵn trên bản đồ tạo dựng.
+- Thêm bộ 7 cột mốc fallback `creationMilestones` tương ứng 7 ngày tạo dựng. Khi click các vòng tròn số, popup thông tin mở giống các bản đồ Hành trình Kinh Thánh khác.
+- Nếu Firestore chưa có đủ cột mốc cho chủ đề tạo dựng, front-end dùng fallback 7 cột mốc để người xem click được ngay, không ghi dữ liệu mẫu lên Firestore.
+- Trang quản lý thêm bộ tọa độ ẩn `journeyAdminCreationMapNumberPositions`; khi admin tạo cột mốc trong chủ đề tạo dựng, `x/y` mặc định khớp vòng tròn số trên bản đồ tạo dựng.
+- Đổi version cache sang `20260721-journey-creation-map`.
+
+**File liên quan:**
+- assets/journey-creation-map.png
+- admin.html
+- admin.js
+- journey-test.js
+- hanh-trinh-kinh-thanh-test.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Lưu ý:**
+- Tiếp tục áp dụng quy tắc: mỗi bản đồ có một bộ tọa độ chuẩn riêng dựa vào vòng tròn số trên ảnh bản đồ đó.
+- Schema Firestore không đổi; fallback tạo dựng chỉ dùng ở front-end để hiển thị/popup khi dữ liệu Firestore chưa đủ.
+
+------------------------------------------------------------
+## 14.122. Sửa Hotspot Mô-sê Ưu Tiên Tọa Độ Map Và Căn Giữa Panel Hướng Dẫn
+
+**Ngày cập nhật:** 21/07/2026
+
+**Chức năng:**
+- Sửa trường hợp chủ đề **Hành trình Xuất Hành - Cuộc đời của Mô-sê** có cột mốc đã lưu `x/y` cũ theo bản đồ Chúa Giêsu, làm hotspot bị lệch khỏi vòng tròn số trên bản đồ Mô-sê.
+- Với các chủ đề có fallback map/cột mốc riêng như Mô-sê, front-end ưu tiên tọa độ chuẩn theo số vòng tròn trên ảnh (`exodusMapNumberPositions`) thay vì dùng `x/y` cũ đã lưu trong Firestore.
+- Panel hướng dẫn dưới nút **Quay lại chọn chủ đề** được căn giữa.
+- Nội dung panel hướng dẫn đổi sang chữ hoa: **BẠN HÃY CHỌN CÁC VÒNG TRÒN CỘT MỐC ĐỂ XEM**; CSS cũng có `text-transform: uppercase` để giữ nhất quán.
+- Đổi version cache sang `20260721-journey-moses-hotspot-guide-center`.
+
+**File liên quan:**
+- journey-test.js
+- styles.css
+- admin.html
+- hanh-trinh-kinh-thanh-test.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Lưu ý:**
+- Nguyên nhân chính của vòng tròn số 1 Mô-sê không click được là hotspot có thể đã được lưu bằng tọa độ bản đồ cũ trước khi thêm map Mô-sê. Sau cập nhật này, hotspot Mô-sê bám theo tọa độ map Mô-sê ở front-end.
+
+------------------------------------------------------------
+## 14.121. Thêm Panel Hướng Dẫn Và Bản Đồ Xuất Hành - Cuộc Đời Mô-sê
+
+**Ngày cập nhật:** 21/07/2026
+
+**Chức năng:**
+- Màn hình bản đồ Hành trình Kinh Thánh có thêm panel hướng dẫn ngay dưới nút **Quay lại chọn chủ đề** với nội dung: **Bạn hãy chọn các vòng tròn cột mốc để xem**.
+- Thêm ảnh bản đồ Mô-sê vào source tại `assets/journey-moses-exodus-map.png`.
+- `journey-test.js` hỗ trợ ảnh bản đồ theo từng chủ đề qua CSS variable `--journey-map-image`; mặc định vẫn dùng `assets/journey-jesus-map.png`, còn chủ đề Xuất Hành/Mô-sê dùng `assets/journey-moses-exodus-map.png`.
+- Chủ đề được nhận diện là Xuất Hành/Mô-sê nếu `id` là `hanh-trinh-xuat-hanh-cuoc-doi-cua-mo-se` hoặc tiêu đề/id chứa `xuat hanh`, `mo se`, `mose`.
+- Thêm bộ 16 tọa độ hotspot cho bản đồ Mô-sê để các vòng tròn số trên ảnh mở popup thông tin giống chủ đề **Hành trình theo dấu chân Chúa Giêsu**.
+- Nếu chủ đề Xuất Hành/Mô-sê chưa có đủ dữ liệu `milestones` trong Firestore, front-end dùng bộ 16 cột mốc mặc định của Mô-sê để hiển thị/popup, không ghi dữ liệu mẫu lên Firestore.
+- Trang quản lý cũng có bộ tọa độ ẩn của bản đồ Mô-sê; khi admin tạo cột mốc trong chủ đề Xuất Hành/Mô-sê, `x/y` mặc định sẽ khớp vòng tròn số của bản đồ Mô-sê.
+- Đổi version cache sang `20260721-journey-moses-map-guide`.
+
+**File liên quan:**
+- assets/journey-moses-exodus-map.png
+- admin.html
+- admin.js
+- journey-test.js
+- hanh-trinh-kinh-thanh-test.html
+- styles.css
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Lưu ý:**
+- Schema Firestore không đổi; `mapImageUrl` được front-end hỗ trợ nếu có, nhưng hiện map Mô-sê đang được tự gán theo id/tiêu đề chủ đề.
+- Dữ liệu mặc định Mô-sê chỉ là fallback public để người xem có thể click các vòng tròn khi Firestore chưa nhập cột mốc thật.
+
+------------------------------------------------------------
+## 14.120. Tự Lưu Cột Mốc, Địa Danh HTML Và Nút Quay Lại Đồng Bộ Với Khám Phá Đức Tin
+
+**Ngày cập nhật:** 21/07/2026
+
+**Chức năng:**
+- Trang quản lý Hành trình Kinh Thánh bỏ nút **Cập nhật cột mốc** khỏi form cột mốc.
+- Dữ liệu cột mốc đang nhập được tự đồng bộ vào `currentJourneyMilestones` khi admin nhập các trường tiêu đề, trích dẫn, địa danh, nội dung, suy niệm hoặc ảnh panel; khi bấm **Lưu Hành trình Kinh Thánh**, cột mốc hiện tại vẫn được cập nhật trước khi ghi Firestore.
+- Trường **Địa danh** đổi thành **Địa danh (hỗ trợ HTML)**.
+- Popup public render `region` và `reference` thành các phần HTML riêng trong `.journey-milestone-meta`, không còn dùng dấu `·` giữa địa danh và trích dẫn nên tránh bị dư dấu chấm/ký tự ngăn cách.
+- Nút trên màn hình bản đồ đổi text từ **Chọn chủ đề khác** thành **Quay lại chọn chủ đề**.
+- Nút quay lại chủ đề được thiết kế theo phong cách nút quay lại của **Khám phá Đức tin**, nằm bên trái phía trên panel bản đồ; mobile kéo full width giống pattern hiện có.
+- Đổi version cache sang `20260721-journey-auto-save-region-back`.
+
+**File liên quan:**
+- admin.html
+- admin.js
+- journey-test.js
+- hanh-trinh-kinh-thanh-test.html
+- styles.css
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Lưu ý:**
+- Các trường `region`, `reference`, `story`, `lesson` có thể chứa HTML do admin nhập. Chỉ nên nhập HTML từ nguồn tin cậy.
+
+------------------------------------------------------------
+## 14.119. Chỉnh Popup Cột Mốc Trang Trọng Và Đưa Nút Chọn Chủ Đề Lên Trên Bản Đồ
+
+**Ngày cập nhật:** 21/07/2026
+
+**Chức năng:**
+- Popup thông tin cột mốc không còn hiển thị nhãn chữ **Cột mốc ...** phía trên tiêu đề; chỉ giữ ảnh/số, tiêu đề, trích dẫn, nội dung và suy niệm.
+- Font chữ trong popup đổi sang nhóm serif trang trọng hơn: `"Palatino Linotype"`, `"Book Antiqua"`, Georgia, `"Times New Roman"`.
+- Thanh cuộn trong phần nội dung popup được chỉnh rõ hơn và ít trong suốt hơn, gồm màu track/thumb riêng cho light mode và dark mode.
+- Trường **Trích dẫn** trong trang quản lý đổi nhãn thành **Trích dẫn (hỗ trợ HTML)**; popup public render HTML trong trường `reference`.
+- Nút **Chọn chủ đề khác** trong màn hình bản đồ được đưa ra phía trên panel bản đồ, không còn nằm phủ trong khung bản đồ.
+- Đổi version cache sang `20260721-journey-popup-formal-map-action`.
+
+**File liên quan:**
+- admin.html
+- journey-test.js
+- hanh-trinh-kinh-thanh-test.html
+- styles.css
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Lưu ý:**
+- Trường `reference`, `story`, `lesson` đều có thể chứa HTML do admin nhập. Chỉ nên nhập nội dung HTML từ nguồn tin cậy.
+
+------------------------------------------------------------
+## 14.118. Dọn Form Cột Mốc Hành Trình Kinh Thánh Và Bỏ Dữ Liệu Mẫu Nháy Nhanh
+
+**Ngày cập nhật:** 21/07/2026
+
+**Chức năng:**
+- Sửa nút **Tạo cột mốc mới** trong trang quản lý Hành trình Kinh Thánh: CSS không còn ẩn nút này, bấm nút sẽ tạo theo đúng số đang nhập trong ô **Số cột mốc**.
+- Nếu chọn `+ Tạo cột mốc mới` trong dropdown, hệ thống tự lấy số kế tiếp; nếu bấm nút **Tạo cột mốc mới**, hệ thống ưu tiên số admin đã nhập.
+- Dropdown chọn cột mốc không còn hiển thị tiền tố số trước tên cột mốc; số vẫn được lưu trong `milestone.number` để khớp vòng tròn số trên bản đồ.
+- Bỏ khỏi giao diện quản lý các ô **Vị trí ngang (X %)**, **Vị trí dọc (Y %)**, ô JSON dữ liệu cột mốc và nút **Định dạng dữ liệu**.
+- Dữ liệu cột mốc trong admin được quản lý bằng mảng nội bộ `currentJourneyMilestones`; admin không cần sửa JSON tay.
+- Hai ô **Nội dung panel cột mốc** và **Bài học / suy niệm ngắn** cho phép nhập HTML; popup public render trực tiếp HTML từ hai trường này.
+- Trang Hành trình Kinh Thánh public không còn render danh sách chủ đề mẫu trước khi Firestore load xong. Nếu chưa có cấu hình thật, trang hiển thị trạng thái chưa có chủ đề.
+- Form quản lý khi chưa có dữ liệu thật cũng không còn tự điền tên/mô tả chủ đề mẫu.
+- Đổi version cache sang `20260721-journey-admin-clean-milestone-form`.
+
+**File liên quan:**
+- admin.html
+- admin.js
+- journey-test.js
+- hanh-trinh-kinh-thanh-test.html
+- styles.css
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Lưu ý:**
+- Schema Firestore không đổi: `milestones` vẫn lưu `number`, `title`, `reference`, `region`, `story`, `lesson`, `cardImageUrl`, `x`, `y`.
+- Vì đã cho render HTML trong `story` và `lesson`, nội dung hai trường này chỉ nên do admin tin cậy nhập.
+
+------------------------------------------------------------
+## 14.117. Tạo/Xóa Cột Mốc Theo Số Trên Bản Đồ Trong Trang Quản Lý
+
+**Ngày cập nhật:** 21/07/2026
+
+**Chức năng:**
+- Trong tab quản lý **Hành trình Kinh Thánh**, khối **Cột mốc trên bản đồ** có thêm nút **Xóa cột mốc** ngay cạnh nút **Tạo cột mốc mới**.
+- Khi admin nhập số vào ô **Số cột mốc** rồi bấm **Tạo cột mốc mới**, hệ thống tạo cột mốc đúng theo số đã nhập thay vì luôn lấy số kế tiếp.
+- Số cột mốc mới được dùng để lấy tọa độ mặc định tương ứng với vòng tròn số trên ảnh bản đồ. Ví dụ nhập số 5 thì dữ liệu cột mốc dùng `number: 5` và tự điền X/Y mặc định của vòng số 5.
+- Nếu số admin nhập đã tồn tại trong dữ liệu, hệ thống không tạo trùng mà mở đúng cột mốc đó để chỉnh sửa.
+- Khi cập nhật cột mốc mà admin chưa nhập X/Y, hệ thống tự dùng tọa độ mặc định theo số cột mốc; nếu cột mốc cũ đã có X/Y thì giữ nguyên X/Y cũ.
+- Nút **Xóa cột mốc** xóa cột mốc đang chọn/đang nhập khỏi ô dữ liệu JSON sau khi xác nhận. Admin vẫn cần bấm **Lưu Hành trình Kinh Thánh** để ghi thay đổi lên Firestore.
+- Đổi version cache admin sang `20260721-journey-admin-milestone-create-delete`.
+
+**File liên quan:**
+- admin.html
+- admin.js
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Lưu ý:**
+- Public map vẫn đọc `milestone.number`, `x`, `y` như schema hiện tại; không đổi schema Firestore.
+- Máy hiện tại không có lệnh `node` trong PATH, nên không chạy được `node --check admin.js` bằng terminal PowerShell.
+
+------------------------------------------------------------
+## 14.116. Thêm Tọa Độ X/Y Cột Mốc Và Xóa Mục Màn Hình Chơi Trong Trang Quản Lý
+
+**Ngày cập nhật:** 21/07/2026
+
+**Chức năng:**
+- Khối "Cột mốc trên bản đồ" trong trang quản lý Hành Trình Kinh Thánh có thêm 2 ô nhập **Vị trí ngang (X %)** và **Vị trí dọc (Y %)** để admin tự đặt vị trí vòng tròn đánh số cột mốc trên ảnh bản đồ, thay vì phải sửa trực tiếp trong JSON.
+- Khi bấm **Tạo cột mốc mới**, tọa độ mặc định được đặt 50/50 (giữa bản đồ) để admin dễ thấy và chỉnh lại; khi chọn cột mốc có sẵn, form tự điền đúng x/y đã lưu.
+- Ghi chú hướng dẫn được thêm dưới ô tọa độ và dưới ô **Ảnh panel cột mốc** để làm rõ: ảnh panel cột mốc chính là ảnh hiển thị trong popup thông tin khi người xem bấm vào cột mốc.
+- Đổi thứ tự ưu tiên ảnh popup trong `journey-test.js`: `cardImageUrl` (ảnh panel cột mốc do admin upload) được ưu tiên trước, ảnh màn chơi cũ (`sceneImageUrl`) chỉ dùng dự phòng cho dữ liệu cũ chưa có `cardImageUrl`.
+- Xóa hoàn toàn khối **Màn hình chơi** (ảnh màn chơi, tiêu đề thử thách, điểm thưởng, hướng dẫn, câu Kinh Thánh mở khóa, JSON vị trí cần ghép/lựa chọn, JSON dữ liệu màn chơi) khỏi form quản lý Hành Trình Kinh Thánh, cùng toàn bộ biến, hàm xử lý, listener upload Cloudinary liên quan trong `admin.js`.
+- Khi lưu chủ đề, dữ liệu `challenges` gốc (nếu chủ đề từng có màn chơi cũ) vẫn được giữ nguyên trong Firestore để không mất dữ liệu, chỉ là admin không còn sửa được qua giao diện.
+- Danh sách chủ đề trong trang quản lý chỉ còn hiển thị số cột mốc, bỏ số màn chơi.
+- Đổi version cache sang `20260721-journey-admin-milestone-xy`.
+
+**File liên quan:**
+- admin.html
+- admin.js
+- journey-test.js
+- styles.css
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Lưu ý:**
+- Schema dữ liệu cột mốc (`x`, `y`, `cardImageUrl`...) không đổi, chỉ thêm UI nhập x/y trực tiếp thay vì phải sửa JSON tay.
+- Các cột mốc cũ có sẵn `challenges` (như cột mốc 3 - Chúa chịu phép rửa) vẫn hoạt động bình thường trên front-end nhờ logic dự phòng, dù không còn sửa được từ trang quản lý.
+
+------------------------------------------------------------
+## 14.115. Thu Nhỏ Popup Cột Mốc Và Đổi Sang Bố Cục Dọc
+
+**Ngày cập nhật:** 21/07/2026
+
+**Chức năng:**
+- Popup thông tin cột mốc trên màn hình bản đồ Hành Trình Kinh Thánh đổi từ layout ngang (ảnh bên trái, chữ bên phải) sang layout dọc (ảnh nằm trên, nội dung nằm dưới) ở mọi kích thước màn hình.
+- Thu nhỏ kích thước tổng thể popup: chiều rộng giảm còn `min(420px, 90vw)` (mobile `min(360px, 92vw)`), chiều cao tối đa còn `min(80vh, 620px)`.
+- Ảnh cột mốc đổi từ lấp đầy chiều cao cột bên sang chiều cao cố định nhỏ hơn `clamp(140px, 30vh, 200px)` (mobile `clamp(120px, 26vh, 160px)`).
+- Giảm padding, cỡ chữ tiêu đề, mô tả, câu trích Kinh Thánh trong phần nội dung popup cho cân đối với popup nhỏ hơn.
+- Media query mobile cũ (dưới 760px) được cập nhật lại số liệu cho khớp bố cục dọc mới, tránh kích thước mobile lớn hơn bản desktop.
+- Đổi version cache CSS sang `20260721-journey-milestone-popup-compact`.
+
+**File liên quan:**
+- styles.css
+- hanh-trinh-kinh-thanh-test.html
+- admin.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Lưu ý:**
+- Không đổi cấu trúc JS (`renderMilestonePopup` trong journey-test.js) vì chỉ cần chỉnh CSS layout/kích thước.
+
+------------------------------------------------------------
 ## 14.114. Sửa Chọn Chủ Đề Hành Trình Và Quản Lý Panel Cột Mốc
 
 - Sửa lỗi click vào chủ đề Hành Trình Kinh Thánh không vào màn hình bản đồ.
@@ -4050,3 +4343,110 @@ Lưu ý kỹ thuật:
 - Màn chơi cột mốc không còn bị hard-code chỉ mở cột mốc số 3; khi bấm vào số cột mốc sẽ lấy thử thách theo đúng số cột mốc tương ứng.
 - Nếu cột mốc mới chưa có dữ liệu thử thách, màn chơi vẫn mở và hiển thị thông báo cần bổ sung câu hỏi trong trang quản lý.
 - Tăng version cache của `hanh-trinh-kinh-thanh-test.html` và `admin.html` để localhost tải đúng bản CSS/JS mới.
+------------------------------------------------------------
+## 14.127. Them Ban Do Chua Lam Phep La
+
+**Ngay cap nhat:** 21/07/2026
+
+**Chuc nang:**
+- Them asset ban do moi `assets/journey-miracles-map.png` cho chu de **CHUA LAM PHEP LA**.
+- Trang Hanh Trinh Kinh Thanh tu nhan dien chu de theo id/ten khong dau nhu `chua-lam-phep-la`, `chua lam phep la`, `cac phep la`, `phep la` de dung dung ban do phep la thay vi ban do mac dinh.
+- Them bo toa do chuan rieng `miraclesMapNumberPositions` gom 14 vi tri, khop voi cac vong tron so tren ban do phep la.
+- Them du lieu fallback `miraclesMilestones` gom 14 cot moc de nguoi dung co the click vong tron va mo popup thong tin tuong tu cac ban do truoc; du lieu admin nhap van duoc uu tien hien thi.
+- Trang quan ly them bo toa do an `journeyAdminMiraclesMapNumberPositions`; khi tao/sua cot moc trong chu de phep la, so cot moc tu tuong ung vong tron so tren ban do.
+- Doi version cache sang `20260721-journey-miracles-map`.
+
+**File lien quan:**
+- assets/journey-miracles-map.png
+- journey-test.js
+- admin.js
+- admin.html
+- hanh-trinh-kinh-thanh-test.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Luu y:**
+- Moi ban do Hanh Trinh Kinh Thanh phai co mot bo toa do chuan rieng dua tren chinh cac vong tron so in tren anh ban do do.
+
+------------------------------------------------------------
+## 14.128. Tong Ket Cong Viec Ngay 21/07/2026
+
+**Ngay tong ket:** 21/07/2026
+
+**Pham vi chinh:**
+- Tap trung chinh sua module **Hanh Trinh Kinh Thanh** tren ca man hinh nguoi xem va trang quan ly.
+- Chuyen trai nghiem tu dang game/thu thach sang dang **ban do + popup thong tin cot moc**.
+- Chuan hoa cach moi ban do dung **mot bo toa do rieng** dua tren cac vong tron so in san tren anh ban do.
+
+**Cong viec da lam trong trang quan ly:**
+- Doc va tuan thu file ghi chu nghiep vu du an truoc khi sua source.
+- Sua khoi **Cot moc tren ban do** de admin co the tao tung cot moc theo so nhap trong o **So cot moc**.
+- Them nut **Xoa cot moc**.
+- Bo nut **Cap nhat cot moc** theo yeu cau, chuyen luong thao tac theo form/lien ket luu chu de hien tai.
+- Bo so thu tu phia truoc ten cot moc trong dropdown.
+- Bo cac o **Vi tri ngang**, **Vi tri doc** khoi giao dien quan ly khi khong can nhap tay truc tiep.
+- Bo o JSON nhap du lieu cot moc va nut dinh dang du lieu lien quan.
+- Cho cac truong noi dung/suy niem ngan, trich dan va dia danh ho tro nhap HTML.
+- Kiem tra va xu ly text dia danh bi du dau cham.
+- Xoa cac du lieu mau xuat hien nhanh khi mo man hinh chu de.
+- Bo phan man hinh choi/thu thach cu khoi UI quan ly, nhung van giu du lieu cu trong Firestore neu ton tai de tranh mat du lieu.
+- Them cac bo toa do an trong admin cho tung ban do rieng: Chua Giesu, Xuat Hanh - Mo-se, Sang The/Tao Dung, 14 Chang Dang Thanh Gia, Chua Lam Phep La.
+
+**Cong viec da lam tren man hinh ban do nguoi xem:**
+- Khi click vao vong tron so tren ban do, hien popup thong tin cot moc thay vi vao man choi cu.
+- Popup hien thi so cot moc, tieu de, dia danh, trich dan, noi dung va suy niem/bai hoc.
+- Bo chu **COT MOC** trong popup theo yeu cau.
+- Doi font/trinh bay popup theo huong trang trong hon.
+- Giam do trong suot cua thanh cuon trong panel popup de nhin dep va ro hon.
+- Thiet ke lai nut quay lai theo phong cach dong nhat voi muc **Kham pha Duc tin**.
+- Doi nut **Chon chu de khac** thanh **Quay lai chon chu de**, dat ve ben trai phia tren panel ban do.
+- Them panel huong dan tren man hinh ban do: **BAN HAY CHON CAC VONG TRON COT MOC DE XEM**, can giua va viet hoa.
+- Sua loi click chu de **14 Chang Dang Thanh Gia** bi nhay ve ban do mac dinh cua **Hanh trinh theo dau chan Chua Giesu**.
+- Sua ham chuan hoa tieng Viet de xu ly rieng chu `D/d` co dau (`Đ/đ`) khi so khop id/tieu de chu de.
+
+**Cac ban do da them/cap nhat trong ngay:**
+- Them ban do **Hanh Trinh Xuat Hanh - Cuoc Doi Cua Mo-se**:
+  - Asset: `assets/journey-moses-exodus-map.png`
+  - Them 16 toa do chuan rieng.
+  - Them fallback 16 cot moc.
+- Them ban do **Chua Tao Dung Troi Dat**:
+  - Asset: `assets/journey-creation-map.png`
+  - Them 7 toa do chuan rieng.
+  - Them fallback 7 cot moc.
+- Them ban do **14 Chang Dang Thanh Gia**:
+  - Asset: `assets/journey-stations-cross-map.png`
+  - Them 14 toa do chuan rieng.
+  - Them fallback 14 cot moc.
+- Them ban do **Chua Lam Phep La**:
+  - Asset: `assets/journey-miracles-map.png`
+  - Them 14 toa do chuan rieng.
+  - Them fallback 14 cot moc.
+
+**Cong viec giao dien chon chu de:**
+- Sua layout man hinh chon chu de de cac card khong nam chong len nhau.
+- Can lai grid/card de cac chu de thang hang, deu cot, hinh anh va text nam dung vi tri.
+- Dam bao cac chu de moi them van hien thi on dinh trong danh sach.
+
+**Cache/ky thuat:**
+- Moi lan sua CSS/JS lien quan da tang query string cache trong:
+  - `admin.html`
+  - `hanh-trinh-kinh-thanh-test.html`
+- Version cache moi nhat sau dot them ban do phep la: `20260721-journey-miracles-map`.
+- Da kiem tra can bang ngoac JS cho `journey-test.js` va `admin.js` sau thay doi gan nhat.
+- Moi thay doi chuc nang/chinh sach moi da duoc ghi lai vao file ghi chu nghiep vu.
+
+**File lien quan trong ngay:**
+- admin.html
+- admin.js
+- journey-test.js
+- styles.css
+- hanh-trinh-kinh-thanh-test.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+- assets/journey-moses-exodus-map.png
+- assets/journey-creation-map.png
+- assets/journey-stations-cross-map.png
+- assets/journey-miracles-map.png
+
+**Luu y nghiep vu quan trong:**
+- Neu doi ten chu de, ban do van nen duoc nhan dien bang `id` on dinh truoc; phan so khop theo tieu de chi la du phong.
+- Moi ban do phai co bo toa do chuan rieng. Khong dung lai toa do cua ban do Chua Giesu cho cac ban do khac.
+- Du lieu admin nhap cho cot moc duoc uu tien hien thi, nhung toa do hien thi tren ban do co fallback theo bo toa do chuan cua tung ban do.

@@ -1,5 +1,14 @@
 (function () {
   const JESUS_TOPIC_ID = "hanh-trinh-theo-dau-chan-chua-giesu";
+  const EXODUS_TOPIC_ID = "hanh-trinh-xuat-hanh-cuoc-doi-cua-mo-se";
+  const CREATION_TOPIC_ID = "chua-tao-dung-troi-dat";
+  const STATIONS_TOPIC_ID = "14-chang-dang-thanh-gia";
+  const MIRACLES_TOPIC_ID = "chua-lam-phep-la";
+  const JESUS_MAP_IMAGE = "/assets/journey-jesus-map.png";
+  const EXODUS_MAP_IMAGE = "/assets/journey-moses-exodus-map.png";
+  const CREATION_MAP_IMAGE = "/assets/journey-creation-map.png";
+  const STATIONS_MAP_IMAGE = "/assets/journey-stations-cross-map.png";
+  const MIRACLES_MAP_IMAGE = "/assets/journey-miracles-map.png";
   const BAPTISM_STEP_NUMBER = 3;
   let BAPTISM_REWARD_POINTS = 50;
 
@@ -223,55 +232,511 @@
     { x: 49.0, y: 91.0 },
   ];
 
+  const exodusMapNumberPositions = [
+    { x: 22.5, y: 8.7 },
+    { x: 25.5, y: 16.8 },
+    { x: 19.6, y: 25.6 },
+    { x: 52.0, y: 21.6 },
+    { x: 76.5, y: 17.2 },
+    { x: 81.7, y: 29.4 },
+    { x: 82.9, y: 39.1 },
+    { x: 13.3, y: 48.9 },
+    { x: 34.0, y: 50.3 },
+    { x: 57.7, y: 50.4 },
+    { x: 48.6, y: 60.7 },
+    { x: 27.8, y: 66.5 },
+    { x: 19.4, y: 75.2 },
+    { x: 48.8, y: 76.9 },
+    { x: 73.1, y: 80.6 },
+    { x: 52.3, y: 91.6 },
+  ];
+
+  const creationMapNumberPositions = [
+    { x: 28.8, y: 8.3 },
+    { x: 47.8, y: 17.7 },
+    { x: 40.7, y: 29.4 },
+    { x: 55.0, y: 41.6 },
+    { x: 42.7, y: 53.0 },
+    { x: 53.7, y: 64.0 },
+    { x: 38.6, y: 76.8 },
+  ];
+
+  const stationsMapNumberPositions = [
+    { x: 22.6, y: 9.5 },
+    { x: 45.5, y: 15.9 },
+    { x: 60.3, y: 23.0 },
+    { x: 36.1, y: 29.4 },
+    { x: 58.8, y: 36.0 },
+    { x: 27.0, y: 43.2 },
+    { x: 57.4, y: 46.0 },
+    { x: 27.6, y: 53.1 },
+    { x: 66.5, y: 58.1 },
+    { x: 33.1, y: 63.2 },
+    { x: 58.1, y: 66.9 },
+    { x: 29.5, y: 73.0 },
+    { x: 65.2, y: 77.9 },
+    { x: 50.4, y: 91.3 },
+  ];
+
+  const miraclesMapNumberPositions = [
+    { x: 26.3, y: 6.2 },
+    { x: 48.3, y: 12.4 },
+    { x: 64.4, y: 21.0 },
+    { x: 27.6, y: 33.4 },
+    { x: 57.8, y: 35.4 },
+    { x: 23.4, y: 43.7 },
+    { x: 47.1, y: 46.2 },
+    { x: 79.3, y: 48.6 },
+    { x: 23.5, y: 58.1 },
+    { x: 69.7, y: 62.1 },
+    { x: 15.9, y: 70.4 },
+    { x: 48.2, y: 70.7 },
+    { x: 77.0, y: 75.0 },
+    { x: 49.0, y: 88.0 },
+  ];
+
+  const stationsMilestones = [
+    {
+      number: 1,
+      title: "Chúa Giêsu bị kết án tử hình",
+      reference: "Mt 27,22-26",
+      region: "Dinh Philatô",
+      story: "Chúa Giêsu, Đấng vô tội, đón nhận bản án bất công trong thinh lặng và phó thác.",
+      lesson: "Xin cho con biết đứng về phía sự thật và không kết án người khác cách vội vàng.",
+    },
+    {
+      number: 2,
+      title: "Chúa Giêsu vác Thánh Giá",
+      reference: "Ga 19,16-17",
+      region: "Giêrusalem",
+      story: "Chúa Giêsu vác lấy Thánh Giá, ôm trọn gánh nặng tội lỗi nhân loại bằng tình yêu.",
+      lesson: "Xin cho con biết vác thập giá đời mình với lòng tin tưởng nơi Chúa.",
+    },
+    {
+      number: 3,
+      title: "Chúa Giêsu ngã xuống lần thứ nhất",
+      reference: "Is 53,4-5",
+      region: "Đường lên Gôgôtha",
+      story: "Dưới sức nặng của Thánh Giá, Chúa ngã xuống nhưng lại đứng lên để tiếp tục hành trình cứu độ.",
+      lesson: "Khi yếu đuối vấp ngã, xin cho con biết đứng dậy trong ơn Chúa.",
+    },
+    {
+      number: 4,
+      title: "Chúa Giêsu gặp Đức Mẹ",
+      reference: "Lc 2,34-35",
+      region: "Giêrusalem",
+      story: "Trên đường khổ nạn, Chúa Giêsu gặp Mẹ Maria, người Mẹ âm thầm hiệp thông trong đau khổ của Con.",
+      lesson: "Xin cho con biết ở lại bên người đau khổ bằng sự hiện diện yêu thương.",
+    },
+    {
+      number: 5,
+      title: "Ông Simôn thành Kyrênê giúp vác Thánh Giá",
+      reference: "Mc 15,21",
+      region: "Đường Thánh Giá",
+      story: "Ông Simôn được mời gọi chia sẻ gánh nặng Thánh Giá với Chúa Giêsu.",
+      lesson: "Xin cho con nhận ra Chúa nơi những người cần được nâng đỡ.",
+    },
+    {
+      number: 6,
+      title: "Bà Vêrônica lau mặt Chúa",
+      reference: "Mt 25,40",
+      region: "Giêrusalem",
+      story: "Bà Vêrônica can đảm tiến đến lau khuôn mặt đau khổ của Chúa giữa đám đông.",
+      lesson: "Một cử chỉ nhỏ vì yêu thương có thể phản chiếu khuôn mặt Chúa.",
+    },
+    {
+      number: 7,
+      title: "Chúa Giêsu ngã xuống lần thứ hai",
+      reference: "Tv 38,7-9",
+      region: "Đường lên Núi Sọ",
+      story: "Chúa lại ngã xuống, nhưng tình yêu dành cho nhân loại giúp Người tiếp tục bước đi.",
+      lesson: "Xin cho con đừng nản lòng khi phải bắt đầu lại nhiều lần.",
+    },
+    {
+      number: 8,
+      title: "Chúa Giêsu an ủi các phụ nữ thành Giêrusalem",
+      reference: "Lc 23,27-31",
+      region: "Giêrusalem",
+      story: "Giữa đau khổ, Chúa vẫn hướng lòng đến những người khóc thương và mời gọi họ hoán cải.",
+      lesson: "Xin cho con biết biến nước mắt thành lời cầu nguyện và đổi mới đời sống.",
+    },
+    {
+      number: 9,
+      title: "Chúa Giêsu ngã xuống lần thứ ba",
+      reference: "Pl 2,6-8",
+      region: "Gần Đồi Gôgôtha",
+      story: "Chúa ngã xuống lần nữa, chạm đến tận cùng sự yếu đuối của kiếp người.",
+      lesson: "Không có vực sâu nào mà tình yêu Chúa không thể bước xuống để nâng con lên.",
+    },
+    {
+      number: 10,
+      title: "Chúa Giêsu bị lột áo",
+      reference: "Ga 19,23-24",
+      region: "Đồi Gôgôtha",
+      story: "Chúa Giêsu bị tước đoạt áo quần, chịu sỉ nhục để mặc lại cho con người phẩm giá đã mất.",
+      lesson: "Xin cho con biết tôn trọng phẩm giá của mọi người, nhất là người bị tổn thương.",
+    },
+    {
+      number: 11,
+      title: "Chúa Giêsu chịu đóng đinh vào Thập Giá",
+      reference: "Lc 23,33-34",
+      region: "Đồi Gôgôtha",
+      story: "Chúa Giêsu bị đóng đinh vào Thập Giá và vẫn cầu xin ơn tha thứ cho những kẻ làm hại Người.",
+      lesson: "Tha thứ là con đường khó, nhưng là con đường của Chúa.",
+    },
+    {
+      number: 12,
+      title: "Chúa Giêsu chết trên Thập Giá",
+      reference: "Ga 19,28-30",
+      region: "Đồi Gôgôtha",
+      story: "Chúa Giêsu trao phó thần khí trong tay Chúa Cha, hoàn tất hiến lễ tình yêu.",
+      lesson: "Tình yêu thật là tình yêu trao ban đến cùng.",
+    },
+    {
+      number: 13,
+      title: "Chúa Giêsu được tháo xuống khỏi Thập Giá",
+      reference: "Ga 19,38-40",
+      region: "Dưới chân Thập Giá",
+      story: "Thân xác Chúa được tháo xuống và trao vào vòng tay những người yêu mến Người.",
+      lesson: "Xin cho con biết đón nhận những mất mát trong hy vọng Phục Sinh.",
+    },
+    {
+      number: 14,
+      title: "Chúa Giêsu được an táng trong mồ",
+      reference: "Mt 27,57-61",
+      region: "Mộ đá",
+      story: "Chúa Giêsu được đặt trong mồ, và trong thinh lặng của ngày thứ bảy, niềm hy vọng đang được chuẩn bị.",
+      lesson: "Ngay cả khi mọi sự dường như kết thúc, Thiên Chúa vẫn đang mở đường cho sự sống mới.",
+    },
+  ];
+
+  const creationMilestones = [
+    {
+      number: 1,
+      title: "Ngày 1 - Chúa tạo ra ánh sáng",
+      reference: "St 1,1-5",
+      region: "Hư vô và hỗn độn",
+      story: "Thiên Chúa phán: <strong>Hãy có ánh sáng</strong>, và ánh sáng xuất hiện, mở đầu công trình tạo dựng.",
+      lesson: "Ánh sáng của Chúa xua tan tối tăm và khởi đầu mọi sự trong trật tự yêu thương.",
+    },
+    {
+      number: 2,
+      title: "Ngày 2 - Chúa tạo bầu trời và phân rẽ nước",
+      reference: "St 1,6-8",
+      region: "Bầu trời",
+      story: "Thiên Chúa tạo vòm trời để phân rẽ nước bên trên và nước bên dưới, đặt nền cho không gian của sự sống.",
+      lesson: "Tạo dựng không hỗn loạn; Thiên Chúa đặt mọi sự vào trật tự và hài hòa.",
+    },
+    {
+      number: 3,
+      title: "Ngày 3 - Chúa tạo đất khô, biển và cây cối",
+      reference: "St 1,9-13",
+      region: "Đất khô và biển lớn",
+      story: "Nước tụ lại thành biển, đất khô xuất hiện, và cây cối sinh hoa trái theo lệnh truyền của Thiên Chúa.",
+      lesson: "Sự sống nảy sinh từ lời Chúa và được mời gọi sinh hoa trái.",
+    },
+    {
+      number: 4,
+      title: "Ngày 4 - Chúa tạo mặt trời, mặt trăng và các vì sao",
+      reference: "St 1,14-19",
+      region: "Bầu trời",
+      story: "Thiên Chúa đặt các nguồn sáng trên bầu trời để phân định ngày đêm, mùa màng và thời gian.",
+      lesson: "Thời gian cũng là quà tặng, để con người sống trong nhịp điệu của Thiên Chúa.",
+    },
+    {
+      number: 5,
+      title: "Ngày 5 - Chúa tạo các loài cá và chim trời",
+      reference: "St 1,20-23",
+      region: "Biển lớn và bầu trời",
+      story: "Biển cả đầy sinh vật và bầu trời đầy chim bay; Thiên Chúa chúc phúc cho chúng sinh sôi nảy nở.",
+      lesson: "Sự phong phú của tạo vật kể lại lòng quảng đại của Đấng Tạo Hóa.",
+    },
+    {
+      number: 6,
+      title: "Ngày 6 - Chúa tạo thú vật trên đất",
+      reference: "St 1,24-25",
+      region: "Đất khô",
+      story: "Thiên Chúa tạo nên các loài vật trên đất, mỗi loài theo giống của mình.",
+      lesson: "Mỗi thụ tạo đều có chỗ đứng trong công trình tốt lành của Thiên Chúa.",
+    },
+    {
+      number: 7,
+      title: "Ngày 7 - Chúa tạo nên con người và nghỉ ngơi",
+      reference: "St 1,26-31; 2,1-3",
+      region: "Vườn Ê-đen",
+      story: "Thiên Chúa tạo dựng con người theo hình ảnh Người, trao phó tạo thành cho con người chăm sóc, rồi thánh hóa ngày nghỉ.",
+      lesson: "Con người được mời gọi sống như hình ảnh Thiên Chúa: yêu thương, chăm sóc và biết nghỉ ngơi trong Chúa.",
+    },
+  ];
+
+  const miraclesMilestones = [
+    {
+      number: 1,
+      title: "Chúa hóa nước thành rượu",
+      reference: "Ga 2,1-11",
+      region: "Cana",
+      story: "Tại tiệc cưới Cana, Chúa Giêsu hóa nước thành rượu, bày tỏ vinh quang của Người và khơi dậy niềm tin nơi các môn đệ.",
+      lesson: "Khi trao những thiếu thốn nhỏ bé cho Chúa, Người có thể biến chúng thành niềm vui dồi dào.",
+    },
+    {
+      number: 2,
+      title: "Chúa chữa con quan ở Caphácnaum",
+      reference: "Ga 4,46-54",
+      region: "Caphácnaum",
+      story: "Một viên quan xin Chúa cứu con mình; ông tin vào lời Chúa và người con được chữa lành.",
+      lesson: "Đức tin trưởng thành khi ta dám bước đi dựa trên lời Chúa, ngay cả trước khi thấy dấu chỉ.",
+    },
+    {
+      number: 3,
+      title: "Chúa chữa người tê bại",
+      reference: "Mc 2,1-12",
+      region: "Caphácnaum",
+      story: "Chúa Giêsu tha tội và chữa lành người tê bại được bạn hữu khiêng đến với Người.",
+      lesson: "Tình yêu liên đới có thể mở đường cho người khác gặp được lòng thương xót của Chúa.",
+    },
+    {
+      number: 4,
+      title: "Chúa chữa người mù bẩm sinh",
+      reference: "Ga 9,1-7",
+      region: "Giêrusalem",
+      story: "Chúa Giêsu mở mắt cho người mù từ thuở mới sinh, để công trình của Thiên Chúa được tỏ hiện.",
+      lesson: "Ánh sáng của Chúa không chỉ chữa đôi mắt, mà còn mở lòng ta nhận ra sự thật.",
+    },
+    {
+      number: 5,
+      title: "Chúa làm yên biển động",
+      reference: "Mc 4,35-41",
+      region: "Hồ Galilê",
+      story: "Giữa cơn bão, Chúa Giêsu truyền cho gió biển im lặng và củng cố niềm tin của các môn đệ.",
+      lesson: "Trong những cơn bão của đời sống, hãy nhớ Chúa vẫn hiện diện trong con thuyền của ta.",
+    },
+    {
+      number: 6,
+      title: "Chúa chữa người bệnh bại tay",
+      reference: "Mc 3,1-6",
+      region: "Hội đường",
+      story: "Chúa chữa lành người bại tay trong ngày sabát, đặt lòng thương xót trên sự khô cứng của luật lệ.",
+      lesson: "Việc lành không nên bị trì hoãn khi trước mặt ta là một người đang cần được nâng đỡ.",
+    },
+    {
+      number: 7,
+      title: "Chúa cho 5.000 người ăn",
+      reference: "Mc 6,30-44",
+      region: "Galilê",
+      story: "Từ năm chiếc bánh và hai con cá, Chúa nuôi đám đông và còn dư dật.",
+      lesson: "Điều ít ỏi được trao bằng lòng quảng đại có thể trở thành ân phúc cho nhiều người.",
+    },
+    {
+      number: 8,
+      title: "Chúa đi trên mặt nước",
+      reference: "Mt 14,22-33",
+      region: "Hồ Galilê",
+      story: "Chúa Giêsu đi trên mặt nước đến với các môn đệ đang hoảng sợ giữa đêm tối.",
+      lesson: "Khi nhìn vào Chúa hơn là sóng gió, ta học được lòng can đảm của đức tin.",
+    },
+    {
+      number: 9,
+      title: "Chúa chữa người mù tại Giêricô",
+      reference: "Mc 10,46-52",
+      region: "Giêricô",
+      story: "Người mù kêu xin lòng thương xót và được Chúa cho thấy, rồi đi theo Người trên đường.",
+      lesson: "Lời cầu xin chân thành có thể trở thành khởi đầu của một hành trình theo Chúa.",
+    },
+    {
+      number: 10,
+      title: "Chúa chữa mười người phong hủi",
+      reference: "Lc 17,11-19",
+      region: "Samaria và Galilê",
+      story: "Mười người phong hủi được chữa lành, nhưng chỉ một người trở lại tạ ơn Chúa.",
+      lesson: "Ơn lành đạt đến chiều sâu khi ta biết quay lại sống lòng biết ơn.",
+    },
+    {
+      number: 11,
+      title: "Chúa cho La-da-rô sống lại",
+      reference: "Ga 11,1-44",
+      region: "Bêtania",
+      story: "Trước mộ La-da-rô, Chúa Giêsu gọi ông ra khỏi sự chết và tỏ mình là sự sống lại.",
+      lesson: "Không bóng tối nào vượt quá tiếng gọi sự sống của Chúa.",
+    },
+    {
+      number: 12,
+      title: "Chúa chữa người trẻ bị quỷ ám",
+      reference: "Mc 9,14-29",
+      region: "Galilê",
+      story: "Chúa giải thoát một người trẻ khỏi quyền lực sự dữ và mời gọi các môn đệ cầu nguyện sâu xa hơn.",
+      lesson: "Có những cuộc chiến thiêng liêng cần được nâng đỡ bằng cầu nguyện và lòng tin bền bỉ.",
+    },
+    {
+      number: 13,
+      title: "Chúa chữa tai Malkhus bị cắt",
+      reference: "Lc 22,50-51",
+      region: "Vườn Ghếtsêmani",
+      story: "Trong giờ bị bắt, Chúa Giêsu vẫn chữa lành người bị thương, đáp lại bạo lực bằng lòng thương xót.",
+      lesson: "Người môn đệ của Chúa được mời gọi phá vỡ vòng xoáy bạo lực bằng tình yêu.",
+    },
+    {
+      number: 14,
+      title: "Chúa chữa người mù Báctimê",
+      reference: "Mc 10,46-52",
+      region: "Giêricô",
+      story: "Báctimê kêu lên với Chúa, được chữa lành và lập tức bước theo Người.",
+      lesson: "Khi Chúa mở mắt tâm hồn, ta được mời đứng dậy và đi theo Người.",
+    },
+  ];
+
+  const exodusMilestones = [
+    {
+      number: 1,
+      title: "Mô-sê được sinh ra trong dân Israel",
+      reference: "Xh 2,1-2",
+      region: "Ai Cập",
+      story: "Giữa cảnh dân Israel bị áp bức, Mô-sê chào đời như một dấu chỉ Thiên Chúa vẫn âm thầm gìn giữ dân Người.",
+      lesson: "Thiên Chúa có thể khởi đầu kế hoạch cứu độ ngay trong những hoàn cảnh mong manh nhất.",
+    },
+    {
+      number: 2,
+      title: "Mô-sê được đặt trong chiếc giỏ",
+      reference: "Xh 2,3-4",
+      region: "Sông Nil",
+      story: "Mẹ của Mô-sê đặt con trong chiếc giỏ giữa dòng sông, phó thác sự sống của con cho lòng thương xót của Thiên Chúa.",
+      lesson: "Đức tin đôi khi là dám trao điều quý nhất vào tay Chúa.",
+    },
+    {
+      number: 3,
+      title: "Mô-sê được công chúa Pha-ra-ô nhận nuôi",
+      reference: "Xh 2,5-10",
+      region: "Ai Cập",
+      story: "Mô-sê được cứu khỏi dòng nước và lớn lên trong cung điện Ai Cập, chuẩn bị cho một sứ mạng vượt quá điều ông có thể hiểu lúc ấy.",
+      lesson: "Thiên Chúa có thể dùng cả những ngả đường bất ngờ để chuẩn bị người phục vụ Người.",
+    },
+    {
+      number: 4,
+      title: "Mô-sê bỏ Ai Cập, đến Midian",
+      reference: "Xh 2,11-15",
+      region: "Midian",
+      story: "Sau biến cố tại Ai Cập, Mô-sê rời bỏ nơi quen thuộc và bước vào một giai đoạn ẩn mình trong sa mạc.",
+      lesson: "Những năm tháng âm thầm cũng có thể là trường học của Thiên Chúa.",
+    },
+    {
+      number: 5,
+      title: "Mô-sê chăn chiên ở Midian",
+      reference: "Xh 2,16-22",
+      region: "Midian",
+      story: "Mô-sê sống đời mục tử nơi Midian, học sự kiên nhẫn, chăm sóc và lắng nghe giữa nhịp sống bình dị.",
+      lesson: "Trước khi dẫn dắt dân Chúa, người phục vụ cần học biết chăm sóc những điều nhỏ bé.",
+    },
+    {
+      number: 6,
+      title: "Mô-sê gặp Thiên Chúa trong bụi gai bốc cháy",
+      reference: "Xh 3,1-6",
+      region: "Núi của Thiên Chúa",
+      story: "Thiên Chúa gọi Mô-sê từ bụi gai cháy mà không tàn, mặc khải sự hiện diện thánh thiêng của Người.",
+      lesson: "Khi Thiên Chúa gọi, nơi bình thường cũng trở thành đất thánh.",
+    },
+    {
+      number: 7,
+      title: "Thiên Chúa sai Mô-sê trở về Ai Cập",
+      reference: "Xh 3,7-12",
+      region: "Midian",
+      story: "Thiên Chúa sai Mô-sê trở về để giải thoát dân Người, dù Mô-sê còn sợ hãi và thấy mình yếu đuối.",
+      lesson: "Ơn gọi không dựa trên sự tự tin của ta, nhưng trên lời hứa: Chúa ở cùng ta.",
+    },
+    {
+      number: 8,
+      title: "Mô-sê và A-ha-ron đến gặp Pha-ra-ô",
+      reference: "Xh 5,1-5",
+      region: "Ai Cập",
+      story: "Mô-sê và A-ha-ron can đảm đứng trước Pha-ra-ô để xin cho dân Israel được ra đi thờ phượng Thiên Chúa.",
+      lesson: "Lòng can đảm thiêng liêng bắt đầu bằng việc nói lời sự thật trước quyền lực.",
+    },
+    {
+      number: 9,
+      title: "Mười tai ương trên Ai Cập",
+      reference: "Xh 7-12",
+      region: "Ai Cập",
+      story: "Qua các tai ương, Thiên Chúa tỏ quyền năng và dẫn dân Người tiến gần đến ngày giải thoát.",
+      lesson: "Thiên Chúa không bỏ rơi dân bị áp bức, và quyền năng Người lớn hơn mọi xiềng xích.",
+    },
+    {
+      number: 10,
+      title: "Vượt qua Biển Đỏ",
+      reference: "Xh 14,21-31",
+      region: "Biển Đỏ",
+      story: "Biển Đỏ mở ra cho dân Israel đi qua, còn quân Ai Cập bị chặn lại sau lưng họ.",
+      lesson: "Khi tưởng như hết đường, Thiên Chúa vẫn có thể mở một con đường mới.",
+    },
+    {
+      number: 11,
+      title: "Mô-sê dẫn dân Israel vào hoang địa",
+      reference: "Xh 15,22-27",
+      region: "Hoang địa",
+      story: "Sau khi vượt biển, dân Israel bước vào hoang địa, nơi họ học tin tưởng vào sự quan phòng từng ngày.",
+      lesson: "Tự do thật cần được nuôi dưỡng bằng lòng tín thác.",
+    },
+    {
+      number: 12,
+      title: "Nước từ tảng đá ở Massah và Meriba",
+      reference: "Xh 17,1-7",
+      region: "Massah và Meriba",
+      story: "Khi dân khát nước, Thiên Chúa cho nước chảy ra từ tảng đá để gìn giữ họ trong sa mạc.",
+      lesson: "Chúa biết cơn khát của dân Người và ban điều cần thiết đúng lúc.",
+    },
+    {
+      number: 13,
+      title: "Mô-sê chiến thắng A-ma-léc",
+      reference: "Xh 17,8-16",
+      region: "Rơphidim",
+      story: "Khi Mô-sê giơ tay cầu nguyện, dân Israel được sức mạnh để chiến thắng A-ma-léc.",
+      lesson: "Chiến thắng của dân Chúa được nâng đỡ bằng lời cầu nguyện bền bỉ.",
+    },
+    {
+      number: 14,
+      title: "Nhận Mười Điều Răn trên núi Sinai",
+      reference: "Xh 20,1-17",
+      region: "Núi Sinai",
+      story: "Thiên Chúa ban Mười Điều Răn như giao ước yêu thương, giúp dân sống tự do trong đường lối Người.",
+      lesson: "Luật Chúa không trói buộc, nhưng gìn giữ con người trong tình yêu và sự sống.",
+    },
+    {
+      number: 15,
+      title: "Dựng Lều Hội Ngộ",
+      reference: "Xh 40,1-38",
+      region: "Lều Hội Ngộ",
+      story: "Dân Israel dựng Lều Hội Ngộ, dấu chỉ Thiên Chúa hiện diện giữa dân trên hành trình.",
+      lesson: "Giữa mọi cuộc lữ hành, điều quan trọng nhất là để Chúa ở trung tâm.",
+    },
+    {
+      number: 16,
+      title: "Mô-sê nhìn thấy Đất Hứa",
+      reference: "Đnl 34,1-4",
+      region: "Đất Hứa",
+      story: "Từ núi Nơvô, Mô-sê nhìn thấy Đất Hứa, khép lại hành trình trung thành trong tay Thiên Chúa.",
+      lesson: "Người phục vụ trung tín trao kết quả cuối cùng cho Thiên Chúa.",
+    },
+  ];
+
+  exodusMilestones.forEach((step, index) => {
+    Object.assign(step, exodusMapNumberPositions[index] || { x: 50, y: 10 + index * 5 });
+  });
+
+  creationMilestones.forEach((step, index) => {
+    Object.assign(step, creationMapNumberPositions[index] || { x: 50, y: 10 + index * 5 });
+  });
+
+  stationsMilestones.forEach((step, index) => {
+    Object.assign(step, stationsMapNumberPositions[index] || { x: 50, y: 10 + index * 5 });
+  });
+
+  miraclesMilestones.forEach((step, index) => {
+    Object.assign(step, miraclesMapNumberPositions[index] || { x: 50, y: 10 + index * 5 });
+  });
+
   jesusMilestones.forEach((step, index) => {
     Object.assign(step, journeyMapNumberPositions[index] || { x: 50, y: 10 + index * 5 });
   });
   activeJourneyMilestones = jesusMilestones;
-  let topics = [
-    {
-      id: JESUS_TOPIC_ID,
-      title: "Hành trình theo dấu chân Chúa Giêsu",
-      description: "Khám phá những cột mốc chính trong cuộc đời và sứ vụ của Chúa Giêsu.",
-      steps: jesusMilestones.length,
-      label: "Tân Ước",
-      enabled: true,
-    },
-    {
-      id: "sang-the-giao-uoc",
-      title: "Từ Sáng Thế đến Giao Ước",
-      description: "Tìm hiểu công trình tạo dựng, tổ phụ Ápraham và hành trình đức tin đầu tiên.",
-      steps: 12,
-      label: "Cựu Ước",
-    },
-    {
-      id: "xuat-hanh",
-      title: "Hành trình Xuất Hành",
-      description: "Theo chân dân Chúa đi qua Biển Đỏ, sa mạc và giao ước tại núi Sinai.",
-      steps: 14,
-      label: "Cựu Ước",
-    },
-    {
-      id: "ngon-su",
-      title: "Các ngôn sứ kêu gọi trở về",
-      description: "Gặp gỡ các ngôn sứ và lời mời gọi hoán cải, hy vọng, trung thành với Thiên Chúa.",
-      steps: 10,
-      label: "Ngôn sứ",
-    },
-    {
-      id: "du-ngon",
-      title: "Những dụ ngôn của Chúa",
-      description: "Học Tin Mừng qua những câu chuyện gần gũi mà Chúa Giêsu dùng để dạy dân chúng.",
-      steps: 12,
-      label: "Tin Mừng",
-    },
-    {
-      id: "hoi-thanh-so-khai",
-      title: "Hành trình Hội Thánh sơ khai",
-      description: "Tìm hiểu các Tông Đồ, Chúa Thánh Thần và những bước đầu loan báo Tin Mừng.",
-      steps: 13,
-      label: "Công Vụ",
-    },
-  ];
+  let activeJourneyMapImage = JESUS_MAP_IMAGE;
+  let topics = [];
 
   const progress = {
     faithPoints: 850,
@@ -320,26 +785,89 @@
     return escapeAttr(value);
   }
 
+  function renderAdminHtml(value) {
+    return String(value || "");
+  }
+
+  function isExodusTopic(topic = {}) {
+    const haystack = normalizeText(`${topic.id || ""} ${topic.title || ""}`);
+    return topic.id === EXODUS_TOPIC_ID || haystack.includes("xuat hanh") || haystack.includes("mo se") || haystack.includes("mose");
+  }
+
+  function isCreationTopic(topic = {}) {
+    const haystack = normalizeText(`${topic.id || ""} ${topic.title || ""}`);
+    return topic.id === CREATION_TOPIC_ID || haystack.includes("chua tao dung troi dat") || haystack.includes("tao dung") || haystack.includes("sang the");
+  }
+
+  function isStationsTopic(topic = {}) {
+    const haystack = normalizeText(`${topic.id || ""} ${topic.title || ""}`);
+    return topic.id === STATIONS_TOPIC_ID || haystack.includes("14 chang dang thanh gia") || haystack.includes("14 chan dang thanh gia") || haystack.includes("dang thanh gia");
+  }
+
+  function isMiraclesTopic(topic = {}) {
+    const haystack = normalizeText(`${topic.id || ""} ${topic.title || ""}`);
+    return topic.id === MIRACLES_TOPIC_ID || haystack.includes("chua lam phep la") || haystack.includes("cac phep la") || haystack.includes("phep la");
+  }
+
+  function journeyPositionsForTopic(topic) {
+    if (isMiraclesTopic(topic)) return miraclesMapNumberPositions;
+    if (isStationsTopic(topic)) return stationsMapNumberPositions;
+    if (isCreationTopic(topic)) return creationMapNumberPositions;
+    return isExodusTopic(topic) ? exodusMapNumberPositions : journeyMapNumberPositions;
+  }
+
+  function journeyMapImageForTopic(topic) {
+    const configuredImage = String(topic?.mapImageUrl || "").trim();
+    if (configuredImage) return configuredImage;
+    if (isMiraclesTopic(topic)) return MIRACLES_MAP_IMAGE;
+    if (isStationsTopic(topic)) return STATIONS_MAP_IMAGE;
+    if (isCreationTopic(topic)) return CREATION_MAP_IMAGE;
+    return isExodusTopic(topic) ? EXODUS_MAP_IMAGE : JESUS_MAP_IMAGE;
+  }
+
+  function fallbackMilestonesForTopic(topic) {
+    if (isMiraclesTopic(topic)) return miraclesMilestones;
+    if (isStationsTopic(topic)) return stationsMilestones;
+    if (isCreationTopic(topic)) return creationMilestones;
+    return isExodusTopic(topic) ? exodusMilestones : [];
+  }
+
+  function mergeJourneyMilestones(rawMilestones, fallbackMilestones, positions) {
+    const rawList = Array.isArray(rawMilestones) ? rawMilestones : [];
+    const rawByNumber = new Map(
+      rawList
+        .map((milestone, index) => [Number(milestone?.number || index + 1), milestone])
+        .filter(([number]) => Number.isFinite(number))
+    );
+    const source = fallbackMilestones.length
+      ? fallbackMilestones
+          .map((fallbackMilestone) => ({ ...fallbackMilestone, ...(rawByNumber.get(Number(fallbackMilestone.number)) || {}) }))
+          .concat(rawList.filter((milestone, index) => !fallbackMilestones.some((fallbackMilestone) => fallbackMilestone.number === Number(milestone?.number || index + 1))))
+      : rawList;
+    return source.map((milestone, milestoneIndex) => {
+      const number = Number(milestone?.number || milestoneIndex + 1);
+      const fallback = fallbackMilestones.find((item) => item.number === number) || {};
+      const position = positions[number - 1] || positions[milestoneIndex] || { x: 50, y: 10 + milestoneIndex * 5 };
+      return {
+        number,
+        title: String(milestone?.title || fallback.title || `Cột mốc ${number}`).trim(),
+        reference: String(milestone?.reference || fallback.reference || "").trim(),
+        region: String(milestone?.region || fallback.region || "").trim(),
+        scene: String(milestone?.scene || fallback.scene || "").trim(),
+        story: String(milestone?.story || fallback.story || "").trim(),
+        lesson: String(milestone?.lesson || fallback.lesson || "").trim(),
+        cardImageUrl: String(milestone?.cardImageUrl || fallback.cardImageUrl || "").trim(),
+        x: fallbackMilestones.length ? position.x : Number.isFinite(Number(milestone?.x)) ? Number(milestone.x) : position.x,
+        y: fallbackMilestones.length ? position.y : Number.isFinite(Number(milestone?.y)) ? Number(milestone.y) : position.y,
+      };
+    });
+  }
+
   function normalizeJourneyTopicFromSettings(topic, index) {
     const fallback = topics.find((item) => item.id === topic?.id) || {};
-    const milestones = Array.isArray(topic?.milestones)
-      ? topic.milestones.map((milestone, milestoneIndex) => {
-          const number = Number(milestone?.number || milestoneIndex + 1);
-          const position = journeyMapNumberPositions[milestoneIndex] || { x: 50, y: 10 + milestoneIndex * 5 };
-          return {
-            number,
-            title: String(milestone?.title || `Cột mốc ${number}`).trim(),
-            reference: String(milestone?.reference || "").trim(),
-            region: String(milestone?.region || "").trim(),
-            scene: String(milestone?.scene || "").trim(),
-            story: String(milestone?.story || "").trim(),
-            lesson: String(milestone?.lesson || "").trim(),
-            cardImageUrl: String(milestone?.cardImageUrl || "").trim(),
-            x: Number.isFinite(Number(milestone?.x)) ? Number(milestone.x) : position.x,
-            y: Number.isFinite(Number(milestone?.y)) ? Number(milestone.y) : position.y,
-          };
-        })
-      : [];
+    const topicShell = { ...fallback, ...topic };
+    const fallbackMilestones = fallbackMilestonesForTopic(topicShell);
+    const milestones = mergeJourneyMilestones(topic?.milestones, fallbackMilestones, journeyPositionsForTopic(topicShell));
     return {
       id: String(topic?.id || fallback.id || `journey-topic-${index + 1}`).trim(),
       title: String(topic?.title || fallback.title || `Chủ đề ${index + 1}`).trim(),
@@ -347,6 +875,7 @@
       label: String(topic?.label || fallback.label || "").trim(),
       enabled: topic?.enabled !== false,
       pickerImageUrl: String(topic?.pickerImageUrl || "").trim(),
+      mapImageUrl: journeyMapImageForTopic(topicShell),
       steps: milestones.length || fallback.steps || 0,
       milestones,
       challenges: topic?.challenges && typeof topic.challenges === "object" ? topic.challenges : {},
@@ -437,6 +966,7 @@
       label: topic.label,
       enabled: topic.enabled,
       pickerImageUrl: topic.pickerImageUrl,
+      mapImageUrl: topic.mapImageUrl,
       steps: topic.milestones.length || (topic.id === JESUS_TOPIC_ID ? jesusMilestones.length : topic.steps),
     }));
   }
@@ -454,6 +984,8 @@
     return String(value || "")
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "")
+      .replace(/đ/g, "d")
+      .replace(/Đ/g, "D")
       .toLowerCase();
   }
 
@@ -584,7 +1116,7 @@
             `
           )
           .join("")
-      : `<p class="journey-empty">Không tìm thấy chủ đề phù hợp.</p>`;
+      : `<p class="journey-empty">Chưa có chủ đề Hành trình Kinh Thánh.</p>`;
   }
 
   function renderStepDetail(step) {
@@ -604,13 +1136,18 @@
 
   function getStepImageUrl(step) {
     const challenge = getChallengeForStep(step.number);
-    return String(challenge.sceneImageUrl || step.cardImageUrl || "").trim();
+    return String(step.cardImageUrl || challenge.sceneImageUrl || "").trim();
   }
 
   function renderMilestonePopup() {
     const step = activeJourneyMilestones.find((item) => item.number === state.detailStepNumber);
     if (!step) return "";
     const imageUrl = getStepImageUrl(step);
+    const metaHtml = [step.region, step.reference]
+      .map((value) => renderAdminHtml(value).trim())
+      .filter(Boolean)
+      .map((value) => `<span>${value}</span>`)
+      .join("");
     return `
       <div class="journey-milestone-modal" role="dialog" aria-modal="true" aria-label="${escapeAttr(step.title)}">
         <button class="journey-milestone-modal-backdrop" type="button" data-close-milestone aria-label="Đóng"></button>
@@ -622,11 +1159,10 @@
               : `<div class="journey-milestone-image placeholder" aria-hidden="true"><span>${step.number}</span></div>`
           }
           <div class="journey-milestone-content">
-            <span class="journey-milestone-kicker">Cột mốc ${step.number}</span>
             <h2>${escapeHtml(step.title)}</h2>
-            <p class="journey-milestone-meta">${escapeHtml(step.region)}${step.reference ? ` · ${escapeHtml(step.reference)}` : ""}</p>
-            <p>${escapeHtml(step.story)}</p>
-            <blockquote>${escapeHtml(step.lesson)}</blockquote>
+            ${metaHtml ? `<p class="journey-milestone-meta">${metaHtml}</p>` : ""}
+            <div class="journey-milestone-html">${renderAdminHtml(step.story)}</div>
+            <blockquote>${renderAdminHtml(step.lesson)}</blockquote>
           </div>
         </article>
       </div>
@@ -734,7 +1270,9 @@
 
     gameRoot.innerHTML = `
       <div class="journey-game-layout journey-map-info-layout">
-        <div class="journey-map-stage">
+        <button class="journey-back-to-topics" type="button" id="journeyBackToTopics">← Quay lại chọn chủ đề</button>
+        <div class="journey-map-guide-panel">BẠN HÃY CHỌN CÁC VÒNG TRÒN CỘT MỐC ĐỂ XEM</div>
+        <div class="journey-map-stage" style="--journey-map-image: url('${escapeAttr(activeJourneyMapImage)}')">
 
         <section class="journey-hud" aria-label="Tiến trình người chơi">
           <div><strong>★</strong><span>Điểm đức tin</span><b>${progress.faithPoints}</b></div>
@@ -787,7 +1325,6 @@
           <span>Mc 16,15</span>
         </blockquote>
 
-        <button class="journey-back-to-topics" type="button" id="journeyBackToTopics">← Chọn chủ đề khác</button>
         ${renderMilestonePopup()}
         </div>
       </div>
@@ -798,7 +1335,9 @@
     const topic = journeyTopicDetails.get(topicId) || (topicId === JESUS_TOPIC_ID ? { milestones: jesusMilestones, challenges: journeyChallenges } : null);
     if (!topic) return;
 
-    activeJourneyMilestones = topic.milestones?.length ? topic.milestones : jesusMilestones;
+    activeJourneyMilestones = topic.milestones?.length ? topic.milestones : fallbackMilestonesForTopic(topic);
+    if (!activeJourneyMilestones.length && topicId === JESUS_TOPIC_ID) activeJourneyMilestones = jesusMilestones;
+    activeJourneyMapImage = journeyMapImageForTopic(topic);
     journeyChallenges = topic.challenges && typeof topic.challenges === "object" ? topic.challenges : {};
     if (topicId === JESUS_TOPIC_ID && !Object.keys(journeyChallenges).length) {
       journeyChallenges = { [String(BAPTISM_STEP_NUMBER)]: baptismChallenge };
@@ -816,7 +1355,7 @@
     return;
 
     if (topicId !== JESUS_TOPIC_ID) {
-      alert("Chủ đề này đang được chuẩn bị. Hiện tại mình bắt đầu trước với Hành trình theo dấu chân Chúa Giêsu.");
+      alert("Chủ đề này đang được chuẩn bị. Vui lòng bổ sung cột mốc trong trang quản lý.");
       return;
     }
 
@@ -946,6 +1485,5 @@
       startStepChallenge(Number(challengeButton.dataset.step) || state.selectedStepNumber);
     }
   });
-  renderTopics();
   loadJourneyBibleSettings().finally(renderTopics);
 })();
