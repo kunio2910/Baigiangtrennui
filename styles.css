@@ -9475,3 +9475,155 @@ body.journey-page.faith-choosing-set .journey-set-picker {
     margin-top: 12px !important;
   }
 }
+/* 14.132. Journey Bible map configuration editor in admin */
+.journey-map-config-block .admin-field-hint {
+  margin-top: -4px;
+}
+
+.journey-map-editor {
+  position: relative;
+  width: 100%;
+  margin: 14px 0;
+  overflow: hidden;
+  border: 1px solid rgba(184, 121, 33, 0.38);
+  border-radius: 12px;
+  background: rgba(184, 121, 33, 0.08);
+  min-height: 220px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.34);
+  touch-action: none;
+}
+
+.journey-map-editor img {
+  display: block;
+  width: 100%;
+  height: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.journey-map-editor.is-empty {
+  display: grid;
+  place-items: center;
+}
+
+.journey-map-marker-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.journey-map-marker {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  transform: translate(-50%, -50%);
+  border: 2px solid #fff8dd;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #f4b642, #9b5f10);
+  color: #fff9e8;
+  font-size: 0.82rem;
+  font-weight: 800;
+  line-height: 1;
+  cursor: grab;
+  box-shadow: 0 6px 18px rgba(63, 34, 9, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  pointer-events: auto;
+}
+
+.journey-map-marker:active {
+  cursor: grabbing;
+}
+
+.journey-map-marker.active {
+  background: linear-gradient(180deg, #286fc2, #0f3f80);
+  box-shadow: 0 0 0 4px rgba(244, 182, 66, 0.32), 0 8px 20px rgba(14, 43, 86, 0.45);
+}
+
+.journey-map-empty-note {
+  max-width: 420px;
+  margin: 0;
+  padding: 18px;
+  color: #8a5517;
+  text-align: center;
+  font-weight: 700;
+}
+
+.journey-map-point-fields {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.journey-map-point-fields input[readonly] {
+  color: #8a5517;
+  background: rgba(184, 121, 33, 0.08);
+  cursor: default;
+}
+
+:root[data-theme="dark"] .journey-map-editor {
+  border-color: rgba(224, 160, 58, 0.55);
+  background: rgba(184, 121, 33, 0.10);
+  box-shadow: inset 0 0 0 1px rgba(255, 214, 151, 0.12);
+}
+
+:root[data-theme="dark"] .journey-map-empty-note,
+:root[data-theme="dark"] .journey-map-point-fields input[readonly] {
+  color: #ffe3aa;
+}
+
+@media (max-width: 720px) {
+  .journey-map-point-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .journey-map-marker {
+    width: 26px;
+    height: 26px;
+    font-size: 0.75rem;
+  }
+}
+/* 14.133. Journey map popup translucent and smaller on mobile */
+body.journey-page .journey-milestone-modal-backdrop {
+  background: rgba(31, 18, 9, 0.18) !important;
+  backdrop-filter: blur(1px);
+}
+
+body.journey-page .journey-milestone-panel {
+  background: linear-gradient(145deg, rgba(255, 250, 240, 0.76), rgba(255, 242, 220, 0.7)) !important;
+  backdrop-filter: blur(4px) saturate(1.04);
+  -webkit-backdrop-filter: blur(4px) saturate(1.04);
+}
+
+:root[data-theme="dark"] body.journey-page .journey-milestone-modal-backdrop {
+  background: rgba(14, 8, 5, 0.2) !important;
+}
+
+:root[data-theme="dark"] body.journey-page .journey-milestone-panel {
+  background: linear-gradient(145deg, rgba(48, 33, 22, 0.74), rgba(33, 21, 14, 0.68)) !important;
+}
+
+@media (max-width: 680px) {
+  body.journey-page .journey-milestone-modal {
+    padding: 18px !important;
+  }
+
+  body.journey-page .journey-milestone-panel {
+    width: min(84vw, 340px) !important;
+    max-width: min(84vw, 340px) !important;
+    max-height: min(72dvh, 540px) !important;
+    border-radius: 16px !important;
+  }
+
+  body.journey-page .journey-milestone-image {
+    height: clamp(88px, 18dvh, 132px) !important;
+  }
+
+  body.journey-page .journey-milestone-content {
+    padding: 12px 12px 14px !important;
+  }
+
+  body.journey-page .journey-milestone-close {
+    top: 7px !important;
+    right: 7px !important;
+    width: 30px !important;
+  }
+}

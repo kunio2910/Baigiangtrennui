@@ -7,7 +7,7 @@
     <meta name="robots" content="noindex, nofollow" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/favicon.png" />
-    <link rel="stylesheet" href="styles.css?v=20260721-journey-font-hover" />
+    <link rel="stylesheet" href="styles.css?v=20260721-journey-popup-clearer" />
   </head>
   <body class="admin-page">
     <header class="site-header admin-header">
@@ -334,6 +334,7 @@
                 <option value="creation">Chúa tạo dựng trời đất</option>
                 <option value="stations">14 Chặng Đàng Thánh Giá</option>
                 <option value="miracles">Chúa làm phép lạ</option>
+                <option value="custom">Bản đồ tùy chỉnh</option>
               </select>
             </label>
             <label>
@@ -348,6 +349,48 @@
               </div>
             </label>
             <img class="image-preview" id="journeyPickerPreview" alt="Xem trước ảnh chọn chủ đề" />
+          </div>
+
+          <div class="journey-admin-block journey-map-config-block">
+            <h3>Cấu hình bản đồ</h3>
+            <label>
+              <span>Ảnh bản đồ</span>
+              <div class="image-url-tools">
+                <input id="journeyMapImageUrl" type="url" placeholder="https://... hoặc /assets/ten-ban-do.png" />
+                <button class="ghost-button" type="button" id="journeyMapUploadButton">Upload Cloudinary</button>
+              </div>
+            </label>
+            <p class="admin-field-hint">Bản đồ cũ sẽ tự hiện ảnh và tọa độ đang dùng hiện tại. Với bản đồ mới, hãy chọn “Bản đồ tùy chỉnh”, upload ảnh rồi kéo các vòng tròn đến đúng vị trí.</p>
+            <div class="two-fields">
+              <label>
+                <span>Số vòng tròn / cột mốc</span>
+                <input id="journeyMapPointCount" type="number" min="1" max="99" placeholder="16" />
+              </label>
+              <label>
+                <span>Vòng tròn đang chỉnh</span>
+                <select id="journeyMapPointSelect"></select>
+              </label>
+            </div>
+            <div class="journey-map-editor" id="journeyMapEditor" aria-label="Chỉnh vị trí vòng tròn trên bản đồ">
+              <img id="journeyMapEditorImage" alt="Bản đồ Hành trình Kinh Thánh" />
+              <div class="journey-map-marker-layer" id="journeyMapMarkerLayer"></div>
+              <p class="journey-map-empty-note" id="journeyMapEmptyNote">Nhập URL ảnh bản đồ hoặc upload Cloudinary để bắt đầu chỉnh vị trí.</p>
+            </div>
+            <div class="three-fields journey-map-point-fields">
+              <label>
+                <span>Vị trí X (%)</span>
+                <input id="journeyMapPointX" type="number" min="0" max="100" step="0.1" placeholder="50" />
+              </label>
+              <label>
+                <span>Vị trí Y (%)</span>
+                <input id="journeyMapPointY" type="number" min="0" max="100" step="0.1" placeholder="50" />
+              </label>
+              <label>
+                <span>Gợi ý thao tác</span>
+                <input type="text" value="Kéo vòng tròn hoặc nhập X/Y" readonly />
+              </label>
+            </div>
+            <p class="admin-field-hint">Tọa độ được tính theo phần trăm chiều ngang và chiều dọc của ảnh, nên vẫn giữ đúng vị trí khi xem trên điện thoại.</p>
           </div>
 
           <div class="journey-admin-block">
@@ -443,7 +486,7 @@
     <script src="https://upload-widget.cloudinary.com/latest/global/all.js"></script>
     <script src="data.js?v=20260721-journey-map-panel-fix"></script>
     <script src="auth.js?v=20260715-no-sample-seed"></script>
-    <script src="admin.js?v=20260721-journey-mobile-maptype"></script>
+    <script src="admin.js?v=20260721-journey-map-admin"></script>
     <script defer src="/_vercel/insights/script.js"></script>
   </body>
 </html>

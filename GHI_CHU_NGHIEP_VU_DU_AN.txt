@@ -4514,3 +4514,15 @@ Lưu ý kỹ thuật:
 
 **Lưu ý:**
 - Logic tìm kiếm/sắp xếp trong `faith-discovery.js` và `journey-test.js` vẫn còn nguyên, không bị xóa.
+### 14.132. Bổ sung cấu hình bản đồ trong admin Hành trình Kinh Thánh
+- Tab quản lý "Hành trình Kinh Thánh" có thêm khối "Cấu hình bản đồ": nhập/upload URL ảnh bản đồ, chọn số vòng tròn/cột mốc, chọn vòng tròn đang chỉnh, nhập X/Y theo phần trăm và kéo thả trực tiếp trên ảnh.
+- Các bản đồ cũ tự nạp ảnh mặc định và tọa độ hiện tại vào trang quản lý; khi admin lưu lại, tọa độ được đánh dấu là đã chỉnh và trang bản đồ công khai sẽ đọc tọa độ đã lưu.
+- Thêm loại "Bản đồ tùy chỉnh" để tạo chủ đề mới với ảnh bản đồ riêng mà không cần sửa code; tọa độ X/Y tính theo phần trăm nên giữ vị trí ổn định trên điện thoại.
+- Không xóa chức năng ảnh card, text panel cột mốc và thử thách hiện có; phần cấu hình mới chỉ bổ sung dữ liệu mapImageUrl, mapPositionsEdited và x/y trên milestones.
+### 14.133. Chỉnh popup cột mốc Hành trình Kinh Thánh
+- Popup thông tin cột mốc trên màn hình bản đồ được chỉnh nền trong suốt nhẹ và backdrop tối ít hơn để vẫn nhìn thấy mờ bản đồ phía dưới.
+- Riêng giao diện điện thoại, popup không còn chiếm gần toàn màn hình: panel được giới hạn khoảng 84vw và 72dvh, vẫn giữ chữ đủ đọc và nội dung cuộn trong panel nếu dài.
+- Desktop giữ kích thước popup hiện tại, chỉ áp dụng độ trong suốt nhẹ theo yêu cầu.
+### 14.134. Tăng độ trong suốt popup cột mốc bản đồ
+- Tăng thêm độ trong suốt của backdrop và panel popup cột mốc Hành trình Kinh Thánh để bản đồ phía dưới hiện rõ hơn nhưng vẫn giữ chữ đọc được.
+- Cập nhật cache CSS sang `20260721-journey-popup-clearer`.

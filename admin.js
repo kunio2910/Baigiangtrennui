@@ -100,6 +100,16 @@ const journeyMilestoneNumber = document.querySelector("#journeyMilestoneNumber")
 const journeyMapCardImageUrl = document.querySelector("#journeyMapCardImageUrl");
 const journeyMapCardUploadButton = document.querySelector("#journeyMapCardUploadButton");
 const journeyMapCardPreview = document.querySelector("#journeyMapCardPreview");
+const journeyMapImageUrl = document.querySelector("#journeyMapImageUrl");
+const journeyMapUploadButton = document.querySelector("#journeyMapUploadButton");
+const journeyMapPointCount = document.querySelector("#journeyMapPointCount");
+const journeyMapPointSelect = document.querySelector("#journeyMapPointSelect");
+const journeyMapPointX = document.querySelector("#journeyMapPointX");
+const journeyMapPointY = document.querySelector("#journeyMapPointY");
+const journeyMapEditor = document.querySelector("#journeyMapEditor");
+const journeyMapEditorImage = document.querySelector("#journeyMapEditorImage");
+const journeyMapMarkerLayer = document.querySelector("#journeyMapMarkerLayer");
+const journeyMapEmptyNote = document.querySelector("#journeyMapEmptyNote");
 const journeyMilestoneTitle = document.querySelector("#journeyMilestoneTitle");
 const journeyMilestoneReference = document.querySelector("#journeyMilestoneReference");
 const journeyMilestoneRegion = document.querySelector("#journeyMilestoneRegion");
@@ -123,6 +133,8 @@ let activeFaithMaskDrag = null;
 let journeyBibleTopics = [];
 let activeJourneyTopicId = "";
 let currentJourneyMilestones = [];
+let selectedJourneyMapPointNumber = 1;
+let activeJourneyMapDragNumber = null;
 const legacyFaithPickerSampleImages = ["/assets/faith-picker-maria.jpg", "assets/faith-picker-maria.jpg"];
 const journeyAdminMapNumberPositions = [
   { x: 29.5, y: 18.7 },
@@ -201,6 +213,21 @@ const journeyAdminMiraclesMapNumberPositions = [
   { x: 77.0, y: 75.0 },
   { x: 49.0, y: 88.0 },
 ];
+const journeyAdminDefaultMapImages = {
+  jesus: "/assets/journey-jesus-map.png",
+  exodus: "/assets/journey-moses-exodus-map.png",
+  creation: "/assets/journey-creation-map.png",
+  stations: "/assets/journey-stations-cross-map.png",
+  miracles: "/assets/journey-miracles-map.png",
+  custom: "",
+};
+const journeyAdminMapPositionsByType = {
+  jesus: journeyAdminMapNumberPositions,
+  exodus: journeyAdminExodusMapNumberPositions,
+  creation: journeyAdminCreationMapNumberPositions,
+  stations: journeyAdminStationsMapNumberPositions,
+  miracles: journeyAdminMiraclesMapNumberPositions,
+};
 
 function setJourneyControlLabel(control, labelText) {
   const label = control?.closest("label");
@@ -1095,6 +1122,8 @@ function defaultJourneyAdminTopic() {
     description: "",
     enabled: true,
     mapType: "jesus",
+    mapImageUrl: "",
+    mapPositionsEdited: false,
     pickerImageUrl: "",
     milestones: [],
     challenges: {},
@@ -1158,9 +1187,12 @@ function normalizeAdminJourneyChallenge(challenge = {}) {
 function normalizeAdminJourneyTopic(topic, index = 0) {
   const fallback = defaultJourneyAdminTopic();
   const rawTopic = topic || fallback;
-  const milestones = Array.isArray(rawTopic.milestones)
+  const mapType = detectAdminJourneyMapType(rawTopic);
+  const preferSavedMapPositions = rawTopic.mapPositionsEdited === true || mapType === "custom";
+  const rawMilestones = Array.isArray(rawTopic.milestones)
     ? rawTopic.milestones.map(normalizeAdminJourneyMilestone).filter(Boolean).sort((a, b) => a.number - b.number)
     : [];
+  const milestones = applyJourneyDefaultMapPositions(rawMilestones, mapType, preferSavedMapPositions);
   const rawChallenges = rawTopic.challenges && typeof rawTopic.challenges === "object" ? rawTopic.challenges : {};
   const challenges = Object.fromEntries(
     Object.entries(rawChallenges)
@@ -1174,7 +1206,9 @@ function normalizeAdminJourneyTopic(topic, index = 0) {
     label: String(rawTopic.label || "").trim(),
     description: String(rawTopic.description || "").trim(),
     enabled: rawTopic.enabled !== false,
-    mapType: detectAdminJourneyMapType(rawTopic),
+    mapType,
+    mapImageUrl: String(rawTopic.mapImageUrl || defaultJourneyAdminMapImageForType(mapType) || "").trim(),
+    mapPositionsEdited: rawTopic.mapPositionsEdited === true,
     pickerImageUrl: String(rawTopic.pickerImageUrl || "").trim(),
     milestones,
     challenges,
@@ -1222,6 +1256,7 @@ function detectAdminJourneyMapType(topic = {}) {
   const haystacks = [explicitText, idText, imageText, titleText];
   const match = (...patterns) => haystacks.some((text) => patterns.some((pattern) => text.includes(pattern)));
 
+  if (explicitText === "custom" || explicitText.includes("tuy chinh")) return "custom";
   if (match("exodus", "xuat hanh", "mo se", "mose", "moses")) return "exodus";
   if (match("creation", "chua tao dung troi dat", "tao dung", "sang the")) return "creation";
   if (match("stations", "14 chang dang thanh gia", "14 chan dang thanh gia", "dang thanh gia", "cross")) return "stations";
@@ -1229,6 +1264,58 @@ function detectAdminJourneyMapType(topic = {}) {
   return "jesus";
 }
 
+function journeyAdminMapPositionsForType(mapType) {
+  return journeyAdminMapPositionsByType[mapType] || [];
+}
+
+function journeyGeneratedPositionForNumber(number) {
+  const numericNumber = Math.max(1, Number(number) || 1);
+  const column = (numericNumber - 1) % 4;
+  const row = Math.floor((numericNumber - 1) / 4);
+  return {
+    x: Math.min(90, 18 + column * 21),
+    y: Math.min(92, 12 + row * 12),
+  };
+}
+
+function journeyDefaultPositionForMapType(number, mapType) {
+  const numericNumber = Math.max(1, Number(number) || 1);
+  const positions = journeyAdminMapPositionsForType(mapType);
+  return positions[numericNumber - 1] || journeyGeneratedPositionForNumber(numericNumber);
+}
+
+function defaultJourneyAdminMapImageForType(mapType) {
+  return journeyAdminDefaultMapImages[mapType] || "";
+}
+
+function selectedJourneyAdminMapType() {
+  const activeTopic = selectedJourneyTopic() || {};
+  return detectAdminJourneyMapType({
+    ...activeTopic,
+    id: journeyTopicId?.value || activeTopic.id || activeJourneyTopicId || "",
+    title: journeyTopicTitle?.value || activeTopic.title || "",
+    mapType: journeyTopicMapType?.value || activeTopic.mapType || "",
+    mapImageUrl: journeyMapImageUrl?.value || activeTopic.mapImageUrl || "",
+  });
+}
+
+function applyJourneyDefaultMapPositions(milestones, mapType, preferSavedPositions = false) {
+  return (Array.isArray(milestones) ? milestones : [])
+    .map((milestone, index) => {
+      const number = Number(milestone?.number || index + 1);
+      const defaultPosition = journeyDefaultPositionForMapType(number, mapType);
+      const savedX = Number(milestone?.x);
+      const savedY = Number(milestone?.y);
+      return normalizeAdminJourneyMilestone({
+        ...milestone,
+        number,
+        x: preferSavedPositions && Number.isFinite(savedX) ? savedX : defaultPosition.x,
+        y: preferSavedPositions && Number.isFinite(savedY) ? savedY : defaultPosition.y,
+      }, index);
+    })
+    .filter(Boolean)
+    .sort((a, b) => a.number - b.number);
+}
 function renderJourneyTopicList() {
   if (!journeyTopicList) return;
   if (!journeyBibleTopics.length) {
@@ -1268,6 +1355,150 @@ function updateJourneyMapCardPreview() {
   updateJourneyImagePreview(journeyMapCardImageUrl, journeyMapCardPreview);
 }
 
+function formatJourneyMapPercent(value) {
+  const number = Number(value);
+  return Number.isFinite(number) ? String(Math.round(number * 10) / 10) : "";
+}
+
+function clampJourneyMapPercent(value, fallback = 50) {
+  const number = Number(value);
+  if (!Number.isFinite(number)) return fallback;
+  return Math.min(100, Math.max(0, Math.round(number * 10) / 10));
+}
+
+function journeyMilestoneMaxNumber(milestones) {
+  return (Array.isArray(milestones) ? milestones : []).reduce((max, milestone, index) => {
+    const number = Number(milestone?.number || index + 1);
+    return Number.isFinite(number) ? Math.max(max, number) : max;
+  }, 0);
+}
+
+function syncJourneyMapPointCountField() {
+  if (!journeyMapPointCount) return;
+  const milestones = parseJourneyMilestonesFromForm();
+  const count = journeyMilestoneMaxNumber(milestones) || milestones.length;
+  journeyMapPointCount.value = count ? String(count) : "";
+}
+
+function renderJourneyMapPointSelect(selectedNumber = selectedJourneyMapPointNumber) {
+  if (!journeyMapPointSelect) return;
+  const milestones = parseJourneyMilestonesFromForm();
+  if (!milestones.length) {
+    journeyMapPointSelect.innerHTML = `<option value="">Chưa có vòng tròn</option>`;
+    return;
+  }
+  journeyMapPointSelect.innerHTML = milestones
+    .map((milestone) => `<option value="${milestone.number}">${milestone.number}. ${escapeHtml(milestone.title || `Cột mốc ${milestone.number}`)}</option>`)
+    .join("");
+  if (selectedNumber) journeyMapPointSelect.value = String(selectedNumber);
+}
+
+function syncJourneyMapPointInputs(number = selectedJourneyMapPointNumber) {
+  const milestones = parseJourneyMilestonesFromForm();
+  const selected = milestones.find((milestone) => milestone.number === Number(number)) || milestones[0] || null;
+  if (selected) selectedJourneyMapPointNumber = Number(selected.number);
+  if (journeyMapPointX) journeyMapPointX.value = selected ? formatJourneyMapPercent(selected.x) : "";
+  if (journeyMapPointY) journeyMapPointY.value = selected ? formatJourneyMapPercent(selected.y) : "";
+  if (journeyMapPointSelect && selected) journeyMapPointSelect.value = String(selected.number);
+}
+
+function renderJourneyMapEditor() {
+  if (!journeyMapEditor) return;
+  const mapType = selectedJourneyAdminMapType();
+  const imageUrl = String(journeyMapImageUrl?.value || defaultJourneyAdminMapImageForType(mapType) || "").trim();
+  const hasImage = Boolean(imageUrl);
+  journeyMapEditor.classList.toggle("is-empty", !hasImage);
+  if (journeyMapEditorImage) {
+    if (hasImage) {
+      journeyMapEditorImage.src = imageUrl;
+      journeyMapEditorImage.hidden = false;
+    } else {
+      journeyMapEditorImage.removeAttribute("src");
+      journeyMapEditorImage.hidden = true;
+    }
+  }
+  if (journeyMapEmptyNote) journeyMapEmptyNote.hidden = hasImage;
+  const milestones = parseJourneyMilestonesFromForm();
+  if (journeyMapMarkerLayer) {
+    journeyMapMarkerLayer.innerHTML = hasImage
+      ? milestones.map((milestone) => {
+          const selected = Number(milestone.number) === Number(selectedJourneyMapPointNumber);
+          return `<button class="journey-map-marker${selected ? " active" : ""}" type="button" data-number="${milestone.number}" style="left: ${formatJourneyMapPercent(milestone.x)}%; top: ${formatJourneyMapPercent(milestone.y)}%;" aria-label="Vòng tròn ${milestone.number}">${milestone.number}</button>`;
+        }).join("")
+      : "";
+  }
+  syncJourneyMapPointCountField();
+  renderJourneyMapPointSelect(selectedJourneyMapPointNumber);
+  syncJourneyMapPointInputs(selectedJourneyMapPointNumber);
+}
+
+function applyJourneyMapPointCountFromField(options = {}) {
+  const silent = Boolean(options.silent);
+  const count = Number(journeyMapPointCount?.value);
+  if (!Number.isFinite(count) || count <= 0) return;
+  const targetCount = Math.max(1, Math.min(99, Math.round(count)));
+  const mapType = selectedJourneyAdminMapType();
+  const milestones = parseJourneyMilestonesFromForm();
+  const byNumber = new Map(milestones.map((milestone) => [Number(milestone.number), milestone]));
+  const nextMilestones = [];
+  for (let number = 1; number <= targetCount; number += 1) {
+    const existing = byNumber.get(number) || {};
+    const defaultPosition = journeyDefaultPositionForMapType(number, mapType);
+    nextMilestones.push(normalizeAdminJourneyMilestone({
+      ...existing,
+      number,
+      title: existing.title || `Cột mốc ${number}`,
+      x: Number.isFinite(Number(existing.x)) ? Number(existing.x) : defaultPosition.x,
+      y: Number.isFinite(Number(existing.y)) ? Number(existing.y) : defaultPosition.y,
+    }));
+  }
+  currentJourneyMilestones = nextMilestones.filter(Boolean);
+  selectedJourneyMapPointNumber = Math.min(selectedJourneyMapPointNumber || 1, targetCount);
+  renderJourneyMilestoneSelect(selectedJourneyMapPointNumber);
+  fillJourneyMilestoneForm(selectedJourneyMapPointNumber);
+  renderJourneyMapEditor();
+  if (!silent && journeyBibleMessage) journeyBibleMessage.textContent = `Đã tạo ${targetCount} vòng tròn cột mốc. Kéo trên bản đồ hoặc nhập X/Y rồi bấm Lưu Hành trình Kinh Thánh.`;
+}
+
+function updateJourneyMapPointPosition(number, x, y) {
+  const numericNumber = Number(number);
+  if (!Number.isFinite(numericNumber) || numericNumber <= 0) return;
+  const milestones = parseJourneyMilestonesFromForm();
+  const existing = milestones.find((milestone) => milestone.number === numericNumber) || { number: numericNumber, title: `Cột mốc ${numericNumber}` };
+  const fallback = journeyDefaultPositionForMapType(numericNumber, selectedJourneyAdminMapType());
+  const nextX = clampJourneyMapPercent(x, fallback.x);
+  const nextY = clampJourneyMapPercent(y, fallback.y);
+  const nextMilestone = normalizeAdminJourneyMilestone({
+    ...existing,
+    number: numericNumber,
+    x: nextX,
+    y: nextY,
+  });
+  currentJourneyMilestones = milestones
+    .filter((milestone) => milestone.number !== numericNumber)
+    .concat(nextMilestone)
+    .sort((a, b) => a.number - b.number);
+  selectedJourneyMapPointNumber = numericNumber;
+  if (journeyMapPointX) journeyMapPointX.value = formatJourneyMapPercent(nextX);
+  if (journeyMapPointY) journeyMapPointY.value = formatJourneyMapPercent(nextY);
+  if (journeyMapPointSelect) journeyMapPointSelect.value = String(numericNumber);
+  const marker = journeyMapMarkerLayer?.querySelector(`[data-number="${numericNumber}"]`);
+  if (marker) {
+    marker.style.left = `${formatJourneyMapPercent(nextX)}%`;
+    marker.style.top = `${formatJourneyMapPercent(nextY)}%`;
+  }
+}
+
+function journeyMapPointFromEvent(event) {
+  if (!journeyMapEditor) return null;
+  const rect = journeyMapEditor.getBoundingClientRect();
+  if (!rect.width || !rect.height) return null;
+  return {
+    x: clampJourneyMapPercent(((event.clientX - rect.left) / rect.width) * 100),
+    y: clampJourneyMapPercent(((event.clientY - rect.top) / rect.height) * 100),
+  };
+}
+
 function renderJourneyMilestoneSelect(selectedNumber) {
   if (!journeyMilestoneSelect) return;
   const milestones = parseJourneyMilestonesFromForm();
@@ -1287,25 +1518,7 @@ function renderJourneyMilestoneSelect(selectedNumber) {
 }
 
 function journeyDefaultPositionForNumber(number) {
-  const numericNumber = Number(number);
-  const activeTopic = selectedJourneyTopic() || {};
-  const mapType = detectAdminJourneyMapType({
-    ...activeTopic,
-    id: journeyTopicId?.value || activeTopic.id || activeJourneyTopicId || "",
-    title: activeTopic.title || journeyTopicTitle?.value || "",
-    mapType: journeyTopicMapType?.value || activeTopic.mapType || "",
-  });
-  let positions = journeyAdminMapNumberPositions;
-  if (mapType === "exodus") {
-    positions = journeyAdminExodusMapNumberPositions;
-  } else if (mapType === "creation") {
-    positions = journeyAdminCreationMapNumberPositions;
-  } else if (mapType === "stations") {
-    positions = journeyAdminStationsMapNumberPositions;
-  } else if (mapType === "miracles") {
-    positions = journeyAdminMiraclesMapNumberPositions;
-  }
-  return positions[numericNumber - 1] || { x: 50, y: 50 };
+  return journeyDefaultPositionForMapType(number, selectedJourneyAdminMapType());
 }
 
 function fillJourneyMilestoneForm(number) {
@@ -1319,7 +1532,9 @@ function fillJourneyMilestoneForm(number) {
   journeyMilestoneStory.value = milestone?.story || "";
   journeyMilestoneLesson.value = milestone?.lesson || "";
   journeyMapCardImageUrl.value = milestone?.cardImageUrl || "";
+  selectedJourneyMapPointNumber = Number(milestone?.number || selectedJourneyMapPointNumber || 1);
   updateJourneyMapCardPreview();
+  renderJourneyMapEditor();
 }
 
 function fillJourneyTopicForm(topic) {
@@ -1334,10 +1549,14 @@ function fillJourneyTopicForm(topic) {
   journeyTopicEnabled.value = normalizedTopic.enabled ? "true" : "false";
   journeyTopicDescription.value = normalizedTopic.description;
   journeyPickerImageUrl.value = normalizedTopic.pickerImageUrl;
+  if (journeyMapImageUrl) journeyMapImageUrl.value = normalizedTopic.mapImageUrl || defaultJourneyAdminMapImageForType(normalizedTopic.mapType);
   currentJourneyMilestones = normalizedTopic.milestones;
+  selectedJourneyMapPointNumber = normalizedTopic.milestones[0]?.number || 1;
   updateJourneyPickerPreview();
+  syncJourneyMapPointCountField();
   renderJourneyMilestoneSelect(normalizedTopic.milestones[0]?.number);
   fillJourneyMilestoneForm(normalizedTopic.milestones[0]?.number);
+  renderJourneyMapEditor();
   renderJourneyTopicList();
 }
 
@@ -1366,6 +1585,10 @@ function updateJourneyMilestoneFromFields(options = {}) {
     if (!Number.isFinite(number) || number <= 0) throw new Error("Vui lòng nhập số cột mốc hợp lệ.");
     const existing = milestones.find((item) => item.number === number) || {};
     const defaultPosition = journeyDefaultPositionForNumber(number);
+    const inputX = Number(selectedJourneyMapPointNumber === number ? journeyMapPointX?.value : NaN);
+    const inputY = Number(selectedJourneyMapPointNumber === number ? journeyMapPointY?.value : NaN);
+    const existingX = Number(existing.x);
+    const existingY = Number(existing.y);
     const nextMilestone = normalizeAdminJourneyMilestone({
       ...existing,
       number,
@@ -1375,13 +1598,15 @@ function updateJourneyMilestoneFromFields(options = {}) {
       story: journeyMilestoneStory.value.trim(),
       lesson: journeyMilestoneLesson.value.trim(),
       cardImageUrl: journeyMapCardImageUrl.value.trim(),
-      x: Number.isFinite(existing.x) ? existing.x : defaultPosition.x,
-      y: Number.isFinite(existing.y) ? existing.y : defaultPosition.y,
+      x: Number.isFinite(inputX) ? clampJourneyMapPercent(inputX, defaultPosition.x) : Number.isFinite(existingX) ? existingX : defaultPosition.x,
+      y: Number.isFinite(inputY) ? clampJourneyMapPercent(inputY, defaultPosition.y) : Number.isFinite(existingY) ? existingY : defaultPosition.y,
     });
     const nextMilestones = milestones.filter((item) => item.number !== number).concat(nextMilestone).sort((a, b) => a.number - b.number);
     currentJourneyMilestones = nextMilestones;
+    selectedJourneyMapPointNumber = number;
     renderJourneyMilestoneSelect(number);
     if (journeyMilestoneSelect) journeyMilestoneSelect.value = String(number);
+    renderJourneyMapEditor();
     if (!silent && journeyBibleMessage) journeyBibleMessage.textContent = `Đã cập nhật cột mốc ${number}. Bấm Lưu Hành trình Kinh Thánh để lưu Firestore.`;
   } catch (error) {
     if (!silent && journeyBibleMessage) journeyBibleMessage.textContent = error.message;
@@ -1414,6 +1639,8 @@ function startNewJourneyMilestone(useTypedNumber = true) {
       y: defaultPosition.y,
     });
     currentJourneyMilestones = milestones.concat(nextMilestone).sort((a, b) => a.number - b.number);
+    selectedJourneyMapPointNumber = nextNumber;
+    syncJourneyMapPointCountField();
     renderJourneyMilestoneSelect(nextNumber);
     journeyMilestoneNumber.value = String(nextNumber);
     journeyMilestoneTitle.value = "";
@@ -1423,6 +1650,7 @@ function startNewJourneyMilestone(useTypedNumber = true) {
     journeyMilestoneLesson.value = "";
     journeyMapCardImageUrl.value = "";
     updateJourneyMapCardPreview();
+    renderJourneyMapEditor();
     journeyMilestoneTitle.focus();
     if (journeyBibleMessage) journeyBibleMessage.textContent = `Đang tạo cột mốc ${nextNumber}. Nhập nội dung rồi bấm Lưu Hành trình Kinh Thánh.`;
   } catch (error) {
@@ -1442,8 +1670,11 @@ function deleteJourneyMilestoneFromFields() {
     const nextMilestones = milestones.filter((item) => item.number !== number);
     currentJourneyMilestones = nextMilestones;
     const nextSelectedNumber = nextMilestones[0]?.number || "";
+    selectedJourneyMapPointNumber = nextSelectedNumber || 1;
+    syncJourneyMapPointCountField();
     renderJourneyMilestoneSelect(nextSelectedNumber);
     fillJourneyMilestoneForm(nextSelectedNumber);
+    renderJourneyMapEditor();
     if (journeyBibleMessage) journeyBibleMessage.textContent = `Đã xóa cột mốc ${number}. Bấm Lưu Hành trình Kinh Thánh để lưu Firestore.`;
   } catch (error) {
     if (journeyBibleMessage) journeyBibleMessage.textContent = error.message;
@@ -1860,6 +2091,14 @@ function setupJourneyCloudinaryUpload() {
       journeyMapCardImageUrl,
       updateJourneyMapCardPreview,
       "Đã upload Cloudinary và tự điền ảnh panel cột mốc. Bấm Lưu Hành trình Kinh Thánh để áp dụng."
+    );
+  });
+
+  journeyMapUploadButton?.addEventListener("click", () => {
+    openJourneyCloudinaryUpload(
+      journeyMapImageUrl,
+      renderJourneyMapEditor,
+      "Đã upload Cloudinary và tự điền ảnh bản đồ. Kéo vòng tròn rồi bấm Lưu Hành trình Kinh Thánh để áp dụng."
     );
   });
 }
@@ -2471,6 +2710,50 @@ journeyMilestoneSelect?.addEventListener("change", () => {
   control?.addEventListener("input", () => updateJourneyMilestoneFromFields({ silent: true }));
 });
 
+journeyMapImageUrl?.addEventListener("input", renderJourneyMapEditor);
+journeyMapPointCount?.addEventListener("change", () => applyJourneyMapPointCountFromField());
+journeyMapPointSelect?.addEventListener("change", () => {
+  selectedJourneyMapPointNumber = Number(journeyMapPointSelect.value) || 1;
+  fillJourneyMilestoneForm(selectedJourneyMapPointNumber);
+});
+[journeyMapPointX, journeyMapPointY].forEach((control) => {
+  control?.addEventListener("input", () => {
+    updateJourneyMapPointPosition(selectedJourneyMapPointNumber, journeyMapPointX?.value, journeyMapPointY?.value);
+  });
+});
+journeyTopicMapType?.addEventListener("change", () => {
+  const mapType = selectedJourneyAdminMapType();
+  if (journeyMapImageUrl) journeyMapImageUrl.value = defaultJourneyAdminMapImageForType(mapType);
+  currentJourneyMilestones = applyJourneyDefaultMapPositions(parseJourneyMilestonesFromForm(), mapType, false);
+  syncJourneyMapPointCountField();
+  renderJourneyMilestoneSelect(selectedJourneyMapPointNumber);
+  fillJourneyMilestoneForm(selectedJourneyMapPointNumber);
+  renderJourneyMapEditor();
+  if (journeyBibleMessage) journeyBibleMessage.textContent = "Đã nạp ảnh và tọa độ mặc định theo loại bản đồ. Bấm Lưu Hành trình Kinh Thánh để áp dụng.";
+});
+journeyMapMarkerLayer?.addEventListener("pointerdown", (event) => {
+  const marker = event.target.closest(".journey-map-marker");
+  if (!marker) return;
+  event.preventDefault();
+  selectedJourneyMapPointNumber = Number(marker.dataset.number) || 1;
+  activeJourneyMapDragNumber = selectedJourneyMapPointNumber;
+  fillJourneyMilestoneForm(selectedJourneyMapPointNumber);
+});
+journeyMapEditor?.addEventListener("pointerdown", (event) => {
+  if (event.target.closest(".journey-map-marker")) return;
+  const point = journeyMapPointFromEvent(event);
+  if (!point) return;
+  updateJourneyMapPointPosition(selectedJourneyMapPointNumber, point.x, point.y);
+});
+document.addEventListener("pointermove", (event) => {
+  if (!activeJourneyMapDragNumber) return;
+  const point = journeyMapPointFromEvent(event);
+  if (!point) return;
+  updateJourneyMapPointPosition(activeJourneyMapDragNumber, point.x, point.y);
+});
+document.addEventListener("pointerup", () => {
+  activeJourneyMapDragNumber = null;
+});
 deleteJourneyMilestoneButton?.addEventListener("click", deleteJourneyMilestoneFromFields);
 
 journeyBibleForm?.addEventListener("submit", async (event) => {
@@ -2485,7 +2768,8 @@ journeyBibleForm?.addEventListener("submit", async (event) => {
   if (journeyBibleMessage) journeyBibleMessage.textContent = "Đang lưu Hành trình Kinh Thánh...";
 
   try {
-    updateJourneyMilestoneFromFields();
+    updateJourneyMilestoneFromFields({ silent: true });
+    applyJourneyMapPointCountFromField({ silent: true });
     const milestones = parseJourneyMilestonesFromForm();
     const challenges = getExistingChallengesForActiveTopic();
     const title = journeyTopicTitle.value.trim() || `Chủ đề ${journeyBibleTopics.length + 1}`;
@@ -2495,6 +2779,8 @@ journeyBibleForm?.addEventListener("submit", async (event) => {
       title,
       label: journeyTopicLabel.value.trim(),
       mapType: journeyTopicMapType?.value || "jesus",
+      mapImageUrl: journeyMapImageUrl?.value.trim() || defaultJourneyAdminMapImageForType(journeyTopicMapType?.value || "jesus"),
+      mapPositionsEdited: true,
       enabled: journeyTopicEnabled.value !== "false",
       description: journeyTopicDescription.value.trim(),
       pickerImageUrl: journeyPickerImageUrl.value.trim(),

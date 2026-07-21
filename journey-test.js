@@ -9,6 +9,7 @@
   const MAP_TYPE_CREATION = "creation";
   const MAP_TYPE_STATIONS = "stations";
   const MAP_TYPE_MIRACLES = "miracles";
+  const MAP_TYPE_CUSTOM = "custom";
   const JESUS_MAP_IMAGE = "/assets/journey-jesus-map.png";
   const EXODUS_MAP_IMAGE = "/assets/journey-moses-exodus-map.png";
   const CREATION_MAP_IMAGE = "/assets/journey-creation-map.png";
@@ -797,6 +798,9 @@
   function mapTypeFromText(value) {
     const normalized = normalizeText(value).replace(/[-_]+/g, " ");
     if (!normalized) return "";
+    if (normalized.includes(MAP_TYPE_CUSTOM) || normalized.includes("tuy chinh") || normalized.includes("custom map")) {
+      return MAP_TYPE_CUSTOM;
+    }
     if (
       normalized.includes(MAP_TYPE_EXODUS) ||
       normalized.includes("xuat hanh") ||
@@ -872,7 +876,12 @@
     return journeyMapTypeForTopic(topic) === MAP_TYPE_MIRACLES;
   }
 
+  function isCustomTopic(topic = {}) {
+    return journeyMapTypeForTopic(topic) === MAP_TYPE_CUSTOM;
+  }
+
   function journeyPositionsForTopic(topic) {
+    if (isCustomTopic(topic)) return [];
     if (isMiraclesTopic(topic)) return miraclesMapNumberPositions;
     if (isStationsTopic(topic)) return stationsMapNumberPositions;
     if (isCreationTopic(topic)) return creationMapNumberPositions;
@@ -895,7 +904,7 @@
     return isExodusTopic(topic) ? exodusMilestones : [];
   }
 
-  function mergeJourneyMilestones(rawMilestones, fallbackMilestones, positions) {
+  function mergeJourneyMilestones(rawMilestones, fallbackMilestones, positions, preferSavedPositions = false) {
     const rawList = Array.isArray(rawMilestones) ? rawMilestones : [];
     const rawByNumber = new Map(
       rawList
@@ -911,6 +920,10 @@
       const number = Number(milestone?.number || milestoneIndex + 1);
       const fallback = fallbackMilestones.find((item) => item.number === number) || {};
       const position = positions[number - 1] || positions[milestoneIndex] || { x: 50, y: 10 + milestoneIndex * 5 };
+      const savedX = Number(milestone?.x);
+      const savedY = Number(milestone?.y);
+      const useSavedX = (preferSavedPositions || !fallbackMilestones.length) && Number.isFinite(savedX);
+      const useSavedY = (preferSavedPositions || !fallbackMilestones.length) && Number.isFinite(savedY);
       return {
         number,
         title: String(milestone?.title || fallback.title || `Cột mốc ${number}`).trim(),
@@ -920,8 +933,8 @@
         story: String(milestone?.story || fallback.story || "").trim(),
         lesson: String(milestone?.lesson || fallback.lesson || "").trim(),
         cardImageUrl: String(milestone?.cardImageUrl || fallback.cardImageUrl || "").trim(),
-        x: fallbackMilestones.length ? position.x : Number.isFinite(Number(milestone?.x)) ? Number(milestone.x) : position.x,
-        y: fallbackMilestones.length ? position.y : Number.isFinite(Number(milestone?.y)) ? Number(milestone.y) : position.y,
+        x: useSavedX ? savedX : position.x,
+        y: useSavedY ? savedY : position.y,
       };
     });
   }
@@ -932,7 +945,8 @@
     const mapType = journeyMapTypeForTopic(topicShell);
     const stableTopicShell = { ...topicShell, mapType };
     const fallbackMilestones = fallbackMilestonesForTopic(stableTopicShell);
-    const milestones = mergeJourneyMilestones(topic?.milestones, fallbackMilestones, journeyPositionsForTopic(stableTopicShell));
+    const preferSavedPositions = topic?.mapPositionsEdited === true || mapType === MAP_TYPE_CUSTOM;
+    const milestones = mergeJourneyMilestones(topic?.milestones, fallbackMilestones, journeyPositionsForTopic(stableTopicShell), preferSavedPositions);
     return {
       id: String(topic?.id || fallback.id || `journey-topic-${index + 1}`).trim(),
       title: String(topic?.title || fallback.title || `Chủ đề ${index + 1}`).trim(),
@@ -942,6 +956,7 @@
       pickerImageUrl: String(topic?.pickerImageUrl || "").trim(),
       mapType,
       mapImageUrl: journeyMapImageForTopic(stableTopicShell),
+      mapPositionsEdited: topic?.mapPositionsEdited === true || mapType === MAP_TYPE_CUSTOM,
       steps: milestones.length || fallback.steps || 0,
       milestones,
       challenges: topic?.challenges && typeof topic.challenges === "object" ? topic.challenges : {},
