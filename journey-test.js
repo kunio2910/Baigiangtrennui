@@ -1,10 +1,4 @@
 (function () {
-  const isLocalhost = ["localhost", "127.0.0.1"].includes(window.location.hostname);
-  if (!isLocalhost) {
-    window.location.replace("/");
-    return;
-  }
-
   const JESUS_TOPIC_ID = "hanh-trinh-theo-dau-chan-chua-giesu";
   const BAPTISM_STEP_NUMBER = 3;
   let BAPTISM_REWARD_POINTS = 50;
@@ -27,6 +21,7 @@
       { id: "voice", label: "Tiếng từ trời", text: "Lời Chúa Cha phán", icon: "◌", correct: true },
     ],
   };
+  let journeyChallenges = { [String(BAPTISM_STEP_NUMBER)]: baptismChallenge };
 
   const jesusMilestones = [
     {
@@ -280,8 +275,8 @@
     fragments: 3,
     totalFragments: 12,
     badges: 1,
-    completed: new Set([1, 2, 3]),
-    unlocked: new Set([4, 5]),
+    completed: new Set([1, 2]),
+    unlocked: new Set([3]),
   };
 
   const state = {
@@ -296,6 +291,8 @@
     baptismTone: "info",
     baptismCompleted: false,
     baptismRewarded: false,
+    activeChallengeNumber: BAPTISM_STEP_NUMBER,
+    rewardedSteps: new Set(),
   };
 
   const picker = document.querySelector(".journey-set-picker");
@@ -382,6 +379,30 @@
       if (Number.isFinite(rewardPoints) && rewardPoints >= 0) BAPTISM_REWARD_POINTS = rewardPoints;
     }
 
+    journeyChallenges = { [String(BAPTISM_STEP_NUMBER)]: baptismChallenge };
+    if (jesusTopic?.challenges && typeof jesusTopic.challenges === "object") {
+      Object.entries(jesusTopic.challenges).forEach(([key, value]) => {
+        const number = Number(key);
+        if (!Number.isFinite(number) || !value || typeof value !== "object") return;
+        const base = number === BAPTISM_STEP_NUMBER ? baptismChallenge : {};
+        const normalized = {
+          ...base,
+          ...value,
+          title: String(value.title || base.title || `Thử thách cột mốc ${number}`).trim(),
+          instruction: String(value.instruction || base.instruction || "Hãy hoàn thành thử thách của cột mốc này.").trim(),
+          verse: String(value.verse || base.verse || "").trim(),
+          verseRef: String(value.verseRef || base.verseRef || "").trim(),
+          sceneImageUrl: String(value.sceneImageUrl || base.sceneImageUrl || "").trim(),
+          rewardPoints: Number.isFinite(Number(value.rewardPoints)) ? Number(value.rewardPoints) : Number(base.rewardPoints || BAPTISM_REWARD_POINTS),
+          targets: Array.isArray(value.targets) ? value.targets : Array.isArray(base.targets) ? base.targets : [],
+          options: Array.isArray(value.options) ? value.options : Array.isArray(base.options) ? base.options : [],
+        };
+        journeyChallenges[String(number)] = normalized;
+      });
+      baptismChallenge = journeyChallenges[String(BAPTISM_STEP_NUMBER)] || baptismChallenge;
+      BAPTISM_REWARD_POINTS = Number(baptismChallenge.rewardPoints || BAPTISM_REWARD_POINTS) || BAPTISM_REWARD_POINTS;
+    }
+
     topics = configuredTopics.map((topic) => ({
       id: topic.id,
       title: topic.title,
@@ -444,26 +465,46 @@
     }[status] || "Chưa mở khóa";
   }
 
-  function isBaptismChallengeComplete() {
-    return baptismChallenge.targets.every((target) => state.baptismSelectedSigns.has(target.signId));
+  function getChallengeForStep(stepNumber) {
+    const step = jesusMilestones.find((item) => item.number === stepNumber);
+    const challenge = journeyChallenges[String(stepNumber)] || {};
+    return {
+      ...challenge,
+      title: String(challenge.title || `Thử thách cột mốc ${stepNumber}`).trim(),
+      instruction: String(challenge.instruction || "Hãy hoàn thành thử thách của cột mốc này.").trim(),
+      verse: String(challenge.verse || step?.lesson || "").trim(),
+      verseRef: String(challenge.verseRef || step?.reference || "").trim(),
+      sceneImageUrl: String(challenge.sceneImageUrl || "").trim(),
+      rewardPoints: Number.isFinite(Number(challenge.rewardPoints)) ? Number(challenge.rewardPoints) : BAPTISM_REWARD_POINTS,
+      targets: Array.isArray(challenge.targets) ? challenge.targets : [],
+      options: Array.isArray(challenge.options) ? challenge.options : [],
+    };
   }
 
-  function completeBaptismChallenge() {
+  function isBaptismChallengeComplete(challenge = getChallengeForStep(state.activeChallengeNumber)) {
+    return challenge.targets.length > 0 && challenge.targets.every((target) => state.baptismSelectedSigns.has(target.signId));
+  }
+
+  function completeBaptismChallenge(challenge = getChallengeForStep(state.activeChallengeNumber)) {
+    const stepNumber = state.activeChallengeNumber || BAPTISM_STEP_NUMBER;
     state.baptismCompleted = true;
     state.baptismTone = "success";
     state.baptismMessage = "Bạn đã ghép đúng 3 dấu chỉ của biến cố Chúa chịu phép rửa.";
-    progress.completed.add(BAPTISM_STEP_NUMBER);
-    progress.unlocked.add(4);
+    progress.completed.add(stepNumber);
+    const nextStep = jesusMilestones.find((item) => item.number > stepNumber);
+    if (nextStep) progress.unlocked.add(nextStep.number);
 
-    if (!state.baptismRewarded) {
-      progress.faithPoints += BAPTISM_REWARD_POINTS;
+    if (!state.rewardedSteps.has(stepNumber)) {
+      progress.faithPoints += Number(challenge.rewardPoints || BAPTISM_REWARD_POINTS) || 0;
       progress.fragments = Math.min(progress.totalFragments, progress.fragments + 1);
+      state.rewardedSteps.add(stepNumber);
       state.baptismRewarded = true;
     }
   }
 
   function handleBaptismChoice(signId) {
-    const option = baptismChallenge.options.find((item) => item.id === signId);
+    const challenge = getChallengeForStep(state.activeChallengeNumber);
+    const option = challenge.options.find((item) => item.id === signId);
     if (!option || state.baptismCompleted) return;
 
     if (!option.correct) {
@@ -477,8 +518,8 @@
     state.baptismTone = "info";
     state.baptismMessage = `${option.label} đã được đặt đúng.`;
 
-    if (isBaptismChallengeComplete()) {
-      completeBaptismChallenge();
+    if (isBaptismChallengeComplete(challenge)) {
+      completeBaptismChallenge(challenge);
     }
 
     renderBaptismChallenge();
@@ -535,8 +576,12 @@
   }
 
   function renderBaptismChallenge() {
-    const step = jesusMilestones.find((item) => item.number === BAPTISM_STEP_NUMBER);
-    const selectedCount = baptismChallenge.targets.filter((target) => state.baptismSelectedSigns.has(target.signId)).length;
+    const stepNumber = state.activeChallengeNumber || BAPTISM_STEP_NUMBER;
+    const step = jesusMilestones.find((item) => item.number === stepNumber) || jesusMilestones.find((item) => item.number === BAPTISM_STEP_NUMBER);
+    const challenge = getChallengeForStep(stepNumber);
+    const selectedCount = challenge.targets.filter((target) => state.baptismSelectedSigns.has(target.signId)).length;
+    const rewardPoints = Number(challenge.rewardPoints || BAPTISM_REWARD_POINTS) || 0;
+    const emptyChallengeMessage = "Cột mốc này chưa có dữ liệu thử thách. Vui lòng bổ sung câu hỏi trong trang quản lý.";
     const message = state.baptismMessage || "Hãy chọn Nước sông, Chim bồ câu và Tiếng từ trời.";
 
     gameRoot.innerHTML = `
@@ -546,13 +591,13 @@
         <header class="journey-challenge-hero">
           <span>Chặng ${step.number} · ${step.reference}</span>
           <h1>${step.title}</h1>
-          <p>${baptismChallenge.title}</p>
+          <p>${challenge.title}</p>
         </header>
 
         <div class="journey-baptism-layout">
-          <section class="journey-baptism-scene ${baptismChallenge.sceneImageUrl ? "has-custom-image" : ""}" aria-label="Khung cảnh sông Giođan">
-            ${baptismChallenge.sceneImageUrl
-              ? `<img class="journey-baptism-custom-image" src="${escapeAttr(baptismChallenge.sceneImageUrl)}" alt="${escapeAttr(step.title)}" />`
+          <section class="journey-baptism-scene ${challenge.sceneImageUrl ? "has-custom-image" : ""}" aria-label="Khung cảnh sông Giođan">
+            ${challenge.sceneImageUrl
+              ? `<img class="journey-baptism-custom-image" src="${escapeAttr(challenge.sceneImageUrl)}" alt="${escapeAttr(step.title)}" />`
               : `
                 <div class="journey-baptism-sky"></div>
                 <div class="journey-baptism-light"></div>
@@ -565,15 +610,15 @@
 
           <section class="journey-sign-board">
             <div class="journey-sign-head">
-              <span>${selectedCount}/${baptismChallenge.targets.length}</span>
+              <span>${selectedCount}/${challenge.targets.length}</span>
               <div>
-                <strong>${baptismChallenge.instruction}</strong>
+                <strong>${challenge.instruction}</strong>
                 <small>Chọn đúng để mở lời Kinh Thánh và nhận thưởng.</small>
               </div>
             </div>
 
             <div class="journey-sign-slots" aria-label="Ba dấu chỉ cần tìm">
-              ${baptismChallenge.targets
+              ${challenge.targets
                 .map((target, index) => {
                   const isFilled = state.baptismSelectedSigns.has(target.signId);
                   return `
@@ -588,7 +633,7 @@
             </div>
 
             <div class="journey-sign-options" aria-label="Các dấu chỉ để chọn">
-              ${baptismChallenge.options
+              ${challenge.options
                 .map((option) => {
                   const isSelected = state.baptismSelectedSigns.has(option.id);
                   return `
@@ -607,14 +652,14 @@
                 .join("")}
             </div>
 
-            <p class="journey-challenge-message ${state.baptismTone}">${message}</p>
+            <p class="journey-challenge-message ${state.baptismTone}">${challenge.options.length ? message : emptyChallengeMessage}</p>
 
             ${
               state.baptismCompleted
                 ? `
                   <div class="journey-challenge-result">
-                    <blockquote>“${baptismChallenge.verse}”<span>${baptismChallenge.verseRef}</span></blockquote>
-                    <p>+${BAPTISM_REWARD_POINTS} điểm đức tin · Mở khóa 1 mảnh Kinh Thánh</p>
+                    <blockquote>“${challenge.verse}”<span>${challenge.verseRef}</span></blockquote>
+                    <p>+${rewardPoints} điểm đức tin · Mở khóa 1 mảnh Kinh Thánh</p>
                     <button class="journey-return-map" type="button">Tiếp tục hành trình</button>
                   </div>
                 `
@@ -659,7 +704,7 @@
               const status = getStepStatus(step);
               return `
                 <button
-                  class="journey-step-card ${status} ${step.number === selectedStep.number ? "selected" : ""}"
+                  class="journey-step-card journey-step-hotspot ${status} ${step.number === selectedStep.number ? "selected" : ""}"
                   type="button"
                   data-step="${step.number}"
                   data-step-number="${step.number}"
@@ -668,9 +713,6 @@
                 >
                   <span class="journey-step-number">${step.number}</span>
                   <span class="journey-step-lock" aria-hidden="true">${status === "locked" ? "▣" : status === "completed" ? "✓" : ""}</span>
-                  <span class="journey-step-visual ${step.cardImageUrl ? "has-image" : ""}" data-scene="${step.scene}" ${step.cardImageUrl ? `style="background-image:url(&quot;${escapeAttr(step.cardImageUrl)}&quot;)"` : ""}></span>
-                  <strong>${step.title}</strong>
-                  <small>${step.reference}</small>
                 </button>
               `;
             })
@@ -731,6 +773,21 @@
     const step = jesusMilestones.find((item) => item.number === stepNumber);
     if (!step) return;
 
+    const challenge = getChallengeForStep(step.number);
+    state.selectedStepNumber = step.number;
+    state.activeChallengeNumber = step.number;
+    state.activeView = "baptism";
+    state.baptismSelectedSigns = progress.completed.has(step.number)
+      ? new Set(challenge.targets.map((target) => target.signId))
+      : new Set();
+    state.baptismMessage = "";
+    state.baptismTone = "info";
+    state.baptismCompleted = progress.completed.has(step.number);
+    state.baptismRewarded = state.rewardedSteps.has(step.number);
+    document.body.classList.add("journey-challenge-mode");
+    renderBaptismChallenge();
+    return;
+
     if (step.number !== BAPTISM_STEP_NUMBER) {
       alert("Thử thách của chặng này đang được chuẩn bị. Hiện tại mình làm trước chặng Chúa chịu phép rửa.");
       return;
@@ -788,8 +845,7 @@
     const stepButton = event.target.closest(".journey-step-card");
     if (stepButton) {
       state.selectedStepNumber = Number(stepButton.dataset.step) || 1;
-      state.activeView = "map";
-      renderJourneyGame();
+      startStepChallenge(state.selectedStepNumber);
       return;
     }
 

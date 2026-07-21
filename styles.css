@@ -6570,6 +6570,112 @@ body.journey-page .journey-empty {
   color: #f0cf9a;
 }
 
+/* 14.97. Hanh Trinh Kinh Thanh dung hotspot an tren vong tron san co */
+body.journey-page .journey-road-svg {
+  display: none !important;
+}
+
+body.journey-page .journey-step-card.journey-step-hotspot {
+  width: clamp(38px, 3.8vw, 56px);
+  min-height: 0;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: transparent;
+  box-shadow: none;
+  opacity: 0;
+  filter: none;
+  cursor: pointer;
+}
+
+body.journey-page .journey-step-card.journey-step-hotspot:hover,
+body.journey-page .journey-step-card.journey-step-hotspot.selected {
+  transform: translate(-50%, -50%);
+  box-shadow: none;
+  opacity: 0;
+  filter: none;
+}
+
+body.journey-page .journey-step-card.journey-step-hotspot:focus-visible {
+  opacity: 0.12;
+  box-shadow: 0 0 0 4px rgba(255, 205, 86, 0.42);
+}
+
+body.journey-page .journey-step-card.journey-step-hotspot::after {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: 999px;
+}
+
+body.journey-page .journey-step-card.journey-step-hotspot .journey-step-number,
+body.journey-page .journey-step-card.journey-step-hotspot .journey-step-lock,
+body.journey-page .journey-step-card.journey-step-hotspot .journey-step-visual,
+body.journey-page .journey-step-card.journey-step-hotspot strong,
+body.journey-page .journey-step-card.journey-step-hotspot small {
+  display: none !important;
+}
+
+body.admin-page label:has(#journeyMapCardImageUrl),
+body.admin-page #journeyMapCardPreview,
+body.admin-page #newJourneyMilestoneButton {
+  display: none !important;
+}
+
+/* 14.111. Journey topic card image full and text below */
+body.journey-page.faith-choosing-set .journey-topic-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 10px;
+  padding: 0 !important;
+  overflow: visible;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+body.journey-page.faith-choosing-set .journey-topic-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  margin: 0;
+  border: 1px solid rgba(201, 136, 40, 0.42);
+  border-radius: 14px;
+  object-fit: cover;
+  object-position: center;
+  box-shadow: 0 14px 30px rgba(94, 50, 18, 0.14);
+  flex: 0 0 auto;
+}
+
+body.journey-page.faith-choosing-set .journey-topic-card span,
+body.journey-page.faith-choosing-set .journey-topic-card strong,
+body.journey-page.faith-choosing-set .journey-topic-card small {
+  margin-left: 8px;
+  margin-right: 8px;
+}
+
+body.journey-page.faith-choosing-set .journey-topic-card span {
+  margin-top: 0;
+}
+
+body.journey-page.faith-choosing-set .journey-topic-card strong {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+body.journey-page.faith-choosing-set .journey-topic-card small {
+  margin-bottom: 16px;
+}
+
+:root[data-theme="dark"] body.journey-page.faith-choosing-set .journey-topic-card {
+  background: #302116;
+}
+
 /* 14.97. Prototype man choi Hanh trinh theo dau chan Chua Giesu */
 body.journey-page .journey-game[hidden] {
   display: none !important;
@@ -8723,4 +8829,38 @@ body.journey-page .journey-baptism-custom-image {
   body.journey-page .journey-baptism-scene.has-custom-image {
     min-height: 300px;
   }
+}
+
+/* 14.112. Journey topic image-only panel and stable invisible map hotspots */
+body.journey-page.faith-choosing-set .journey-topic-card,
+body.journey-page.faith-choosing-set .journey-topic-card.has-image {
+  gap: 10px !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+body.journey-page.faith-choosing-set .journey-topic-image {
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 16 / 9 !important;
+  margin: 0 !important;
+  border: 1px solid rgba(201, 136, 40, 0.42) !important;
+  border-radius: 14px !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  box-shadow: 0 14px 30px rgba(94, 50, 18, 0.14) !important;
+}
+
+body.journey-page .journey-step-card.journey-step-hotspot,
+body.journey-page .journey-step-card.journey-step-hotspot:hover,
+body.journey-page .journey-step-card.journey-step-hotspot.selected {
+  opacity: 0 !important;
+  transform: translate(-50%, -50%) !important;
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  filter: none !important;
 }

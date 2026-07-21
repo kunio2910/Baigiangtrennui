@@ -37,6 +37,10 @@
       "destination": "/faith-discovery.html"
     },
     {
+      "source": "/hanh-trinh-kinh-thanh",
+      "destination": "/hanh-trinh-kinh-thanh-test.html"
+    },
+    {
       "source": "/cac-thanh/:slug",
       "destination": "/detail.html?type=saints&slug=:slug"
     },

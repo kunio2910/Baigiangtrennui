@@ -3940,3 +3940,89 @@ Lưu ý kỹ thuật:
 - Các URL ảnh nên dùng Cloudinary secure_url.
 - Không thêm dữ liệu mẫu tự động ghi Firestore; code chỉ dùng fallback local khi Firestore chưa có journeyBible.
 - Khi đổi cấu trúc JSON, phải kiểm tra cả admin.js, data.js và journey-test.js để đảm bảo backup, admin form và màn game cùng hiểu một schema.
+---
+
+### **14.109. Hanh Trinh Kinh Thanh: hotspot an tren ban do va chinh form quan ly**
+
+**Ngay cap nhat:** 21/07/2026
+
+**Chuc nang:**
+- Man hinh ban do trong `hanh-trinh-kinh-thanh-test.html` khong hien card anh cot moc nua.
+- Cac cot moc tren ban do duoc doi thanh nut hotspot an, nam theo toa do x/y cua vong tron so san co tren anh ban do.
+- Nguoi choi click vao vong tron so tren ban do se mo man hinh thu thach/cau hoi tuong ung, khong can bam qua card hay nut "Bat dau thu thach" tren map.
+- An duong road SVG va cac thanh phan card nhu anh, so, lock, title, reference de tranh tao them thanh phan hinh anh chong len ban do.
+- Trang quan ly Hanh trinh Kinh Thanh an truong upload **Anh card tren map** va khong con listener upload Cloudinary cho anh card map.
+- Them nut **Tao cot moc moi** trong tab quan ly Hanh trinh Kinh Thanh de admin tao cot moc tiep theo, nhap noi dung, roi cap nhat vao o du lieu.
+- Khi sua/tao cot moc, nut cap nhat va cac textarea duoc doi nhan thanh "o nhap du lieu" de ro rang la nhap truc tiep trong textbox/textarea thay vi upload file JSON.
+- Giu lai truong `cardImageUrl` trong schema khi doc du lieu cu de tranh mat du lieu cu, nhung UI va man ban do khong con su dung truong nay.
+
+**File lien quan:**
+- journey-test.js
+- admin.html
+- admin.js
+- styles.css
+- hanh-trinh-kinh-thanh-test.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Luu y:**
+- Cac cot moc khac ngoai man choi mau hien co van can them challenge tuong ung trong `challenges` de click vao co noi dung cau hoi that.
+- Sau khi nhap cot moc/màn chơi, admin can bam cap nhat vao o du lieu va bam Luu Hanh trinh Kinh Thanh de ghi Firestore.
+---
+
+### **14.110. Public Hanh Trinh Kinh Thanh va tao cot moc moi trong dropdown**
+
+**Ngay cap nhat:** 21/07/2026
+
+**Chuc nang:**
+- Public chuc nang **Hanh Trinh Kinh Thanh** de chay ca tren localhost va domain that.
+- Bo guard chi cho localhost trong `journey-test.js`.
+- Trang chu tro nut Hanh Trinh Kinh Thanh ve duong dan dep `/hanh-trinh-kinh-thanh`.
+- Khi chay localhost, `main.js` tu doi link nut nay ve `/hanh-trinh-kinh-thanh-test.html` de tranh loi local server khong ho tro rewrite Vercel.
+- Them rewrite Vercel `/hanh-trinh-kinh-thanh` sang `hanh-trinh-kinh-thanh-test.html`.
+- Bo meta `noindex,nofollow` cua trang Hanh Trinh Kinh Thanh de co the public nhu mot trang that.
+- Trong trang quan ly, dropdown chon cot moc co them option `+ Tao cot moc moi`.
+- Khi chon `+ Tao cot moc moi`, he thong them cot moc moi vao o du lieu, chon ngay cot moc do trong dropdown va reset form de admin nhap thong tin.
+- Nut tao cot moc moi dang roi ben ngoai duoc an di de giao dien gon va dung theo vi tri dropdown.
+
+**File lien quan:**
+- index.html
+- main.js
+- vercel.json
+- hanh-trinh-kinh-thanh-test.html
+- journey-test.js
+- admin.html
+- admin.js
+- styles.css
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Luu y:**
+- File HTML van ten `hanh-trinh-kinh-thanh-test.html` de tranh doi file lon, nhung URL public su dung `/hanh-trinh-kinh-thanh`.
+- Khi deploy Vercel, can upload ca `vercel.json` moi de rewrite hoat dong tren domain that.
+---
+
+### **14.111. Sua anh man choi, trang thai moc 3 va card chon chu de Hanh Trinh Kinh Thanh**
+
+**Ngay cap nhat:** 21/07/2026
+
+**Chuc nang:**
+- Sua loi khi upload anh man choi roi bam Luu bi mat anh: `updateJourneyMilestoneFromFields` khong con goi lai `fillJourneyMilestoneForm`, tranh nap du lieu challenge cu de len URL anh vua nhap.
+- Ten cot moc trong trang quan ly van duoc nhap/sua bang o `journeyMilestoneTitle`; sau khi bam cap nhat, dropdown duoc render lai theo ten moi.
+- Doi trang thai ban dau cua ban do: cot moc 3 khong con nam trong danh sach da hoan thanh, ma nam trong danh sach dang mo khoa de nguoi choi click vao lam thu thach.
+- Card chon chu de Hanh Trinh Kinh Thanh duoc chinh lai: anh nam full phan tren theo ti le 16:9, text/nhan/so cot moc nam ben duoi panel anh.
+- Tang cache asset cho admin va trang Hanh Trinh Kinh Thanh sang `20260721-journey-topic-image-fix`.
+
+**File lien quan:**
+- admin.js
+- admin.html
+- journey-test.js
+- hanh-trinh-kinh-thanh-test.html
+- styles.css
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+------------------------------------------------------------
+## 14.112. Cập Nhật Hành Trình Kinh Thánh - Hotspot, Chủ Đề, Cột Mốc
+
+- Sửa hotspot trên bản đồ thành vùng bấm ẩn hoàn toàn, không còn tạo hiệu ứng mờ/glow lên số cột mốc có sẵn trên ảnh bản đồ khi mới vào map.
+- Màn hình chọn chủ đề Hành Trình Kinh Thánh: panel khung chỉ hiển thị hình ảnh 16:9; phần nhãn, tiêu đề, số cột mốc nằm hoàn toàn bên dưới ảnh.
+- Màn chơi cột mốc không còn bị hard-code chỉ mở cột mốc số 3; khi bấm vào số cột mốc sẽ lấy thử thách theo đúng số cột mốc tương ứng.
+- Nếu cột mốc mới chưa có dữ liệu thử thách, màn chơi vẫn mở và hiển thị thông báo cần bổ sung câu hỏi trong trang quản lý.
+- Tăng version cache của `hanh-trinh-kinh-thanh-test.html` và `admin.html` để localhost tải đúng bản CSS/JS mới.

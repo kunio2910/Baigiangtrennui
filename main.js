@@ -338,16 +338,11 @@ function setupComingSoonLinks() {
     const icon = link.querySelector("span");
     const title = link.querySelector("strong");
     const subtitle = link.querySelector("small");
+    const isLocalhost = ["localhost", "127.0.0.1"].includes(window.location.hostname);
+    link.href = isLocalhost ? "/hanh-trinh-kinh-thanh-test.html" : "/hanh-trinh-kinh-thanh";
     if (icon) icon.textContent = "••";
     if (title) title.textContent = "Hành Trình Kinh Thánh";
     if (subtitle) subtitle.textContent = "Khám phá các cột mốc đức tin";
-
-    link.addEventListener("click", (event) => {
-      const isLocalhost = ["localhost", "127.0.0.1"].includes(window.location.hostname);
-      if (isLocalhost) return;
-      event.preventDefault();
-      showComingSoonNotice();
-    });
   });
 }
 
