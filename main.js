@@ -1,4 +1,4 @@
-﻿let content = null;
+let content = null;
 let dailyIndex = 0;
 let dailyTimer = null;
 
@@ -86,6 +86,97 @@ function htmlToText(value) {
   const template = document.createElement("template");
   template.innerHTML = String(value || "");
   return (template.content.textContent || "").replace(/\s+/g, " ").trim();
+}
+
+function normalizeSearchText(value) {
+  return String(value || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/g, "d")
+    .replace(/Đ/g, "D")
+    .toLowerCase();
+}
+
+function searchLink(item) {
+  return item.url || detailLink(item.type, item);
+}
+
+function publicJourneyUrl() {
+  return ["localhost", "127.0.0.1"].includes(window.location.hostname)
+    ? "/hanh-trinh-kinh-thanh-test.html"
+    : "/hanh-trinh-kinh-thanh";
+}
+
+function buildFaithSearchItems(settings) {
+  const sets = Array.isArray(settings?.sets) && settings.sets.length
+    ? settings.sets
+    : Array.isArray(settings?.questions) && settings.questions.length
+      ? [
+          {
+            id: settings.id || "legacy-faith-set",
+            title: settings.title || "Khám Phá Đức Tin",
+            questions: settings.questions,
+          },
+        ]
+      : [];
+
+  return sets.map((set, index) => {
+    const questions = Array.isArray(set?.questions) ? set.questions : [];
+    return {
+      id: `faith-search-${set?.id || index}`,
+      type: "faithDiscovery",
+      title: set?.title || `Bộ câu hỏi ${index + 1}`,
+      description: `Khám phá đức tin • ${questions.length} câu hỏi`,
+      meta: "Khám Phá Đức Tin",
+      url: "/kham-pha-duc-tin",
+      searchText: questions
+        .map((question) => `${question?.topic || ""} ${question?.question || ""}`)
+        .join(" "),
+    };
+  });
+}
+
+function buildJourneySearchItems(settings) {
+  const topics = Array.isArray(settings?.topics) ? settings.topics : [];
+  return topics
+    .filter((topic) => topic?.enabled !== false)
+    .map((topic, index) => {
+      const milestones = Array.isArray(topic?.milestones) ? topic.milestones : [];
+      const milestoneText = milestones
+        .map((milestone) => `${milestone?.title || ""} ${milestone?.reference || ""} ${milestone?.region || ""} ${milestone?.story || ""} ${milestone?.lesson || ""}`)
+        .join(" ");
+      return {
+        id: `journey-search-${topic?.id || index}`,
+        type: "journeyBible",
+        title: topic?.title || `Chủ đề ${index + 1}`,
+        description: topic?.description || topic?.label || `Hành trình Kinh Thánh • ${milestones.length} cột mốc`,
+        meta: "Hành Trình Kinh Thánh",
+        url: publicJourneyUrl(),
+        searchText: `${topic?.label || ""} ${milestoneText}`,
+      };
+    });
+}
+
+async function loadSupplementalSearchItems() {
+  const [faithSettings, journeySettings] = await Promise.all([
+    typeof getFaithDiscoverySettings === "function"
+      ? getFaithDiscoverySettings().catch((error) => {
+          console.warn("Không thể nạp mục Khám Phá Đức Tin cho tìm kiếm.", error);
+          return null;
+        })
+      : Promise.resolve(null),
+    typeof getJourneyBibleSettings === "function"
+      ? getJourneyBibleSettings().catch((error) => {
+          console.warn("Không thể nạp mục Hành Trình Kinh Thánh cho tìm kiếm.", error);
+          return null;
+        })
+      : Promise.resolve(null),
+  ]);
+
+  return [
+    ...buildFaithSearchItems(faithSettings),
+    ...buildJourneySearchItems(journeySettings),
+  ];
 }
 
 function cardTemplate(item, type = "saints") {
@@ -243,7 +334,7 @@ function setupSearch() {
   const input = document.querySelector("#searchInput");
   const resultBox = document.querySelector("#searchResults");
   const searchBox = document.querySelector("#headerSearchBox");
-  const allItems = ["saints", "churches", "articles", "events", "prayers", "catechism"].flatMap((type) =>
+  let allItems = ["saints", "churches", "articles", "events", "prayers", "catechism"].flatMap((type) =>
     activeItems(content[type]).map((item) => ({ ...item, type }))
   );
 
@@ -292,20 +383,27 @@ function setupSearch() {
     if (drawer.classList.contains("open")) positionSearchDrawer();
   });
 
-  input.addEventListener("input", () => {
-    const keyword = input.value.trim().toLowerCase();
+  function renderSearchResults() {
+    const keyword = normalizeSearchText(input.value.trim());
     const matches = allItems.filter((item) =>
-      `${item.title} ${item.description} ${item.meta || ""}`.toLowerCase().includes(keyword)
+      normalizeSearchText(`${item.title} ${item.description} ${item.meta || ""} ${item.searchText || ""}`).includes(keyword)
     );
 
     resultBox.innerHTML = keyword
-      ? matches.map((item) => `<a href="${detailLink(item.type, item)}"><strong>${item.title}</strong><span>${summarizeText(item.description, 120)}</span></a>`).join("")
+      ? matches.map((item) => `<a href="${searchLink(item)}"><strong>${item.title}</strong><span>${summarizeText(item.description, 120)}</span></a>`).join("")
       : "";
     if (keyword && matches.length) {
       openSearchDrawer();
     } else {
       closeSearchDrawer();
     }
+  }
+
+  input.addEventListener("input", renderSearchResults);
+
+  loadSupplementalSearchItems().then((items) => {
+    allItems = [...allItems, ...items];
+    if (input.value.trim()) renderSearchResults();
   });
 }
 

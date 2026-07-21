@@ -4531,3 +4531,8 @@ Lưu ý kỹ thuật:
 - Desktop giữ nguyên lưới/hàng hiện tại; số item mỗi mục không đổi vì chỉ thay CSS hiển thị.
 - Card mobile có chiều ngang khoảng 74-82vw tùy loại, padding mép phải/trái để lộ một phần card kế tiếp, giúp người dùng biết có thể vuốt ngang.
 - Ẩn scrollbar mặc định, dùng scroll-snap nhẹ và vuốt ngang tự nhiên trên điện thoại.
+### 14.136. Bổ sung tìm kiếm chủ đề Khám Phá Đức Tin và Hành Trình Kinh Thánh
+- Trang chủ bổ sung dữ liệu tìm kiếm từ `siteSettings/faithDiscovery` và `siteSettings/journeyBible`, bên cạnh các nội dung trong collection `contents`.
+- Kết quả tìm kiếm có thể hiển thị tên bộ câu hỏi Khám Phá Đức Tin và tên chủ đề Hành Trình Kinh Thánh; click sẽ mở trang tương ứng.
+- Tìm kiếm chuyển sang so khớp không dấu để gõ `hanh trinh`, `kham pha`, `duc tin` vẫn tìm được nội dung có dấu tiếng Việt.
+- Cập nhật cache `main.js` sang `20260721-home-search-topics`.
