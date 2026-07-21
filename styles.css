@@ -9627,3 +9627,50 @@ body.journey-page .journey-milestone-panel {
     width: 30px !important;
   }
 }
+/* 14.135. Mobile horizontal scrollers for home content sections */
+@media (max-width: 680px) {
+  body.home-page #saints .card-row,
+  body.home-page #churches .church-grid,
+  body.home-page #articles .article-grid,
+  body.home-page #events .event-list {
+    display: flex !important;
+    grid-template-columns: none !important;
+    gap: 12px !important;
+    margin-inline: -14px !important;
+    padding: 4px 14px 14px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    overscroll-behavior-inline: contain;
+    scroll-padding-inline: 14px;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  body.home-page #saints .card-row::-webkit-scrollbar,
+  body.home-page #churches .church-grid::-webkit-scrollbar,
+  body.home-page #articles .article-grid::-webkit-scrollbar,
+  body.home-page #events .event-list::-webkit-scrollbar {
+    display: none;
+  }
+
+  body.home-page #saints .content-card,
+  body.home-page #churches .church-card,
+  body.home-page #articles .article-card,
+  body.home-page #events .event-card {
+    flex: 0 0 min(78vw, 310px) !important;
+    width: min(78vw, 310px) !important;
+    max-width: none !important;
+    scroll-snap-align: start;
+  }
+
+  body.home-page #churches .church-card {
+    flex-basis: min(74vw, 285px) !important;
+    width: min(74vw, 285px) !important;
+  }
+
+  body.home-page #events .event-card {
+    flex-basis: min(82vw, 330px) !important;
+    width: min(82vw, 330px) !important;
+  }
+}

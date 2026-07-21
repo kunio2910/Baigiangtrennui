@@ -4526,3 +4526,8 @@ Lưu ý kỹ thuật:
 ### 14.134. Tăng độ trong suốt popup cột mốc bản đồ
 - Tăng thêm độ trong suốt của backdrop và panel popup cột mốc Hành trình Kinh Thánh để bản đồ phía dưới hiện rõ hơn nhưng vẫn giữ chữ đọc được.
 - Cập nhật cache CSS sang `20260721-journey-popup-clearer`.
+### 14.135. Cuộn ngang các mục nội dung trang chủ trên điện thoại
+- Trên mobile, bốn mục trang chủ "Các thánh tiêu biểu", "Giới thiệu nhà thờ", "Bài viết & suy niệm", "Sự kiện sắp tới" chuyển từ layout 1 cột sang hàng card cuộn ngang.
+- Desktop giữ nguyên lưới/hàng hiện tại; số item mỗi mục không đổi vì chỉ thay CSS hiển thị.
+- Card mobile có chiều ngang khoảng 74-82vw tùy loại, padding mép phải/trái để lộ một phần card kế tiếp, giúp người dùng biết có thể vuốt ngang.
+- Ẩn scrollbar mặc định, dùng scroll-snap nhẹ và vuốt ngang tự nhiên trên điện thoại.
