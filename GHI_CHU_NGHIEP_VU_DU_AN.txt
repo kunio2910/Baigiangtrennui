@@ -4450,3 +4450,67 @@ Lưu ý kỹ thuật:
 - Neu doi ten chu de, ban do van nen duoc nhan dien bang `id` on dinh truoc; phan so khop theo tieu de chi la du phong.
 - Moi ban do phai co bo toa do chuan rieng. Khong dung lai toa do cua ban do Chua Giesu cho cac ban do khac.
 - Du lieu admin nhap cho cot moc duoc uu tien hien thi, nhung toa do hien thi tren ban do co fallback theo bo toa do chuan cua tung ban do.
+
+-------------------------------------------------------------
+## 14.129. Popup Mobile Và MapType Ổn Định Cho Hành Trình Kinh Thánh
+
+**Ngày cập nhật:** 21/07/2026
+
+**Chức năng:**
+- Sửa popup thông tin cột mốc trên màn hình bản đồ Hành Trình Kinh Thánh ở điện thoại: popup dùng `position: fixed`, giới hạn theo `100dvh/100vw`, giảm chiều cao ảnh, nội dung cuộn trong panel và không tràn mép màn hình.
+- Bổ sung trường `mapType` cho chủ đề Hành Trình Kinh Thánh để loại bản đồ/tọa độ không còn phụ thuộc vào tên chủ đề hiển thị. Admin có thể đổi tên chủ đề tự do mà vẫn giữ đúng bản đồ và vị trí vòng tròn click chọn.
+- Trang quản lý tab Hành Trình Kinh Thánh có thêm ô **Bản đồ sử dụng** gồm: Chúa Giêsu, Xuất Hành/Mô-sê, Chúa tạo dựng trời đất, 14 Chặng Đàng Thánh Giá, Chúa làm phép lạ.
+- Public vẫn hỗ trợ nhận diện dữ liệu cũ theo `id`, `mapImageUrl` hoặc tên chủ đề nếu chưa có `mapType`; khi admin lưu lại, `mapType` sẽ được ghi ổn định vào Firestore.
+- Màn hình chọn chủ đề public bỏ hiển thị dòng số cột mốc trên card.
+- Đổi version cache sang `20260721-journey-mobile-maptype`.
+
+**File liên quan:**
+- journey-test.js
+- admin.js
+- admin.html
+- hanh-trinh-kinh-thanh-test.html
+- styles.css
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Lưu ý:**
+- Khi tạo chủ đề mới, cần chọn đúng **Bản đồ sử dụng** trước khi tạo cột mốc để tọa độ mặc định bám đúng bản đồ.
+- Với dữ liệu cũ chưa có `mapType`, nên mở chủ đề trong trang quản lý và bấm **Lưu Hành trình Kinh Thánh** một lần để cố định loại bản đồ.
+-------------------------------------------------------------
+## 14.130. Chỉnh Font Chủ Đề, Popup Và Hover Hotspot Hành Trình Kinh Thánh
+
+**Ngày cập nhật:** 21/07/2026
+
+**Chức năng:**
+- Màn hình chọn chủ đề Hành Trình Kinh Thánh: đổi font chữ tên chủ đề trên card sang serif trang trọng hơn và giảm cỡ chữ khoảng 30% so với trước.
+- Nhãn nhỏ trên card chủ đề được đổi sang font gọn, nhẹ hơn để nhìn mềm và cân đối với ảnh card.
+- Popup thông tin cột mốc trên bản đồ đổi sang font dễ đọc hơn (`var(--font-main)`) cho tiêu đề, mô tả, trích dẫn và nội dung HTML.
+- Khi rê chuột hoặc focus vào vòng tròn số/hotspot trên bản đồ, vùng click hiện lớp mờ nhẹ để người dùng biết đang trỏ đúng cột mốc, nhưng vẫn giữ hotspot ẩn và không làm hiện card cũ.
+- Đổi version cache CSS sang `20260721-journey-font-hover`.
+
+**File liên quan:**
+- styles.css
+- hanh-trinh-kinh-thanh-test.html
+- admin.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Lưu ý:**
+- Hiệu ứng hover chỉ áp dụng trong `body.journey-page` nên không ảnh hưởng module Khám Phá Đức Tin hoặc các màn public khác.
+-------------------------------------------------------------
+## 14.131. Ẩn Tìm Kiếm/Sắp Xếp Ở Màn Chọn Chủ Đề
+
+**Ngày cập nhật:** 21/07/2026
+
+**Chức năng:**
+- Ẩn thanh **Tìm kiếm** và **Sắp xếp** ở màn chọn chủ đề của **Khám Phá Đức Tin** và **Hành Trình Kinh Thánh**.
+- Không xóa HTML/JS của chức năng này; chỉ thêm `hidden` và `data-preserved-feature="topic-search-sort"` để sau này cần dùng lại thì bỏ `hidden` là khôi phục nhanh.
+- Thêm CSS scoped để thanh công cụ ẩn không để lại khoảng trống, đồng thời kéo grid card chủ đề lên gần tiêu đề hơn.
+- Đổi version cache CSS sang `20260721-hide-topic-tools` cho `faith-discovery.html` và `hanh-trinh-kinh-thanh-test.html`.
+
+**File liên quan:**
+- faith-discovery.html
+- hanh-trinh-kinh-thanh-test.html
+- styles.css
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Lưu ý:**
+- Logic tìm kiếm/sắp xếp trong `faith-discovery.js` và `journey-test.js` vẫn còn nguyên, không bị xóa.

@@ -7,7 +7,7 @@
     <meta name="robots" content="noindex, nofollow" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/favicon.png" />
-    <link rel="stylesheet" href="styles.css?v=20260721-journey-miracles-map" />
+    <link rel="stylesheet" href="styles.css?v=20260721-journey-font-hover" />
   </head>
   <body class="admin-page">
     <header class="site-header admin-header">
@@ -327,6 +327,16 @@
               </label>
             </div>
             <label>
+              <span>Bản đồ sử dụng</span>
+              <select id="journeyTopicMapType">
+                <option value="jesus">Hành trình theo dấu chân Chúa Giêsu</option>
+                <option value="exodus">Xuất Hành - Cuộc đời Mô-sê</option>
+                <option value="creation">Chúa tạo dựng trời đất</option>
+                <option value="stations">14 Chặng Đàng Thánh Giá</option>
+                <option value="miracles">Chúa làm phép lạ</option>
+              </select>
+            </label>
+            <label>
               <span>Mô tả chủ đề</span>
               <textarea id="journeyTopicDescription" rows="3" placeholder="Mô tả ngắn hiển thị ở màn hình chọn chủ đề..."></textarea>
             </label>
@@ -433,7 +443,7 @@
     <script src="https://upload-widget.cloudinary.com/latest/global/all.js"></script>
     <script src="data.js?v=20260721-journey-map-panel-fix"></script>
     <script src="auth.js?v=20260715-no-sample-seed"></script>
-    <script src="admin.js?v=20260721-journey-miracles-map"></script>
+    <script src="admin.js?v=20260721-journey-mobile-maptype"></script>
     <script defer src="/_vercel/insights/script.js"></script>
   </body>
 </html>

@@ -4,6 +4,11 @@
   const CREATION_TOPIC_ID = "chua-tao-dung-troi-dat";
   const STATIONS_TOPIC_ID = "14-chang-dang-thanh-gia";
   const MIRACLES_TOPIC_ID = "chua-lam-phep-la";
+  const MAP_TYPE_JESUS = "jesus";
+  const MAP_TYPE_EXODUS = "exodus";
+  const MAP_TYPE_CREATION = "creation";
+  const MAP_TYPE_STATIONS = "stations";
+  const MAP_TYPE_MIRACLES = "miracles";
   const JESUS_MAP_IMAGE = "/assets/journey-jesus-map.png";
   const EXODUS_MAP_IMAGE = "/assets/journey-moses-exodus-map.png";
   const CREATION_MAP_IMAGE = "/assets/journey-creation-map.png";
@@ -789,24 +794,82 @@
     return String(value || "");
   }
 
+  function mapTypeFromText(value) {
+    const normalized = normalizeText(value).replace(/[-_]+/g, " ");
+    if (!normalized) return "";
+    if (
+      normalized.includes(MAP_TYPE_EXODUS) ||
+      normalized.includes("xuat hanh") ||
+      normalized.includes("mo se") ||
+      normalized.includes("mose") ||
+      normalized.includes("moses")
+    ) {
+      return MAP_TYPE_EXODUS;
+    }
+    if (
+      normalized.includes(MAP_TYPE_CREATION) ||
+      normalized.includes("chua tao dung troi dat") ||
+      normalized.includes("tao dung") ||
+      normalized.includes("sang the")
+    ) {
+      return MAP_TYPE_CREATION;
+    }
+    if (
+      normalized.includes(MAP_TYPE_STATIONS) ||
+      normalized.includes("14 chang dang thanh gia") ||
+      normalized.includes("14 chan dang thanh gia") ||
+      normalized.includes("dang thanh gia") ||
+      normalized.includes("stations") ||
+      normalized.includes("cross")
+    ) {
+      return MAP_TYPE_STATIONS;
+    }
+    if (
+      normalized.includes(MAP_TYPE_MIRACLES) ||
+      normalized.includes("chua lam phep la") ||
+      normalized.includes("cac phep la") ||
+      normalized.includes("phep la")
+    ) {
+      return MAP_TYPE_MIRACLES;
+    }
+    if (
+      normalized.includes(MAP_TYPE_JESUS) ||
+      normalized.includes("chua giesu") ||
+      normalized.includes("chua gi esu") ||
+      normalized.includes("dau chan chua")
+    ) {
+      return MAP_TYPE_JESUS;
+    }
+    return "";
+  }
+
+  function journeyMapTypeForTopic(topic = {}) {
+    const explicitType = mapTypeFromText(topic.mapType || topic.mapKey || topic.mapId || "");
+    if (explicitType) return explicitType;
+
+    const idType = mapTypeFromText(topic.id || "");
+    if (idType) return idType;
+
+    const imageType = mapTypeFromText(topic.mapImageUrl || "");
+    if (imageType) return imageType;
+
+    return mapTypeFromText(topic.title || "") || MAP_TYPE_JESUS;
+  }
+
   function isExodusTopic(topic = {}) {
-    const haystack = normalizeText(`${topic.id || ""} ${topic.title || ""}`);
-    return topic.id === EXODUS_TOPIC_ID || haystack.includes("xuat hanh") || haystack.includes("mo se") || haystack.includes("mose");
+    return journeyMapTypeForTopic(topic) === MAP_TYPE_EXODUS;
   }
 
   function isCreationTopic(topic = {}) {
-    const haystack = normalizeText(`${topic.id || ""} ${topic.title || ""}`);
-    return topic.id === CREATION_TOPIC_ID || haystack.includes("chua tao dung troi dat") || haystack.includes("tao dung") || haystack.includes("sang the");
+    return journeyMapTypeForTopic(topic) === MAP_TYPE_CREATION;
   }
 
   function isStationsTopic(topic = {}) {
-    const haystack = normalizeText(`${topic.id || ""} ${topic.title || ""}`);
-    return topic.id === STATIONS_TOPIC_ID || haystack.includes("14 chang dang thanh gia") || haystack.includes("14 chan dang thanh gia") || haystack.includes("dang thanh gia");
+    return journeyMapTypeForTopic(topic) === MAP_TYPE_STATIONS;
   }
 
   function isMiraclesTopic(topic = {}) {
-    const haystack = normalizeText(`${topic.id || ""} ${topic.title || ""}`);
-    return topic.id === MIRACLES_TOPIC_ID || haystack.includes("chua lam phep la") || haystack.includes("cac phep la") || haystack.includes("phep la");
+    return journeyMapTypeForTopic(topic) === MAP_TYPE_MIRACLES;
   }
 
   function journeyPositionsForTopic(topic) {
@@ -866,8 +929,10 @@
   function normalizeJourneyTopicFromSettings(topic, index) {
     const fallback = topics.find((item) => item.id === topic?.id) || {};
     const topicShell = { ...fallback, ...topic };
-    const fallbackMilestones = fallbackMilestonesForTopic(topicShell);
-    const milestones = mergeJourneyMilestones(topic?.milestones, fallbackMilestones, journeyPositionsForTopic(topicShell));
+    const mapType = journeyMapTypeForTopic(topicShell);
+    const stableTopicShell = { ...topicShell, mapType };
+    const fallbackMilestones = fallbackMilestonesForTopic(stableTopicShell);
+    const milestones = mergeJourneyMilestones(topic?.milestones, fallbackMilestones, journeyPositionsForTopic(stableTopicShell));
     return {
       id: String(topic?.id || fallback.id || `journey-topic-${index + 1}`).trim(),
       title: String(topic?.title || fallback.title || `Chủ đề ${index + 1}`).trim(),
@@ -875,7 +940,8 @@
       label: String(topic?.label || fallback.label || "").trim(),
       enabled: topic?.enabled !== false,
       pickerImageUrl: String(topic?.pickerImageUrl || "").trim(),
-      mapImageUrl: journeyMapImageForTopic(topicShell),
+      mapType,
+      mapImageUrl: journeyMapImageForTopic(stableTopicShell),
       steps: milestones.length || fallback.steps || 0,
       milestones,
       challenges: topic?.challenges && typeof topic.challenges === "object" ? topic.challenges : {},
@@ -966,6 +1032,7 @@
       label: topic.label,
       enabled: topic.enabled,
       pickerImageUrl: topic.pickerImageUrl,
+      mapType: topic.mapType,
       mapImageUrl: topic.mapImageUrl,
       steps: topic.milestones.length || (topic.id === JESUS_TOPIC_ID ? jesusMilestones.length : topic.steps),
     }));
@@ -1111,7 +1178,6 @@
                 ${topic.pickerImageUrl ? `<img class="journey-topic-image" src="${escapeAttr(topic.pickerImageUrl)}" alt="" loading="lazy" />` : ""}
                 <span>${topic.label}</span>
                 <strong>${topic.title}</strong>
-                <small>${topic.steps} cột mốc</small>
               </button>
             `
           )

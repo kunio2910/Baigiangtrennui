@@ -87,6 +87,7 @@ const deleteJourneyTopicButton = document.querySelector("#deleteJourneyTopicButt
 const journeyTopicId = document.querySelector("#journeyTopicId");
 const journeyTopicTitle = document.querySelector("#journeyTopicTitle");
 const journeyTopicLabel = document.querySelector("#journeyTopicLabel");
+const journeyTopicMapType = document.querySelector("#journeyTopicMapType");
 const journeyTopicEnabled = document.querySelector("#journeyTopicEnabled");
 const journeyTopicDescription = document.querySelector("#journeyTopicDescription");
 const journeyPickerImageUrl = document.querySelector("#journeyPickerImageUrl");
@@ -1093,6 +1094,7 @@ function defaultJourneyAdminTopic() {
     label: "",
     description: "",
     enabled: true,
+    mapType: "jesus",
     pickerImageUrl: "",
     milestones: [],
     challenges: {},
@@ -1172,6 +1174,7 @@ function normalizeAdminJourneyTopic(topic, index = 0) {
     label: String(rawTopic.label || "").trim(),
     description: String(rawTopic.description || "").trim(),
     enabled: rawTopic.enabled !== false,
+    mapType: detectAdminJourneyMapType(rawTopic),
     pickerImageUrl: String(rawTopic.pickerImageUrl || "").trim(),
     milestones,
     challenges,
@@ -1207,7 +1210,23 @@ function normalizeJourneyAdminText(value) {
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/đ/g, "d")
     .replace(/Đ/g, "D")
+    .replace(/[-_]+/g, " ")
     .toLowerCase();
+}
+
+function detectAdminJourneyMapType(topic = {}) {
+  const explicitText = normalizeJourneyAdminText(topic.mapType || topic.mapKey || topic.mapId || "");
+  const idText = normalizeJourneyAdminText(topic.id || "");
+  const imageText = normalizeJourneyAdminText(topic.mapImageUrl || "");
+  const titleText = normalizeJourneyAdminText(topic.title || "");
+  const haystacks = [explicitText, idText, imageText, titleText];
+  const match = (...patterns) => haystacks.some((text) => patterns.some((pattern) => text.includes(pattern)));
+
+  if (match("exodus", "xuat hanh", "mo se", "mose", "moses")) return "exodus";
+  if (match("creation", "chua tao dung troi dat", "tao dung", "sang the")) return "creation";
+  if (match("stations", "14 chang dang thanh gia", "14 chan dang thanh gia", "dang thanh gia", "cross")) return "stations";
+  if (match("miracles", "chua lam phep la", "cac phep la", "phep la")) return "miracles";
+  return "jesus";
 }
 
 function renderJourneyTopicList() {
@@ -1269,16 +1288,21 @@ function renderJourneyMilestoneSelect(selectedNumber) {
 
 function journeyDefaultPositionForNumber(number) {
   const numericNumber = Number(number);
-  const activeTopicText = `${journeyTopicId?.value || activeJourneyTopicId || ""} ${journeyTopicTitle?.value || ""}`;
-  const normalizedTopicText = normalizeJourneyAdminText(activeTopicText);
+  const activeTopic = selectedJourneyTopic() || {};
+  const mapType = detectAdminJourneyMapType({
+    ...activeTopic,
+    id: journeyTopicId?.value || activeTopic.id || activeJourneyTopicId || "",
+    title: activeTopic.title || journeyTopicTitle?.value || "",
+    mapType: journeyTopicMapType?.value || activeTopic.mapType || "",
+  });
   let positions = journeyAdminMapNumberPositions;
-  if (normalizedTopicText.includes("xuat hanh") || normalizedTopicText.includes("mo se") || normalizedTopicText.includes("mose")) {
+  if (mapType === "exodus") {
     positions = journeyAdminExodusMapNumberPositions;
-  } else if (normalizedTopicText.includes("chua tao dung troi dat") || normalizedTopicText.includes("tao dung") || normalizedTopicText.includes("sang the")) {
+  } else if (mapType === "creation") {
     positions = journeyAdminCreationMapNumberPositions;
-  } else if (normalizedTopicText.includes("14 chang dang thanh gia") || normalizedTopicText.includes("14 chan dang thanh gia") || normalizedTopicText.includes("dang thanh gia")) {
+  } else if (mapType === "stations") {
     positions = journeyAdminStationsMapNumberPositions;
-  } else if (normalizedTopicText.includes("chua lam phep la") || normalizedTopicText.includes("cac phep la") || normalizedTopicText.includes("phep la")) {
+  } else if (mapType === "miracles") {
     positions = journeyAdminMiraclesMapNumberPositions;
   }
   return positions[numericNumber - 1] || { x: 50, y: 50 };
@@ -1306,6 +1330,7 @@ function fillJourneyTopicForm(topic) {
   journeyTopicId.value = normalizedTopic.id;
   journeyTopicTitle.value = normalizedTopic.title;
   journeyTopicLabel.value = normalizedTopic.label;
+  if (journeyTopicMapType) journeyTopicMapType.value = normalizedTopic.mapType || "jesus";
   journeyTopicEnabled.value = normalizedTopic.enabled ? "true" : "false";
   journeyTopicDescription.value = normalizedTopic.description;
   journeyPickerImageUrl.value = normalizedTopic.pickerImageUrl;
@@ -2469,6 +2494,7 @@ journeyBibleForm?.addEventListener("submit", async (event) => {
       id,
       title,
       label: journeyTopicLabel.value.trim(),
+      mapType: journeyTopicMapType?.value || "jesus",
       enabled: journeyTopicEnabled.value !== "false",
       description: journeyTopicDescription.value.trim(),
       pickerImageUrl: journeyPickerImageUrl.value.trim(),
