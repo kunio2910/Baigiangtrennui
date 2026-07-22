@@ -1062,6 +1062,22 @@
       console.warn("Không thể tải cấu hình Hành trình Kinh Thánh", error);
     }
   }
+  function requestedJourneyTopicId() {
+    try {
+      const params = new URLSearchParams(window.location.search || "");
+      return String(params.get("topic") || params.get("topicId") || "").trim();
+    } catch (error) {
+      return "";
+    }
+  }
+
+  function openRequestedJourneyTopic() {
+    const topicId = requestedJourneyTopicId();
+    if (!topicId || !journeyTopicDetails.has(topicId)) return false;
+    showJourneyGame(topicId);
+    return true;
+  }
+
   function normalizeText(value) {
     return String(value || "")
       .normalize("NFD")
@@ -1566,5 +1582,7 @@
       startStepChallenge(Number(challengeButton.dataset.step) || state.selectedStepNumber);
     }
   });
-  loadJourneyBibleSettings().finally(renderTopics);
+  loadJourneyBibleSettings().finally(() => {
+    if (!openRequestedJourneyTopic()) renderTopics();
+  });
 })();

@@ -107,6 +107,32 @@ function publicJourneyUrl() {
     : "/hanh-trinh-kinh-thanh";
 }
 
+function publicJourneyTopicUrl(topicId) {
+  const baseUrl = publicJourneyUrl();
+  const separator = baseUrl.includes("?") ? "&" : "?";
+  return `${baseUrl}${separator}topic=${encodeURIComponent(topicId || "")}`;
+}
+
+function normalizeTopicText(value) {
+  return String(value || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/Ä‘/g, "d")
+    .replace(/Ä/g, "D")
+    .toLowerCase();
+}
+
+function journeyTopicImage(topic = {}) {
+  const configuredImage = String(topic.pickerImageUrl || topic.mapImageUrl || topic.image || "").trim();
+  if (configuredImage) return configuredImage;
+  const haystack = normalizeTopicText(`${topic.id || ""} ${topic.title || ""}`);
+  if (haystack.includes("xuat hanh") || haystack.includes("mo se") || haystack.includes("mose")) return "/assets/journey-moses-exodus-map.png";
+  if (haystack.includes("chua tao dung troi dat") || haystack.includes("tao dung") || haystack.includes("sang the")) return "/assets/journey-creation-map.png";
+  if (haystack.includes("14 chang dang thanh gia") || haystack.includes("14 chan dang thanh gia") || haystack.includes("dang thanh gia")) return "/assets/journey-stations-cross-map.png";
+  if (haystack.includes("chua lam phep la") || haystack.includes("cac phep la") || haystack.includes("phep la")) return "/assets/journey-miracles-map.png";
+  return "/assets/journey-jesus-map.png";
+}
+
 function buildFaithSearchItems(settings) {
   const sets = Array.isArray(settings?.sets) && settings.sets.length
     ? settings.sets
@@ -252,6 +278,47 @@ function prayerTemplate(item) {
   `;
 }
 
+function journeyHomeCardTemplate(topic) {
+  const link = publicJourneyTopicUrl(topic.id);
+  const imageUrl = journeyTopicImage(topic);
+  return `
+    <article class="content-card home-journey-card clickable-card" onclick="window.location.href='${link}'">
+      <img src="${imageUrl}" alt="${displayText(topic.title)}" ${lazyImageAttrs} />
+      <div>
+        <h3>${displayText(topic.title)}</h3>
+        <a href="${link}" onclick="event.stopPropagation()">KhÃ¡m phÃ¡</a>
+      </div>
+    </article>
+  `;
+}
+
+async function renderHomeJourneyBible() {
+  const journeyList = document.querySelector("#homeJourneyList");
+  if (!journeyList || typeof getJourneyBibleSettings !== "function") return;
+  try {
+    const settings = await getJourneyBibleSettings();
+    const topics = Array.isArray(settings?.topics) ? settings.topics : [];
+    const visibleTopics = topics
+      .filter((topic) => topic?.enabled !== false)
+      .slice(0, 3)
+      .map((topic, index) => ({
+        ...topic,
+        id: String(topic?.id || `journey-topic-${index + 1}`).trim(),
+        title: topic?.title || `Chá»§ Ä‘á» ${index + 1}`,
+        steps: Array.isArray(topic?.milestones) ? topic.milestones.length : Number(topic?.steps || 0),
+      }))
+      .filter((topic) => topic.id);
+
+    const section = document.querySelector("#homeJourneyBible");
+    if (section) section.hidden = !visibleTopics.length;
+    journeyList.innerHTML = visibleTopics.map(journeyHomeCardTemplate).join("");
+    document.dispatchEvent(new Event("kito:content-rendered"));
+  } catch (error) {
+    console.warn("KhÃ´ng thá»ƒ náº¡p má»¥c HÃ nh TrÃ¬nh Kinh ThÃ¡nh trÃªn trang chá»§.", error);
+    journeyList.innerHTML = "";
+  }
+}
+
 function renderDaily() {
   const dailyItems = activeItems(content.daily);
   if (!dailyItems.length) return;
@@ -281,6 +348,7 @@ function renderHeroBanner() {
 function renderHome() {
   renderHeroBanner();
   document.querySelector("#saintsList").innerHTML = dailyRandomItems(content.saints, "saints", 5).map((item) => cardTemplate(item, "saints")).join("");
+  renderHomeJourneyBible();
   document.querySelector("#churchesList").innerHTML = dailyRandomItems(content.churches, "churches", 3).map(churchTemplate).join("");
   document.querySelector("#articlesList").innerHTML = dailyRandomItems(content.articles, "articles", 3).map(articleTemplate).join("");
   document.querySelector("#eventsList").innerHTML = fixedHomeItems(content.events, 3).map(eventTemplate).join("");
@@ -436,11 +504,14 @@ function setupComingSoonLinks() {
     const icon = link.querySelector("span");
     const title = link.querySelector("strong");
     const subtitle = link.querySelector("small");
-    const isLocalhost = ["localhost", "127.0.0.1"].includes(window.location.hostname);
-    link.href = isLocalhost ? "/hanh-trinh-kinh-thanh-test.html" : "/hanh-trinh-kinh-thanh";
+    link.href = publicJourneyUrl();
     if (icon) icon.textContent = "••";
     if (title) title.textContent = "Hành Trình Kinh Thánh";
     if (subtitle) subtitle.textContent = "Khám phá các cột mốc đức tin";
+  });
+
+  document.querySelectorAll("[data-local-journey-all]").forEach((link) => {
+    link.href = publicJourneyUrl();
   });
 }
 

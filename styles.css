@@ -1085,6 +1085,32 @@ body {
   line-height: 1.45;
 }
 
+#homeJourneyBible {
+  padding-top: 8px;
+}
+
+#homeJourneyBible .section-heading {
+  padding: 0 30px;
+}
+
+#homeJourneyBible .home-journey-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+#homeJourneyBible .home-journey-card img {
+  height: 152px;
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+#homeJourneyBible .home-journey-card p {
+  max-height: 42px;
+  margin-bottom: 8px;
+  -webkit-line-clamp: 2;
+  line-height: 1.45;
+}
+
 .content-card,
 .church-card,
 .article-card,
@@ -9630,6 +9656,7 @@ body.journey-page .journey-milestone-panel {
 /* 14.135. Mobile horizontal scrollers for home content sections */
 @media (max-width: 680px) {
   body.home-page #saints .card-row,
+  body.home-page #homeJourneyBible .home-journey-grid,
   body.home-page #churches .church-grid,
   body.home-page #articles .article-grid,
   body.home-page #events .event-list {
@@ -9648,6 +9675,7 @@ body.journey-page .journey-milestone-panel {
   }
 
   body.home-page #saints .card-row::-webkit-scrollbar,
+  body.home-page #homeJourneyBible .home-journey-grid::-webkit-scrollbar,
   body.home-page #churches .church-grid::-webkit-scrollbar,
   body.home-page #articles .article-grid::-webkit-scrollbar,
   body.home-page #events .event-list::-webkit-scrollbar {
@@ -9655,6 +9683,7 @@ body.journey-page .journey-milestone-panel {
   }
 
   body.home-page #saints .content-card,
+  body.home-page #homeJourneyBible .home-journey-card,
   body.home-page #churches .church-card,
   body.home-page #articles .article-card,
   body.home-page #events .event-card {
@@ -9672,5 +9701,37 @@ body.journey-page .journey-milestone-panel {
   body.home-page #events .event-card {
     flex-basis: min(82vw, 330px) !important;
     width: min(82vw, 330px) !important;
+  }
+}
+
+/* 14.137. Home quick links panel height reduced */
+body.home-page .quick-links {
+  padding-top: 19px;
+  padding-bottom: 19px;
+}
+
+body.home-page .quick-links a {
+  grid-template-columns: 44px 1fr;
+  min-height: 62px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+body.home-page .quick-links span {
+  width: 40px;
+  height: 40px;
+  font-size: 21px;
+}
+
+@media (max-width: 760px) {
+  body.home-page .quick-links a {
+    grid-template-columns: 40px 1fr;
+    min-height: 58px;
+  }
+
+  body.home-page .quick-links span {
+    width: 38px;
+    height: 38px;
+    font-size: 20px;
   }
 }

@@ -4451,6 +4451,61 @@ Lưu ý kỹ thuật:
 - Moi ban do phai co bo toa do chuan rieng. Khong dung lai toa do cua ban do Chua Giesu cho cac ban do khac.
 - Du lieu admin nhap cho cot moc duoc uu tien hien thi, nhung toa do hien thi tren ban do co fallback theo bo toa do chuan cua tung ban do.
 
+------------------------------------------------------------
+## 14.137. Giam Chieu Cao Panel Loi Tat Man Hinh Chinh
+
+**Ngay cap nhat:** 22/07/2026
+
+**Chuc nang:**
+- Giam chieu cao panel loi tat tren man hinh chinh them khoang 20% theo yeu cau.
+- Giam padding doc cua `.quick-links`, giam `min-height` cua tung link va thu nho vong icon de panel gon hon nhung van giu bo cuc 4 cot.
+- Them override rieng cho mobile de icon/link van can doi khi xuong man hinh nho.
+- Doi version cache trang chu sang `20260722-home-quick-links-compact`.
+
+**File lien quan:**
+- styles.css
+- index.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+------------------------------------------------------------
+## 14.138. Them Muc Hanh Trinh Kinh Thanh Tren Man Hinh Chinh
+
+**Ngay cap nhat:** 22/07/2026
+
+**Chuc nang:**
+- Them section **Hanh Trinh Kinh Thanh** ngay ben duoi section **Cac Thanh Tieu Bieu** tren man hinh chinh.
+- Section moi dung chung du lieu voi nut/ trang **Hanh Trinh Kinh Thanh** tu document `siteSettings/journeyBible`.
+- Hien thi toi da 3 card chu de dang duoc bat `enabled !== false`.
+- Them nut **Xem tat ca** trong section moi, dung chung helper duong dan local/production cua trang Hanh Trinh Kinh Thanh.
+- Khi click vao card chu de, link co dang `?topic=<topicId>` de mo truc tiep man hinh ban do tuong ung voi chu de do.
+- `journey-test.js` bo sung doc query `topic`/`topicId` tren URL; neu tim thay chu de hop le thi mo thang ban do, neu khong thi hien man hinh chon chu de nhu cu.
+- Card trang chu uu tien anh `pickerImageUrl`, sau do `mapImageUrl`; neu thieu anh thi tu suy ra anh ban do theo id/tieu de chu de: Chua Giesu, Xuat Hanh/Mo-se, Tao Dung/Sang The, 14 Chang Dang Thanh Gia, Chua Lam Phep La.
+- Them CSS rieng de section nay hien thi 3 card thang hang, dong thoi ho tro cuon ngang tren mobile giong cac section noi dung khac.
+- Doi cache sang `20260722-home-journey-section`.
+
+**File lien quan:**
+- index.html
+- main.js
+- journey-test.js
+- styles.css
+- hanh-trinh-kinh-thanh-test.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+------------------------------------------------------------
+## 14.139. Bo Mo Ta Tren Card Hanh Trinh Kinh Thanh O Trang Chu
+
+**Ngay cap nhat:** 22/07/2026
+
+**Chuc nang:**
+- Trong section **Hanh Trinh Kinh Thanh** tren man hinh chinh, card chu de khong con hien thi mo ta chu de.
+- Card chi giu anh dai dien, ten chu de va link **Kham pha** de giao dien gon hon.
+- Doi cache `main.js` tren trang chu sang `20260722-home-journey-card-no-desc`.
+
+**File lien quan:**
+- main.js
+- index.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
 -------------------------------------------------------------
 ## 14.129. Popup Mobile Và MapType Ổn Định Cho Hành Trình Kinh Thánh
 
