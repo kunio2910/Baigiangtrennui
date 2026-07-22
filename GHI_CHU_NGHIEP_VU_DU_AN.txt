@@ -4699,3 +4699,21 @@ Lưu ý kỹ thuật:
 - Kết quả tìm kiếm có thể hiển thị tên bộ câu hỏi Khám Phá Đức Tin và tên chủ đề Hành Trình Kinh Thánh; click sẽ mở trang tương ứng.
 - Tìm kiếm chuyển sang so khớp không dấu để gõ `hanh trinh`, `kham pha`, `duc tin` vẫn tìm được nội dung có dấu tiếng Việt.
 - Cập nhật cache `main.js` sang `20260721-home-search-topics`.
+### 14.146. Hiệu ứng viền vàng và halo cho vòng tròn bản đồ Hành Trình Kinh Thánh
+- Màn hình bản đồ Hành Trình Kinh Thánh hiển thị hotspot tại các vòng tròn số bằng viền vàng sáng, nền trong suốt nhẹ để không che số in sẵn trên ảnh bản đồ.
+- Thêm halo mờ lan ra rồi thu lại bằng animation `journeyHotspotHalo`, giúp người dùng nhận biết các vòng tròn có thể bấm.
+- Khi hover/focus/selected, viền và ánh sáng tăng nhẹ nhưng vẫn giữ đúng vị trí vòng tròn, không render thêm số mới và không ảnh hưởng màn chọn chủ đề.
+- Cập nhật cache CSS của `hanh-trinh-kinh-thanh-test.html` sang `20260722-journey-hotspot-glow`.
+### 14.147. Bỏ halo mờ trên hotspot bản đồ Hành Trình Kinh Thánh
+- Tắt lớp `::before` và animation halo của hotspot vòng tròn số trên bản đồ Hành Trình Kinh Thánh.
+- Giữ lại viền vàng sáng bao quanh hotspot; hover/focus/selected chỉ tăng viền nhẹ, không còn hiệu ứng lan mờ/pulse.
+- Cập nhật cache CSS của `hanh-trinh-kinh-thanh-test.html` sang `20260722-journey-hotspot-border`.
+### 14.148. Bỏ viền vàng hotspot bản đồ Hành Trình Kinh Thánh
+- Tắt viền vàng, nền và box-shadow của hotspot vòng tròn số trên bản đồ Hành Trình Kinh Thánh.
+- Vùng hotspot vẫn giữ chức năng click/chạm, chỉ không còn hiển thị viền hoặc ánh sáng trên bản đồ.
+- Cập nhật cache CSS của `hanh-trinh-kinh-thanh-test.html` sang `20260722-journey-hotspot-invisible`.
+### 14.149. Di chuyển quick links xuống dưới Cầu Nguyện và bỏ mô tả chọn Hành Trình
+- Trang chủ chuyển cụm quick links "Cầu nguyện / Khám Phá Đức Tin / Hành Trình Kinh Thánh / Bác ái" từ dưới banner cột trái xuống ngay sau mục Cầu nguyện ở cột phải.
+- Cột trái giờ hiển thị "Các thánh tiêu biểu" và "Hành Trình Kinh Thánh" ngay sau banner, giúp lấp khoảng trống cũ của quick links.
+- Màn chọn chủ đề Hành Trình Kinh Thánh bỏ dòng mô tả "Chọn một hành trình để khám phá các cột mốc trong Kinh Thánh".
+- Cập nhật cache CSS trang chủ sang `20260722-home-quicklinks-under-prayer`.
