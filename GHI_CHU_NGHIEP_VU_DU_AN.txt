@@ -4543,6 +4543,125 @@ Lưu ý kỹ thuật:
 - GHI_CHU_NGHIEP_VU_DU_AN.txt
 
 ------------------------------------------------------------
+## 14.151. Don File Mau, Backup Game Cu Va Code Khong Con Dung
+
+**Ngay cap nhat:** 23/07/2026
+
+**Chuc nang:**
+- Ra soat source de tim cac file du lieu mau, file backup game cu va code/CSS khong con dung.
+- Xoa backup game Hanh Trinh Kinh Thanh da tao truoc do:
+  - `backups/journey-test-game-backup-20260721.js`
+  - `backups/styles-game-backup-20260721.css`
+  - Xoa luon thu muc `backups` neu da rong.
+- Xoa cac file JSON puzzle mau khong duoc source hien tai tham chieu:
+  - `Puzzle Maria.json`
+  - `Puzzle Jesu.json`
+- Xoa anh mau cu `assets/faith-picker-maria.jpg`; code van giu danh sach legacy trong `admin.js` va `faith-discovery.js` de bo qua du lieu cu neu Firestore tung luu duong dan anh nay.
+- Xoa ham `setupHomeFeedbackForm()` trong `main.js` va CSS `.home-feedback-*` vi form Gop Y da duoc tach sang trang rieng `gop-y.html`.
+- Doi placeholder JSON cau hoi trong admin tu noi dung co chu "mau" sang vi du trung tinh, tranh hieu nham la du lieu mau dang duoc luu.
+- Kiem tra `data.js`: `defaultContent` hien la rong, `seedDefaultContentIfEmpty()` va `resetContent()` deu khong ghi du lieu mau len Firestore.
+- Tang cache cac trang lien quan sang `20260723-clean-samples-backups`.
+
+**File da xoa:**
+- backups/journey-test-game-backup-20260721.js
+- backups/styles-game-backup-20260721.css
+- backups/
+- Puzzle Maria.json
+- Puzzle Jesu.json
+- assets/faith-picker-maria.jpg
+
+**File lien quan:**
+- index.html
+- admin.html
+- gop-y.html
+- main.js
+- styles.css
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+**Luu y:**
+- Khong xoa cac asset dang duoc CSS/source hien tai tham chieu nhu `Default.jpg`, `assets/faith-lock.png`, `assets/panel-cau-hoi.png`, `assets/faith-score-box.png`, `assets/faith-picker-textbox.png`.
+- Source hien tai dang tham chieu cac anh ban do Hanh Trinh Kinh Thanh trong `assets/journey-*.png`, nhung cac file nay khong ton tai trong workspace luc ra soat. Khong xoa tham chieu de tranh lam hong fallback; can bo sung lai asset neu public dang phu thuoc vao cac duong dan nay.
+
+------------------------------------------------------------
+## 14.152. Tang Kich Thuoc Nut Menu Header Them 20%
+
+**Ngay cap nhat:** 23/07/2026
+
+**Chuc nang:**
+- Tang kich thuoc cac muc/nut tren thanh menu header them khoang 20% so voi ban single-line truoc do.
+- Font menu public tang tu `10px` len `12px`; media duoi 1100px tang tu `10px` len `11px`.
+- Tang `gap`, vach ngan va them `padding-inline` nho cho link de vung bam rong hon.
+- Giu `white-space: nowrap` de cac chu trong tung muc menu nam cung mot hang, khong xuong dong.
+- Doi cache CSS cac trang co header sang `20260723-nav-buttons-plus20`.
+
+**File lien quan:**
+- styles.css
+- index.html
+- gop-y.html
+- admin.html
+- hanh-trinh-kinh-thanh-test.html
+- category.html
+- detail.html
+- prayer-request.html
+- faith-discovery.html
+- accounts.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+------------------------------------------------------------
+## 14.153. Them Link Bai Viet Lien Quan Cho Popup Cot Moc Hanh Trinh
+
+**Ngay cap nhat:** 23/07/2026
+
+**Chuc nang:**
+- Trang quan ly Hanh Trinh Kinh Thanh them truong **Bai viet lien quan** trong form tung cot moc.
+- Link duoc luu vao milestone qua field `relatedArticleUrl`; dong thoi doc du phong field cu/khac ten `relatedUrl` neu co.
+- Khi popup cot moc tren man hinh ban do hien len, neu cot moc co `relatedArticleUrl` thi hien nut/link **Xem them** o cuoi popup, can ve goc ben phai.
+- Neu cot moc khong co link lien quan thi popup khong hien nut **Xem them**, giu giao dien nhu cu.
+- Them CSS `.journey-milestone-more` cho nut/link Xem them, ho tro dark mode.
+- Doi cache sang `20260723-journey-related-article`.
+
+**File lien quan:**
+- admin.html
+- admin.js
+- journey-test.js
+- styles.css
+- hanh-trinh-kinh-thanh-test.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+------------------------------------------------------------
+## 14.154. Can Giua Nut Xem Them Trong Popup Cot Moc
+
+**Ngay cap nhat:** 23/07/2026
+
+**Chuc nang:**
+- Giu nut **Xem them** o cuoi popup cot moc Hanh Trinh Kinh Thanh.
+- Doi can le nut tu goc phai sang can giua popup bang `margin: 14px auto 0`.
+- Doi cache CSS sang `20260723-journey-more-centered`.
+
+**File lien quan:**
+- styles.css
+- admin.html
+- hanh-trinh-kinh-thanh-test.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+------------------------------------------------------------
+## 14.155. Ep Can Giua Nut Xem Them Popup Hanh Trinh
+
+**Ngay cap nhat:** 23/07/2026
+
+**Chuc nang:**
+- Sua tiep nut **Xem them** trong popup cot moc vi `display: inline-flex` khien `margin auto` khong can giua chac chan.
+- Doi nut sang `display: flex`, them `align-self: center`.
+- Them override cuoi file voi `!important` cho `.journey-milestone-content .journey-milestone-more` de thang cac rule popup phia sau.
+- Doi cache CSS sang `20260723-journey-more-centered-force`.
+
+**File lien quan:**
+- styles.css
+- admin.html
+- hanh-trinh-kinh-thanh-test.html
+- GHI_CHU_NGHIEP_VU_DU_AN.txt
+
+------------------------------------------------------------
 ## 14.140. An Khung Anh Popup Cot Moc Khi Khong Co Anh Panel
 
 **Ngay cap nhat:** 22/07/2026
@@ -4721,3 +4840,27 @@ Lưu ý kỹ thuật:
 - Giảm cỡ chữ menu header và giảm khoảng cách giữa các mục điều hướng chính.
 - Khóa `white-space: nowrap` cho link menu để các mục như "Trang chủ", "Các Thánh", "Cầu Nguyện", "Góp Ý" không tự xuống dòng.
 - Cập nhật cache CSS sang `20260722-nav-single-line` cho các trang HTML đang dùng `styles.css`.
+### 14.156. Thiết kế lại 4 nút mục vụ nhanh trên trang chủ
+- Trang chủ đổi cụm nút "Cầu nguyện / Khám Phá Đức Tin / Hành Trình Kinh Thánh / Bác ái" sang dạng card trắng bo góc, có bóng đổ nhẹ, icon tròn vàng bên trái và mũi tên bên phải giống mẫu thiết kế.
+- Bỏ kiểu vạch phân cách dọc cũ trong cụm quick-links ở trang chủ; mỗi mục giờ là một card độc lập, dễ bấm hơn và đồng nhất với bố cục hiện đại.
+- Đổi icon quick-link "Hành Trình Kinh Thánh" từ dấu chấm đôi sang ký hiệu ngôi sao để hợp phong cách card tròn vàng.
+- Thêm responsive cho cụm card: desktop hiển thị 4 cột, màn hẹp tự xuống 2 cột hoặc 1 cột.
+- Cập nhật cache CSS/JS trang chủ sang `20260723-home-quicklinks-cards`.
+### 14.157. Thu gọn chiều cao và đổi icon 4 nút trang chủ
+- Giảm chiều cao 4 card mục vụ nhanh trên trang chủ xuống khoảng 50% so với bản card trước: icon, padding, font chữ và khoảng cách đều được thu gọn.
+- Đổi icon trong vòng tròn vàng bằng CSS pseudo-icon để gần mẫu đã gửi hơn: thánh giá, dấu thánh/sách, ngôi sao hành trình và trái tim bác ái.
+- Cập nhật cache CSS trang chủ sang `20260723-home-quicklinks-slim-icons`.
+### 14.158. Bỏ bóng, tăng chiều cao và đồng nhất font 4 nút trang chủ
+- Bỏ hiệu ứng bóng đổ khỏi 4 card mục vụ nhanh và cả trạng thái hover để giao diện phẳng, sạch hơn.
+- Tăng lại chiều cao card khoảng 20% so với bản thu gọn trước; icon và padding cũng tăng nhẹ để nút dễ nhìn hơn.
+- Chuẩn hóa font chữ title/subtitle/icon theo `var(--font-main)`, tăng nhẹ độ đậm và letter-spacing để đồng nhất với tổng thể website.
+- Cập nhật cache CSS trang chủ sang `20260723-home-quicklinks-flat-font`.
+### 14.159. Rollback 4 nút mục vụ nhanh về giao diện ban đầu
+- Phục hồi cụm nút "Cầu nguyện / Khám Phá Đức Tin / Hành Trình Kinh Thánh / Bác ái" về dạng panel trắng chung như ban đầu, có vạch chia dọc giữa các mục.
+- Bỏ kiểu card riêng, mũi tên bên phải và icon tròn vàng đặc của các bản thử nghiệm trước; icon quay lại dạng vòng tròn viền vàng nền trắng.
+- Giữ vị trí hiện tại của cụm quick-links dưới mục Cầu nguyện, không thay đổi link/chức năng.
+- Cập nhật cache CSS trang chủ sang `20260723-home-quicklinks-rollback`.
+### 14.160. Sửa lỗi font/mã hóa tiếng Việt ở link/trang chủ
+- Sửa lỗi mojibake trên `index.html` khiến title, meta description, Open Graph, navigation, hero, section heading, quick-links và footer hiển thị sai dấu tiếng Việt khi mở URL website.
+- Sửa các chuỗi render từ `main.js` như nhãn tìm kiếm, nút "Chi tiết", "Đọc thêm", "Khám phá", thông báo Firebase, quote Lời Chúa và tracking label để không ghi đè chữ đúng bằng chữ lỗi.
+- Cập nhật cache CSS/JS trang chủ sang `20260723-home-link-font-fix`.

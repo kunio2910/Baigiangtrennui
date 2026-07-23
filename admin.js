@@ -101,6 +101,7 @@ const journeyMilestoneNumber = document.querySelector("#journeyMilestoneNumber")
 const journeyMapCardImageUrl = document.querySelector("#journeyMapCardImageUrl");
 const journeyMapCardUploadButton = document.querySelector("#journeyMapCardUploadButton");
 const journeyMapCardPreview = document.querySelector("#journeyMapCardPreview");
+const journeyMilestoneRelatedUrl = document.querySelector("#journeyMilestoneRelatedUrl");
 const journeyMapImageUrl = document.querySelector("#journeyMapImageUrl");
 const journeyMapUploadButton = document.querySelector("#journeyMapUploadButton");
 const journeyMapPointCount = document.querySelector("#journeyMapPointCount");
@@ -1162,6 +1163,7 @@ function normalizeAdminJourneyMilestone(milestone, index = 0) {
     story: String(milestone?.story || "").trim(),
     lesson: String(milestone?.lesson || "").trim(),
     cardImageUrl: String(milestone?.cardImageUrl || "").trim(),
+    relatedArticleUrl: String(milestone?.relatedArticleUrl || milestone?.relatedUrl || "").trim(),
   };
 
   const x = Number(milestone?.x);
@@ -1541,6 +1543,7 @@ function fillJourneyMilestoneForm(number) {
   journeyMilestoneStory.value = milestone?.story || "";
   journeyMilestoneLesson.value = milestone?.lesson || "";
   journeyMapCardImageUrl.value = milestone?.cardImageUrl || "";
+  if (journeyMilestoneRelatedUrl) journeyMilestoneRelatedUrl.value = milestone?.relatedArticleUrl || "";
   selectedJourneyMapPointNumber = Number(milestone?.number || selectedJourneyMapPointNumber || 1);
   updateJourneyMapCardPreview();
   renderJourneyMapEditor();
@@ -1609,6 +1612,7 @@ function updateJourneyMilestoneFromFields(options = {}) {
       story: journeyMilestoneStory.value.trim(),
       lesson: journeyMilestoneLesson.value.trim(),
       cardImageUrl: journeyMapCardImageUrl.value.trim(),
+      relatedArticleUrl: journeyMilestoneRelatedUrl?.value.trim() || "",
       x: Number.isFinite(inputX) ? clampJourneyMapPercent(inputX, defaultPosition.x) : Number.isFinite(existingX) ? existingX : defaultPosition.x,
       y: Number.isFinite(inputY) ? clampJourneyMapPercent(inputY, defaultPosition.y) : Number.isFinite(existingY) ? existingY : defaultPosition.y,
     });
@@ -1660,6 +1664,7 @@ function startNewJourneyMilestone(useTypedNumber = true) {
     journeyMilestoneStory.value = "";
     journeyMilestoneLesson.value = "";
     journeyMapCardImageUrl.value = "";
+    if (journeyMilestoneRelatedUrl) journeyMilestoneRelatedUrl.value = "";
     updateJourneyMapCardPreview();
     renderJourneyMapEditor();
     journeyMilestoneTitle.focus();
@@ -2717,6 +2722,7 @@ journeyMilestoneSelect?.addEventListener("change", () => {
   journeyMilestoneStory,
   journeyMilestoneLesson,
   journeyMapCardImageUrl,
+  journeyMilestoneRelatedUrl,
 ].forEach((control) => {
   control?.addEventListener("input", () => updateJourneyMilestoneFromFields({ silent: true }));
 });

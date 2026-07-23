@@ -92,8 +92,8 @@ function normalizeSearchText(value) {
   return String(value || "")
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
-    .replace(/Ä‘/g, "d")
-    .replace(/Ä/g, "D")
+    .replace(/đ/g, "d")
+    .replace(/Đ/g, "D")
     .toLowerCase();
 }
 
@@ -117,8 +117,8 @@ function normalizeTopicText(value) {
   return String(value || "")
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
-    .replace(/Ã„â€˜/g, "d")
-    .replace(/Ã„Â/g, "D")
+    .replace(/đ/g, "d")
+    .replace(/Đ/g, "D")
     .toLowerCase();
 }
 
@@ -140,7 +140,7 @@ function buildFaithSearchItems(settings) {
       ? [
           {
             id: settings.id || "legacy-faith-set",
-            title: settings.title || "KhÃ¡m PhÃ¡ Äá»©c Tin",
+            title: settings.title || "Khám Phá Đức Tin",
             questions: settings.questions,
           },
         ]
@@ -151,9 +151,9 @@ function buildFaithSearchItems(settings) {
     return {
       id: `faith-search-${set?.id || index}`,
       type: "faithDiscovery",
-      title: set?.title || `Bá»™ cÃ¢u há»i ${index + 1}`,
-      description: `KhÃ¡m phÃ¡ Ä‘á»©c tin â€¢ ${questions.length} cÃ¢u há»i`,
-      meta: "KhÃ¡m PhÃ¡ Äá»©c Tin",
+      title: set?.title || `Bộ câu hỏi ${index + 1}`,
+      description: `Khám phá đức tin • ${questions.length} câu hỏi`,
+      meta: "Khám Phá Đức Tin",
       url: "/kham-pha-duc-tin",
       searchText: questions
         .map((question) => `${question?.topic || ""} ${question?.question || ""}`)
@@ -174,9 +174,9 @@ function buildJourneySearchItems(settings) {
       return {
         id: `journey-search-${topic?.id || index}`,
         type: "journeyBible",
-        title: topic?.title || `Chá»§ Ä‘á» ${index + 1}`,
-        description: topic?.description || topic?.label || `HÃ nh trÃ¬nh Kinh ThÃ¡nh â€¢ ${milestones.length} cá»™t má»‘c`,
-        meta: "HÃ nh TrÃ¬nh Kinh ThÃ¡nh",
+        title: topic?.title || `Chủ đề ${index + 1}`,
+        description: topic?.description || topic?.label || `Hành trình Kinh Thánh • ${milestones.length} cột mốc`,
+        meta: "Hành Trình Kinh Thánh",
         url: publicJourneyUrl(),
         searchText: `${topic?.label || ""} ${milestoneText}`,
       };
@@ -187,13 +187,13 @@ async function loadSupplementalSearchItems() {
   const [faithSettings, journeySettings] = await Promise.all([
     typeof getFaithDiscoverySettings === "function"
       ? getFaithDiscoverySettings().catch((error) => {
-          console.warn("KhÃ´ng thá»ƒ náº¡p má»¥c KhÃ¡m PhÃ¡ Äá»©c Tin cho tÃ¬m kiáº¿m.", error);
+          console.warn("Không thể nạp mục Khám Phá Đức Tin cho tìm kiếm.", error);
           return null;
         })
       : Promise.resolve(null),
     typeof getJourneyBibleSettings === "function"
       ? getJourneyBibleSettings().catch((error) => {
-          console.warn("KhÃ´ng thá»ƒ náº¡p má»¥c HÃ nh TrÃ¬nh Kinh ThÃ¡nh cho tÃ¬m kiáº¿m.", error);
+          console.warn("Không thể nạp mục Hành Trình Kinh Thánh cho tìm kiếm.", error);
           return null;
         })
       : Promise.resolve(null),
@@ -213,7 +213,7 @@ function cardTemplate(item, type = "saints") {
       <div>
         <h3>${displayText(item.title)}</h3>
         <p>${summarizeText(item.description, 105)}</p>
-        <a href="${link}" onclick="event.stopPropagation()">Chi tiáº¿t</a>
+        <a href="${link}" onclick="event.stopPropagation()">Chi tiết</a>
       </div>
     </article>
   `;
@@ -226,8 +226,8 @@ function churchTemplate(item) {
       <img src="${imageOrFallback(item)}" alt="${item.title}" ${lazyImageAttrs} />
       <div>
         <h3>${displayText(item.title)}</h3>
-        <p>ðŸ“ ${displayText(item.meta || "Viá»‡t Nam")}</p>
-        <a href="${link}" onclick="event.stopPropagation()">Chi tiáº¿t</a>
+        <p>📍 ${displayText(item.meta || "Việt Nam")}</p>
+        <a href="${link}" onclick="event.stopPropagation()">Chi tiết</a>
       </div>
     </article>
   `;
@@ -241,7 +241,7 @@ function articleTemplate(item) {
       <div>
         <h3>${displayText(item.title)}</h3>
         <p>${summarizeText(item.description, 105)}</p>
-        <a href="${link}" onclick="event.stopPropagation()">Äá»c thÃªm</a>
+        <a href="${link}" onclick="event.stopPropagation()">Đọc thêm</a>
       </div>
     </article>
   `;
@@ -259,7 +259,7 @@ function eventTemplate(item) {
         <h3>${displayText(item.title)}</h3>
         <p>${displayText(item.meta || item.description)}</p>
         <small>${summarizeText(item.description, 85)}</small>
-        <a href="${link}" onclick="event.stopPropagation()">Chi tiáº¿t</a>
+        <a href="${link}" onclick="event.stopPropagation()">Chi tiết</a>
       </div>
     </article>
   `;
@@ -272,7 +272,7 @@ function prayerTemplate(item) {
     <article class="prayer-card clickable-card" style="--prayer-image: url('${imageOrFallback(item)}')" onclick="window.location.href='${link}'">
       <div>
         <h3>${displayText(item.title)}</h3>
-        <blockquote>â€œ${summarizeText(prayerExcerpt, 125)}â€</blockquote>
+        <blockquote>“${summarizeText(prayerExcerpt, 125)}”</blockquote>
       </div>
     </article>
   `;
@@ -286,7 +286,7 @@ function journeyHomeCardTemplate(topic) {
       <img src="${imageUrl}" alt="${displayText(topic.title)}" ${lazyImageAttrs} />
       <div>
         <h3>${displayText(topic.title)}</h3>
-        <a href="${link}" onclick="event.stopPropagation()">KhÃƒÂ¡m phÃƒÂ¡</a>
+        <a href="${link}" onclick="event.stopPropagation()">Khám phá</a>
       </div>
     </article>
   `;
@@ -327,7 +327,7 @@ function renderDaily() {
   const quote = daily.quote || daily.description || daily.title || "";
   const ref = daily.ref || daily.meta || daily.title || "";
   preloadImage(imageOrFallback(daily));
-  document.querySelector("#dailyQuote").textContent = `â€œ${displayText(quote)}â€`;
+  document.querySelector("#dailyQuote").textContent = `“${displayText(quote)}”`;
   document.querySelector("#dailyRef").textContent = ref ? `(${displayText(ref)})` : "";
   document.querySelector(".daily-card").style.setProperty("--daily-image", `url("${imageOrFallback(daily)}")`);
   document.querySelector("#dailyDots").innerHTML = dailyItems
@@ -386,7 +386,7 @@ function renderLoadError(error) {
   document.querySelector("#saintsList").innerHTML = `
     <article class="content-card">
       <div>
-        <h3>ChÆ°a káº¿t ná»‘i Firebase</h3>
+        <h3>Chưa kết nối Firebase</h3>
         <p>${error.message}</p>
       </div>
     </article>
@@ -487,7 +487,7 @@ function setupComingSoonLinks() {
   }
   let noticeTimer = null;
   const showComingSoonNotice = () => {
-    notice.textContent = "Ná»™i dung nÃ y Ä‘ang hoÃ n thÃ nh, vui lÃ²ng Ä‘á»£i !";
+    notice.textContent = "Nội dung này đang hoàn thành, vui lòng đợi!";
     notice.classList.add("show");
     clearTimeout(noticeTimer);
     noticeTimer = setTimeout(() => notice.classList.remove("show"), 2600);
@@ -505,52 +505,13 @@ function setupComingSoonLinks() {
     const title = link.querySelector("strong");
     const subtitle = link.querySelector("small");
     link.href = publicJourneyUrl();
-    if (icon) icon.textContent = "â€¢â€¢";
-    if (title) title.textContent = "HÃ nh TrÃ¬nh Kinh ThÃ¡nh";
-    if (subtitle) subtitle.textContent = "KhÃ¡m phÃ¡ cÃ¡c cá»™t má»‘c Ä‘á»©c tin";
+    if (icon) icon.textContent = "✦";
+    if (title) title.textContent = "Hành Trình Kinh Thánh";
+    if (subtitle) subtitle.textContent = "Khám phá các cột mốc đức tin";
   });
 
   document.querySelectorAll("[data-local-journey-all]").forEach((link) => {
     link.href = publicJourneyUrl();
-  });
-}
-
-function setupHomeFeedbackForm() {
-  const form = document.querySelector("#homeFeedbackForm");
-  const textarea = document.querySelector("#homeFeedbackMessage");
-  const status = document.querySelector("#homeFeedbackStatus");
-  if (!form || !textarea || typeof submitContentFeedback !== "function") return;
-
-  form.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    const message = textarea.value.trim();
-    if (!message) {
-      if (status) status.textContent = "Vui lÃ²ng nháº­p Ã½ kiáº¿n Ä‘Ã³ng gÃ³p.";
-      textarea.focus();
-      return;
-    }
-
-    const submitButton = form.querySelector('button[type="submit"]');
-    if (submitButton) submitButton.disabled = true;
-    if (status) status.textContent = "Äang gá»­i Ã½ kiáº¿n...";
-
-    try {
-      await submitContentFeedback(
-        {
-          id: "home",
-          type: "home",
-          title: "MÃ n hÃ¬nh chÃ­nh",
-        },
-        message
-      );
-      textarea.value = "";
-      if (status) status.textContent = "Cáº£m Æ¡n báº¡n, Ã½ kiáº¿n Ä‘Ã£ Ä‘Æ°á»£c gá»­i.";
-    } catch (error) {
-      console.error("KhÃ´ng thá»ƒ gá»­i Ã½ kiáº¿n Ä‘Ã³ng gÃ³p.", error);
-      if (status) status.textContent = error.message || "KhÃ´ng thá»ƒ gá»­i Ã½ kiáº¿n, vui lÃ²ng thá»­ láº¡i.";
-    } finally {
-      if (submitButton) submitButton.disabled = false;
-    }
   });
 }
 
@@ -579,7 +540,7 @@ document.addEventListener("visibilitychange", () => {
 });
 
 async function initHome() {
-  trackPageView({ key: "page_home", label: "Trang chá»§", kind: "page" });
+  trackPageView({ key: "page_home", label: "Trang chủ", kind: "page" });
   try {
     content = await getContent();
     renderHome();
@@ -595,7 +556,7 @@ async function initHome() {
     setupSearch();
   }
   setupComingSoonLinks();
-  rememberCurrentPage("Trang chá»§");
+  rememberCurrentPage("Trang chủ");
 }
 
 initHome();

@@ -1,63 +1,63 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="vi">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hành Trình Kinh Thánh - Bài Giảng Trên Núi</title>
+    <title>HÃ nh TrÃ¬nh Kinh ThÃ¡nh - BÃ i Giáº£ng TrÃªn NÃºi</title>
     <meta
       name="description"
-      content="Màn hình thử nghiệm chọn chủ đề Hành Trình Kinh Thánh, chỉ hiển thị khi chạy trên localhost."
+      content="MÃ n hÃ¬nh thá»­ nghiá»‡m chá»n chá»§ Ä‘á» HÃ nh TrÃ¬nh Kinh ThÃ¡nh, chá»‰ hiá»ƒn thá»‹ khi cháº¡y trÃªn localhost."
     />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/favicon.png" />
-    <link rel="stylesheet" href="styles.css?v=20260722-nav-single-line" />
+    <link rel="stylesheet" href="styles.css?v=20260723-journey-more-centered-force" />
   </head>
   <body class="faith-page faith-choosing-set journey-page">
     <header class="site-header">
-      <div class="brand" aria-label="Truyền Giáo Kitô">
-        <a class="brand-mark brand-admin-link" href="/admin.html" aria-label="Mở trang quản lý">✝</a>
-        <span>Truyền Giáo<br />Kitô</span>
+      <div class="brand" aria-label="Truyá»n GiÃ¡o KitÃ´">
+        <a class="brand-mark brand-admin-link" href="/admin.html" aria-label="Má»Ÿ trang quáº£n lÃ½">âœ</a>
+        <span>Truyá»n GiÃ¡o<br />KitÃ´</span>
       </div>
-      <nav class="main-nav" aria-label="Điều hướng chính">
-        <a href="/">Trang chủ</a>
-        <a href="/cac-thanh">Các Thánh</a>
-        <a href="/nha-tho">Nhà Thờ</a>
-        <a href="/bai-viet">Bài Viết</a>
-        <a href="/su-kien">Sự Kiện</a>
-        <a href="/cau-nguyen">Cầu Nguyện</a>
-        <a href="/giao-ly">Giáo Lý</a>
+      <nav class="main-nav" aria-label="Äiá»u hÆ°á»›ng chÃ­nh">
+        <a href="/">Trang chá»§</a>
+        <a href="/cac-thanh">CÃ¡c ThÃ¡nh</a>
+        <a href="/nha-tho">NhÃ  Thá»</a>
+        <a href="/bai-viet">BÃ i Viáº¿t</a>
+        <a href="/su-kien">Sá»± Kiá»‡n</a>
+        <a href="/cau-nguyen">Cáº§u Nguyá»‡n</a>
+        <a href="/giao-ly">GiÃ¡o LÃ½</a>
       </nav>
     </header>
 
     <main class="faith-shell journey-shell">
-      <section class="faith-set-picker journey-set-picker" aria-label="Chọn chủ đề Hành Trình Kinh Thánh">
-        <a class="faith-picker-home" href="/">← Quay lại Trang chủ</a>
+      <section class="faith-set-picker journey-set-picker" aria-label="Chá»n chá»§ Ä‘á» HÃ nh TrÃ¬nh Kinh ThÃ¡nh">
+        <a class="faith-picker-home" href="/">â† Quay láº¡i Trang chá»§</a>
         <div class="faith-picker-head">
-          <h2>Hành Trình Kinh Thánh</h2>
+          <h2>HÃ nh TrÃ¬nh Kinh ThÃ¡nh</h2>
         </div>
 
-        <div class="faith-picker-tools" aria-label="Tìm kiếm và sắp xếp chủ đề" data-preserved-feature="topic-search-sort" hidden>
+        <div class="faith-picker-tools" aria-label="TÃ¬m kiáº¿m vÃ  sáº¯p xáº¿p chá»§ Ä‘á»" data-preserved-feature="topic-search-sort" hidden>
           <label class="faith-search-label">
-            <span>Tìm kiếm</span>
-            <input id="journeySearch" type="search" placeholder="Nhập tên chủ đề..." />
+            <span>TÃ¬m kiáº¿m</span>
+            <input id="journeySearch" type="search" placeholder="Nháº­p tÃªn chá»§ Ä‘á»..." />
           </label>
           <label>
-            <span>Sắp xếp</span>
+            <span>Sáº¯p xáº¿p</span>
             <select id="journeySort">
-              <option value="default">Mặc định</option>
-              <option value="title-asc">A → Z</option>
-              <option value="title-desc">Z → A</option>
-              <option value="steps-desc">Nhiều cột mốc nhất</option>
-              <option value="steps-asc">Ít cột mốc nhất</option>
+              <option value="default">Máº·c Ä‘á»‹nh</option>
+              <option value="title-asc">A â†’ Z</option>
+              <option value="title-desc">Z â†’ A</option>
+              <option value="steps-desc">Nhiá»u cá»™t má»‘c nháº¥t</option>
+              <option value="steps-asc">Ãt cá»™t má»‘c nháº¥t</option>
             </select>
           </label>
         </div>
 
         <div class="faith-picker-grid journey-topic-grid" id="journeyTopicGrid"></div>
-        <div class="pagination faith-picker-pagination" id="journeyPagination" aria-label="Phân trang chủ đề"></div>
+        <div class="pagination faith-picker-pagination" id="journeyPagination" aria-label="PhÃ¢n trang chá»§ Ä‘á»"></div>
       </section>
 
-      <section class="journey-game" id="journeyGame" hidden aria-label="Màn chơi Hành Trình Kinh Thánh">
+      <section class="journey-game" id="journeyGame" hidden aria-label="MÃ n chÆ¡i HÃ nh TrÃ¬nh Kinh ThÃ¡nh">
         <div id="journeyGameRoot"></div>
       </section>
     </main>
@@ -67,6 +67,6 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-storage-compat.js"></script>
     <script src="firebase-config.js"></script>
     <script src="data.js?v=20260721-journey-map-panel-fix"></script>
-    <script src="journey-test.js?v=20260722-journey-hide-disabled-topics"></script>
+    <script src="journey-test.js?v=20260723-journey-related-article"></script>
   </body>
 </html>

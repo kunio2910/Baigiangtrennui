@@ -2072,52 +2072,6 @@ textarea {
   min-height: 104px;
 }
 
-.home-feedback-panel {
-  padding: 6px 8px 18px;
-}
-
-.home-feedback-form {
-  display: grid;
-  gap: 8px;
-  padding: 0 16px 8px;
-}
-
-.home-feedback-form textarea {
-  width: 100%;
-  min-height: 92px;
-  resize: vertical;
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  padding: 12px;
-  color: var(--ink);
-  background: var(--white);
-  font: inherit;
-}
-
-.home-feedback-form button {
-  justify-self: start;
-  border: 0;
-  border-radius: 3px;
-  padding: 8px 12px;
-  background: var(--gold);
-  color: #fff;
-  font-weight: 800;
-  cursor: pointer;
-}
-
-.home-feedback-form button:disabled {
-  opacity: 0.65;
-  cursor: wait;
-}
-
-.home-feedback-status {
-  min-height: 18px;
-  margin: 0;
-  color: var(--gold-dark);
-  font-size: 12px;
-  font-weight: 700;
-}
-
 .feedback-page-shell {
   width: min(100% - 48px, 1120px);
   margin: 26px auto 56px;
@@ -9163,6 +9117,29 @@ body.journey-page .journey-milestone-content blockquote {
   line-height: 1.5;
 }
 
+body.journey-page .journey-milestone-more {
+  display: flex;
+  align-self: center;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  margin: 14px auto 0;
+  padding: 8px 12px;
+  border: 1px solid rgba(199, 131, 24, 0.35);
+  border-radius: 999px;
+  background: rgba(199, 131, 24, 0.12);
+  color: #9a5e11;
+  font-size: 12px;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+body.journey-page .journey-milestone-more:hover,
+body.journey-page .journey-milestone-more:focus-visible {
+  background: #c78318;
+  color: #fff9ea;
+}
+
 :root[data-theme="dark"] body.journey-page .journey-milestone-panel {
   background: linear-gradient(145deg, #302116, #21150e);
   border-color: rgba(216, 157, 68, 0.5);
@@ -9176,6 +9153,12 @@ body.journey-page .journey-milestone-content blockquote {
 :root[data-theme="dark"] body.journey-page .journey-milestone-content blockquote {
   background: rgba(216, 157, 68, 0.14);
   color: #f8d79d;
+}
+
+:root[data-theme="dark"] body.journey-page .journey-milestone-more {
+  border-color: rgba(216, 157, 68, 0.5);
+  background: rgba(216, 157, 68, 0.14);
+  color: #ffd28a;
 }
 
 @media (max-width: 760px) {
@@ -10002,30 +9985,398 @@ body.home-page .right-column .quick-links {
 body.home-page .right-column .quick-links a {
   min-height: 58px;
 }
-/* 14.150. Header navigation single-line labels */
+/* 14.152. Header navigation larger single-line labels */
 .site-header:not(.admin-header) .main-nav {
-  gap: 8px;
-  font-size: 10px;
-  line-height: 1.08;
+  gap: 10px;
+  font-size: 12px;
+  line-height: 1.12;
 }
 
 .site-header:not(.admin-header) .main-nav a {
   flex: 0 0 auto;
+  padding-inline: 2px;
   white-space: nowrap;
 }
 
 .site-header:not(.admin-header) .main-nav a + a::before {
-  margin-right: 8px;
+  height: 17px;
+  margin-right: 10px;
 }
 
 .site-header:not(.admin-header) .main-nav a + a.active::after,
 .site-header:not(.admin-header) .main-nav a + a:hover::after {
-  left: 9px;
+  left: 12px;
 }
 
 @media (max-width: 1100px) {
   .site-header:not(.admin-header) .main-nav {
-    gap: 10px;
-    font-size: 10px;
+    gap: 9px;
+    font-size: 11px;
+  }
+}
+
+/* 14.155. Force center alignment for journey popup more link */
+body.journey-page .journey-milestone-content .journey-milestone-more {
+  display: flex !important;
+  align-self: center !important;
+  margin: 14px auto 0 !important;
+}
+
+/* 14.156. Home quick links redesigned as compact ministry cards */
+body.home-page .right-column .quick-links {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  padding: 18px 10px 20px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+body.home-page .right-column .quick-links a {
+  position: relative;
+  display: grid;
+  grid-template-columns: 62px minmax(0, 1fr) 14px;
+  grid-template-rows: auto auto;
+  column-gap: 12px;
+  align-items: center;
+  min-height: 80px;
+  padding: 10px 13px 10px 10px;
+  border: 1px solid rgba(232, 206, 160, 0.68);
+  border-radius: 10px;
+  background: #fffdf9;
+  box-shadow: 0 8px 22px rgba(86, 52, 22, 0.11);
+  overflow: hidden;
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+}
+
+body.home-page .right-column .quick-links a:last-child {
+  border-right: 1px solid rgba(232, 206, 160, 0.68);
+}
+
+body.home-page .right-column .quick-links a::after {
+  content: "›";
+  grid-column: 3;
+  grid-row: 1 / span 2;
+  justify-self: end;
+  color: #b46f16;
+  font-size: 25px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+body.home-page .right-column .quick-links a:hover {
+  transform: translateY(-2px);
+  border-color: rgba(203, 136, 35, 0.48);
+  box-shadow: 0 12px 28px rgba(86, 52, 22, 0.16);
+}
+
+body.home-page .right-column .quick-links span {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  border: 0;
+  border-radius: 999px;
+  color: #fff8e8;
+  font-size: 28px;
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(82, 45, 8, 0.38);
+  background:
+    radial-gradient(circle at 30% 22%, rgba(255, 247, 213, 0.92) 0 16%, rgba(255, 247, 213, 0) 17%),
+    linear-gradient(145deg, #f3c26b 0%, #d39431 44%, #9b5d13 100%);
+  box-shadow:
+    inset 0 -9px 14px rgba(95, 54, 10, 0.24),
+    0 5px 12px rgba(157, 96, 22, 0.24);
+}
+
+body.home-page .right-column .quick-links strong {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: end;
+  color: #2f2116;
+  font-size: 12.5px;
+  font-weight: 800;
+  line-height: 1.14;
+}
+
+body.home-page .right-column .quick-links small,
+body.home-page .right-column .quick-links p {
+  grid-column: 2;
+  grid-row: 2;
+  align-self: start;
+  margin: 3px 0 0;
+  color: #6c5543;
+  font-size: 10.5px;
+  line-height: 1.32;
+}
+
+@media (max-width: 960px) {
+  body.home-page .right-column .quick-links {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  body.home-page .right-column .quick-links {
+    grid-template-columns: 1fr;
+    padding-inline: 0;
+  }
+}
+
+/* 14.157. Home quick links slimmer with custom golden icons */
+body.home-page .right-column .quick-links {
+  gap: 12px;
+  padding: 10px 10px 12px;
+}
+
+body.home-page .right-column .quick-links a {
+  grid-template-columns: 40px minmax(0, 1fr) 10px;
+  column-gap: 8px;
+  min-height: 40px;
+  padding: 5px 9px 5px 6px;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(86, 52, 22, 0.1);
+}
+
+body.home-page .right-column .quick-links a::after {
+  font-size: 19px;
+}
+
+body.home-page .right-column .quick-links span {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  font-size: 0;
+  box-shadow:
+    inset 0 -6px 9px rgba(95, 54, 10, 0.24),
+    0 3px 8px rgba(157, 96, 22, 0.22);
+}
+
+body.home-page .right-column .quick-links span::before {
+  display: block;
+  color: #fff9e9;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1;
+  text-shadow: 0 1px 2px rgba(82, 45, 8, 0.42);
+}
+
+body.home-page .right-column .quick-links a:nth-child(1) span::before {
+  content: "✝";
+  font-size: 22px;
+}
+
+body.home-page .right-column .quick-links a:nth-child(2) span::before {
+  content: "☩";
+  font-size: 21px;
+}
+
+body.home-page .right-column .quick-links a:nth-child(3) span::before {
+  content: "✦";
+  font-size: 20px;
+}
+
+body.home-page .right-column .quick-links a:nth-child(4) span::before {
+  content: "♥";
+  font-size: 20px;
+}
+
+body.home-page .right-column .quick-links strong {
+  font-size: 10.5px;
+  line-height: 1.05;
+}
+
+body.home-page .right-column .quick-links small,
+body.home-page .right-column .quick-links p {
+  margin-top: 1px;
+  font-size: 8.8px;
+  line-height: 1.18;
+}
+
+@media (max-width: 560px) {
+  body.home-page .right-column .quick-links a {
+    min-height: 46px;
+  }
+}
+
+/* 14.158. Home quick links flat, taller and unified typography */
+body.home-page .right-column .quick-links {
+  padding: 12px 10px 14px;
+}
+
+body.home-page .right-column .quick-links a {
+  grid-template-columns: 44px minmax(0, 1fr) 10px;
+  column-gap: 9px;
+  min-height: 48px;
+  padding: 6px 10px 6px 7px;
+  font-family: var(--font-main);
+  box-shadow: none;
+}
+
+body.home-page .right-column .quick-links a:hover {
+  box-shadow: none;
+}
+
+body.home-page .right-column .quick-links span {
+  width: 40px;
+  height: 40px;
+  box-shadow: none;
+}
+
+body.home-page .right-column .quick-links span::before {
+  font-family: var(--font-main);
+  font-weight: 800;
+  text-shadow: none;
+}
+
+body.home-page .right-column .quick-links strong {
+  font-family: var(--font-main);
+  font-size: 11.2px;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+
+body.home-page .right-column .quick-links small,
+body.home-page .right-column .quick-links p {
+  font-family: var(--font-main);
+  font-size: 9.2px;
+  line-height: 1.22;
+}
+
+@media (max-width: 560px) {
+  body.home-page .right-column .quick-links a {
+    min-height: 54px;
+  }
+}
+
+/* 14.159. Rollback home quick links to original shared-panel layout */
+body.home-page .right-column .quick-links {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--white);
+  box-shadow: var(--shadow);
+}
+
+body.home-page .right-column .quick-links a,
+body.home-page .right-column .quick-links a:hover {
+  position: relative;
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  column-gap: 10px;
+  align-items: center;
+  min-height: 58px;
+  padding: 4px 14px;
+  border: 0;
+  border-right: 1px solid var(--line);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  overflow: visible;
+  transform: none;
+  transition: color 160ms ease, background-color 160ms ease;
+}
+
+body.home-page .right-column .quick-links a:last-child,
+body.home-page .right-column .quick-links a:last-child:hover {
+  border-right: 0;
+}
+
+body.home-page .right-column .quick-links a::after {
+  content: none;
+  display: none;
+}
+
+body.home-page .right-column .quick-links span {
+  position: static;
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #e7c88e;
+  border-radius: 50%;
+  color: var(--gold);
+  font-family: var(--font-main);
+  font-size: 21px;
+  font-weight: 700;
+  text-shadow: none;
+  background: #fff;
+  box-shadow: none;
+}
+
+body.home-page .right-column .quick-links span::before {
+  content: none !important;
+  display: none;
+}
+
+body.home-page .right-column .quick-links strong {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: end;
+  color: var(--ink);
+  font-family: var(--font-main);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+body.home-page .right-column .quick-links small,
+body.home-page .right-column .quick-links p {
+  grid-column: 2;
+  grid-row: 2;
+  align-self: start;
+  margin: 2px 0 0;
+  color: var(--muted);
+  font-family: var(--font-main);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+@media (max-width: 960px) {
+  body.home-page .right-column .quick-links {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0;
+  }
+
+  body.home-page .right-column .quick-links a:nth-child(2) {
+    border-right: 0;
+  }
+
+  body.home-page .right-column .quick-links a:nth-child(-n + 2) {
+    border-bottom: 1px solid var(--line);
+  }
+}
+
+@media (max-width: 560px) {
+  body.home-page .right-column .quick-links {
+    grid-template-columns: 1fr;
+    padding: 10px;
+  }
+
+  body.home-page .right-column .quick-links a,
+  body.home-page .right-column .quick-links a:hover,
+  body.home-page .right-column .quick-links a:nth-child(2),
+  body.home-page .right-column .quick-links a:nth-child(-n + 2) {
+    min-height: 58px;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  body.home-page .right-column .quick-links a:last-child,
+  body.home-page .right-column .quick-links a:last-child:hover {
+    border-bottom: 0;
   }
 }

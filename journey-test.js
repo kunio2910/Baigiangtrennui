@@ -933,6 +933,7 @@
         story: String(milestone?.story || fallback.story || "").trim(),
         lesson: String(milestone?.lesson || fallback.lesson || "").trim(),
         cardImageUrl: String(milestone?.cardImageUrl || fallback.cardImageUrl || "").trim(),
+        relatedArticleUrl: String(milestone?.relatedArticleUrl || milestone?.relatedUrl || fallback.relatedArticleUrl || "").trim(),
         x: useSavedX ? savedX : position.x,
         y: useSavedY ? savedY : position.y,
       };
@@ -1264,6 +1265,7 @@
             ${metaHtml ? `<p class="journey-milestone-meta">${metaHtml}</p>` : ""}
             <div class="journey-milestone-html">${renderAdminHtml(step.story)}</div>
             <blockquote>${renderAdminHtml(step.lesson)}</blockquote>
+            ${step.relatedArticleUrl ? `<a class="journey-milestone-more" href="${escapeAttr(step.relatedArticleUrl)}">Xem thêm</a>` : ""}
           </div>
         </article>
       </div>
