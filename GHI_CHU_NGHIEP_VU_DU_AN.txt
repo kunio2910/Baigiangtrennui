@@ -4877,3 +4877,8 @@ Lưu ý kỹ thuật:
 - Bổ sung page view chi tiết cho trang `Khám Phá Đức Tin`, `Trang quản lý` và `Quản lý tài khoản`.
 - Bổ sung custom event `Feedback Submitted` khi gửi góp ý thành công và `Prayer Request Submitted` khi gửi lời cầu nguyện thành công.
 - Cập nhật cache `data.js` sang `20260723-vercel-analytics-events`; cập nhật cache các JS liên quan: `faith-discovery.js`, `gop-y.js`, `prayer-request.js`, `admin.js`, `accounts.js`.
+### 14.163. Giới hạn chiều rộng ô tìm kiếm header trang chủ
+- Sửa lỗi ô tìm kiếm trên thanh menu bị lấn sang khu vực nội dung "Lời Chúa mỗi ngày" khi màn hình hẹp.
+- Giới hạn chiều rộng `.header-search` bằng `clamp()`, giảm width ở breakpoint dưới 1180px và cho `.header-actions` co lại an toàn.
+- Giữ layout header hiện tại, không đổi link/menu; chỉ tránh tràn ngang và đè nội dung.
+- Cập nhật cache CSS trang chủ sang `20260723-header-search-contained`.
