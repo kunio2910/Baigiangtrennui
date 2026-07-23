@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="vi">
   <head>
     <meta charset="UTF-8" />
@@ -9,7 +9,7 @@
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'G-XF6HRTBJ1W');
-    </script>    <title>Quáº£n lÃ½ tÃ i khoáº£n - Truyá»n GiÃ¡o KitÃ´</title>
+    </script>    <title>Quản lý tài khoản - Truyền Giáo Kitô</title>
     <meta name="robots" content="noindex, nofollow" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/favicon.png" />
@@ -17,14 +17,14 @@
   </head>
   <body class="admin-page">
     <header class="site-header admin-header">
-      <div class="brand" aria-label="Truyá»n GiÃ¡o KitÃ´">
-        <a class="brand-mark brand-admin-link" href="/admin.html" aria-label="Má»Ÿ trang quáº£n lÃ½">âœ</a>
-        <span>Truyá»n GiÃ¡o<br />KitÃ´</span>
+      <div class="brand" aria-label="Truyền Giáo Kitô">
+        <a class="brand-mark brand-admin-link" href="/admin.html" aria-label="Mở trang quản lý">✝</a>
+        <span>Truyền Giáo<br />Kitô</span>
       </div>
-      <nav class="main-nav" aria-label="Äiá»u hÆ°á»›ng quáº£n trá»‹">
+      <nav class="main-nav" aria-label="Điều hướng quản trị">
         <a href="/">Xem website</a>
-        <a href="/admin.html">Ná»™i dung</a>
-        <a href="accounts.html">TÃ i khoáº£n</a>
+        <a href="/admin.html">Nội dung</a>
+        <a href="accounts.html">Tài khoản</a>
       </nav>
       <div class="header-actions" id="accountAuthStatus"></div>
     </header>
@@ -32,8 +32,8 @@
     <main class="admin-shell">
       <section class="login-panel" id="loginPanel">
         <div>
-          <p class="eyebrow">ÄÄƒng nháº­p quáº£n trá»‹</p>
-          <h1>ÄÄƒng nháº­p Ä‘á»ƒ quáº£n lÃ½ tÃ i khoáº£n</h1>
+          <p class="eyebrow">Đăng nhập quản trị</p>
+          <h1>Đăng nhập để quản lý tài khoản</h1>
         </div>
         <form id="loginForm" class="login-form">
           <label>
@@ -44,7 +44,7 @@
             <span>Password</span>
             <input id="loginPassword" type="password" autocomplete="current-password" required />
           </label>
-          <button class="primary-button" type="submit">ÄÄƒng nháº­p</button>
+          <button class="primary-button" type="submit">Đăng nhập</button>
           <p class="form-message" id="loginMessage"></p>
         </form>
       </section>
@@ -52,9 +52,9 @@
       <div id="accountProtected" hidden>
         <section class="admin-intro">
           <div>
-            <p class="eyebrow">Quáº£n lÃ½ tÃ i khoáº£n</p>
-            <h1>Táº¡o user má»›i vÃ  phÃ¢n quyá»n</h1>
-            <p>Chá»‰ tÃ i khoáº£n cÃ³ quyá»n admin má»›i Ä‘Æ°á»£c táº¡o, sá»­a, xÃ³a tÃ i khoáº£n vÃ  quáº£n lÃ½ ná»™i dung.</p>
+            <p class="eyebrow">Quản lý tài khoản</p>
+            <h1>Tạo user mới và phân quyền</h1>
+            <p>Chỉ tài khoản có quyền admin mới được tạo, sửa, xóa tài khoản và quản lý nội dung.</p>
           </div>
         </section>
 
@@ -62,35 +62,35 @@
           <form class="editor-panel" id="accountForm">
             <input type="hidden" id="accountId" />
             <label>
-              <span>TÃªn hiá»ƒn thá»‹</span>
-              <input id="accountName" type="text" placeholder="VÃ­ dá»¥: Ban truyá»n thÃ´ng" />
+              <span>Tên hiển thị</span>
+              <input id="accountName" type="text" placeholder="Ví dụ: Ban truyền thông" />
             </label>
             <label>
               <span>User</span>
-              <input id="accountUsername" type="text" required placeholder="VÃ­ dá»¥: media" />
+              <input id="accountUsername" type="text" required placeholder="Ví dụ: media" />
             </label>
             <label>
               <span>Password</span>
-              <input id="accountPassword" type="password" placeholder="Nháº­p khi táº¡o má»›i hoáº·c muá»‘n Ä‘á»•i" />
+              <input id="accountPassword" type="password" placeholder="Nhập khi tạo mới hoặc muốn đổi" />
             </label>
             <label>
-              <span>PhÃ¢n quyá»n</span>
+              <span>Phân quyền</span>
               <select id="accountRole" required>
-                <option value="viewer">Viewer - chá»‰ xem</option>
-                <option value="editor">Editor - chÆ°a cÃ³ quyá»n sá»­a ná»™i dung</option>
-                <option value="admin">Admin - toÃ n quyá»n</option>
+                <option value="viewer">Viewer - chỉ xem</option>
+                <option value="editor">Editor - chưa có quyền sửa nội dung</option>
+                <option value="admin">Admin - toàn quyền</option>
               </select>
             </label>
             <div class="form-actions">
-              <button class="primary-button" type="submit">LÆ°u tÃ i khoáº£n</button>
-              <button class="ghost-button" type="button" id="clearAccountForm">LÃ m má»›i</button>
+              <button class="primary-button" type="submit">Lưu tài khoản</button>
+              <button class="ghost-button" type="button" id="clearAccountForm">Làm mới</button>
             </div>
             <p class="form-message" id="accountMessage"></p>
           </form>
 
           <section class="table-panel">
             <div class="section-heading">
-              <h2>Danh sÃ¡ch tÃ i khoáº£n</h2>
+              <h2>Danh sách tài khoản</h2>
             </div>
             <div class="admin-list" id="accountList"></div>
           </section>

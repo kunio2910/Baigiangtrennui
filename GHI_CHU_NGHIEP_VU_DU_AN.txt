@@ -4882,3 +4882,13 @@ Lưu ý kỹ thuật:
 - Giới hạn chiều rộng `.header-search` bằng `clamp()`, giảm width ở breakpoint dưới 1180px và cho `.header-actions` co lại an toàn.
 - Giữ layout header hiện tại, không đổi link/menu; chỉ tránh tràn ngang và đè nội dung.
 - Cập nhật cache CSS trang chủ sang `20260723-header-search-contained`.
+-------------------------------------------------------------
+## 14.164. Chuông thông báo trang quản lý
+
+**Ngày cập nhật:** 23/07/2026
+
+**Chức năng:**
+- Trang quản lý thêm icon chuông cố định ở góc dưới bên trái sau khi tài khoản admin đăng nhập.
+- Badge đỏ trên chuông hiển thị tổng số thông báo cần xử lý gồm: ý kiến đóng góp hiện có và lời cầu nguyện đang chờ duyệt.
+- Khi không có thông báo, chuông vẫn hiển thị nhưng badge đỏ được ẩn; khi bấm chuông sẽ nhảy nhanh tới tab Ý kiến đóng góp hoặc Duyệt lời cầu nguyện.
+- Cập nhật cache `admin.html` sang `20260723-admin-notification-bell` cho `styles.css` và `admin.js`.

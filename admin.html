@@ -1,24 +1,24 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="vi">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quáº£n lÃ½ ná»™i dung - Truyá»n GiÃ¡o KitÃ´</title>
+    <title>Quản lý nội dung - Truyền Giáo Kitô</title>
     <meta name="robots" content="noindex, nofollow" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/favicon.png" />
-    <link rel="stylesheet" href="styles.css?v=20260723-journey-more-centered-force" />
+    <link rel="stylesheet" href="styles.css?v=20260723-admin-notification-bell" />
   </head>
   <body class="admin-page">
     <header class="site-header admin-header">
       <a class="brand" href="/">
-        <span class="brand-mark">âœ</span>
-        <span>Truyá»n GiÃ¡o<br />KitÃ´</span>
+        <span class="brand-mark">✝</span>
+        <span>Truyền Giáo<br />Kitô</span>
       </a>
-      <nav class="main-nav" aria-label="Äiá»u hÆ°á»›ng quáº£n trá»‹">
+      <nav class="main-nav" aria-label="Điều hướng quản trị">
         <a href="/">Xem website</a>
-        <a href="#contentManager">Ná»™i dung</a>
-        <a href="accounts.html">TÃ i khoáº£n</a>
+        <a href="#contentManager">Nội dung</a>
+        <a href="accounts.html">Tài khoản</a>
       </nav>
       <div class="header-actions" id="adminAuthStatus"></div>
     </header>
@@ -26,8 +26,8 @@
     <main class="admin-shell">
       <section class="login-panel" id="loginPanel">
         <div>
-          <p class="eyebrow">ÄÄƒng nháº­p quáº£n trá»‹</p>
-          <h1>ÄÄƒng nháº­p Ä‘á»ƒ quáº£n lÃ½ ná»™i dung</h1>
+          <p class="eyebrow">Đăng nhập quản trị</p>
+          <h1>Đăng nhập để quản lý nội dung</h1>
         </div>
         <form id="loginForm" class="login-form">
           <label>
@@ -38,118 +38,118 @@
             <span>Password</span>
             <input id="loginPassword" type="password" autocomplete="current-password" required />
           </label>
-          <button class="primary-button" type="submit">ÄÄƒng nháº­p</button>
+          <button class="primary-button" type="submit">Đăng nhập</button>
           <p class="form-message" id="loginMessage"></p>
         </form>
       </section>
 
       <div id="adminProtected" hidden>
-      <nav class="admin-tabs" aria-label="Khu vá»±c quáº£n trá»‹">
-        <button class="admin-tab-button active" type="button" data-admin-tab="content">Ná»™i dung</button>
-        <button class="admin-tab-button" type="button" data-admin-tab="visits">Thá»‘ng kÃª truy cáº­p</button>
-        <button class="admin-tab-button" type="button" data-admin-tab="feedback">Ã kiáº¿n Ä‘Ã³ng gÃ³p</button>
-        <button class="admin-tab-button" type="button" data-admin-tab="prayers">Duyá»‡t lá»i cáº§u nguyá»‡n</button>
-        <button class="admin-tab-button" type="button" data-admin-tab="faith">KhÃ¡m PhÃ¡ Äá»©c Tin</button>
-        <button class="admin-tab-button" type="button" data-admin-tab="journey">HÃ nh trÃ¬nh Kinh ThÃ¡nh</button>
-        <button class="admin-tab-button" type="button" data-admin-tab="backup">Backup dá»¯ liá»‡u</button>
+      <nav class="admin-tabs" aria-label="Khu vực quản trị">
+        <button class="admin-tab-button active" type="button" data-admin-tab="content">Nội dung</button>
+        <button class="admin-tab-button" type="button" data-admin-tab="visits">Thống kê truy cập</button>
+        <button class="admin-tab-button" type="button" data-admin-tab="feedback">Ý kiến đóng góp</button>
+        <button class="admin-tab-button" type="button" data-admin-tab="prayers">Duyệt lời cầu nguyện</button>
+        <button class="admin-tab-button" type="button" data-admin-tab="faith">Khám Phá Đức Tin</button>
+        <button class="admin-tab-button" type="button" data-admin-tab="journey">Hành trình Kinh Thánh</button>
+        <button class="admin-tab-button" type="button" data-admin-tab="backup">Backup dữ liệu</button>
       </nav>
 
       <section class="manager-layout admin-tab-panel active" id="contentManager" data-admin-panel="content">
         <form class="editor-panel" id="contentForm">
           <input type="hidden" id="itemId" />
           <label>
-            <span>Loáº¡i ná»™i dung</span>
+            <span>Loại nội dung</span>
             <select id="itemType" required>
-              <option value="saints">CÃ¡c thÃ¡nh</option>
-              <option value="churches">NhÃ  thá»</option>
-              <option value="articles">BÃ i Viáº¿t</option>
-              <option value="events">Sá»± Kiá»‡n</option>
-              <option value="prayers">Cáº§u Nguyá»‡n</option>
-              <option value="catechism">GiÃ¡o LÃ½</option>
-              <option value="daily">Lá»i ChÃºa má»—i ngÃ y</option>
-              <option value="banners">Banner chÃ­nh</option>
+              <option value="saints">Các thánh</option>
+              <option value="churches">Nhà thờ</option>
+              <option value="articles">Bài Viết</option>
+              <option value="events">Sự Kiện</option>
+              <option value="prayers">Cầu Nguyện</option>
+              <option value="catechism">Giáo Lý</option>
+              <option value="daily">Lời Chúa mỗi ngày</option>
+              <option value="banners">Banner chính</option>
             </select>
           </label>
           <label>
-            <span>TiÃªu Ä‘á»</span>
-            <input id="itemTitle" type="text" required placeholder="VÃ­ dá»¥: ThÃ¡nh Giuse" />
+            <span>Tiêu đề</span>
+            <input id="itemTitle" type="text" required placeholder="Ví dụ: Thánh Giuse" />
           </label>
           <label>
-            <span>MÃ´ táº£ ngáº¯n</span>
-            <textarea id="itemDescription" rows="4" required placeholder="Viáº¿t ná»™i dung tÃ³m táº¯t..."></textarea>
+            <span>Mô tả ngắn</span>
+            <textarea id="itemDescription" rows="4" required placeholder="Viết nội dung tóm tắt..."></textarea>
           </label>
           <label>
-            <span>Ná»™i dung HTML Ä‘áº§y Ä‘á»§</span>
-            <textarea id="itemBodyHtml" rows="8" placeholder='VÃ­ dá»¥: <p>Ná»™i dung...</p><img src="https://..." alt="MÃ´ táº£ áº£nh" />'></textarea>
+            <span>Nội dung HTML đầy đủ</span>
+            <textarea id="itemBodyHtml" rows="8" placeholder='Ví dụ: <p>Nội dung...</p><img src="https://..." alt="Mô tả ảnh" />'></textarea>
           </label>
           <div class="two-fields">
             <label>
-              <span>ThÃ´ng tin phá»¥</span>
-              <input id="itemMeta" type="text" placeholder="Äá»‹a Ä‘iá»ƒm, ngÃ y giá», cÃ¢u trÃ­ch..." />
+              <span>Thông tin phụ</span>
+              <input id="itemMeta" type="text" placeholder="Địa điểm, ngày giờ, câu trích..." />
             </label>
             <label>
-              <span>NgÃ y sá»± kiá»‡n</span>
-              <input id="itemDate" type="text" placeholder="VÃ­ dá»¥: 19 THÃNG 03, 27/12 hoáº·c ChÃºa Nháº­t" />
+              <span>Ngày sự kiện</span>
+              <input id="itemDate" type="text" placeholder="Ví dụ: 19 THÁNG 03, 27/12 hoặc Chúa Nhật" />
             </label>
             <label>
-              <span>NgÃ y táº¡o</span>
+              <span>Ngày tạo</span>
               <input id="itemCreatedDate" type="datetime-local" />
             </label>
           </div>
           <label>
-            <span>Tráº¡ng thÃ¡i hiá»ƒn thá»‹</span>
+            <span>Trạng thái hiển thị</span>
             <select id="itemStatus">
-              <option value="actived">Actived - hiá»ƒn thá»‹</option>
-              <option value="unactived">Unactived - áº©n</option>
+              <option value="actived">Actived - hiển thị</option>
+              <option value="unactived">Unactived - ẩn</option>
             </select>
           </label>
           <label>
-            <span>URL hÃ¬nh áº£nh</span>
+            <span>URL hình ảnh</span>
             <div class="image-url-tools">
               <input id="itemImageUrl" type="url" placeholder="https://..." />
               <button class="ghost-button" type="button" id="cloudinaryUploadButton">Upload Cloudinary</button>
             </div>
           </label>
           <label>
-            <span>Nguá»“n</span>
+            <span>Nguồn</span>
             <input id="itemSourceUrl" type="url" placeholder="https://..." />
           </label>
-          <img class="image-preview" id="imagePreview" alt="Xem trÆ°á»›c áº£nh" />
+          <img class="image-preview" id="imagePreview" alt="Xem trước ảnh" />
           <div class="form-actions">
-            <button class="primary-button" type="submit">LÆ°u ná»™i dung</button>
-            <button class="ghost-button" type="button" id="clearForm">LÃ m má»›i</button>
+            <button class="primary-button" type="submit">Lưu nội dung</button>
+            <button class="ghost-button" type="button" id="clearForm">Làm mới</button>
           </div>
           <p class="form-message" id="contentMessage"></p>
         </form>
 
         <section class="table-panel">
           <div class="section-heading">
-            <h2>Danh sÃ¡ch ná»™i dung</h2>
-            <select id="filterType" aria-label="Lá»c loáº¡i ná»™i dung">
-              <option value="all">Táº¥t cáº£</option>
-              <option value="saints">CÃ¡c thÃ¡nh</option>
-              <option value="churches">NhÃ  thá»</option>
-              <option value="articles">BÃ i Viáº¿t</option>
-              <option value="events">Sá»± Kiá»‡n</option>
-              <option value="prayers">Cáº§u Nguyá»‡n</option>
-              <option value="catechism">GiÃ¡o LÃ½</option>
-              <option value="daily">Lá»i ChÃºa má»—i ngÃ y</option>
-              <option value="banners">Banner chÃ­nh</option>
+            <h2>Danh sách nội dung</h2>
+            <select id="filterType" aria-label="Lọc loại nội dung">
+              <option value="all">Tất cả</option>
+              <option value="saints">Các thánh</option>
+              <option value="churches">Nhà thờ</option>
+              <option value="articles">Bài Viết</option>
+              <option value="events">Sự Kiện</option>
+              <option value="prayers">Cầu Nguyện</option>
+              <option value="catechism">Giáo Lý</option>
+              <option value="daily">Lời Chúa mỗi ngày</option>
+              <option value="banners">Banner chính</option>
             </select>
           </div>
           <div class="admin-list-tools">
             <label>
-              <span>TÃ¬m kiáº¿m</span>
-              <input id="adminSearch" type="search" placeholder="TÃ¬m theo tiÃªu Ä‘á», mÃ´ táº£, thÃ´ng tin phá»¥..." />
+              <span>Tìm kiếm</span>
+              <input id="adminSearch" type="search" placeholder="Tìm theo tiêu đề, mô tả, thông tin phụ..." />
             </label>
             <label>
-              <span>Sáº¯p xáº¿p</span>
+              <span>Sắp xếp</span>
               <select id="adminSort">
-                <option value="default">Máº·c Ä‘á»‹nh</option>
-                <option value="title-asc">Chá»¯ cÃ¡i A-Z</option>
-                <option value="title-desc">Chá»¯ cÃ¡i Z-A</option>
-                <option value="time-desc">Thá»i gian má»›i nháº¥t</option>
-                <option value="time-asc">Thá»i gian cÅ© nháº¥t</option>
+                <option value="default">Mặc định</option>
+                <option value="title-asc">Chữ cái A-Z</option>
+                <option value="title-desc">Chữ cái Z-A</option>
+                <option value="time-desc">Thời gian mới nhất</option>
+                <option value="time-asc">Thời gian cũ nhất</option>
               </select>
             </label>
           </div>
@@ -159,24 +159,24 @@
 
       <section class="visit-panel admin-tab-panel" id="visitPanel" data-admin-panel="visits" hidden>
         <div class="section-heading visit-heading">
-          <h2>Thá»‘ng kÃª truy cáº­p</h2>
-          <button class="danger-button" type="button" id="resetVisitStats">XÃ³a lÆ°á»£t truy cáº­p</button>
+          <h2>Thống kê truy cập</h2>
+          <button class="danger-button" type="button" id="resetVisitStats">Xóa lượt truy cập</button>
         </div>
         <div class="visit-summary" id="visitSummary"></div>
         <div class="visit-tools">
           <label>
-            <span>TÃ¬m kiáº¿m</span>
-            <input id="visitSearch" type="search" placeholder="TÃ¬m theo tÃªn trang, bÃ i viáº¿t, Ä‘Æ°á»ng dáº«n..." />
+            <span>Tìm kiếm</span>
+            <input id="visitSearch" type="search" placeholder="Tìm theo tên trang, bài viết, đường dẫn..." />
           </label>
           <label>
-            <span>Sáº¯p xáº¿p</span>
+            <span>Sắp xếp</span>
             <select id="visitSort">
-              <option value="views-desc">LÆ°á»£t truy cáº­p cao nháº¥t</option>
-              <option value="views-asc">LÆ°á»£t truy cáº­p tháº¥p nháº¥t</option>
-              <option value="time-desc">Cáº­p nháº­t má»›i nháº¥t</option>
-              <option value="time-asc">Cáº­p nháº­t cÅ© nháº¥t</option>
-              <option value="title-asc">TÃªn A-Z</option>
-              <option value="title-desc">TÃªn Z-A</option>
+              <option value="views-desc">Lượt truy cập cao nhất</option>
+              <option value="views-asc">Lượt truy cập thấp nhất</option>
+              <option value="time-desc">Cập nhật mới nhất</option>
+              <option value="time-asc">Cập nhật cũ nhất</option>
+              <option value="title-asc">Tên A-Z</option>
+              <option value="title-desc">Tên Z-A</option>
             </select>
           </label>
         </div>
@@ -185,111 +185,111 @@
 
       <section class="feedback-panel admin-tab-panel" data-admin-panel="feedback" hidden>
         <div class="section-heading">
-          <h2>Ã kiáº¿n Ä‘Ã³ng gÃ³p</h2>
+          <h2>Ý kiến đóng góp</h2>
         </div>
         <div class="feedback-list" id="feedbackList"></div>
       </section>
 
       <section class="feedback-panel admin-tab-panel" data-admin-panel="prayers" hidden>
         <div class="section-heading">
-          <h2>Duyá»‡t lá»i cáº§u nguyá»‡n</h2>
+          <h2>Duyệt lời cầu nguyện</h2>
         </div>
         <div class="prayer-review-list" id="prayerReviewList"></div>
       </section>
 
       <section class="faith-admin-panel admin-tab-panel" data-admin-panel="faith" hidden>
         <div class="section-heading">
-          <h2>KhÃ¡m PhÃ¡ Äá»©c Tin</h2>
+          <h2>Khám Phá Đức Tin</h2>
         </div>
         <div class="faith-set-manager">
           <div class="faith-set-list" id="faithSetList"></div>
-          <button class="ghost-button" type="button" id="newFaithSetButton">Táº¡o bá»™ má»›i</button>
+          <button class="ghost-button" type="button" id="newFaithSetButton">Tạo bộ mới</button>
         </div>
         <form class="editor-panel faith-admin-form" id="faithDiscoveryForm">
           <input type="hidden" id="faithSetId" />
           <label>
-            <span>TÃªn bá»™ cÃ¢u há»i</span>
-            <input id="faithSetTitle" type="text" placeholder="VÃ­ dá»¥: Cuá»™c Ä‘á»i Äá»©c Máº¹ Maria" />
+            <span>Tên bộ câu hỏi</span>
+            <input id="faithSetTitle" type="text" placeholder="Ví dụ: Cuộc đời Đức Mẹ Maria" />
           </label>
           <label>
-            <span>áº¢nh khung chá»n chá»§ Ä‘á»</span>
+            <span>Ảnh khung chọn chủ đề</span>
             <div class="image-url-tools">
               <input id="faithPickerImageUrl" type="url" placeholder="https://..." />
               <button class="ghost-button" type="button" id="faithPickerCloudinaryUploadButton">Upload Cloudinary</button>
             </div>
           </label>
-          <img class="image-preview" id="faithPickerPreview" alt="Xem trÆ°á»›c áº£nh khung chá»n chá»§ Ä‘á»" />
+          <img class="image-preview" id="faithPickerPreview" alt="Xem trước ảnh khung chọn chủ đề" />
           <label>
-            <span>URL hÃ¬nh infographic</span>
+            <span>URL hình infographic</span>
             <div class="image-url-tools">
               <input id="faithInfographicUrl" type="url" placeholder="https://..." />
               <button class="ghost-button" type="button" id="faithCloudinaryUploadButton">Upload Cloudinary</button>
             </div>
           </label>
-          <img class="image-preview" id="faithImagePreview" alt="Xem trÆ°á»›c infographic" />
+          <img class="image-preview" id="faithImagePreview" alt="Xem trước infographic" />
           <div class="faith-mask-admin">
             <div class="faith-mask-admin-head">
               <div>
-                <h3>Chá»‰nh vÃ¹ng che</h3>
-                <p>KÃ©o tá»«ng Ã´ Ä‘á»ƒ canh Ä‘Ãºng vá»‹ trÃ­ tháº» trong infographic. Giá»¯ Ctrl rá»“i click Ä‘á»ƒ chá»n nhiá»u Ã´; kÃ©o cáº¡nh hoáº·c gÃ³c Ä‘á»ƒ Ä‘á»•i kÃ­ch thÆ°á»›c Ã´.</p>
+                <h3>Chỉnh vùng che</h3>
+                <p>Kéo từng ô để canh đúng vị trí thẻ trong infographic. Giữ Ctrl rồi click để chọn nhiều ô; kéo cạnh hoặc góc để đổi kích thước ô.</p>
               </div>
               <div class="faith-mask-admin-actions">
                 <label class="faith-mask-count-field">
-                  <span>Sá»‘ hÃ¬nh che</span>
-                  <input id="faithMaskCount" form="faithMaskDetachedControls" type="number" min="1" max="80" step="1" placeholder="Theo sá»‘ cÃ¢u há»i" />
+                  <span>Số hình che</span>
+                  <input id="faithMaskCount" form="faithMaskDetachedControls" type="number" min="1" max="80" step="1" placeholder="Theo số câu hỏi" />
                 </label>
-                <button class="ghost-button" type="button" id="generateFaithMasksButton">Táº¡o vÃ¹ng che tá»± Ä‘á»™ng</button>
-                <button class="ghost-button" type="button" id="clearFaithMasksButton">XÃ³a vÃ¹ng che</button>
+                <button class="ghost-button" type="button" id="generateFaithMasksButton">Tạo vùng che tự động</button>
+                <button class="ghost-button" type="button" id="clearFaithMasksButton">Xóa vùng che</button>
               </div>
             </div>
             <div class="faith-mask-params">
-              <strong id="faithMaskSelectedLabel">Chá»n má»™t Ã´ che</strong>
+              <strong id="faithMaskSelectedLabel">Chọn một ô che</strong>
               <label class="faith-mask-list-field">
-                <span>Danh sÃ¡ch Ã´</span>
-                <input id="faithMaskSelectionInput" form="faithMaskDetachedControls" type="text" placeholder="VÃ­ dá»¥: 1,2,5 hoáº·c 1-12" />
+                <span>Danh sách ô</span>
+                <input id="faithMaskSelectionInput" form="faithMaskDetachedControls" type="text" placeholder="Ví dụ: 1,2,5 hoặc 1-12" />
               </label>
-              <button class="ghost-button" type="button" id="selectFaithMaskListButton">Chá»n</button>
+              <button class="ghost-button" type="button" id="selectFaithMaskListButton">Chọn</button>
               <label>
-                <span>Vá»‹ trÃ­ X,Y (%)</span>
-                <input id="faithMaskPosition" form="faithMaskDetachedControls" type="text" placeholder="VÃ­ dá»¥: 12, 25" />
+                <span>Vị trí X,Y (%)</span>
+                <input id="faithMaskPosition" form="faithMaskDetachedControls" type="text" placeholder="Ví dụ: 12, 25" />
               </label>
               <label>
-                <span>Chiá»u dÃ i (%)</span>
+                <span>Chiều dài (%)</span>
                 <input id="faithMaskLength" form="faithMaskDetachedControls" type="number" min="3" max="100" step="any" placeholder="Cao" />
               </label>
               <label>
-                <span>Chiá»u rá»™ng (%)</span>
-                <input id="faithMaskWidth" form="faithMaskDetachedControls" type="number" min="3" max="100" step="any" placeholder="Rá»™ng" />
+                <span>Chiều rộng (%)</span>
+                <input id="faithMaskWidth" form="faithMaskDetachedControls" type="number" min="3" max="100" step="any" placeholder="Rộng" />
               </label>
               <button class="ghost-button" type="button" id="applyFaithMaskParams">OK</button>
             </div>
             <div class="faith-mask-editor" id="faithMaskEditor">
-              <img id="faithMaskEditorImage" alt="áº¢nh chá»‰nh vÃ¹ng che" />
+              <img id="faithMaskEditorImage" alt="Ảnh chỉnh vùng che" />
               <div class="faith-mask-editor-layer" id="faithMaskEditorLayer"></div>
             </div>
-            <p class="backup-warning">Náº¿u cÃ¡c Ã´ che chÆ°a khá»›p áº£nh, hÃ£y kÃ©o chá»‰nh rá»“i báº¥m LÆ°u bá»™ cÃ¢u há»i.</p>
+            <p class="backup-warning">Nếu các ô che chưa khớp ảnh, hãy kéo chỉnh rồi bấm Lưu bộ câu hỏi.</p>
           </div>
           <label>
-            <span>Upload bá»™ cÃ¢u há»i JSON</span>
+            <span>Upload bộ câu hỏi JSON</span>
             <input id="faithQuestionsFile" type="file" accept="application/json,.json" />
           </label>
           <label>
-            <span>Bá»™ cÃ¢u há»i JSON</span>
+            <span>Bộ câu hỏi JSON</span>
             <textarea id="faithQuestionsJson" rows="16" placeholder='[
   {
-    "topic": "TÃªn chá»§ Ä‘á»",
-    "question": "Ná»™i dung cÃ¢u há»i",
-    "options": ["ÄÃ¡p Ã¡n A", "ÄÃ¡p Ã¡n B", "ÄÃ¡p Ã¡n C", "ÄÃ¡p Ã¡n D"],
+    "topic": "Tên chủ đề",
+    "question": "Nội dung câu hỏi",
+    "options": ["Đáp án A", "Đáp án B", "Đáp án C", "Đáp án D"],
     "answer": 1,
-    "explanation": "Giáº£i thÃ­ch ngáº¯n sau khi tráº£ lá»i Ä‘Ãºng."
+    "explanation": "Giải thích ngắn sau khi trả lời đúng."
   }
 ]'></textarea>
           </label>
-          <p class="backup-warning">TrÆ°á»ng answer báº¯t Ä‘áº§u tá»« 0. VÃ­ dá»¥ Ä‘Ã¡p Ã¡n B thÃ¬ nháº­p 1, Ä‘Ã¡p Ã¡n C thÃ¬ nháº­p 2.</p>
+          <p class="backup-warning">Trường answer bắt đầu từ 0. Ví dụ đáp án B thì nhập 1, đáp án C thì nhập 2.</p>
           <div class="form-actions">
-            <button class="primary-button" type="submit">LÆ°u bá»™ cÃ¢u há»i</button>
-            <button class="ghost-button" type="button" id="formatFaithQuestions">Äá»‹nh dáº¡ng JSON</button>
-            <button class="danger-button" type="button" id="deleteFaithSetButton">XÃ³a bá»™ nÃ y</button>
+            <button class="primary-button" type="submit">Lưu bộ câu hỏi</button>
+            <button class="ghost-button" type="button" id="formatFaithQuestions">Định dạng JSON</button>
+            <button class="danger-button" type="button" id="deleteFaithSetButton">Xóa bộ này</button>
           </div>
           <p class="form-message" id="faithDiscoveryMessage"></p>
         </form>
@@ -298,190 +298,198 @@
 
       <section class="journey-admin-panel admin-tab-panel" data-admin-panel="journey" hidden>
         <div class="section-heading">
-          <h2>HÃ nh trÃ¬nh Kinh ThÃ¡nh</h2>
+          <h2>Hành trình Kinh Thánh</h2>
         </div>
         <div class="faith-set-manager journey-topic-manager">
           <div class="faith-set-list" id="journeyTopicList"></div>
-          <button class="ghost-button" type="button" id="newJourneyTopicButton">Táº¡o chá»§ Ä‘á» má»›i</button>
+          <button class="ghost-button" type="button" id="newJourneyTopicButton">Tạo chủ đề mới</button>
         </div>
         <form class="editor-panel journey-admin-form" id="journeyBibleForm">
           <input type="hidden" id="journeyTopicId" />
 
           <div class="journey-admin-block">
-            <h3>MÃ n hÃ¬nh chá»n chá»§ Ä‘á»</h3>
+            <h3>Màn hình chọn chủ đề</h3>
             <label>
-              <span>TÃªn chá»§ Ä‘á»</span>
-              <input id="journeyTopicTitle" type="text" placeholder="VÃ­ dá»¥: HÃ nh trÃ¬nh theo dáº¥u chÃ¢n ChÃºa GiÃªsu" />
+              <span>Tên chủ đề</span>
+              <input id="journeyTopicTitle" type="text" placeholder="Ví dụ: Hành trình theo dấu chân Chúa Giêsu" />
             </label>
             <div class="two-fields">
               <label>
-                <span>NhÃ£n nhá»</span>
-                <input id="journeyTopicLabel" type="text" placeholder="VÃ­ dá»¥: TÃ¢n Æ¯á»›c" />
+                <span>Nhãn nhỏ</span>
+                <input id="journeyTopicLabel" type="text" placeholder="Ví dụ: Tân Ước" />
               </label>
               <label>
-                <span>Chá»§ Ä‘á» Ä‘ang báº­t</span>
+                <span>Chủ đề đang bật</span>
                 <select id="journeyTopicEnabled">
-                  <option value="true">Hiá»ƒn thá»‹ vÃ  cho chÆ¡i</option>
-                  <option value="false">áº¨n / Ä‘ang chuáº©n bá»‹</option>
+                  <option value="true">Hiển thị và cho chơi</option>
+                  <option value="false">Ẩn / đang chuẩn bị</option>
                 </select>
               </label>
             </div>
             <label>
-              <span>Báº£n Ä‘á»“ sá»­ dá»¥ng</span>
+              <span>Bản đồ sử dụng</span>
               <select id="journeyTopicMapType">
-                <option value="jesus">HÃ nh trÃ¬nh theo dáº¥u chÃ¢n ChÃºa GiÃªsu</option>
-                <option value="exodus">Xuáº¥t HÃ nh - Cuá»™c Ä‘á»i MÃ´-sÃª</option>
-                <option value="creation">ChÃºa táº¡o dá»±ng trá»i Ä‘áº¥t</option>
-                <option value="stations">14 Cháº·ng ÄÃ ng ThÃ¡nh GiÃ¡</option>
-                <option value="miracles">ChÃºa lÃ m phÃ©p láº¡</option>
-                <option value="custom">Báº£n Ä‘á»“ tÃ¹y chá»‰nh</option>
+                <option value="jesus">Hành trình theo dấu chân Chúa Giêsu</option>
+                <option value="exodus">Xuất Hành - Cuộc đời Mô-sê</option>
+                <option value="creation">Chúa tạo dựng trời đất</option>
+                <option value="stations">14 Chặng Đàng Thánh Giá</option>
+                <option value="miracles">Chúa làm phép lạ</option>
+                <option value="custom">Bản đồ tùy chỉnh</option>
               </select>
             </label>
             <label>
-              <span>TÃªn báº£n Ä‘á»“ tÃ¹y chá»‰nh</span>
-              <input id="journeyMapName" type="text" placeholder="VÃ­ dá»¥: 12 MÃ´n Äá»‡" />
+              <span>Tên bản đồ tùy chỉnh</span>
+              <input id="journeyMapName" type="text" placeholder="Ví dụ: 12 Môn Đệ" />
             </label>
             <label>
-              <span>MÃ´ táº£ chá»§ Ä‘á»</span>
-              <textarea id="journeyTopicDescription" rows="3" placeholder="MÃ´ táº£ ngáº¯n hiá»ƒn thá»‹ á»Ÿ mÃ n hÃ¬nh chá»n chá»§ Ä‘á»..."></textarea>
+              <span>Mô tả chủ đề</span>
+              <textarea id="journeyTopicDescription" rows="3" placeholder="Mô tả ngắn hiển thị ở màn hình chọn chủ đề..."></textarea>
             </label>
             <label>
-              <span>áº¢nh khung chá»n chá»§ Ä‘á»</span>
+              <span>Ảnh khung chọn chủ đề</span>
               <div class="image-url-tools">
                 <input id="journeyPickerImageUrl" type="url" placeholder="https://..." />
                 <button class="ghost-button" type="button" id="journeyPickerUploadButton">Upload Cloudinary</button>
               </div>
             </label>
-            <img class="image-preview" id="journeyPickerPreview" alt="Xem trÆ°á»›c áº£nh chá»n chá»§ Ä‘á»" />
+            <img class="image-preview" id="journeyPickerPreview" alt="Xem trước ảnh chọn chủ đề" />
           </div>
 
           <div class="journey-admin-block journey-map-config-block">
-            <h3>Cáº¥u hÃ¬nh báº£n Ä‘á»“</h3>
+            <h3>Cấu hình bản đồ</h3>
             <label>
-              <span>áº¢nh báº£n Ä‘á»“</span>
+              <span>Ảnh bản đồ</span>
               <div class="image-url-tools">
-                <input id="journeyMapImageUrl" type="url" placeholder="https://... hoáº·c /assets/ten-ban-do.png" />
+                <input id="journeyMapImageUrl" type="url" placeholder="https://... hoặc /assets/ten-ban-do.png" />
                 <button class="ghost-button" type="button" id="journeyMapUploadButton">Upload Cloudinary</button>
               </div>
             </label>
-            <p class="admin-field-hint">Báº£n Ä‘á»“ cÅ© sáº½ tá»± hiá»‡n áº£nh vÃ  tá»a Ä‘á»™ Ä‘ang dÃ¹ng hiá»‡n táº¡i. Vá»›i báº£n Ä‘á»“ má»›i, hÃ£y chá»n â€œBáº£n Ä‘á»“ tÃ¹y chá»‰nhâ€, upload áº£nh rá»“i kÃ©o cÃ¡c vÃ²ng trÃ²n Ä‘áº¿n Ä‘Ãºng vá»‹ trÃ­.</p>
+            <p class="admin-field-hint">Bản đồ cũ sẽ tự hiện ảnh và tọa độ đang dùng hiện tại. Với bản đồ mới, hãy chọn “Bản đồ tùy chỉnh”, upload ảnh rồi kéo các vòng tròn đến đúng vị trí.</p>
             <div class="two-fields">
               <label>
-                <span>Sá»‘ vÃ²ng trÃ²n / cá»™t má»‘c</span>
+                <span>Số vòng tròn / cột mốc</span>
                 <input id="journeyMapPointCount" type="number" min="1" max="99" placeholder="16" />
               </label>
               <label>
-                <span>VÃ²ng trÃ²n Ä‘ang chá»‰nh</span>
+                <span>Vòng tròn đang chỉnh</span>
                 <select id="journeyMapPointSelect"></select>
               </label>
             </div>
-            <div class="journey-map-editor" id="journeyMapEditor" aria-label="Chá»‰nh vá»‹ trÃ­ vÃ²ng trÃ²n trÃªn báº£n Ä‘á»“">
-              <img id="journeyMapEditorImage" alt="Báº£n Ä‘á»“ HÃ nh trÃ¬nh Kinh ThÃ¡nh" />
+            <div class="journey-map-editor" id="journeyMapEditor" aria-label="Chỉnh vị trí vòng tròn trên bản đồ">
+              <img id="journeyMapEditorImage" alt="Bản đồ Hành trình Kinh Thánh" />
               <div class="journey-map-marker-layer" id="journeyMapMarkerLayer"></div>
-              <p class="journey-map-empty-note" id="journeyMapEmptyNote">Nháº­p URL áº£nh báº£n Ä‘á»“ hoáº·c upload Cloudinary Ä‘á»ƒ báº¯t Ä‘áº§u chá»‰nh vá»‹ trÃ­.</p>
+              <p class="journey-map-empty-note" id="journeyMapEmptyNote">Nhập URL ảnh bản đồ hoặc upload Cloudinary để bắt đầu chỉnh vị trí.</p>
             </div>
             <div class="three-fields journey-map-point-fields">
               <label>
-                <span>Vá»‹ trÃ­ X (%)</span>
+                <span>Vị trí X (%)</span>
                 <input id="journeyMapPointX" type="number" min="0" max="100" step="0.1" placeholder="50" />
               </label>
               <label>
-                <span>Vá»‹ trÃ­ Y (%)</span>
+                <span>Vị trí Y (%)</span>
                 <input id="journeyMapPointY" type="number" min="0" max="100" step="0.1" placeholder="50" />
               </label>
               <label>
-                <span>Gá»£i Ã½ thao tÃ¡c</span>
-                <input type="text" value="KÃ©o vÃ²ng trÃ²n hoáº·c nháº­p X/Y" readonly />
+                <span>Gợi ý thao tác</span>
+                <input type="text" value="Kéo vòng tròn hoặc nhập X/Y" readonly />
               </label>
             </div>
-            <p class="admin-field-hint">Tá»a Ä‘á»™ Ä‘Æ°á»£c tÃ­nh theo pháº§n trÄƒm chiá»u ngang vÃ  chiá»u dá»c cá»§a áº£nh, nÃªn váº«n giá»¯ Ä‘Ãºng vá»‹ trÃ­ khi xem trÃªn Ä‘iá»‡n thoáº¡i.</p>
+            <p class="admin-field-hint">Tọa độ được tính theo phần trăm chiều ngang và chiều dọc của ảnh, nên vẫn giữ đúng vị trí khi xem trên điện thoại.</p>
           </div>
 
           <div class="journey-admin-block">
-            <h3>Cá»™t má»‘c trÃªn báº£n Ä‘á»“</h3>
+            <h3>Cột mốc trên bản đồ</h3>
             <div class="two-fields">
               <label>
-                <span>Chá»n cá»™t má»‘c Ä‘Ã£ cÃ³</span>
+                <span>Chọn cột mốc đã có</span>
                 <select id="journeyMilestoneSelect"></select>
               </label>
               <label>
-                <span>Sá»‘ cá»™t má»‘c</span>
+                <span>Số cột mốc</span>
                 <input id="journeyMilestoneNumber" type="number" min="1" max="99" placeholder="3" />
               </label>
             </div>
             <div class="form-actions">
-              <button class="ghost-button" type="button" id="newJourneyMilestoneButton">Táº¡o cá»™t má»‘c má»›i</button>
-              <button class="danger-button" type="button" id="deleteJourneyMilestoneButton">XÃ³a cá»™t má»‘c</button>
+              <button class="ghost-button" type="button" id="newJourneyMilestoneButton">Tạo cột mốc mới</button>
+              <button class="danger-button" type="button" id="deleteJourneyMilestoneButton">Xóa cột mốc</button>
             </div>
             <label>
-              <span>áº¢nh panel cá»™t má»‘c</span>
+              <span>Ảnh panel cột mốc</span>
               <div class="image-url-tools">
                 <input id="journeyMapCardImageUrl" type="url" placeholder="https://..." />
                 <button class="ghost-button" type="button" id="journeyMapCardUploadButton">Upload Cloudinary</button>
               </div>
             </label>
-            <p class="admin-field-hint">áº¢nh nÃ y sáº½ hiá»ƒn thá»‹ trong popup thÃ´ng tin khi ngÆ°á»i xem báº¥m vÃ o vÃ²ng trÃ²n cá»™t má»‘c trÃªn báº£n Ä‘á»“.</p>
-            <img class="image-preview" id="journeyMapCardPreview" alt="Xem trÆ°á»›c áº£nh panel cá»™t má»‘c" />
+            <p class="admin-field-hint">Ảnh này sẽ hiển thị trong popup thông tin khi người xem bấm vào vòng tròn cột mốc trên bản đồ.</p>
+            <img class="image-preview" id="journeyMapCardPreview" alt="Xem trước ảnh panel cột mốc" />
             <label>
-              <span>BÃ i viáº¿t liÃªn quan</span>
-              <input id="journeyMilestoneRelatedUrl" type="url" placeholder="VÃ­ dá»¥: /bai-viet/ten-bai-viet hoáº·c https://..." />
+              <span>Bài viết liên quan</span>
+              <input id="journeyMilestoneRelatedUrl" type="url" placeholder="Ví dụ: /bai-viet/ten-bai-viet hoặc https://..." />
             </label>
             <div class="two-fields">
               <label>
-                <span>TiÃªu Ä‘á» cá»™t má»‘c</span>
-                <input id="journeyMilestoneTitle" type="text" placeholder="VÃ­ dá»¥: ChÃºa chá»‹u phÃ©p rá»­a" />
+                <span>Tiêu đề cột mốc</span>
+                <input id="journeyMilestoneTitle" type="text" placeholder="Ví dụ: Chúa chịu phép rửa" />
               </label>
               <label>
-                <span>TrÃ­ch dáº«n (há»— trá»£ HTML)</span>
-                <input id="journeyMilestoneReference" type="text" placeholder="VÃ­ dá»¥: &lt;em&gt;Mt 3,13-17&lt;/em&gt;" />
+                <span>Trích dẫn (hỗ trợ HTML)</span>
+                <input id="journeyMilestoneReference" type="text" placeholder="Ví dụ: &lt;em&gt;Mt 3,13-17&lt;/em&gt;" />
               </label>
               <label>
-                <span>Äá»‹a danh (há»— trá»£ HTML)</span>
-                <input id="journeyMilestoneRegion" type="text" placeholder="VÃ­ dá»¥: &lt;strong&gt;SÃ´ng GioÄ‘an&lt;/strong&gt;" />
+                <span>Địa danh (hỗ trợ HTML)</span>
+                <input id="journeyMilestoneRegion" type="text" placeholder="Ví dụ: &lt;strong&gt;Sông Giođan&lt;/strong&gt;" />
               </label>
             </div>
             <label>
-              <span>Ná»™i dung panel cá»™t má»‘c (há»— trá»£ HTML)</span>
-              <textarea id="journeyMilestoneStory" rows="4" placeholder="CÃ³ thá»ƒ nháº­p HTML, vÃ­ dá»¥: &lt;p&gt;Äoáº¡n mÃ´ táº£...&lt;/p&gt;"></textarea>
+              <span>Nội dung panel cột mốc (hỗ trợ HTML)</span>
+              <textarea id="journeyMilestoneStory" rows="4" placeholder="Có thể nhập HTML, ví dụ: &lt;p&gt;Đoạn mô tả...&lt;/p&gt;"></textarea>
             </label>
             <label>
-              <span>BÃ i há»c / suy niá»‡m ngáº¯n (há»— trá»£ HTML)</span>
-              <textarea id="journeyMilestoneLesson" rows="3" placeholder="CÃ³ thá»ƒ nháº­p HTML, vÃ­ dá»¥: &lt;strong&gt;Ghi nhá»›:&lt;/strong&gt; ..."></textarea>
+              <span>Bài học / suy niệm ngắn (hỗ trợ HTML)</span>
+              <textarea id="journeyMilestoneLesson" rows="3" placeholder="Có thể nhập HTML, ví dụ: &lt;strong&gt;Ghi nhớ:&lt;/strong&gt; ..."></textarea>
             </label>
           </div>
 
           <div class="form-actions">
-            <button class="primary-button" type="submit">LÆ°u HÃ nh trÃ¬nh Kinh ThÃ¡nh</button>
-            <button class="danger-button" type="button" id="deleteJourneyTopicButton">XÃ³a chá»§ Ä‘á» nÃ y</button>
+            <button class="primary-button" type="submit">Lưu Hành trình Kinh Thánh</button>
+            <button class="danger-button" type="button" id="deleteJourneyTopicButton">Xóa chủ đề này</button>
           </div>
           <p class="form-message" id="journeyBibleMessage"></p>
         </form>
       </section>
       <section class="backup-panel admin-tab-panel" data-admin-panel="backup" hidden>
         <div class="section-heading">
-          <h2>Backup dá»¯ liá»‡u</h2>
+          <h2>Backup dữ liệu</h2>
         </div>
         <div class="backup-card">
           <div>
-            <h3>Xuáº¥t dá»¯ liá»‡u Firestore</h3>
-            <p>Táº£i vá» file JSON gá»“m ná»™i dung, tÃ i khoáº£n, Ã½ kiáº¿n Ä‘Ã³ng gÃ³p, lá»i cáº§u nguyá»‡n vÃ  thá»‘ng kÃª truy cáº­p.</p>
-            <p class="backup-warning">File backup cÃ³ chá»©a dá»¯ liá»‡u tÃ i khoáº£n, hÃ£y lÆ°u á»Ÿ nÆ¡i riÃªng tÆ° vÃ  khÃ´ng chia sáº» cÃ´ng khai.</p>
+            <h3>Xuất dữ liệu Firestore</h3>
+            <p>Tải về file JSON gồm nội dung, tài khoản, ý kiến đóng góp, lời cầu nguyện và thống kê truy cập.</p>
+            <p class="backup-warning">File backup có chứa dữ liệu tài khoản, hãy lưu ở nơi riêng tư và không chia sẻ công khai.</p>
           </div>
-          <button class="primary-button" type="button" id="exportBackup">Xuáº¥t backup JSON</button>
+          <button class="primary-button" type="button" id="exportBackup">Xuất backup JSON</button>
         </div>
         <div class="backup-card">
           <div>
-            <h3>Nháº­p dá»¯ liá»‡u backup</h3>
-            <p>Chá»n file JSON Ä‘Ã£ xuáº¥t trÆ°á»›c Ä‘Ã³ Ä‘á»ƒ khÃ´i phá»¥c dá»¯ liá»‡u. Dá»¯ liá»‡u trong file sáº½ Ä‘Æ°á»£c ghi Ä‘Ã¨ vÃ o document cÃ¹ng ID, khÃ´ng tá»± xÃ³a dá»¯ liá»‡u khÃ¡c.</p>
+            <h3>Nhập dữ liệu backup</h3>
+            <p>Chọn file JSON đã xuất trước đó để khôi phục dữ liệu. Dữ liệu trong file sẽ được ghi đè vào document cùng ID, không tự xóa dữ liệu khác.</p>
           </div>
           <label class="backup-file-label">
             <span>File backup JSON</span>
             <input id="backupFile" type="file" accept="application/json,.json" />
           </label>
-          <button class="ghost-button" type="button" id="importBackup">Nháº­p backup JSON</button>
+          <button class="ghost-button" type="button" id="importBackup">Nhập backup JSON</button>
         </div>
         <p class="form-message" id="backupMessage"></p>
       </section>
+
+        <button class="admin-notification-bell" id="adminNotificationBell" type="button" aria-label="Không có thông báo mới" title="Không có thông báo mới" hidden>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 1 0-12 0v3.2c0 .5-.2 1-.6 1.4L4 17h5" />
+            <path d="M10 21a2 2 0 0 0 4 0" />
+          </svg>
+          <span class="admin-notification-badge" id="adminNotificationBadge" hidden>0</span>
+        </button>
 
       </div>
     </main>
@@ -494,7 +502,7 @@
     <script src="https://upload-widget.cloudinary.com/latest/global/all.js"></script>
     <script src="data.js?v=20260723-vercel-analytics-events"></script>
     <script src="auth.js?v=20260715-no-sample-seed"></script>
-    <script src="admin.js?v=20260723-admin-analytics"></script>
+    <script src="admin.js?v=20260723-admin-notification-bell"></script>
     <script defer src="/_vercel/insights/script.js"></script>
   </body>
 </html>

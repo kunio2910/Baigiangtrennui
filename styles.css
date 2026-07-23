@@ -10259,6 +10259,7 @@ body.home-page .right-column .quick-links {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0;
+  margin-top: -14px;
   padding: 12px;
   border: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
@@ -10415,5 +10416,96 @@ body.home-page .right-column .quick-links a:last-child:hover {
 
   .site-header:not(.admin-header) .header-search {
     width: min(230px, calc(100vw - 170px));
+  }
+}
+/* 14.164. Admin notification bell */
+.admin-notification-bell {
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(189, 123, 27, 0.28);
+  border-radius: 50%;
+  color: #21160f;
+  background: #fffdf8;
+  box-shadow: 0 10px 26px rgba(72, 46, 20, 0.18);
+  cursor: pointer;
+}
+
+.admin-notification-bell[hidden] {
+  display: none !important;
+}
+
+.admin-notification-bell svg {
+  width: 22px;
+  height: 22px;
+}
+
+.admin-notification-bell:hover,
+.admin-notification-bell:focus-visible {
+  color: var(--gold-dark);
+  border-color: rgba(189, 123, 27, 0.54);
+  outline: none;
+  transform: translateY(-1px);
+}
+
+.admin-notification-bell.has-notifications {
+  border-color: rgba(220, 38, 38, 0.36);
+}
+
+.admin-notification-badge {
+  position: absolute;
+  top: -6px;
+  right: -5px;
+  display: grid;
+  place-items: center;
+  min-width: 19px;
+  height: 19px;
+  padding: 0 5px;
+  border: 2px solid #fffdf8;
+  border-radius: 999px;
+  color: #fff;
+  background: #e11d48;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.admin-notification-badge[hidden] {
+  display: none !important;
+}
+
+:root[data-theme="dark"] .admin-notification-bell {
+  border-color: rgba(216, 154, 53, 0.42);
+  color: #fff4df;
+  background: #241b14;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.34);
+}
+
+:root[data-theme="dark"] .admin-notification-bell:hover,
+:root[data-theme="dark"] .admin-notification-bell:focus-visible {
+  color: #ffc46b;
+  border-color: rgba(255, 196, 107, 0.7);
+}
+
+:root[data-theme="dark"] .admin-notification-badge {
+  border-color: #241b14;
+}
+
+@media (max-width: 680px) {
+  .admin-notification-bell {
+    left: 14px;
+    bottom: 14px;
+    width: 38px;
+    height: 38px;
+  }
+
+  .admin-notification-bell svg {
+    width: 20px;
+    height: 20px;
   }
 }

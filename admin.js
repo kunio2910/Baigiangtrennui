@@ -38,6 +38,8 @@ const adminSort = document.querySelector("#adminSort");
 const adminList = document.querySelector("#adminList");
 const feedbackList = document.querySelector("#feedbackList");
 const prayerReviewList = document.querySelector("#prayerReviewList");
+const adminNotificationBell = document.querySelector("#adminNotificationBell");
+const adminNotificationBadge = document.querySelector("#adminNotificationBadge");
 const visitSummary = document.querySelector("#visitSummary");
 const visitStatsList = document.querySelector("#visitStatsList");
 const visitSearch = document.querySelector("#visitSearch");
@@ -275,6 +277,41 @@ function setupAdminTabs() {
   });
 }
 
+function getPendingPrayerNotifications() {
+  return prayerRequests.filter((item) => !item.reviewHidden && item.status !== "approved");
+}
+
+function updateAdminNotificationBell() {
+  if (!adminNotificationBell || !adminNotificationBadge) return;
+
+  if (!canManageContent || protectedPanel?.hidden) {
+    adminNotificationBell.hidden = true;
+    adminNotificationBadge.hidden = true;
+    adminNotificationBadge.textContent = "0";
+    return;
+  }
+
+  const feedbackCount = feedbackItems.length;
+  const prayerCount = getPendingPrayerNotifications().length;
+  const total = feedbackCount + prayerCount;
+  const label = total
+    ? `${total} thông báo mới: ${feedbackCount} ý kiến đóng góp, ${prayerCount} lời cầu nguyện chờ duyệt.`
+    : "Không có thông báo mới";
+
+  adminNotificationBell.hidden = false;
+  adminNotificationBell.classList.toggle("has-notifications", total > 0);
+  adminNotificationBell.setAttribute("aria-label", label);
+  adminNotificationBell.title = label;
+  adminNotificationBadge.hidden = total <= 0;
+  adminNotificationBadge.textContent = total > 99 ? "99+" : String(total);
+}
+
+adminNotificationBell?.addEventListener("click", () => {
+  if (!canManageContent) return;
+  const targetTab = feedbackItems.length ? "feedback" : getPendingPrayerNotifications().length ? "prayers" : "feedback";
+  activateAdminTab(targetTab);
+  document.querySelector(".admin-tabs")?.scrollIntoView({ behavior: "smooth", block: "start" });
+});
 function detailLink(type, item) {
   return typeof contentDetailUrl === "function"
     ? contentDetailUrl(type, item)
@@ -1821,6 +1858,8 @@ function renderAdminList() {
 function renderFeedbackList() {
   if (!feedbackList) return;
 
+  updateAdminNotificationBell();
+
   if (!feedbackItems.length) {
     feedbackList.innerHTML = `
       <article class="feedback-item">
@@ -1855,6 +1894,8 @@ function renderFeedbackList() {
 
 function renderPrayerReviewList() {
   if (!prayerReviewList) return;
+
+  updateAdminNotificationBell();
 
   const visibleRequests = prayerRequests.filter((item) => {
     if (item.reviewHidden) return false;
@@ -2965,6 +3006,7 @@ async function setupLogin() {
   if (!user) {
     loginPanel.hidden = false;
     protectedPanel.hidden = true;
+    updateAdminNotificationBell();
     return;
   }
 
@@ -2972,6 +3014,7 @@ async function setupLogin() {
   protectedPanel.hidden = false;
   canManageContent = user.role === "admin";
   setEditorEnabled(canManageContent);
+  updateAdminNotificationBell();
   if (canManageContent && !itemCreatedDate.value) {
     itemCreatedDate.value = currentDateTimeLocal();
   }
