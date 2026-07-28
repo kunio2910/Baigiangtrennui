@@ -757,7 +757,7 @@
     search: "",
     sort: "default",
     page: 1,
-    pageSize: 12,
+    pageSize: 9,
     selectedStepNumber: BAPTISM_STEP_NUMBER,
     detailStepNumber: null,
     activeView: "map",
