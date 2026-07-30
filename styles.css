@@ -301,7 +301,7 @@ main {
 
 .top-panels {
   display: grid;
-  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
   gap: 22px;
   align-items: stretch;
 }
@@ -312,9 +312,15 @@ main {
   flex-direction: column;
 }
 
-.top-panels .daily-card,
+.top-panels .daily-card {
+  flex: 0.82;
+  min-height: 162px;
+  padding: 14px 16px;
+}
+
 .top-panels .church-grid {
-  flex: 1;
+  flex: 1.18;
+  gap: 12px;
 }
 
 @media (min-width: 1181px) {
@@ -591,7 +597,8 @@ main {
 }
 
 .church-grid {
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-content: start;
 }
 
 .article-grid {
@@ -1151,7 +1158,7 @@ body {
 }
 
 .church-card img {
-  height: 104px;
+  height: 122px;
   object-fit: contain;
   background: #f7efe3;
 }
@@ -1168,7 +1175,7 @@ body {
   display: flex;
   flex: 1;
   flex-direction: column;
-  padding: 10px;
+  padding: 12px;
 }
 
 .content-card h3,
@@ -1209,12 +1216,12 @@ body {
 
 .daily-card {
   position: relative;
-  min-height: 210px;
+  min-height: 170px;
   display: grid;
   grid-template-columns: 24px 1fr 24px;
   align-items: center;
   gap: 8px;
-  padding: 18px;
+  padding: 14px 16px;
   color: var(--white);
   background:
     linear-gradient(90deg, rgba(95, 53, 20, 0.92), rgba(115, 69, 25, 0.72)),
@@ -1223,18 +1230,18 @@ body {
 }
 
 .daily-card blockquote {
-  margin: 0 0 10px;
+  margin: 0 0 8px;
   font-family: Cambria, "Palatino Linotype", "Times New Roman", serif;
   font-style: italic;
   font-weight: 500;
-  font-size: 13.2px;
-  line-height: 1.6;
+  font-size: 12.6px;
+  line-height: 1.5;
   white-space: pre-line;
 }
 
 .daily-card small {
   font-family: Cambria, "Palatino Linotype", "Times New Roman", serif;
-  font-size: 12px;
+  font-size: 11.5px;
 }
 
 .prayer-card {
