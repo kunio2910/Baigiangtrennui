@@ -12,6 +12,22 @@ const allowedTypes = ["saints", "churches", "articles", "events", "prayers", "ca
 const detailArticle = document.querySelector("#detailArticle");
 const lazyImageAttrs = 'loading="lazy" decoding="async"';
 const SITE_URL = "https://www.baigiangtrennui.com";
+const DETAIL_TYPE_PATHS = {
+  saints: "cac-thanh",
+  churches: "nha-tho",
+  articles: "bai-viet",
+  events: "su-kien",
+  prayers: "cau-nguyen",
+  catechism: "giao-ly",
+};
+const DETAIL_TYPE_LABELS = {
+  saints: "Các Thánh",
+  churches: "Nhà Thờ",
+  articles: "Bài Viết",
+  events: "Sự Kiện",
+  prayers: "Cầu Nguyện",
+  catechism: "Giáo Lý",
+};
 let currentItem = null;
 let selectedRatings = {
   content: 0,
@@ -38,10 +54,94 @@ function setMeta(selector, attribute, value) {
   element.setAttribute(attribute, value);
 }
 
+function textForSeo(value, fallback = "") {
+  const text = String(value || fallback || "").replace(/\s+/g, " ").trim();
+  if (typeof repairMojibakeText === "function") return repairMojibakeText(text);
+  return text;
+}
+
+function setJsonLd(id, data) {
+  let element = document.head.querySelector(`#${id}`);
+  if (!element) {
+    element = document.createElement("script");
+    element.type = "application/ld+json";
+    element.id = id;
+    document.head.appendChild(element);
+  }
+  element.textContent = JSON.stringify(data);
+}
+
+function schemaDate(value) {
+  if (!value) return undefined;
+  const rawDate = value?.toDate ? value.toDate() : new Date(value);
+  if (Number.isNaN(rawDate.getTime())) return undefined;
+  return rawDate.toISOString();
+}
+
+function updateDetailSchema(item, url, description) {
+  const image = item.image || fallbackImage;
+  const publishedDate = schemaDate(item.createdDate || item.createdAtText || item.createdAt);
+  const modifiedDate = schemaDate(item.updatedAt || item.createdDate || item.createdAt);
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: textForSeo(item.title),
+    description,
+    image,
+    url,
+    inLanguage: "vi-VN",
+    datePublished: publishedDate,
+    dateModified: modifiedDate,
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": url,
+    },
+    articleSection: DETAIL_TYPE_LABELS[type] || type,
+    author: {
+      "@type": "Organization",
+      name: "Bài Giảng Trên Núi",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Bài Giảng Trên Núi",
+      logo: {
+        "@type": "ImageObject",
+        url: `${SITE_URL}/favicon.png`,
+      },
+    },
+  };
+
+  setJsonLd("detailSchema", articleSchema);
+  setJsonLd("detailBreadcrumbSchema", {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Trang chủ",
+        item: `${SITE_URL}/`,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: textForSeo(DETAIL_TYPE_LABELS[type] || type),
+        item: `${SITE_URL}/${DETAIL_TYPE_PATHS[type] || ""}`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: textForSeo(item.title),
+        item: url,
+      },
+    ],
+  });
+}
+
 function updateDetailSeo(item) {
-  const description = item.description || item.meta || "Nội dung Công Giáo trên Bài Giảng Trên Núi.";
+  const description = textForSeo(item.description || item.meta, "Nội dung Công Giáo trên Bài Giảng Trên Núi.");
   const url = `${SITE_URL}${detailLink(type, item)}`;
-  const title = `${item.title} - Bài Giảng Trên Núi`;
+  const title = `${textForSeo(item.title)} - Bài Giảng Trên Núi`;
   document.title = title;
   setMeta('meta[name="description"]', "content", description);
   setMeta('link[rel="canonical"]', "href", url);
@@ -49,6 +149,7 @@ function updateDetailSeo(item) {
   setMeta('meta[property="og:description"]', "content", description);
   setMeta('meta[property="og:image"]', "content", item.image || fallbackImage);
   setMeta('meta[property="og:url"]', "content", url);
+  updateDetailSchema(item, url, description);
 }
 
 function sanitizeContentHtml(value) {

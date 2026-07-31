@@ -4892,3 +4892,18 @@ Lưu ý kỹ thuật:
 - Badge đỏ trên chuông hiển thị tổng số thông báo cần xử lý gồm: ý kiến đóng góp hiện có và lời cầu nguyện đang chờ duyệt.
 - Khi không có thông báo, chuông vẫn hiển thị nhưng badge đỏ được ẩn; khi bấm chuông sẽ nhảy nhanh tới tab Ý kiến đóng góp hoặc Duyệt lời cầu nguyện.
 - Cập nhật cache `admin.html` sang `20260723-admin-notification-bell` cho `styles.css` và `admin.js`.
+
+-------------------------------------------------------------
+## 14.165. Cải thiện SEO bước đầu: mã hóa, schema và sitemap
+
+**Ngày cập nhật:** 31/07/2026
+
+**Chức năng:**
+- Sửa lỗi mã hóa tiếng Việt trong `category.html` và `detail.html` để title, meta description, Open Graph, header, footer và các nhãn tĩnh hiển thị đúng dấu.
+- Thêm JSON-LD schema cho trang danh mục bằng `CollectionPage` và `BreadcrumbList` trong `category.js`.
+- Thêm JSON-LD schema cho trang nội dung chi tiết bằng `Article` và `BreadcrumbList` trong `detail.js`; schema lấy title, mô tả, ảnh, canonical URL và ngày tạo/cập nhật từ dữ liệu bài viết hiện tại.
+- Cập nhật sitemap động `api/sitemap.js`, bổ sung URL công khai `/hanh-trinh-kinh-thanh` và `/gop-y.html`.
+- Cập nhật cache `category.js` và `detail.js` sang `20260731-seo-schema`.
+
+**Ghi chú kỹ thuật:**
+- Các thay đổi chỉ nằm ở metadata SEO, schema ẩn trong `<head>` và sitemap; không thay đổi cấu trúc Firestore, không đổi layout card, không đổi dữ liệu hiện có.

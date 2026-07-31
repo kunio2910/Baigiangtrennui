@@ -69,15 +69,68 @@ function setMeta(selector, attribute, value) {
   element.setAttribute(attribute, value);
 }
 
+function textForSeo(value, fallback = "") {
+  const text = String(value || fallback || "").replace(/\s+/g, " ").trim();
+  if (typeof repairMojibakeText === "function") return repairMojibakeText(text);
+  return text;
+}
+
+function setJsonLd(id, data) {
+  let element = document.head.querySelector(`#${id}`);
+  if (!element) {
+    element = document.createElement("script");
+    element.type = "application/ld+json";
+    element.id = id;
+    document.head.appendChild(element);
+  }
+  element.textContent = JSON.stringify(data);
+}
+
+function updateCategorySchema(url) {
+  setJsonLd("categorySchema", {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: textForSeo(categoryInfo.title),
+    description: textForSeo(categoryInfo.description),
+    url,
+    inLanguage: "vi-VN",
+    isPartOf: {
+      "@type": "WebSite",
+      name: "Bài Giảng Trên Núi",
+      url: SITE_URL,
+    },
+  });
+  setJsonLd("categoryBreadcrumbSchema", {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Trang chủ",
+        item: `${SITE_URL}/`,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: textForSeo(categoryInfo.title),
+        item: url,
+      },
+    ],
+  });
+}
+
 function updateCategorySeo() {
   const url = `${SITE_URL}${typeof categoryUrl === "function" ? categoryUrl(activeType) : `/category.html?type=${encodeURIComponent(activeType)}`}`;
-  const title = `${categoryInfo.title} - Bài Giảng Trên Núi`;
+  const title = `${textForSeo(categoryInfo.title)} - Bài Giảng Trên Núi`;
+  const description = textForSeo(categoryInfo.description);
   document.title = title;
-  setMeta('meta[name="description"]', "content", categoryInfo.description);
+  setMeta('meta[name="description"]', "content", description);
   setMeta('link[rel="canonical"]', "href", url);
   setMeta('meta[property="og:title"]', "content", title);
-  setMeta('meta[property="og:description"]', "content", categoryInfo.description);
+  setMeta('meta[property="og:description"]', "content", description);
   setMeta('meta[property="og:url"]', "content", url);
+  updateCategorySchema(url);
 }
 
 function itemTimeValue(item) {

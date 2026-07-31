@@ -21,6 +21,8 @@ const CATEGORY_PATHS = [
   ["/giao-ly", { changefreq: "weekly", priority: "0.8" }],
   ["/gui-loi-cau-nguyen", { changefreq: "monthly", priority: "0.7" }],
   ["/kham-pha-duc-tin", { changefreq: "monthly", priority: "0.7" }],
+  ["/hanh-trinh-kinh-thanh", { changefreq: "monthly", priority: "0.7" }],
+  ["/gop-y.html", { changefreq: "monthly", priority: "0.5" }],
 ];
 
 const FALLBACK_CONTENT_URLS = [
