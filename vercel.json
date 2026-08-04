@@ -1,4 +1,13 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "api/detail-page.js": {
+      "includeFiles": "detail.html"
+    },
+    "api/category-page.js": {
+      "includeFiles": "category.html"
+    }
+  },
   "rewrites": [
     {
       "source": "/sitemap.xml",
@@ -6,27 +15,27 @@
     },
     {
       "source": "/cac-thanh",
-      "destination": "/category.html?type=saints"
+      "destination": "/api/category-page?type=saints"
     },
     {
       "source": "/nha-tho",
-      "destination": "/category.html?type=churches"
+      "destination": "/api/category-page?type=churches"
     },
     {
       "source": "/bai-viet",
-      "destination": "/category.html?type=articles"
+      "destination": "/api/category-page?type=articles"
     },
     {
       "source": "/su-kien",
-      "destination": "/category.html?type=events"
+      "destination": "/api/category-page?type=events"
     },
     {
       "source": "/cau-nguyen",
-      "destination": "/category.html?type=prayers"
+      "destination": "/api/category-page?type=prayers"
     },
     {
       "source": "/giao-ly",
-      "destination": "/category.html?type=catechism"
+      "destination": "/api/category-page?type=catechism"
     },
     {
       "source": "/gui-loi-cau-nguyen",
@@ -42,27 +51,27 @@
     },
     {
       "source": "/cac-thanh/:slug",
-      "destination": "/detail.html?type=saints&slug=:slug"
+      "destination": "/api/detail-page?type=saints&slug=:slug"
     },
     {
       "source": "/nha-tho/:slug",
-      "destination": "/detail.html?type=churches&slug=:slug"
+      "destination": "/api/detail-page?type=churches&slug=:slug"
     },
     {
       "source": "/bai-viet/:slug",
-      "destination": "/detail.html?type=articles&slug=:slug"
+      "destination": "/api/detail-page?type=articles&slug=:slug"
     },
     {
       "source": "/su-kien/:slug",
-      "destination": "/detail.html?type=events&slug=:slug"
+      "destination": "/api/detail-page?type=events&slug=:slug"
     },
     {
       "source": "/cau-nguyen/:slug",
-      "destination": "/detail.html?type=prayers&slug=:slug"
+      "destination": "/api/detail-page?type=prayers&slug=:slug"
     },
     {
       "source": "/giao-ly/:slug",
-      "destination": "/detail.html?type=catechism&slug=:slug"
+      "destination": "/api/detail-page?type=catechism&slug=:slug"
     }
   ]
 }

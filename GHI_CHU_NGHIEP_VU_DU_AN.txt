@@ -4907,3 +4907,28 @@ Lưu ý kỹ thuật:
 
 **Ghi chú kỹ thuật:**
 - Các thay đổi chỉ nằm ở metadata SEO, schema ẩn trong `<head>` và sitemap; không thay đổi cấu trúc Firestore, không đổi layout card, không đổi dữ liệu hiện có.
+
+-------------------------------------------------------------
+## 14.166. Tối ưu SEO URL, HTML phía máy chủ và sitemap chính xác
+
+**Ngày cập nhật:** 04/08/2026
+
+**Chức năng:**
+- Giữ nguyên giao diện, CSS, dữ liệu Firestore và toàn bộ chức năng hiện tại; chỉ bổ sung lớp SEO phía máy chủ và metadata ẩn.
+- Thêm Vercel Function `api/detail-page.js` cho các URL chi tiết thuộc Các Thánh, Nhà Thờ, Bài Viết, Sự Kiện, Cầu Nguyện và Giáo Lý.
+- URL chi tiết giờ trả về HTML đã có sẵn title, meta description, canonical, Open Graph, Twitter Card, schema `Article`, schema `BreadcrumbList`, hình ảnh, H1 và nội dung bài viết trước khi JavaScript chạy.
+- JavaScript `detail.js` vẫn tải dữ liệu và điều khiển nguyên vẹn đánh giá, góp ý, nội dung liên quan, chế độ sáng/tối và các thao tác hiện tại.
+- Thêm Vercel Function `api/category-page.js` để mỗi trang danh mục có title, mô tả, canonical, H1, `CollectionPage` và breadcrumb đúng ngay trong HTML ban đầu.
+- Bổ sung `ItemList` schema cho trang xem tất cả sau khi danh sách Firestore được tải; URL từng item tiếp tục có ID sau `--` để phân biệt các bài trùng tiêu đề.
+- Đồng bộ cách tạo slug tiếng Việt trong trình duyệt, sitemap và HTML phía máy chủ; ví dụ `Đức Mẹ Maria` sinh URL `duc-me-maria--{id}`.
+- Nâng sitemap động: chỉ ghi `lastmod` khi dữ liệu có ngày cập nhật hợp lệ, ngày danh mục lấy theo bài mới cập nhật nhất, không tự gán ngày hiện tại cho mọi URL.
+- Khi đọc Firestore thành công, sitemap chỉ xuất URL nội dung thật và không trộn URL mẫu dự phòng; URL dự phòng chỉ dùng khi Firestore tạm thời không truy cập được.
+- Bổ sung thông tin ảnh vào sitemap bằng namespace `image`, gồm URL ảnh và tiêu đề ảnh để hỗ trợ Google Images.
+- Bổ sung `Organization` + `WebSite` schema ở trang chủ, robots `max-image-preview:large`, Open Graph site name và Twitter metadata.
+- Nội dung không tồn tại hoặc đã `unactived` từ Vercel Function trả HTTP 404 và `noindex`; lỗi kết nối Firestore tạm thời vẫn trả trang client hiện tại để website không bị gián đoạn.
+
+**Kiểm tra:**
+- `node --check` đạt cho `api/detail-page.js`, `api/category-page.js`, `api/sitemap.js`, `detail.js` và `category.js`.
+- `vercel.json` đọc thành công; phản hồi mô phỏng xác nhận canonical, H1, schema, URL slug, `lastmod` và image sitemap đúng.
+- Kiểm tra local trang chủ, danh mục Các Thánh và chi tiết Thánh Giuse: không có lỗi console, không tràn ngang, canonical/schema đúng và giao diện chi tiết giữ nguyên.
+- Cache JS cập nhật: `detail.js?v=20260804-seo-rendering`, `category.js?v=20260804-seo-item-list`.

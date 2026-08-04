@@ -87,6 +87,12 @@ function setJsonLd(id, data) {
 }
 
 function updateCategorySchema(url) {
+  const itemListElement = allCategoryItems.slice(0, 100).map((item, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    name: textForSeo(item.title),
+    item: `${SITE_URL}${categoryDetailLink(activeType, item)}`,
+  }));
   setJsonLd("categorySchema", {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -98,6 +104,11 @@ function updateCategorySchema(url) {
       "@type": "WebSite",
       name: "Bài Giảng Trên Núi",
       url: SITE_URL,
+    },
+    mainEntity: {
+      "@type": "ItemList",
+      numberOfItems: allCategoryItems.length,
+      itemListElement,
     },
   });
   setJsonLd("categoryBreadcrumbSchema", {
@@ -125,11 +136,14 @@ function updateCategorySeo() {
   const title = `${textForSeo(categoryInfo.title)} - Bài Giảng Trên Núi`;
   const description = textForSeo(categoryInfo.description);
   document.title = title;
+  setMeta('meta[name="robots"]', "content", "index, follow, max-image-preview:large");
   setMeta('meta[name="description"]', "content", description);
   setMeta('link[rel="canonical"]', "href", url);
   setMeta('meta[property="og:title"]', "content", title);
   setMeta('meta[property="og:description"]', "content", description);
   setMeta('meta[property="og:url"]', "content", url);
+  setMeta('meta[name="twitter:title"]', "content", title);
+  setMeta('meta[name="twitter:description"]', "content", description);
   updateCategorySchema(url);
 }
 
@@ -291,9 +305,11 @@ async function initCategory() {
   try {
     const content = await getContent();
     allCategoryItems = activeCategoryItems(content[activeType] || []);
+    updateCategorySeo();
     renderCategoryView();
   } catch (error) {
     allCategoryItems = activeCategoryItems(defaultContent[activeType] || []);
+    updateCategorySeo();
     renderCategoryView();
   }
   rememberCurrentPage(categoryInfo.title);

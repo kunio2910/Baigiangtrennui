@@ -14,28 +14,46 @@
       name="description"
       content="Bài Giảng Trên Núi chia sẻ bài viết Công Giáo, giáo lý, lời cầu nguyện, suy niệm, các thánh và đời sống đức tin hằng ngày."
     />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
     <link rel="canonical" href="https://www.baigiangtrennui.com/" />
     <meta property="og:title" content="Bài Giảng Trên Núi" />
     <meta property="og:description" content="Học hỏi, cầu nguyện và chia sẻ Tin Mừng trong đời sống hằng ngày." />
     <meta property="og:image" content="https://www.baigiangtrennui.com/favicon.png" />
     <meta property="og:url" content="https://www.baigiangtrennui.com/" />
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Bài Giảng Trên Núi" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Bài Giảng Trên Núi" />
+    <meta name="twitter:description" content="Học hỏi, cầu nguyện và chia sẻ Tin Mừng trong đời sống hằng ngày." />
     <meta name="twitter:image" content="https://www.baigiangtrennui.com/favicon.png" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/favicon.png" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "Bài Giảng Trên Núi",
-        "url": "https://www.baigiangtrennui.com/",
-        "description": "Website chia sẻ bài viết Công Giáo, giáo lý, lời cầu nguyện, suy niệm và đời sống đức tin.",
-        "inLanguage": "vi-VN",
-        "publisher": {
-          "@type": "Organization",
-          "name": "Bài Giảng Trên Núi"
-        }
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://www.baigiangtrennui.com/#organization",
+            "name": "Bài Giảng Trên Núi",
+            "url": "https://www.baigiangtrennui.com/",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://www.baigiangtrennui.com/favicon.png"
+            }
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.baigiangtrennui.com/#website",
+            "name": "Bài Giảng Trên Núi",
+            "url": "https://www.baigiangtrennui.com/",
+            "description": "Website chia sẻ bài viết Công Giáo, giáo lý, lời cầu nguyện, suy niệm và đời sống đức tin.",
+            "inLanguage": "vi-VN",
+            "publisher": {
+              "@id": "https://www.baigiangtrennui.com/#organization"
+            }
+          }
+        ]
       }
     </script>
     <link rel="preconnect" href="https://images.unsplash.com" />

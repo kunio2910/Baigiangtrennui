@@ -136,15 +136,16 @@ function firestoreFieldsToObject(fields = {}) {
 }
 
 function dateOnly(value) {
-  const date = value ? new Date(value) : new Date();
-  if (Number.isNaN(date.getTime())) return new Date().toISOString().slice(0, 10);
+  if (!value) return "";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
   return date.toISOString().slice(0, 10);
 }
 
 function contentPath(item) {
   const typePath = TYPE_PATHS[item.type];
   if (!typePath || item.status === "unactived") return "";
-  const baseSlug = item.slug || slugifyText(item.title || item.ref || item.meta || item.id);
+  const baseSlug = slugifyText(item.title || item.ref || item.meta || item.slug || item.id);
   const id = String(item.id || "").trim();
   const slug = id && !baseSlug.endsWith(`--${id}`) ? `${baseSlug}--${id}` : baseSlug;
   return slug ? `/${typePath}/${slug}` : "";
@@ -160,15 +161,13 @@ function escapeXml(value) {
 }
 
 function sitemapEntry(path, options = {}) {
-  const lastmod = options.lastmod || new Date().toISOString().slice(0, 10);
   const changefreq = options.changefreq || "monthly";
   const priority = options.priority || "0.7";
   return `  <url>
     <loc>${escapeXml(`${SITE_URL}${path}`)}</loc>
-    <lastmod>${escapeXml(lastmod)}</lastmod>
-    <changefreq>${changefreq}</changefreq>
+${options.lastmod ? `    <lastmod>${escapeXml(options.lastmod)}</lastmod>\n` : ""}    <changefreq>${changefreq}</changefreq>
     <priority>${priority}</priority>
-  </url>`;
+${options.image ? `    <image:image>\n      <image:loc>${escapeXml(options.image)}</image:loc>\n${options.imageTitle ? `      <image:title>${escapeXml(options.imageTitle)}</image:title>\n` : ""}    </image:image>\n` : ""}  </url>`;
 }
 
 async function fetchContentItems() {
@@ -197,14 +196,28 @@ async function fetchContentItems() {
 }
 
 function buildSitemap(items = []) {
-  const today = new Date().toISOString().slice(0, 10);
   const paths = new Map();
+  const latestByType = {};
+  let latestOverall = "";
 
-  CATEGORY_PATHS.forEach(([path, options]) => paths.set(path, { lastmod: today, ...options }));
-
-  FALLBACK_CONTENT_URLS.forEach((path) => {
-    paths.set(path, { lastmod: today, changefreq: "monthly", priority: path.startsWith("/cac-thanh/") ? "0.8" : "0.7" });
+  items.forEach((item) => {
+    const updatedDate = dateOnly(item.updatedAt || item.createdDate || item.createdAt);
+    if (!updatedDate) return;
+    if (!latestByType[item.type] || updatedDate > latestByType[item.type]) latestByType[item.type] = updatedDate;
+    if (!latestOverall || updatedDate > latestOverall) latestOverall = updatedDate;
   });
+
+  CATEGORY_PATHS.forEach(([path, options]) => {
+    const type = Object.keys(TYPE_PATHS).find((key) => `/${TYPE_PATHS[key]}` === path);
+    const lastmod = path === "/" ? latestOverall : latestByType[type];
+    paths.set(path, { ...options, ...(lastmod ? { lastmod } : {}) });
+  });
+
+  if (!items.length) {
+    FALLBACK_CONTENT_URLS.forEach((path) => {
+      paths.set(path, { changefreq: "monthly", priority: path.startsWith("/cac-thanh/") ? "0.8" : "0.7" });
+    });
+  }
 
   items.forEach((item) => {
     const path = contentPath(item);
@@ -213,13 +226,15 @@ function buildSitemap(items = []) {
       lastmod: dateOnly(item.updatedAt || item.createdDate || item.createdAt),
       changefreq: item.type === "events" ? "weekly" : "monthly",
       priority: item.type === "saints" ? "0.8" : "0.7",
+      image: /^https?:\/\//i.test(String(item.image || "")) ? String(item.image) : "",
+      imageTitle: repairMojibakeText(item.title || ""),
     });
   });
 
   const entries = Array.from(paths.entries()).map(([path, options]) => sitemapEntry(path, options));
   return `<?xml version="1.0" encoding="UTF-8"?>
 <!-- dynamic-sitemap generated="${new Date().toISOString()}" urls="${entries.length}" -->
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 ${entries.join("\n")}
 </urlset>`;
 }

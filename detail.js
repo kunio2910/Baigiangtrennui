@@ -78,8 +78,16 @@ function schemaDate(value) {
   return rawDate.toISOString();
 }
 
+function absoluteSeoUrl(value, fallback = "") {
+  try {
+    return new URL(String(value || fallback || ""), SITE_URL).href;
+  } catch (error) {
+    return fallback;
+  }
+}
+
 function updateDetailSchema(item, url, description) {
-  const image = item.image || fallbackImage;
+  const image = absoluteSeoUrl(item.image, `${SITE_URL}${fallbackImage}`);
   const publishedDate = schemaDate(item.createdDate || item.createdAtText || item.createdAt);
   const modifiedDate = schemaDate(item.updatedAt || item.createdDate || item.createdAt);
   const articleSchema = {
@@ -87,7 +95,7 @@ function updateDetailSchema(item, url, description) {
     "@type": "Article",
     headline: textForSeo(item.title),
     description,
-    image,
+    image: [image],
     url,
     inLanguage: "vi-VN",
     datePublished: publishedDate,
@@ -100,10 +108,12 @@ function updateDetailSchema(item, url, description) {
     author: {
       "@type": "Organization",
       name: "Bài Giảng Trên Núi",
+      url: SITE_URL,
     },
     publisher: {
       "@type": "Organization",
       name: "Bài Giảng Trên Núi",
+      url: SITE_URL,
       logo: {
         "@type": "ImageObject",
         url: `${SITE_URL}/favicon.png`,
@@ -142,13 +152,18 @@ function updateDetailSeo(item) {
   const description = textForSeo(item.description || item.meta, "Nội dung Công Giáo trên Bài Giảng Trên Núi.");
   const url = `${SITE_URL}${detailLink(type, item)}`;
   const title = `${textForSeo(item.title)} - Bài Giảng Trên Núi`;
+  const image = absoluteSeoUrl(item.image, `${SITE_URL}${fallbackImage}`);
   document.title = title;
+  setMeta('meta[name="robots"]', "content", "index, follow, max-image-preview:large");
   setMeta('meta[name="description"]', "content", description);
   setMeta('link[rel="canonical"]', "href", url);
   setMeta('meta[property="og:title"]', "content", title);
   setMeta('meta[property="og:description"]', "content", description);
-  setMeta('meta[property="og:image"]', "content", item.image || fallbackImage);
+  setMeta('meta[property="og:image"]', "content", image);
   setMeta('meta[property="og:url"]', "content", url);
+  setMeta('meta[name="twitter:title"]', "content", title);
+  setMeta('meta[name="twitter:description"]', "content", description);
+  setMeta('meta[name="twitter:image"]', "content", image);
   updateDetailSchema(item, url, description);
 }
 
@@ -227,6 +242,7 @@ function sourceLinkHtml(value) {
 
 function renderMissing() {
   document.title = "Không tìm thấy nội dung - Truyền Giáo Kitô";
+  setMeta('meta[name="robots"]', "content", "noindex, follow");
   detailArticle.innerHTML = `
     <div class="detail-empty">
       <p class="eyebrow">Không tìm thấy</p>
