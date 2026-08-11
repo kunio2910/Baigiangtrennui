@@ -10037,10 +10037,10 @@ body.journey-page .journey-milestone-audio {
   min-height: 34px;
   margin: 0 0 10px;
   padding: 6px 11px;
-  border: 1px solid rgba(188, 117, 18, 0.44);
+  border: 1px solid rgba(183, 111, 17, 0.62);
   border-radius: 999px;
-  background: rgba(199, 131, 24, 0.1);
-  color: #8a4f0e;
+  background: rgba(255, 238, 197, 0.96);
+  color: #6d3b09;
   font: inherit;
   font-size: 12px;
   font-weight: 800;
@@ -10050,8 +10050,11 @@ body.journey-page .journey-milestone-audio {
 
 body.journey-page .journey-milestone-audio [data-audio-icon] {
   display: inline-grid;
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #c78318;
+  color: #fffaf0;
   place-items: center;
   font-size: 15px;
   line-height: 1;
@@ -10067,8 +10070,13 @@ body.journey-page .journey-milestone-audio.is-playing {
 
 :root[data-theme="dark"] body.journey-page .journey-milestone-audio {
   border-color: rgba(255, 205, 117, 0.68);
-  background: rgba(255, 205, 117, 0.14);
-  color: #ffd27c;
+  background: rgba(255, 205, 117, 0.18);
+  color: #ffe8b3;
+}
+
+:root[data-theme="dark"] body.journey-page .journey-milestone-audio [data-audio-icon] {
+  background: #f2b84b;
+  color: #3a200b;
 }
 
 :root[data-theme="dark"] body.journey-page .journey-milestone-audio:hover,
@@ -10077,6 +10085,20 @@ body.journey-page .journey-milestone-audio.is-playing {
   border-color: #ffd27c;
   background: #b9791d;
   color: #fffaf0;
+}
+
+body.journey-page .journey-milestone-audio:hover [data-audio-icon],
+body.journey-page .journey-milestone-audio:focus-visible [data-audio-icon],
+body.journey-page .journey-milestone-audio.is-playing [data-audio-icon] {
+  background: #fff0c2;
+  color: #7a4308;
+}
+
+:root[data-theme="dark"] body.journey-page .journey-milestone-audio:hover [data-audio-icon],
+:root[data-theme="dark"] body.journey-page .journey-milestone-audio:focus-visible [data-audio-icon],
+:root[data-theme="dark"] body.journey-page .journey-milestone-audio.is-playing [data-audio-icon] {
+  background: #ffe09a;
+  color: #3a200b;
 }
 
 /* 14.156. Home quick links redesigned as compact ministry cards */

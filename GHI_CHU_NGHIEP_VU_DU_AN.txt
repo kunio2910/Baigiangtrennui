@@ -4932,3 +4932,39 @@ Lưu ý kỹ thuật:
 - `vercel.json` đọc thành công; phản hồi mô phỏng xác nhận canonical, H1, schema, URL slug, `lastmod` và image sitemap đúng.
 - Kiểm tra local trang chủ, danh mục Các Thánh và chi tiết Thánh Giuse: không có lỗi console, không tràn ngang, canonical/schema đúng và giao diện chi tiết giữ nguyên.
 - Cache JS cập nhật: `detail.js?v=20260804-seo-rendering`, `category.js?v=20260804-seo-item-list`.
+------------------------------------------------------------
+## 14.167. Bổ sung âm thanh cho cột mốc Hành trình Kinh Thánh
+
+**Ngày cập nhật:** 11/08/2026
+
+**Chức năng:**
+- Trong trang quản lý, mỗi cột mốc Hành trình Kinh Thánh có thêm trường **URL âm thanh cột mốc** để nhập liên kết file âm thanh.
+- Giá trị được lưu trong cùng object cột mốc với thuộc tính `audioUrl`; dữ liệu cũ không có trường này vẫn hoạt động bình thường.
+- Popup thông tin trên bản đồ chỉ hiện nút loa khi cột mốc có URL âm thanh hợp lệ (`http`, `https` hoặc URL tương đối của website).
+- Bấm nút loa lần đầu sẽ phát âm thanh, bấm lần nữa sẽ tạm dừng; nút đổi trạng thái giữa **Phát âm thanh** và **Tắt âm thanh**.
+- Khi đóng popup, quay lại bản đồ/chọn chủ đề hoặc chuyển chủ đề, âm thanh tự dừng và reset về thời điểm đầu.
+- Khi âm thanh phát hết, nút loa tự trở về trạng thái sẵn sàng phát lại.
+- Không thay đổi layout popup hiện tại; chỉ thêm nút công cụ nhỏ ở đầu phần nội dung popup.
+
+**File liên quan:**
+- `admin.html`
+- `admin.js`
+- `journey-test.js`
+- `styles.css`
+- `hanh-trinh-kinh-thanh-test.html`
+- `GHI_CHU_NGHIEP_VU_DU_AN.txt`
+
+**Kiểm tra:**
+- `node --check admin.js` và `node --check journey-test.js` đạt.
+- `git diff --check` không phát hiện lỗi khoảng trắng/patch.
+- Cập nhật cache CSS/JS sang `20260811-journey-audio` để local và Vercel nhận code mới.
+
+------------------------------------------------------------
+## 14.168. Tăng tương phản icon âm thanh cột mốc
+
+**Ngày cập nhật:** 11/08/2026
+
+- Icon loa trong popup Hành trình Kinh Thánh được đặt trong vòng tròn màu vàng để không bị chìm trên nền ảnh.
+- Nút âm thanh có nền/đường viền sáng hơn ở giao diện sáng; dark mode dùng màu vàng nhạt để tăng tương phản.
+- Bổ sung trạng thái hover/focus/đang phát cho icon; không thay đổi cách phát, dừng hoặc reset âm thanh.
+- Tăng cache CSS sang `20260811-journey-audio-contrast` để trình duyệt tải lại màu mới.
