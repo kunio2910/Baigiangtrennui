@@ -10029,6 +10029,56 @@ body.journey-page .journey-milestone-content .journey-milestone-more {
   margin: 14px auto 0 !important;
 }
 
+/* 14.167. Nut phat am thanh cho popup cot moc Hanh trinh Kinh Thanh */
+body.journey-page .journey-milestone-audio {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 34px;
+  margin: 0 0 10px;
+  padding: 6px 11px;
+  border: 1px solid rgba(188, 117, 18, 0.44);
+  border-radius: 999px;
+  background: rgba(199, 131, 24, 0.1);
+  color: #8a4f0e;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease;
+}
+
+body.journey-page .journey-milestone-audio [data-audio-icon] {
+  display: inline-grid;
+  width: 20px;
+  height: 20px;
+  place-items: center;
+  font-size: 15px;
+  line-height: 1;
+}
+
+body.journey-page .journey-milestone-audio:hover,
+body.journey-page .journey-milestone-audio:focus-visible,
+body.journey-page .journey-milestone-audio.is-playing {
+  border-color: #c78318;
+  background: #c78318;
+  color: #fff9ea;
+}
+
+:root[data-theme="dark"] body.journey-page .journey-milestone-audio {
+  border-color: rgba(255, 205, 117, 0.68);
+  background: rgba(255, 205, 117, 0.14);
+  color: #ffd27c;
+}
+
+:root[data-theme="dark"] body.journey-page .journey-milestone-audio:hover,
+:root[data-theme="dark"] body.journey-page .journey-milestone-audio:focus-visible,
+:root[data-theme="dark"] body.journey-page .journey-milestone-audio.is-playing {
+  border-color: #ffd27c;
+  background: #b9791d;
+  color: #fffaf0;
+}
+
 /* 14.156. Home quick links redesigned as compact ministry cards */
 body.home-page .right-column .quick-links {
   display: grid;

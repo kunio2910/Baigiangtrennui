@@ -770,6 +770,81 @@
     rewardedSteps: new Set(),
   };
 
+  let activeJourneyAudio = null;
+  let activeJourneyAudioUrl = "";
+
+  function journeyAudioUrl(value) {
+    const rawUrl = String(value || "").trim();
+    if (!rawUrl) return "";
+    try {
+      const parsedUrl = new URL(rawUrl, window.location.href);
+      return ["http:", "https:"].includes(parsedUrl.protocol) ? parsedUrl.href : "";
+    } catch {
+      return "";
+    }
+  }
+
+  function setJourneyAudioButtonState(button, isPlaying) {
+    if (!button) return;
+    button.classList.toggle("is-playing", isPlaying);
+    button.setAttribute("aria-pressed", String(isPlaying));
+    button.setAttribute("aria-label", isPlaying ? "Tắt âm thanh" : "Phát âm thanh");
+    button.title = isPlaying ? "Tắt âm thanh" : "Phát âm thanh";
+    const icon = button.querySelector("[data-audio-icon]");
+    if (icon) icon.textContent = isPlaying ? "🔇" : "🔊";
+    const label = button.querySelector("[data-audio-label]");
+    if (label) label.textContent = isPlaying ? "Tắt âm thanh" : "Phát âm thanh";
+  }
+
+  function stopJourneyAudio() {
+    if (activeJourneyAudio) {
+      activeJourneyAudio.pause();
+      try {
+        activeJourneyAudio.currentTime = 0;
+      } catch {
+        // Một số trình duyệt không cho đặt currentTime trước khi audio tải metadata.
+      }
+    }
+    activeJourneyAudio = null;
+    activeJourneyAudioUrl = "";
+  }
+
+  function toggleJourneyAudio(button) {
+    const audioUrl = journeyAudioUrl(button?.dataset.audioUrl);
+    if (!audioUrl) return;
+
+    if (!activeJourneyAudio || activeJourneyAudioUrl !== audioUrl) {
+      stopJourneyAudio();
+      const audio = new Audio(audioUrl);
+      audio.preload = "metadata";
+      activeJourneyAudio = audio;
+      activeJourneyAudioUrl = audioUrl;
+      audio.addEventListener("ended", () => {
+        if (activeJourneyAudio !== audio) return;
+        try {
+          audio.currentTime = 0;
+        } catch {
+          // Bỏ qua nếu trình duyệt chưa cho đặt lại vị trí phát.
+        }
+        setJourneyAudioButtonState(button, false);
+      });
+    }
+
+    if (activeJourneyAudio.paused) {
+      const playPromise = activeJourneyAudio.play();
+      if (playPromise && typeof playPromise.then === "function") {
+        playPromise
+          .then(() => setJourneyAudioButtonState(button, true))
+          .catch(() => setJourneyAudioButtonState(button, false));
+      } else {
+        setJourneyAudioButtonState(button, true);
+      }
+    } else {
+      activeJourneyAudio.pause();
+      setJourneyAudioButtonState(button, false);
+    }
+  }
+
   const picker = document.querySelector(".journey-set-picker");
   const game = document.querySelector("#journeyGame");
   const gameRoot = document.querySelector("#journeyGameRoot");
@@ -934,6 +1009,7 @@
         lesson: String(milestone?.lesson || fallback.lesson || "").trim(),
         cardImageUrl: String(milestone?.cardImageUrl || fallback.cardImageUrl || "").trim(),
         relatedArticleUrl: String(milestone?.relatedArticleUrl || milestone?.relatedUrl || fallback.relatedArticleUrl || "").trim(),
+        audioUrl: String(milestone?.audioUrl || fallback.audioUrl || "").trim(),
         x: useSavedX ? savedX : position.x,
         y: useSavedY ? savedY : position.y,
       };
@@ -987,6 +1063,7 @@
           lesson: String(milestone.lesson || existing?.lesson || "").trim(),
           scene: String(milestone.scene || existing?.scene || "").trim(),
           cardImageUrl: String(milestone.cardImageUrl || existing?.cardImageUrl || "").trim(),
+          audioUrl: String(milestone.audioUrl || existing?.audioUrl || "").trim(),
         };
         const x = Number(milestone.x);
         const y = Number(milestone.y);
@@ -1281,6 +1358,7 @@
     const step = activeJourneyMilestones.find((item) => item.number === state.detailStepNumber);
     if (!step) return "";
     const imageUrl = getStepImageUrl(step);
+    const audioUrl = journeyAudioUrl(step.audioUrl);
     const metaHtml = [step.region, step.reference]
       .map((value) => renderAdminHtml(value).trim())
       .filter(Boolean)
@@ -1297,6 +1375,12 @@
               : ""
           }
           <div class="journey-milestone-content">
+            ${audioUrl ? `
+              <button class="journey-milestone-audio" type="button" data-toggle-milestone-audio data-audio-url="${escapeAttr(audioUrl)}" aria-pressed="false" aria-label="Phát âm thanh" title="Phát âm thanh">
+                <span data-audio-icon aria-hidden="true">🔊</span>
+                <span data-audio-label>Phát âm thanh</span>
+              </button>
+            ` : ""}
             <h2>${escapeHtml(step.title)}</h2>
             ${metaHtml ? `<p class="journey-milestone-meta">${metaHtml}</p>` : ""}
             <div class="journey-milestone-html">${renderAdminHtml(step.story)}</div>
@@ -1474,6 +1558,8 @@
     const topic = journeyTopicDetails.get(topicId) || (topicId === JESUS_TOPIC_ID ? { milestones: jesusMilestones, challenges: journeyChallenges } : null);
     if (!topic) return;
 
+    stopJourneyAudio();
+
     activeJourneyMilestones = topic.milestones?.length ? topic.milestones : fallbackMilestonesForTopic(topic);
     if (!activeJourneyMilestones.length && topicId === JESUS_TOPIC_ID) activeJourneyMilestones = jesusMilestones;
     activeJourneyMapImage = journeyMapImageForTopic(topic);
@@ -1512,6 +1598,7 @@
   }
 
   function returnToTopics() {
+    stopJourneyAudio();
     document.body.classList.add("faith-choosing-set");
     document.body.classList.remove("journey-playing");
     document.body.classList.remove("journey-challenge-mode");
@@ -1521,6 +1608,7 @@
   }
 
   function returnToMap() {
+    stopJourneyAudio();
     state.activeView = "map";
     state.detailStepNumber = null;
     document.body.classList.remove("journey-challenge-mode");
@@ -1603,8 +1691,15 @@
 
     const closeMilestoneButton = event.target.closest("[data-close-milestone]");
     if (closeMilestoneButton) {
+      stopJourneyAudio();
       state.detailStepNumber = null;
       renderJourneyGame();
+      return;
+    }
+
+    const audioButton = event.target.closest("[data-toggle-milestone-audio]");
+    if (audioButton) {
+      toggleJourneyAudio(audioButton);
       return;
     }
 

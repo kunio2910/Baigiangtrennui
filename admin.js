@@ -104,6 +104,7 @@ const journeyMapCardImageUrl = document.querySelector("#journeyMapCardImageUrl")
 const journeyMapCardUploadButton = document.querySelector("#journeyMapCardUploadButton");
 const journeyMapCardPreview = document.querySelector("#journeyMapCardPreview");
 const journeyMilestoneRelatedUrl = document.querySelector("#journeyMilestoneRelatedUrl");
+const journeyMilestoneAudioUrl = document.querySelector("#journeyMilestoneAudioUrl");
 const journeyMapImageUrl = document.querySelector("#journeyMapImageUrl");
 const journeyMapUploadButton = document.querySelector("#journeyMapUploadButton");
 const journeyMapPointCount = document.querySelector("#journeyMapPointCount");
@@ -1201,6 +1202,7 @@ function normalizeAdminJourneyMilestone(milestone, index = 0) {
     lesson: String(milestone?.lesson || "").trim(),
     cardImageUrl: String(milestone?.cardImageUrl || "").trim(),
     relatedArticleUrl: String(milestone?.relatedArticleUrl || milestone?.relatedUrl || "").trim(),
+    audioUrl: String(milestone?.audioUrl || "").trim(),
   };
 
   const x = Number(milestone?.x);
@@ -1581,6 +1583,7 @@ function fillJourneyMilestoneForm(number) {
   journeyMilestoneLesson.value = milestone?.lesson || "";
   journeyMapCardImageUrl.value = milestone?.cardImageUrl || "";
   if (journeyMilestoneRelatedUrl) journeyMilestoneRelatedUrl.value = milestone?.relatedArticleUrl || "";
+  if (journeyMilestoneAudioUrl) journeyMilestoneAudioUrl.value = milestone?.audioUrl || "";
   selectedJourneyMapPointNumber = Number(milestone?.number || selectedJourneyMapPointNumber || 1);
   updateJourneyMapCardPreview();
   renderJourneyMapEditor();
@@ -1650,6 +1653,7 @@ function updateJourneyMilestoneFromFields(options = {}) {
       lesson: journeyMilestoneLesson.value.trim(),
       cardImageUrl: journeyMapCardImageUrl.value.trim(),
       relatedArticleUrl: journeyMilestoneRelatedUrl?.value.trim() || "",
+      audioUrl: journeyMilestoneAudioUrl?.value.trim() || "",
       x: Number.isFinite(inputX) ? clampJourneyMapPercent(inputX, defaultPosition.x) : Number.isFinite(existingX) ? existingX : defaultPosition.x,
       y: Number.isFinite(inputY) ? clampJourneyMapPercent(inputY, defaultPosition.y) : Number.isFinite(existingY) ? existingY : defaultPosition.y,
     });
@@ -1702,6 +1706,7 @@ function startNewJourneyMilestone(useTypedNumber = true) {
     journeyMilestoneLesson.value = "";
     journeyMapCardImageUrl.value = "";
     if (journeyMilestoneRelatedUrl) journeyMilestoneRelatedUrl.value = "";
+    if (journeyMilestoneAudioUrl) journeyMilestoneAudioUrl.value = "";
     updateJourneyMapCardPreview();
     renderJourneyMapEditor();
     journeyMilestoneTitle.focus();
@@ -2764,6 +2769,7 @@ journeyMilestoneSelect?.addEventListener("change", () => {
   journeyMilestoneLesson,
   journeyMapCardImageUrl,
   journeyMilestoneRelatedUrl,
+  journeyMilestoneAudioUrl,
 ].forEach((control) => {
   control?.addEventListener("input", () => updateJourneyMilestoneFromFields({ silent: true }));
 });
