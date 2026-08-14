@@ -115,14 +115,12 @@ const journeyMapEditor = document.querySelector("#journeyMapEditor");
 const journeyMapEditorImage = document.querySelector("#journeyMapEditorImage");
 const journeyMapMarkerLayer = document.querySelector("#journeyMapMarkerLayer");
 const journeyMapEmptyNote = document.querySelector("#journeyMapEmptyNote");
-const journeyMapOverlaySelect = document.querySelector("#journeyMapOverlaySelect");
 const journeyMapOverlayName = document.querySelector("#journeyMapOverlayName");
 const journeyMapOverlayUrl = document.querySelector("#journeyMapOverlayUrl");
 const journeyMapOverlayTransparent = document.querySelector("#journeyMapOverlayTransparent");
+const journeyMapOverlayItems = document.querySelector("#journeyMapOverlayItems");
 const journeyMapOverlayLayer = document.querySelector("#journeyMapOverlayLayer");
 const addJourneyMapOverlayButton = document.querySelector("#addJourneyMapOverlayButton");
-const deleteJourneyMapOverlayButton = document.querySelector("#deleteJourneyMapOverlayButton");
-const toggleJourneyMapOverlayButton = document.querySelector("#toggleJourneyMapOverlayButton");
 const journeyMilestoneTitle = document.querySelector("#journeyMilestoneTitle");
 const journeyMilestoneReference = document.querySelector("#journeyMilestoneReference");
 const journeyMilestoneRegion = document.querySelector("#journeyMilestoneRegion");
@@ -1504,6 +1502,7 @@ function syncJourneyMapPointInputs(number = selectedJourneyMapPointNumber) {
   if (journeyMapPointSelect && selected) journeyMapPointSelect.value = String(selected.number);
 }
 
+
 function parseJourneyMapOverlaysFromForm() {
   return currentJourneyMapOverlays.map(normalizeAdminJourneyMapOverlay).filter(Boolean);
 }
@@ -1512,48 +1511,176 @@ function journeyMapOverlayKind(overlay) {
   return overlay?.type === "video" || isVideoJourneyMediaUrl(overlay?.url) ? "video" : "image";
 }
 
+function journeyMapOverlayTypeLabel(overlay) {
+  return journeyMapOverlayKind(overlay) === "video" ? "Video" : String.fromCodePoint(72, 236, 110, 104, 32, 7843, 110, 104);
+}
+
 function journeyMapOverlayDisplayName(overlay) {
-  const typeLabel = journeyMapOverlayKind(overlay) === "video" ? "Video" : "Hình ảnh";
-  return String(overlay?.name || "").trim() || typeLabel;
+  return String(overlay?.name || "").trim() || journeyMapOverlayTypeLabel(overlay);
 }
 
-function journeyMapOverlayLabel(overlay, index = 0) {
-  const typeLabel = journeyMapOverlayKind(overlay) === "video" ? "Video" : "Hình ảnh";
-  const name = journeyMapOverlayDisplayName(overlay);
-  const typeSuffix = name === typeLabel ? "" : ` \u00b7 ${typeLabel}`;
-  return `${index + 1}. ${name}${typeSuffix}${overlay.hidden ? " (đang ẩn)" : ""}`;
-}
 
-function selectedJourneyMapOverlay() {
+function renderJourneyMapOverlayItems() {
+  if (!journeyMapOverlayItems) return;
   const overlays = parseJourneyMapOverlaysFromForm();
-  return overlays.find((overlay) => overlay.id === selectedJourneyMapOverlayId) || overlays[0] || null;
-}
-
-function renderJourneyMapOverlaySelect() {
-  if (!journeyMapOverlaySelect) return;
-  const overlays = parseJourneyMapOverlaysFromForm();
+  journeyMapOverlayItems.replaceChildren();
   if (!overlays.length) {
-    journeyMapOverlaySelect.innerHTML = `<option value="">Chưa có hình / video</option>`;
     selectedJourneyMapOverlayId = "";
+    const empty = document.createElement("p");
+    empty.className = "journey-map-overlay-empty";
+    empty.textContent = "Ch\u01b0a c\u00f3 item h\u00ecnh / video.";
+    journeyMapOverlayItems.append(empty);
     return;
   }
   if (!selectedJourneyMapOverlayId || !overlays.some((overlay) => overlay.id === selectedJourneyMapOverlayId)) {
     selectedJourneyMapOverlayId = overlays[0].id;
   }
-  journeyMapOverlaySelect.innerHTML = overlays
-    .map((overlay, index) => `<option value="${escapeHtml(overlay.id)}">${escapeHtml(journeyMapOverlayLabel(overlay, index))}</option>`)
-    .join("");
-  journeyMapOverlaySelect.value = selectedJourneyMapOverlayId;
+  overlays.forEach((overlay, index) => {
+    const hidden = overlay.hidden === true;
+    const selected = overlay.id === selectedJourneyMapOverlayId;
+    const article = document.createElement("article");
+    article.className = "journey-map-overlay-item" + (selected ? " active" : "") + (hidden ? " is-hidden" : "");
+    article.dataset.overlayItemId = overlay.id;
+
+    const fields = document.createElement("div");
+    fields.className = "journey-map-overlay-item-fields";
+    const nameLabel = document.createElement("label");
+    nameLabel.className = "journey-map-overlay-item-name";
+    const nameCaption = document.createElement("span");
+    nameCaption.textContent = "T\u00ean item " + (index + 1);
+    const nameInput = document.createElement("input");
+    nameInput.type = "text";
+    nameInput.value = overlay.name || journeyMapOverlayDisplayName(overlay);
+    nameInput.dataset.overlayField = "name";
+    nameInput.dataset.overlayId = overlay.id;
+    nameInput.autocomplete = "off";
+    nameLabel.append(nameCaption, nameInput);
+    fields.append(nameLabel);
+
+    const urlRow = document.createElement("div");
+    urlRow.className = "journey-map-overlay-item-url-row";
+    const urlLabel = document.createElement("label");
+    urlLabel.className = "journey-map-overlay-item-url";
+    const urlCaption = document.createElement("span");
+    urlCaption.innerHTML = "URL h&#236;nh &#7843;nh / video";
+    const urlInput = document.createElement("input");
+    urlInput.type = "text";
+    urlInput.value = overlay.url;
+    urlInput.dataset.overlayField = "url";
+    urlInput.dataset.overlayId = overlay.id;
+    urlInput.inputMode = "url";
+    urlInput.autocomplete = "off";
+    urlLabel.append(urlCaption, urlInput);
+    urlRow.append(urlLabel);
+
+    const actions = document.createElement("div");
+    actions.className = "journey-map-overlay-item-actions";
+    const toggleButton = document.createElement("button");
+    toggleButton.className = "journey-map-overlay-icon-button" + (hidden ? " is-hidden" : "");
+    toggleButton.type = "button";
+    toggleButton.dataset.overlayToggle = overlay.id;
+    toggleButton.setAttribute("aria-label", hidden ? "Hi\u1ec7n h\u00ecnh" : "\u1ea8n h\u00ecnh");
+    toggleButton.title = hidden ? "Hi\u1ec7n h\u00ecnh" : "\u1ea8n h\u00ecnh";
+    toggleButton.innerHTML = '<span aria-hidden="true">&#128065;</span>';
+    const deleteButton = document.createElement("button");
+    deleteButton.className = "journey-map-overlay-icon-button danger";
+    deleteButton.type = "button";
+    deleteButton.dataset.overlayDelete = overlay.id;
+    deleteButton.setAttribute("aria-label", "X\u00f3a h\u00ecnh");
+    deleteButton.title = "X\u00f3a h\u00ecnh";
+    deleteButton.innerHTML = '<span aria-hidden="true">&times;</span>';
+    actions.append(toggleButton, deleteButton);
+    urlRow.append(actions);
+    fields.append(urlRow);
+
+    const transparentLabel = document.createElement("label");
+    transparentLabel.className = "journey-map-overlay-item-transparent";
+    const transparentInput = document.createElement("input");
+    transparentInput.type = "checkbox";
+    transparentInput.checked = Boolean(overlay.transparent);
+    transparentInput.dataset.overlayField = "transparent";
+    transparentInput.dataset.overlayId = overlay.id;
+    const transparentCaption = document.createElement("span");
+    transparentCaption.textContent = "Gi\u1eef n\u1ec1n trong su\u1ed1t";
+    transparentLabel.append(transparentInput, transparentCaption);
+    fields.append(transparentLabel);
+
+    article.append(fields);
+    journeyMapOverlayItems.append(article);
+  });
 }
 
-function syncJourneyMapOverlayInputs() {
-  const overlay = selectedJourneyMapOverlay();
-  if (journeyMapOverlayName) journeyMapOverlayName.value = overlay?.name || "";
-  if (journeyMapOverlayUrl) journeyMapOverlayUrl.value = overlay?.url || "";
-  if (journeyMapOverlayTransparent) journeyMapOverlayTransparent.checked = Boolean(overlay?.transparent);
-  if (toggleJourneyMapOverlayButton) toggleJourneyMapOverlayButton.textContent = overlay?.hidden ? "Hiện hình" : "Ẩn hình";
-  if (deleteJourneyMapOverlayButton) deleteJourneyMapOverlayButton.disabled = !overlay;
-  if (toggleJourneyMapOverlayButton) toggleJourneyMapOverlayButton.disabled = !overlay;
+function updateJourneyMapOverlayField(id, field, value) {
+  const overlays = parseJourneyMapOverlaysFromForm();
+  const target = overlays.find((overlay) => overlay.id === id);
+  if (!target) return;
+  const next = overlays.map((overlay) => {
+    if (overlay.id !== id) return overlay;
+    const updated = { ...overlay };
+    if (field === "name") updated.name = String(value || "").trim() || overlay.name;
+    if (field === "url") {
+      const url = String(value || "").trim();
+      if (!url) return overlay;
+      updated.url = url;
+      updated.type = isVideoJourneyMediaUrl(url) ? "video" : "image";
+      if (isTransparentJourneyMediaUrl(url)) updated.transparent = true;
+    }
+    if (field === "transparent") updated.transparent = value === true;
+    return normalizeAdminJourneyMapOverlay(updated);
+  }).filter(Boolean);
+  currentJourneyMapOverlays = next;
+  selectedJourneyMapOverlayId = id;
+  renderJourneyMapOverlays();
+}
+
+function addJourneyMapOverlay() {
+  const url = String(journeyMapOverlayUrl?.value || "").trim();
+  if (!url) {
+    if (journeyBibleMessage) journeyBibleMessage.textContent = "Vui l\u00f2ng nh\u1eadp URL h\u00ecnh \u1ea3nh ho\u1eb7c video tr\u01b0\u1edbc khi th\u00eam.";
+    journeyMapOverlayUrl?.focus();
+    return;
+  }
+  const type = isVideoJourneyMediaUrl(url) ? "video" : "image";
+  const overlay = normalizeAdminJourneyMapOverlay({
+    id: "journey-map-overlay-" + Date.now(),
+    type,
+    name: String(journeyMapOverlayName?.value || "").trim() || (type === "video" ? "Video" : "H\u00ecnh \u1ea3nh") + " " + (currentJourneyMapOverlays.length + 1),
+    url,
+    transparent: journeyMapOverlayTransparent?.checked === true || isTransparentJourneyMediaUrl(url),
+    x: 50,
+    y: 50,
+    width: 20,
+    height: 20,
+  });
+  if (!overlay) return;
+  currentJourneyMapOverlays = parseJourneyMapOverlaysFromForm().concat(overlay);
+  selectedJourneyMapOverlayId = overlay.id;
+  if (journeyMapOverlayName) journeyMapOverlayName.value = "";
+  if (journeyMapOverlayUrl) journeyMapOverlayUrl.value = "";
+  if (journeyMapOverlayTransparent) journeyMapOverlayTransparent.checked = false;
+  renderJourneyMapOverlayItems();
+  renderJourneyMapOverlays();
+  if (journeyBibleMessage) journeyBibleMessage.textContent = "\u0110\u00e3 th\u00eam h\u00ecnh / video. K\u00e9o item tr\u00ean b\u1ea3n \u0111\u1ed3 r\u1ed3i b\u1ea5m L\u01b0u H\u00e0nh tr\u00ecnh Kinh Th\u00e1nh.";
+}
+
+function deleteJourneyMapOverlayById(id) {
+  const overlay = parseJourneyMapOverlaysFromForm().find((item) => item.id === id);
+  if (!overlay) return;
+  if (!confirm("X\u00f3a h\u00ecnh / video n\u00e0y kh\u1ecfi b\u1ea3n \u0111\u1ed3?")) return;
+  currentJourneyMapOverlays = parseJourneyMapOverlaysFromForm().filter((item) => item.id !== id);
+  selectedJourneyMapOverlayId = currentJourneyMapOverlays[0]?.id || "";
+  renderJourneyMapOverlayItems();
+  renderJourneyMapOverlays();
+}
+
+function toggleJourneyMapOverlayById(id) {
+  const overlays = parseJourneyMapOverlaysFromForm();
+  const overlay = overlays.find((item) => item.id === id);
+  if (!overlay) return;
+  currentJourneyMapOverlays = overlays.map((item) => item.id === id ? { ...item, hidden: !item.hidden } : item);
+  selectedJourneyMapOverlayId = id;
+  renderJourneyMapOverlayItems();
+  renderJourneyMapOverlays();
 }
 
 function renderJourneyMapOverlayMedia(overlay) {
@@ -1579,75 +1706,6 @@ function renderJourneyMapOverlays() {
       </div>`;
     })
     .join("");
-}
-
-function updateJourneyMapOverlayFromFields() {
-  const selected = selectedJourneyMapOverlay();
-  if (!selected) return;
-  const url = String(journeyMapOverlayUrl?.value || "").trim();
-  const overlays = parseJourneyMapOverlaysFromForm();
-  const next = overlays.map((overlay) => overlay.id === selected.id
-    ? normalizeAdminJourneyMapOverlay({
-        ...overlay,
-        name: String(journeyMapOverlayName?.value || "").trim() || overlay.name,
-        url: url || overlay.url,
-        type: isVideoJourneyMediaUrl(url) ? "video" : "image",
-        transparent: journeyMapOverlayTransparent?.checked === true,
-      })
-    : overlay).filter(Boolean);
-  currentJourneyMapOverlays = next;
-  selectedJourneyMapOverlayId = selected.id;
-  renderJourneyMapOverlaySelect();
-  syncJourneyMapOverlayInputs();
-  renderJourneyMapOverlays();
-}
-
-function addJourneyMapOverlay() {
-  const url = String(journeyMapOverlayUrl?.value || "").trim();
-  if (!url) {
-    if (journeyBibleMessage) journeyBibleMessage.textContent = "Vui lòng nhập URL hình ảnh hoặc video trước khi thêm.";
-    journeyMapOverlayUrl?.focus();
-    return;
-  }
-  const overlay = normalizeAdminJourneyMapOverlay({
-    id: `journey-map-overlay-${Date.now()}`,
-    type: isVideoJourneyMediaUrl(url) ? "video" : "image",
-    name: String(journeyMapOverlayName?.value || "").trim() || `${isVideoJourneyMediaUrl(url) ? "Video" : "Hình ảnh"} ${currentJourneyMapOverlays.length + 1}`,
-    url,
-    transparent: journeyMapOverlayTransparent?.checked === true || isTransparentJourneyMediaUrl(url),
-    x: 50,
-    y: 50,
-    width: 20,
-    height: 20,
-  });
-  if (!overlay) return;
-  currentJourneyMapOverlays = parseJourneyMapOverlaysFromForm().concat(overlay);
-  selectedJourneyMapOverlayId = overlay.id;
-  renderJourneyMapOverlaySelect();
-  syncJourneyMapOverlayInputs();
-  renderJourneyMapOverlays();
-  if (journeyBibleMessage) journeyBibleMessage.textContent = "Đã thêm hình / video. Kéo trên bản đồ, rồi bấm Lưu Hành trình Kinh Thánh.";
-}
-
-function deleteJourneyMapOverlay() {
-  const overlay = selectedJourneyMapOverlay();
-  if (!overlay) return;
-  if (!confirm("Xóa hình / video này khỏi bản đồ?")) return;
-  currentJourneyMapOverlays = parseJourneyMapOverlaysFromForm().filter((item) => item.id !== overlay.id);
-  selectedJourneyMapOverlayId = currentJourneyMapOverlays[0]?.id || "";
-  renderJourneyMapOverlaySelect();
-  syncJourneyMapOverlayInputs();
-  renderJourneyMapOverlays();
-  if (journeyBibleMessage) journeyBibleMessage.textContent = "Đã xóa hình / video. Bấm Lưu Hành trình Kinh Thánh để lưu.";
-}
-
-function toggleJourneyMapOverlay() {
-  const overlay = selectedJourneyMapOverlay();
-  if (!overlay) return;
-  currentJourneyMapOverlays = parseJourneyMapOverlaysFromForm().map((item) => item.id === overlay.id ? { ...item, hidden: !item.hidden } : item);
-  renderJourneyMapOverlaySelect();
-  syncJourneyMapOverlayInputs();
-  renderJourneyMapOverlays();
 }
 
 function updateJourneyMapOverlayPosition(id, x, y, resize = false) {
@@ -1681,8 +1739,7 @@ function renderJourneyMapEditor() {
     }
   }
   if (journeyMapEmptyNote) journeyMapEmptyNote.hidden = hasImage;
-  renderJourneyMapOverlaySelect();
-  syncJourneyMapOverlayInputs();
+  renderJourneyMapOverlayItems();
   renderJourneyMapOverlays();
   const milestones = parseJourneyMilestonesFromForm();
   if (journeyMapMarkerLayer) {
@@ -2993,17 +3050,41 @@ journeyMilestoneSelect?.addEventListener("change", () => {
 });
 
 journeyMapImageUrl?.addEventListener("input", renderJourneyMapEditor);
-journeyMapOverlaySelect?.addEventListener("change", () => {
-  selectedJourneyMapOverlayId = journeyMapOverlaySelect.value || "";
-  syncJourneyMapOverlayInputs();
+journeyMapOverlayItems?.addEventListener("click", (event) => {
+  const item = event.target.closest("[data-overlay-item-id]");
+  if (!item) return;
+  const id = item.dataset.overlayItemId || "";
+  if (event.target.closest("[data-overlay-field]")) {
+    selectedJourneyMapOverlayId = id;
+    return;
+  }
+  const toggleId = event.target.closest("[data-overlay-toggle]")?.dataset.overlayToggle;
+  const deleteId = event.target.closest("[data-overlay-delete]")?.dataset.overlayDelete;
+  if (toggleId) {
+    event.preventDefault();
+    toggleJourneyMapOverlayById(toggleId);
+    return;
+  }
+  if (deleteId) {
+    event.preventDefault();
+    deleteJourneyMapOverlayById(deleteId);
+    return;
+  }
+  selectedJourneyMapOverlayId = id;
+  renderJourneyMapOverlayItems();
   renderJourneyMapOverlays();
 });
-journeyMapOverlayName?.addEventListener("input", updateJourneyMapOverlayFromFields);
-journeyMapOverlayUrl?.addEventListener("input", updateJourneyMapOverlayFromFields);
-journeyMapOverlayTransparent?.addEventListener("change", updateJourneyMapOverlayFromFields);
+journeyMapOverlayItems?.addEventListener("input", (event) => {
+  const field = event.target.closest("[data-overlay-field]");
+  if (!field || field.type === "checkbox") return;
+  updateJourneyMapOverlayField(field.dataset.overlayId || "", field.dataset.overlayField || "", field.value);
+});
+journeyMapOverlayItems?.addEventListener("change", (event) => {
+  const field = event.target.closest("[data-overlay-field]");
+  if (!field) return;
+  updateJourneyMapOverlayField(field.dataset.overlayId || "", field.dataset.overlayField || "", field.type === "checkbox" ? field.checked : field.value);
+});
 addJourneyMapOverlayButton?.addEventListener("click", addJourneyMapOverlay);
-deleteJourneyMapOverlayButton?.addEventListener("click", deleteJourneyMapOverlay);
-toggleJourneyMapOverlayButton?.addEventListener("click", toggleJourneyMapOverlay);
 journeyMapPointCount?.addEventListener("change", () => applyJourneyMapPointCountFromField());
 journeyMapPointSelect?.addEventListener("change", () => {
   selectedJourneyMapPointNumber = Number(journeyMapPointSelect.value) || 1;
@@ -3045,8 +3126,7 @@ journeyMapOverlayLayer?.addEventListener("pointerdown", (event) => {
   selectedJourneyMapOverlayId = id;
   const resize = Boolean(event.target.closest("[data-overlay-resize]"));
   activeJourneyMapOverlayDrag = { id, resize };
-  renderJourneyMapOverlaySelect();
-  syncJourneyMapOverlayInputs();
+  renderJourneyMapOverlayItems();
   renderJourneyMapOverlays();
 });
 journeyMapEditor?.addEventListener("pointerdown", (event) => {

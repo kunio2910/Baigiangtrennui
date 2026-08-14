@@ -7,7 +7,7 @@
     <meta name="robots" content="noindex, nofollow" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/favicon.png" />
-    <link rel="stylesheet" href="styles.css?v=20260814-journey-map-media-editor" />
+    <link rel="stylesheet" href="styles.css?v=20260815-journey-map-independent-items" />
   </head>
   <body class="admin-page">
     <header class="site-header admin-header">
@@ -367,34 +367,33 @@
             <p class="admin-field-hint">Bản đồ cũ sẽ tự hiện ảnh và tọa độ đang dùng hiện tại. Với bản đồ mới, hãy chọn “Bản đồ tùy chỉnh”, upload ảnh rồi kéo các vòng tròn đến đúng vị trí.</p>
             <div class="journey-map-overlay-controls">
               <div class="journey-map-overlay-top">
-                <label>
-                  <span>Chọn hình / video trên bản đồ</span>
-                  <select id="journeyMapOverlaySelect"></select>
-                </label>
                 <div class="journey-map-overlay-media-note">
-                  <strong>Hình ảnh / video</strong>
-                  <small>URL sẽ tự nhận diện ảnh, GIF/APNG/WebP hoặc video.</small>
+                  <strong>Hình ảnh / video trên bản đồ</strong>
+                  <small>Mỗi URL là một item độc lập. Thêm xong sẽ tự hiện trên bản đồ.</small>
                 </div>
               </div>
-              <label>
-                <span>Tên hình / video</span>
-                <input id="journeyMapOverlayName" type="text" autocomplete="off" placeholder="Ví dụ: Ngôi sao dẫn lối" />
-              </label>
-              <label>
-                <span>URL hình ảnh hoặc video</span>
-                <input id="journeyMapOverlayUrl" type="text" inputmode="url" autocomplete="off" placeholder="https://.../hinh.gif hoặc .../clip.webm" />
-              </label>
-              <label class="journey-map-overlay-transparent-toggle">
-                <input id="journeyMapOverlayTransparent" type="checkbox" />
-                <span></span>
-                Giữ nền trong suốt cho lớp media
-              </label>
-              <div class="form-actions journey-map-overlay-actions">
-                <button class="ghost-button" type="button" id="addJourneyMapOverlayButton">Thêm hình</button>
-                <button class="danger-button" type="button" id="deleteJourneyMapOverlayButton">Xóa hình</button>
-                <button class="ghost-button" type="button" id="toggleJourneyMapOverlayButton">Ẩn hình</button>
+              <div class="journey-map-overlay-items" id="journeyMapOverlayItems" aria-live="polite"></div>
+              <div class="journey-map-overlay-add">
+                <div class="journey-map-overlay-add-fields">
+                  <label>
+                    <span>T&#234;n h&#236;nh / video m&#7899;i</span>
+                    <input id="journeyMapOverlayName" type="text" autocomplete="off" placeholder="Ví dụ: Ngôi sao dẫn lối" />
+                  </label>
+                  <label>
+                    <span>URL hình ảnh hoặc video</span>
+                    <input id="journeyMapOverlayUrl" type="text" inputmode="url" autocomplete="off" placeholder="https://.../hinh.gif hoặc .../clip.webm" />
+                  </label>
+                </div>
+                <div class="journey-map-overlay-add-actions">
+                  <label class="journey-map-overlay-transparent-toggle">
+                    <input id="journeyMapOverlayTransparent" type="checkbox" />
+                    <span></span>
+                    Giữ nền trong suốt
+                  </label>
+                  <button class="ghost-button journey-map-overlay-add-button" type="button" id="addJourneyMapOverlayButton"><span aria-hidden="true">&#43;</span> Th&ecirc;m h&igrave;nh</button>
+                </div>
               </div>
-              <p class="admin-field-hint">Sau khi thêm, kéo hình hoặc video để đổi vị trí. Kéo nút ở góc phải bên dưới để đổi kích thước.</p>
+              <p class="admin-field-hint">Trong danh sách, bạn có thể sửa tên/URL, bấm icon để ẩn hoặc xóa. Kéo item trên bản đồ để đổi vị trí, kéo góc phải để đổi kích thước.</p>
             </div>
             <div class="two-fields">
               <label>
@@ -539,7 +538,7 @@
     <script src="https://upload-widget.cloudinary.com/latest/global/all.js"></script>
     <script src="data.js?v=20260723-vercel-analytics-events"></script>
     <script src="auth.js?v=20260715-no-sample-seed"></script>
-    <script src="admin.js?v=20260814-journey-map-media-editor"></script>
+    <script src="admin.js?v=20260815-journey-map-independent-items"></script>
     <script defer src="/_vercel/insights/script.js"></script>
   </body>
 </html>
