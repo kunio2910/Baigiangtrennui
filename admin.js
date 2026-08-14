@@ -345,6 +345,10 @@ function escapeHtml(value) {
     .replace(/'/g, "&#039;");
 }
 
+function escapeAttr(value) {
+  return escapeHtml(value);
+}
+
 function formatFeedbackTime(feedback) {
   const value = feedback.createdAt?.toDate ? feedback.createdAt.toDate() : new Date(feedback.createdAtText || "");
   if (Number.isNaN(value.getTime())) return "Chưa có thời gian";
