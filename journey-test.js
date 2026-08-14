@@ -903,8 +903,9 @@
     return {
       id: String(raw.id || `journey-map-overlay-${index + 1}`).trim(),
       type,
+      name: String(raw.name || raw.title || raw.label || "").trim(),
       url,
-      alt: String(raw.alt || "").trim(),
+      alt: String(raw.alt || raw.name || raw.title || "").trim(),
       transparent: typeof raw.transparent === "boolean"
         ? raw.transparent
         : raw.transparentMedia === true || isTransparentJourneyMediaUrl(url),
