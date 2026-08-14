@@ -877,12 +877,25 @@
     return /^(https?:\/\/|\/|\.\.?\/)/i.test(url) ? url : "";
   }
 
+  function isVideoJourneyMediaUrl(value) {
+    const normalized = String(value || "").trim().toLowerCase();
+    return /\.(mp4|webm|mov|m4v|ogv|avi|mkv)(?:[?#].*)?$/.test(normalized)
+      || /\/video\/upload\//.test(normalized)
+      || /[?&](?:format|fm)=(?:mp4|webm|mov|m4v)/.test(normalized);
+  }
+
+  function isTransparentJourneyMediaUrl(value) {
+    const normalized = String(value || "").trim().toLowerCase();
+    return /\.(png|apng|gif|webp|webm)(?:[?#].*)?$/.test(normalized)
+      || /[?&](?:format|fm)=(?:png|apng|gif|webp|webm)/.test(normalized);
+  }
+
   function normalizeJourneyMapOverlay(overlay, index = 0) {
     const raw = overlay || {};
     const url = safeJourneyMediaUrl(raw.url || raw.src);
     if (!url) return null;
-    const rawType = String(raw.type || "").toLowerCase();
-    const type = ["image", "animated", "video"].includes(rawType) ? rawType : "image";
+    const rawType = String(raw.type || raw.mediaType || "").toLowerCase();
+    const type = rawType === "video" || isVideoJourneyMediaUrl(url) ? "video" : "image";
     const clamp = (value, fallback) => {
       const number = Number(value);
       return Number.isFinite(number) ? Math.min(100, Math.max(0, Math.round(number * 10) / 10)) : fallback;
@@ -892,6 +905,9 @@
       type,
       url,
       alt: String(raw.alt || "").trim(),
+      transparent: typeof raw.transparent === "boolean"
+        ? raw.transparent
+        : raw.transparentMedia === true || isTransparentJourneyMediaUrl(url),
       x: clamp(raw.x, 50),
       y: clamp(raw.y, 50),
       width: Math.min(100, Math.max(5, Number.isFinite(Number(raw.width)) ? Number(raw.width) : 20)),
@@ -899,6 +915,7 @@
       hidden: raw.hidden === true,
     };
   }
+
   function mapTypeFromText(value) {
     const normalized = normalizeText(value).replace(/[-_]+/g, " ");
     if (!normalized) return "";
@@ -1523,13 +1540,16 @@
       .map((overlay) => {
         const mediaUrl = safeJourneyMediaUrl(overlay.url);
         const style = `left:${overlay.x}%;top:${overlay.y}%;width:${overlay.width}%;height:${overlay.height}%;`;
-        const media = overlay.type === "video"
-          ? `<video class="journey-map-overlay-media" src="${escapeAttr(mediaUrl)}" muted loop autoplay playsinline preload="metadata"></video>`
-          : `<img class="journey-map-overlay-media" src="${escapeAttr(mediaUrl)}" alt="${escapeAttr(overlay.alt || "")}" loading="lazy" draggable="false" />`;
+        const isVideo = overlay.type === "video" || isVideoJourneyMediaUrl(mediaUrl);
+        const transparentClass = overlay.transparent ? " is-transparent-media" : "";
+        const media = isVideo
+          ? `<video class="journey-map-overlay-media${transparentClass}" src="${escapeAttr(mediaUrl)}" muted loop autoplay playsinline preload="metadata"></video>`
+          : `<img class="journey-map-overlay-media${transparentClass}" src="${escapeAttr(mediaUrl)}" alt="${escapeAttr(overlay.alt || "")}" decoding="async" draggable="false" />`;
         return `<div class="journey-map-overlay" style="${style}" aria-hidden="true">${media}</div>`;
       })
       .join("");
   }
+
   function renderJourneyGame() {
     const selectedStep = activeJourneyMilestones.find((step) => step.number === state.selectedStepNumber) || activeJourneyMilestones[0];
     const pathPoints = activeJourneyMilestones.map((step) => `${step.x},${step.y}`).join(" ");

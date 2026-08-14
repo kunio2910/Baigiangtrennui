@@ -7,7 +7,7 @@
     <meta name="robots" content="noindex, nofollow" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/favicon.png" />
-    <link rel="stylesheet" href="styles.css?v=20260814-journey-map-overlays" />
+    <link rel="stylesheet" href="styles.css?v=20260814-journey-map-media-url-preview" />
   </head>
   <body class="admin-page">
     <header class="site-header admin-header">
@@ -366,23 +366,27 @@
             </label>
             <p class="admin-field-hint">Bản đồ cũ sẽ tự hiện ảnh và tọa độ đang dùng hiện tại. Với bản đồ mới, hãy chọn “Bản đồ tùy chỉnh”, upload ảnh rồi kéo các vòng tròn đến đúng vị trí.</p>
             <div class="journey-map-overlay-controls">
-              <div class="two-fields">
+              <div class="journey-map-overlay-top">
                 <label>
                   <span>Chọn hình / clip trên bản đồ</span>
                   <select id="journeyMapOverlaySelect"></select>
                 </label>
-                <label>
-                  <span>Loại nội dung</span>
-                  <select id="journeyMapOverlayType">
-                    <option value="image">Hình thường</option>
-                    <option value="animated">Hình động</option>
-                    <option value="video">Clip / video</option>
-                  </select>
-                </label>
+                <div class="journey-map-overlay-media-note">
+                  <strong>Hình ảnh / video</strong>
+                  <small>URL sẽ tự nhận diện ảnh, GIF/APNG/WebP hoặc video.</small>
+                </div>
               </div>
               <label>
                 <span>URL hình hoặc clip</span>
-                <input id="journeyMapOverlayUrl" type="url" placeholder="https://... hoặc /assets/ten-hinh.webp" />
+                <input id="journeyMapOverlayUrl" type="text" inputmode="url" autocomplete="off" placeholder="https://.../hinh.gif hoặc .../clip.webm" />
+              </label>
+              <div class="image-url-preview journey-map-overlay-url-preview" id="journeyMapOverlayPreview" aria-live="polite">
+                <span>Nhập URL để xem trước hình ảnh hoặc video</span>
+              </div>
+              <label class="journey-map-overlay-transparent-toggle">
+                <input id="journeyMapOverlayTransparent" type="checkbox" />
+                <span></span>
+                Giữ nền trong suốt cho lớp media
               </label>
               <div class="form-actions journey-map-overlay-actions">
                 <button class="ghost-button" type="button" id="addJourneyMapOverlayButton">Thêm hình</button>
@@ -534,7 +538,7 @@
     <script src="https://upload-widget.cloudinary.com/latest/global/all.js"></script>
     <script src="data.js?v=20260723-vercel-analytics-events"></script>
     <script src="auth.js?v=20260715-no-sample-seed"></script>
-    <script src="admin.js?v=20260814-journey-map-overlays"></script>
+    <script src="admin.js?v=20260814-journey-map-media-url-preview"></script>
     <script defer src="/_vercel/insights/script.js"></script>
   </body>
 </html>

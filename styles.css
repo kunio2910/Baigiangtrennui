@@ -10711,4 +10711,110 @@ body.journey-page .journey-map-stage .journey-map-overlay-media {
   .journey-map-overlay-label {
     font-size: 9px;
   }
+}/* Rendervideo-style media URL preview for journey map overlays */
+.journey-map-overlay-media-note {
+  display: grid;
+  align-content: center;
+  gap: 3px;
+  min-height: 42px;
+  padding: 8px 10px;
+  border: 1px dashed rgba(184, 121, 33, 0.42);
+  border-radius: 8px;
+  background: rgba(255, 250, 236, 0.72);
+}
+
+.journey-map-overlay-media-note strong {
+  color: var(--brown);
+  font-size: 13px;
+}
+
+.journey-map-overlay-media-note small {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.journey-map-overlay-url-preview {
+  display: grid;
+  place-items: center;
+  min-height: 116px;
+  height: 116px;
+  overflow: hidden;
+  border: 1px solid rgba(184, 121, 33, 0.28);
+  border-radius: 9px;
+  background:
+    linear-gradient(45deg, rgba(184, 121, 33, 0.08) 25%, transparent 25%, transparent 75%, rgba(184, 121, 33, 0.08) 75%),
+    linear-gradient(45deg, rgba(184, 121, 33, 0.08) 25%, transparent 25%, transparent 75%, rgba(184, 121, 33, 0.08) 75%),
+    rgba(255, 252, 242, 0.7);
+  background-position: 0 0, 10px 10px;
+  background-size: 20px 20px;
+  color: var(--muted);
+  font-size: 11px;
+  text-align: center;
+}
+
+.journey-map-overlay-url-preview img,
+.journey-map-overlay-url-preview video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.journey-map-overlay-url-preview span {
+  max-width: 90%;
+  padding: 6px 9px;
+  border-radius: 6px;
+  background: rgba(47, 25, 11, 0.72);
+  color: #fff4d2;
+  line-height: 1.35;
+}
+
+.journey-map-overlay-url-preview.has-error {
+  border-color: rgba(174, 61, 42, 0.6);
+}
+
+.journey-map-overlay-transparent-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.journey-map-overlay-transparent-toggle input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--gold);
+}
+
+.journey-map-editor .journey-map-overlay-media {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.journey-map-overlay-media.is-transparent-media {
+  object-fit: contain;
+}
+
+body.journey-page .journey-map-stage .journey-map-overlay-media {
+  object-fit: contain;
+}
+
+:root[data-theme="dark"] .journey-map-overlay-media-note,
+:root[data-theme="dark"] .journey-map-overlay-url-preview {
+  background-color: rgba(54, 35, 21, 0.84);
+}
+.journey-map-overlay-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(180px, 1fr);
+  gap: 12px;
+  align-items: stretch;
+}
+@media (max-width: 720px) {
+  .journey-map-overlay-top {
+    grid-template-columns: 1fr;
+  }
 }
