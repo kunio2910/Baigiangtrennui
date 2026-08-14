@@ -10588,3 +10588,127 @@ body.home-page .right-column .quick-links a:last-child:hover {
     height: 20px;
   }
 }
+
+/* Journey map media overlays */
+.journey-map-overlay-controls {
+  display: grid;
+  gap: 10px;
+  margin: 14px 0 2px;
+  padding: 14px;
+  border: 1px solid rgba(184, 121, 33, 0.28);
+  border-radius: 10px;
+  background: rgba(184, 121, 33, 0.06);
+}
+
+.journey-map-overlay-actions {
+  margin-top: 0;
+}
+
+.journey-map-overlay-layer {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  pointer-events: none;
+}
+
+.journey-map-overlay {
+  position: absolute;
+  min-width: 5%;
+  min-height: 5%;
+  transform: translate(-50%, -50%);
+  overflow: visible;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  pointer-events: none;
+}
+
+.journey-map-overlay-media {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 9px;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+}
+
+.journey-map-overlay.active {
+  border-color: rgba(244, 182, 66, 0.9);
+  box-shadow: 0 0 0 3px rgba(244, 182, 66, 0.24);
+}
+
+.journey-map-overlay.is-hidden {
+  opacity: 0.18;
+}
+
+.journey-map-overlay-label {
+  position: absolute;
+  left: 4px;
+  top: 4px;
+  padding: 2px 5px;
+  border-radius: 4px;
+  background: rgba(47, 25, 11, 0.72);
+  color: #fff4d2;
+  font-size: 10px;
+  font-weight: 700;
+  pointer-events: none;
+}
+
+.journey-map-overlay-resize {
+  position: absolute;
+  right: -7px;
+  bottom: -7px;
+  width: 14px;
+  height: 14px;
+  border: 2px solid #fff8dd;
+  border-radius: 3px;
+  background: #c98218;
+  cursor: nwse-resize;
+  pointer-events: auto;
+}
+
+.journey-map-editor .journey-map-overlay-layer {
+  pointer-events: auto;
+}
+
+.journey-map-editor .journey-map-overlay {
+  pointer-events: auto;
+  cursor: grab;
+}
+
+.journey-map-editor .journey-map-overlay:active {
+  cursor: grabbing;
+}
+
+.journey-map-editor .journey-map-marker-layer {
+  position: absolute;
+  z-index: 3;
+}
+
+body.journey-page .journey-map-stage > .journey-map-overlay-layer {
+  pointer-events: none;
+}
+
+body.journey-page .journey-map-stage > .journey-map-overlay {
+  pointer-events: none;
+}
+
+body.journey-page .journey-map-stage .journey-map-overlay {
+  border: 0;
+  box-shadow: none;
+}
+
+body.journey-page .journey-map-stage .journey-map-overlay-media {
+  opacity: 0.92;
+}
+
+@media (max-width: 720px) {
+  .journey-map-overlay-controls .two-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .journey-map-overlay-label {
+    font-size: 9px;
+  }
+}

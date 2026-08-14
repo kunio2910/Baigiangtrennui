@@ -742,6 +742,7 @@
   });
   activeJourneyMilestones = jesusMilestones;
   let activeJourneyMapImage = JESUS_MAP_IMAGE;
+  let activeJourneyMapOverlays = [];
   let topics = [];
 
   const progress = {
@@ -870,6 +871,34 @@
     return String(value || "");
   }
 
+  function safeJourneyMediaUrl(value) {
+    const url = String(value || "").trim();
+    if (!url || /^javascript:/i.test(url) || /^data:/i.test(url)) return "";
+    return /^(https?:\/\/|\/|\.\.?\/)/i.test(url) ? url : "";
+  }
+
+  function normalizeJourneyMapOverlay(overlay, index = 0) {
+    const raw = overlay || {};
+    const url = safeJourneyMediaUrl(raw.url || raw.src);
+    if (!url) return null;
+    const rawType = String(raw.type || "").toLowerCase();
+    const type = ["image", "animated", "video"].includes(rawType) ? rawType : "image";
+    const clamp = (value, fallback) => {
+      const number = Number(value);
+      return Number.isFinite(number) ? Math.min(100, Math.max(0, Math.round(number * 10) / 10)) : fallback;
+    };
+    return {
+      id: String(raw.id || `journey-map-overlay-${index + 1}`).trim(),
+      type,
+      url,
+      alt: String(raw.alt || "").trim(),
+      x: clamp(raw.x, 50),
+      y: clamp(raw.y, 50),
+      width: Math.min(100, Math.max(5, Number.isFinite(Number(raw.width)) ? Number(raw.width) : 20)),
+      height: Math.min(100, Math.max(5, Number.isFinite(Number(raw.height)) ? Number(raw.height) : 20)),
+      hidden: raw.hidden === true,
+    };
+  }
   function mapTypeFromText(value) {
     const normalized = normalizeText(value).replace(/[-_]+/g, " ");
     if (!normalized) return "";
@@ -1035,6 +1064,7 @@
       mapName: String(topic?.mapName || "").trim(),
       mapImageUrl: journeyMapImageForTopic(stableTopicShell),
       mapPositionsEdited: topic?.mapPositionsEdited === true || mapType === MAP_TYPE_CUSTOM,
+      mapOverlays: Array.isArray(topic?.mapOverlays) ? topic.mapOverlays.map(normalizeJourneyMapOverlay).filter(Boolean) : [],
       steps: milestones.length || fallback.steps || 0,
       milestones,
       challenges: topic?.challenges && typeof topic.challenges === "object" ? topic.challenges : {},
@@ -1487,6 +1517,19 @@
       </section>
     `;
   }
+  function renderJourneyMapOverlays(overlays = activeJourneyMapOverlays) {
+    return (Array.isArray(overlays) ? overlays : [])
+      .filter((overlay) => overlay && !overlay.hidden && safeJourneyMediaUrl(overlay.url))
+      .map((overlay) => {
+        const mediaUrl = safeJourneyMediaUrl(overlay.url);
+        const style = `left:${overlay.x}%;top:${overlay.y}%;width:${overlay.width}%;height:${overlay.height}%;`;
+        const media = overlay.type === "video"
+          ? `<video class="journey-map-overlay-media" src="${escapeAttr(mediaUrl)}" muted loop autoplay playsinline preload="metadata"></video>`
+          : `<img class="journey-map-overlay-media" src="${escapeAttr(mediaUrl)}" alt="${escapeAttr(overlay.alt || "")}" loading="lazy" draggable="false" />`;
+        return `<div class="journey-map-overlay" style="${style}" aria-hidden="true">${media}</div>`;
+      })
+      .join("");
+  }
   function renderJourneyGame() {
     const selectedStep = activeJourneyMilestones.find((step) => step.number === state.selectedStepNumber) || activeJourneyMilestones[0];
     const pathPoints = activeJourneyMilestones.map((step) => `${step.x},${step.y}`).join(" ");
@@ -1496,6 +1539,7 @@
         <button class="journey-back-to-topics" type="button" id="journeyBackToTopics">← Quay lại chọn chủ đề</button>
         <div class="journey-map-guide-panel">BẠN HÃY CHỌN CÁC VÒNG TRÒN CỘT MỐC ĐỂ XEM</div>
         <div class="journey-map-stage" style="--journey-map-image: url('${escapeAttr(activeJourneyMapImage)}')">
+          ${renderJourneyMapOverlays()}
 
         <section class="journey-hud" aria-label="Tiến trình người chơi">
           <div><strong>★</strong><span>Điểm đức tin</span><b>${progress.faithPoints}</b></div>
@@ -1563,6 +1607,7 @@
     activeJourneyMilestones = topic.milestones?.length ? topic.milestones : fallbackMilestonesForTopic(topic);
     if (!activeJourneyMilestones.length && topicId === JESUS_TOPIC_ID) activeJourneyMilestones = jesusMilestones;
     activeJourneyMapImage = journeyMapImageForTopic(topic);
+    activeJourneyMapOverlays = Array.isArray(topic.mapOverlays) ? topic.mapOverlays : [];
     journeyChallenges = topic.challenges && typeof topic.challenges === "object" ? topic.challenges : {};
     if (topicId === JESUS_TOPIC_ID && !Object.keys(journeyChallenges).length) {
       journeyChallenges = { [String(BAPTISM_STEP_NUMBER)]: baptismChallenge };

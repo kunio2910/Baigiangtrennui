@@ -115,6 +115,13 @@ const journeyMapEditor = document.querySelector("#journeyMapEditor");
 const journeyMapEditorImage = document.querySelector("#journeyMapEditorImage");
 const journeyMapMarkerLayer = document.querySelector("#journeyMapMarkerLayer");
 const journeyMapEmptyNote = document.querySelector("#journeyMapEmptyNote");
+const journeyMapOverlaySelect = document.querySelector("#journeyMapOverlaySelect");
+const journeyMapOverlayType = document.querySelector("#journeyMapOverlayType");
+const journeyMapOverlayUrl = document.querySelector("#journeyMapOverlayUrl");
+const journeyMapOverlayLayer = document.querySelector("#journeyMapOverlayLayer");
+const addJourneyMapOverlayButton = document.querySelector("#addJourneyMapOverlayButton");
+const deleteJourneyMapOverlayButton = document.querySelector("#deleteJourneyMapOverlayButton");
+const toggleJourneyMapOverlayButton = document.querySelector("#toggleJourneyMapOverlayButton");
 const journeyMilestoneTitle = document.querySelector("#journeyMilestoneTitle");
 const journeyMilestoneReference = document.querySelector("#journeyMilestoneReference");
 const journeyMilestoneRegion = document.querySelector("#journeyMilestoneRegion");
@@ -140,6 +147,9 @@ let activeJourneyTopicId = "";
 let currentJourneyMilestones = [];
 let selectedJourneyMapPointNumber = 1;
 let activeJourneyMapDragNumber = null;
+let currentJourneyMapOverlays = [];
+let selectedJourneyMapOverlayId = "";
+let activeJourneyMapOverlayDrag = null;
 const legacyFaithPickerSampleImages = ["/assets/faith-picker-maria.jpg", "assets/faith-picker-maria.jpg"];
 const journeyAdminMapNumberPositions = [
   { x: 29.5, y: 18.7 },
@@ -1165,6 +1175,7 @@ function defaultJourneyAdminTopic() {
     mapName: "",
     mapImageUrl: "",
     mapPositionsEdited: false,
+    mapOverlays: [],
     pickerImageUrl: "",
     milestones: [],
     challenges: {},
@@ -1189,6 +1200,24 @@ function parseJourneyJson(value, fallback, label) {
   }
 }
 
+function normalizeAdminJourneyMapOverlay(overlay, index = 0) {
+  const raw = overlay || {};
+  const rawType = String(raw.type || "").toLowerCase();
+  const type = ["image", "animated", "video"].includes(rawType) ? rawType : "image";
+  const url = String(raw.url || raw.src || "").trim();
+  if (!url) return null;
+  return {
+    id: String(raw.id || `journey-map-overlay-${Date.now()}-${index}`).trim(),
+    type,
+    url,
+    alt: String(raw.alt || "").trim(),
+    x: clampJourneyMapPercent(raw.x, 50),
+    y: clampJourneyMapPercent(raw.y, 50),
+    width: Math.min(100, Math.max(5, Number.isFinite(Number(raw.width)) ? Number(raw.width) : 20)),
+    height: Math.min(100, Math.max(5, Number.isFinite(Number(raw.height)) ? Number(raw.height) : 20)),
+    hidden: raw.hidden === true,
+  };
+}
 function normalizeAdminJourneyMilestone(milestone, index = 0) {
   const number = Number(milestone?.number || index + 1);
   if (!Number.isFinite(number) || number <= 0) return null;
@@ -1253,6 +1282,7 @@ function normalizeAdminJourneyTopic(topic, index = 0) {
     mapName: String(rawTopic.mapName || "").trim(),
     mapImageUrl: String(rawTopic.mapImageUrl || defaultJourneyAdminMapImageForType(mapType) || "").trim(),
     mapPositionsEdited: rawTopic.mapPositionsEdited === true,
+    mapOverlays: Array.isArray(rawTopic.mapOverlays) ? rawTopic.mapOverlays.map(normalizeAdminJourneyMapOverlay).filter(Boolean) : [],
     pickerImageUrl: String(rawTopic.pickerImageUrl || "").trim(),
     milestones,
     challenges,
@@ -1452,6 +1482,150 @@ function syncJourneyMapPointInputs(number = selectedJourneyMapPointNumber) {
   if (journeyMapPointSelect && selected) journeyMapPointSelect.value = String(selected.number);
 }
 
+function parseJourneyMapOverlaysFromForm() {
+  return currentJourneyMapOverlays.map(normalizeAdminJourneyMapOverlay).filter(Boolean);
+}
+
+function journeyMapOverlayLabel(overlay, index = 0) {
+  const typeLabel = overlay.type === "video" ? "Clip" : overlay.type === "animated" ? "Hình động" : "Hình";
+  return `${index + 1}. ${typeLabel}${overlay.hidden ? " (đang ẩn)" : ""}`;
+}
+
+function selectedJourneyMapOverlay() {
+  const overlays = parseJourneyMapOverlaysFromForm();
+  return overlays.find((overlay) => overlay.id === selectedJourneyMapOverlayId) || overlays[0] || null;
+}
+
+function renderJourneyMapOverlaySelect() {
+  if (!journeyMapOverlaySelect) return;
+  const overlays = parseJourneyMapOverlaysFromForm();
+  if (!overlays.length) {
+    journeyMapOverlaySelect.innerHTML = `<option value="">Chưa có hình / clip</option>`;
+    selectedJourneyMapOverlayId = "";
+    return;
+  }
+  if (!selectedJourneyMapOverlayId || !overlays.some((overlay) => overlay.id === selectedJourneyMapOverlayId)) {
+    selectedJourneyMapOverlayId = overlays[0].id;
+  }
+  journeyMapOverlaySelect.innerHTML = overlays
+    .map((overlay, index) => `<option value="${escapeHtml(overlay.id)}">${escapeHtml(journeyMapOverlayLabel(overlay, index))}</option>`)
+    .join("");
+  journeyMapOverlaySelect.value = selectedJourneyMapOverlayId;
+}
+
+function syncJourneyMapOverlayInputs() {
+  const overlay = selectedJourneyMapOverlay();
+  if (journeyMapOverlayUrl) journeyMapOverlayUrl.value = overlay?.url || "";
+  if (journeyMapOverlayType) journeyMapOverlayType.value = overlay?.type || "image";
+  if (toggleJourneyMapOverlayButton) toggleJourneyMapOverlayButton.textContent = overlay?.hidden ? "Hiện hình" : "Ẩn hình";
+  if (deleteJourneyMapOverlayButton) deleteJourneyMapOverlayButton.disabled = !overlay;
+  if (toggleJourneyMapOverlayButton) toggleJourneyMapOverlayButton.disabled = !overlay;
+}
+
+function renderJourneyMapOverlayMedia(overlay, admin = false) {
+  const alt = overlay.alt ? ` alt="${escapeAttr(overlay.alt)}"` : ' alt=""';
+  const common = `class="journey-map-overlay-media" src="${escapeAttr(overlay.url)}"${alt}`;
+  if (overlay.type === "video") {
+    return `<video ${common} muted loop autoplay playsinline preload="metadata"></video>`;
+  }
+  return `<img ${common} draggable="false" loading="lazy" />`;
+}
+
+function renderJourneyMapOverlays() {
+  if (!journeyMapOverlayLayer) return;
+  const overlays = parseJourneyMapOverlaysFromForm();
+  journeyMapOverlayLayer.innerHTML = overlays
+    .map((overlay) => {
+      const selected = overlay.id === selectedJourneyMapOverlayId;
+      return `<div class="journey-map-overlay${selected ? " active" : ""}${overlay.hidden ? " is-hidden" : ""}" data-overlay-id="${escapeAttr(overlay.id)}" style="left:${formatJourneyMapPercent(overlay.x)}%;top:${formatJourneyMapPercent(overlay.y)}%;width:${formatJourneyMapPercent(overlay.width)}%;height:${formatJourneyMapPercent(overlay.height)}%;">
+        ${renderJourneyMapOverlayMedia(overlay, true)}
+        <span class="journey-map-overlay-label">${escapeHtml(overlay.type === "video" ? "Clip" : overlay.type === "animated" ? "Hình động" : "Hình")}</span>
+        ${selected ? '<span class="journey-map-overlay-resize" data-overlay-resize aria-hidden="true"></span>' : ""}
+      </div>`;
+    })
+    .join("");
+}
+
+function updateJourneyMapOverlayFromFields() {
+  const selected = selectedJourneyMapOverlay();
+  if (!selected) return;
+  const overlays = parseJourneyMapOverlaysFromForm();
+  const next = overlays.map((overlay) => overlay.id === selected.id
+    ? normalizeAdminJourneyMapOverlay({
+        ...overlay,
+        url: journeyMapOverlayUrl?.value.trim() || overlay.url,
+        type: journeyMapOverlayType?.value || overlay.type,
+      })
+    : overlay).filter(Boolean);
+  currentJourneyMapOverlays = next;
+  selectedJourneyMapOverlayId = selected.id;
+  renderJourneyMapOverlaySelect();
+  syncJourneyMapOverlayInputs();
+  renderJourneyMapOverlays();
+}
+
+function addJourneyMapOverlay() {
+  const url = journeyMapOverlayUrl?.value.trim() || "";
+  if (!url) {
+    if (journeyBibleMessage) journeyBibleMessage.textContent = "Vui lòng nhập URL hình hoặc clip trước khi thêm.";
+    journeyMapOverlayUrl?.focus();
+    return;
+  }
+  const type = journeyMapOverlayType?.value || "image";
+  const overlay = normalizeAdminJourneyMapOverlay({
+    id: `journey-map-overlay-${Date.now()}`,
+    type,
+    url,
+    x: 50,
+    y: 50,
+    width: 20,
+    height: 20,
+  });
+  if (!overlay) return;
+  currentJourneyMapOverlays = parseJourneyMapOverlaysFromForm().concat(overlay);
+  selectedJourneyMapOverlayId = overlay.id;
+  renderJourneyMapOverlaySelect();
+  syncJourneyMapOverlayInputs();
+  renderJourneyMapOverlays();
+  if (journeyBibleMessage) journeyBibleMessage.textContent = "Đã thêm hình / clip. Kéo trên bản đồ, rồi bấm Lưu Hành trình Kinh Thánh.";
+}
+
+function deleteJourneyMapOverlay() {
+  const overlay = selectedJourneyMapOverlay();
+  if (!overlay) return;
+  if (!confirm("Xóa hình / clip này khỏi bản đồ?")) return;
+  currentJourneyMapOverlays = parseJourneyMapOverlaysFromForm().filter((item) => item.id !== overlay.id);
+  selectedJourneyMapOverlayId = currentJourneyMapOverlays[0]?.id || "";
+  renderJourneyMapOverlaySelect();
+  syncJourneyMapOverlayInputs();
+  renderJourneyMapOverlays();
+  if (journeyBibleMessage) journeyBibleMessage.textContent = "Đã xóa hình / clip. Bấm Lưu Hành trình Kinh Thánh để lưu.";
+}
+
+function toggleJourneyMapOverlay() {
+  const overlay = selectedJourneyMapOverlay();
+  if (!overlay) return;
+  currentJourneyMapOverlays = parseJourneyMapOverlaysFromForm().map((item) => item.id === overlay.id ? { ...item, hidden: !item.hidden } : item);
+  renderJourneyMapOverlaySelect();
+  syncJourneyMapOverlayInputs();
+  renderJourneyMapOverlays();
+}
+
+function updateJourneyMapOverlayPosition(id, x, y, resize = false) {
+  const overlays = parseJourneyMapOverlaysFromForm();
+  const overlay = overlays.find((item) => item.id === id);
+  if (!overlay) return;
+  if (resize) {
+    overlay.width = Math.min(100, Math.max(5, clampJourneyMapPercent(x - overlay.x + overlay.width / 2, overlay.width)));
+    overlay.height = Math.min(100, Math.max(5, clampJourneyMapPercent(y - overlay.y + overlay.height / 2, overlay.height)));
+  } else {
+    overlay.x = clampJourneyMapPercent(x, overlay.x);
+    overlay.y = clampJourneyMapPercent(y, overlay.y);
+  }
+  currentJourneyMapOverlays = overlays;
+  selectedJourneyMapOverlayId = id;
+  renderJourneyMapOverlays();
+}
 function renderJourneyMapEditor() {
   if (!journeyMapEditor) return;
   const mapType = selectedJourneyAdminMapType();
@@ -1468,6 +1642,9 @@ function renderJourneyMapEditor() {
     }
   }
   if (journeyMapEmptyNote) journeyMapEmptyNote.hidden = hasImage;
+  renderJourneyMapOverlaySelect();
+  syncJourneyMapOverlayInputs();
+  renderJourneyMapOverlays();
   const milestones = parseJourneyMilestonesFromForm();
   if (journeyMapMarkerLayer) {
     journeyMapMarkerLayer.innerHTML = hasImage
@@ -1604,6 +1781,8 @@ function fillJourneyTopicForm(topic) {
   journeyTopicDescription.value = normalizedTopic.description;
   journeyPickerImageUrl.value = normalizedTopic.pickerImageUrl;
   if (journeyMapImageUrl) journeyMapImageUrl.value = normalizedTopic.mapImageUrl || defaultJourneyAdminMapImageForType(normalizedTopic.mapType);
+  currentJourneyMapOverlays = normalizedTopic.mapOverlays || [];
+  selectedJourneyMapOverlayId = currentJourneyMapOverlays[0]?.id || "";
   currentJourneyMilestones = normalizedTopic.milestones;
   selectedJourneyMapPointNumber = normalizedTopic.milestones[0]?.number || 1;
   updateJourneyPickerPreview();
@@ -2775,6 +2954,18 @@ journeyMilestoneSelect?.addEventListener("change", () => {
 });
 
 journeyMapImageUrl?.addEventListener("input", renderJourneyMapEditor);
+journeyMapOverlaySelect?.addEventListener("change", () => {
+  selectedJourneyMapOverlayId = journeyMapOverlaySelect.value || "";
+  syncJourneyMapOverlayInputs();
+  renderJourneyMapOverlays();
+});
+[journeyMapOverlayUrl, journeyMapOverlayType].forEach((control) => {
+  control?.addEventListener("input", updateJourneyMapOverlayFromFields);
+  control?.addEventListener("change", updateJourneyMapOverlayFromFields);
+});
+addJourneyMapOverlayButton?.addEventListener("click", addJourneyMapOverlay);
+deleteJourneyMapOverlayButton?.addEventListener("click", deleteJourneyMapOverlay);
+toggleJourneyMapOverlayButton?.addEventListener("click", toggleJourneyMapOverlay);
 journeyMapPointCount?.addEventListener("change", () => applyJourneyMapPointCountFromField());
 journeyMapPointSelect?.addEventListener("change", () => {
   selectedJourneyMapPointNumber = Number(journeyMapPointSelect.value) || 1;
@@ -2807,6 +2998,19 @@ journeyMapMarkerLayer?.addEventListener("pointerdown", (event) => {
   activeJourneyMapDragNumber = selectedJourneyMapPointNumber;
   fillJourneyMilestoneForm(selectedJourneyMapPointNumber);
 });
+journeyMapOverlayLayer?.addEventListener("pointerdown", (event) => {
+  const overlayElement = event.target.closest(".journey-map-overlay");
+  if (!overlayElement) return;
+  event.preventDefault();
+  event.stopPropagation();
+  const id = overlayElement.dataset.overlayId || "";
+  selectedJourneyMapOverlayId = id;
+  const resize = Boolean(event.target.closest("[data-overlay-resize]"));
+  activeJourneyMapOverlayDrag = { id, resize };
+  renderJourneyMapOverlaySelect();
+  syncJourneyMapOverlayInputs();
+  renderJourneyMapOverlays();
+});
 journeyMapEditor?.addEventListener("pointerdown", (event) => {
   if (event.target.closest(".journey-map-marker")) return;
   const point = journeyMapPointFromEvent(event);
@@ -2814,13 +3018,18 @@ journeyMapEditor?.addEventListener("pointerdown", (event) => {
   updateJourneyMapPointPosition(selectedJourneyMapPointNumber, point.x, point.y);
 });
 document.addEventListener("pointermove", (event) => {
-  if (!activeJourneyMapDragNumber) return;
   const point = journeyMapPointFromEvent(event);
   if (!point) return;
+  if (activeJourneyMapOverlayDrag) {
+    updateJourneyMapOverlayPosition(activeJourneyMapOverlayDrag.id, point.x, point.y, activeJourneyMapOverlayDrag.resize);
+    return;
+  }
+  if (!activeJourneyMapDragNumber) return;
   updateJourneyMapPointPosition(activeJourneyMapDragNumber, point.x, point.y);
 });
 document.addEventListener("pointerup", () => {
   activeJourneyMapDragNumber = null;
+  activeJourneyMapOverlayDrag = null;
 });
 deleteJourneyMilestoneButton?.addEventListener("click", deleteJourneyMilestoneFromFields);
 
@@ -2850,6 +3059,7 @@ journeyBibleForm?.addEventListener("submit", async (event) => {
       mapName: journeyMapName?.value.trim() || "",
       mapImageUrl: journeyMapImageUrl?.value.trim() || defaultJourneyAdminMapImageForType(journeyTopicMapType?.value || "jesus"),
       mapPositionsEdited: true,
+      mapOverlays: parseJourneyMapOverlaysFromForm(),
       enabled: journeyTopicEnabled.value !== "false",
       description: journeyTopicDescription.value.trim(),
       pickerImageUrl: journeyPickerImageUrl.value.trim(),
