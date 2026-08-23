@@ -1201,6 +1201,17 @@ body {
   white-space: pre-line;
 }
 
+/* Keep homepage article cards stable when an excerpt is long. */
+body.home-page #articles .article-card p {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  max-height: 40px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .content-card a,
 .church-card a,
 .article-card a {
