@@ -313,6 +313,10 @@ async function fetchDocumentById(id) {
 }
 
 async function fetchDocumentBySlug(type, slug) {
+  const requestedSlug = slugifyText(decodeURIComponent(String(slug || "")));
+  if (!requestedSlug) return null;
+  let prefixMatch = null;
+  let prefixMatchCount = 0;
   let pageToken = "";
   do {
     const url = new URL(`https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents/contents`);
@@ -322,13 +326,20 @@ async function fetchDocumentBySlug(type, slug) {
     const response = await fetch(url);
     if (!response.ok) throw new Error(`Firestore returned ${response.status}`);
     const data = await response.json();
-    const match = (data.documents || [])
-      .map(documentToItem)
-      .find((item) => item.type === type && slugifyText(item.title || item.ref || item.meta || item.slug || item.id) === slug);
-    if (match) return match;
+    for (const item of (data.documents || []).map(documentToItem)) {
+      if (item.type !== type) continue;
+      const candidates = [item.title, item.slug, item.ref, item.meta, item.id]
+        .map(slugifyText)
+        .filter(Boolean);
+      if (candidates.some((candidate) => candidate === requestedSlug)) return item;
+      if (candidates.some((candidate) => candidate.startsWith(`${requestedSlug}-`))) {
+        prefixMatch = item;
+        prefixMatchCount += 1;
+      }
+    }
     pageToken = data.nextPageToken || "";
   } while (pageToken);
-  return null;
+  return prefixMatchCount === 1 ? prefixMatch : null;
 }
 
 async function findContent(type, slug) {

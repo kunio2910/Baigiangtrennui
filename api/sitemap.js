@@ -48,7 +48,7 @@ const FALLBACK_CONTENT_URLS = [
   "/cau-nguyen/cau-nguyen-khi-gap-kho-khan",
   "/cau-nguyen/cau-nguyen-buoi-toi",
   "/giao-ly/kinh-lay-cha",
-  "/giao-ly/kinh-kinh-mung",
+  "/giao-ly/kinh-kinh-mung-ave-maria--catechism-2",
   "/giao-ly/kinh-sang-danh",
   "/giao-ly/kinh-tin-kinh",
   "/giao-ly/kinh-an-nan-toi",
