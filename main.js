@@ -97,6 +97,25 @@ function normalizeSearchText(value) {
     .toLowerCase();
 }
 
+function searchTokens(value) {
+  return [...new Set(normalizeSearchText(value).split(/[^\p{L}\p{N}]+/gu).filter(Boolean))];
+}
+
+function searchableItemText(item) {
+  const bodyText = item?.bodyHtml ? htmlToText(displayText(item.bodyHtml)) : "";
+  return normalizeSearchText([
+    item?.title,
+    item?.description,
+    item?.meta,
+    item?.quote,
+    item?.ref,
+    item?.searchText,
+    bodyText,
+    item?.type,
+    "Bai Giang Tren Nui baigiangtrennui",
+  ].filter(Boolean).join(" "));
+}
+
 function searchLink(item) {
   return item.url || detailLink(item.type, item);
 }
@@ -452,13 +471,17 @@ function setupSearch() {
   });
 
   function renderSearchResults() {
-    const keyword = normalizeSearchText(input.value.trim());
-    const matches = allItems.filter((item) =>
-      normalizeSearchText(`${item.title} ${item.description} ${item.meta || ""} ${item.searchText || ""}`).includes(keyword)
-    );
+    const keyword = input.value.trim();
+    const tokens = searchTokens(keyword);
+    const matches = tokens.length
+      ? allItems.filter((item) => {
+          const haystack = searchableItemText(item);
+          return tokens.every((token) => haystack.includes(token));
+        })
+      : [];
 
     resultBox.innerHTML = keyword
-      ? matches.map((item) => `<a href="${searchLink(item)}"><strong>${item.title}</strong><span>${summarizeText(item.description, 120)}</span></a>`).join("")
+      ? matches.map((item) => `<a href="${searchLink(item)}"><strong>${displayText(item.title)}</strong><span>${summarizeText(item.description, 120)}</span></a>`).join("")
       : "";
     if (keyword && matches.length) {
       openSearchDrawer();
@@ -466,7 +489,6 @@ function setupSearch() {
       closeSearchDrawer();
     }
   }
-
   input.addEventListener("input", renderSearchResults);
 
   loadSupplementalSearchItems().then((items) => {
