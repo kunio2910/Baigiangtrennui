@@ -234,20 +234,44 @@ function slugifyText(value) {
     .replace(/^-+|-+$/g, "");
 }
 
+function contentBaseSlug(item = {}) {
+  return slugifyText(item.seoSlug || item.title || item.ref || item.meta || item.slug || item.id) || String(item.id || "");
+}
+
 function contentSlug(item = {}) {
-  return slugifyText(item.title || item.ref || item.meta || item.slug || item.id) || String(item.id || "");
+  return slugifyText(item.routeSlug || contentBaseSlug(item)) || String(item.id || "");
+}
+
+function contentRouteCreatedAt(item = {}) {
+  const value = item.createdAt || item.createdAtText || item.createdDate || "";
+  if (value?.toDate) return value.toDate().toISOString();
+  return String(value || "");
+}
+
+function assignContentRouteSlugs(items = []) {
+  const grouped = new Map();
+
+  items.forEach((item) => {
+    const baseSlug = contentBaseSlug(item);
+    if (!baseSlug) return;
+    const group = grouped.get(baseSlug) || [];
+    group.push(item);
+    grouped.set(baseSlug, group);
+  });
+
+  grouped.forEach((group, baseSlug) => {
+    group
+      .sort((first, second) => contentRouteCreatedAt(first).localeCompare(contentRouteCreatedAt(second)) || String(first.id || "").localeCompare(String(second.id || "")))
+      .forEach((item, index) => {
+        item.routeSlug = index === 0 ? baseSlug : `${baseSlug}-${index + 1}`;
+      });
+  });
+
+  return items;
 }
 
 function contentRouteSlug(item = {}) {
-  const baseSlug = contentSlug(item);
-  const itemId = String(item.id || "").trim();
-  if (!itemId) return baseSlug;
-  const safeId = itemId.replace(/[\/\\?#]+/g, "-");
-  const idAsSlug = slugifyText(safeId);
-  const baseWithoutId = idAsSlug
-    ? baseSlug.replace(new RegExp(`-+${idAsSlug}$`), "").replace(/-+$/g, "")
-    : baseSlug;
-  return `${baseWithoutId || baseSlug}--${safeId}`;
+  return contentSlug(item);
 }
 
 function contentDetailUrl(type, item = {}) {
@@ -370,15 +394,7 @@ async function getContent() {
     });
   });
 
-CONTENT_TYPES.forEach((type) => {
-    content[type] = content[type].map((item) => {
-      const normalizedItem = normalizeContentItem(item);
-      return {
-        ...normalizedItem,
-        slug: slugifyText(normalizedItem.title || normalizedItem.ref || normalizedItem.meta || normalizedItem.id),
-      };
-    });
-  });
+  CONTENT_TYPES.forEach((type) => assignContentRouteSlugs(content[type]));
 
   return content;
 }

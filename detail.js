@@ -255,18 +255,29 @@ function renderMissing() {
 
 function renderDetail() {
   const currentList = allowedTypes.includes(type) ? content[type].filter((entry) => entry.status !== "unactived") : [];
-  const baseSlug = slug ? slug.replace(/--[^/]+$/, "") : "";
-  const item = currentList.find((entry) => {
+  const requestedSlug = typeof slugifyText === "function" ? slugifyText(slug) : slug;
+  const exactItem = currentList.find((entry) => {
     if (id) return entry.id === id;
-    const entrySlug = typeof contentSlug === "function" ? contentSlug(entry) : entry.slug;
-    return (slug && entrySlug === slug) || (baseSlug && entrySlug === baseSlug);
+    const entrySlug = typeof contentRouteSlug === "function" ? contentRouteSlug(entry) : entry.slug;
+    return Boolean(requestedSlug && entrySlug === requestedSlug);
   });
+  const prefixItems = !exactItem && requestedSlug
+    ? currentList.filter((entry) => {
+        const entryBaseSlug = typeof contentBaseSlug === "function" ? contentBaseSlug(entry) : entry.slug;
+        return entryBaseSlug.startsWith(`${requestedSlug}-`);
+      })
+    : [];
+  const item = exactItem || (prefixItems.length === 1 ? prefixItems[0] : null);
   if (!item) {
     renderMissing();
     return;
   }
 
   currentItem = item;
+  const canonicalPath = detailLink(type, item);
+  if (canonicalPath && window.location.pathname !== canonicalPath) {
+    window.history.replaceState({}, "", canonicalPath);
+  }
   trackPageView({
     key: `content_${type}_${item.id}`,
     label: item.title || `${type}/${item.id}`,

@@ -87,16 +87,38 @@ function documentToItem(document) {
   return { id, ...firestoreFieldsToObject(document.fields || {}) };
 }
 
+function contentBaseSlug(item = {}) {
+  return slugifyText(item.seoSlug || item.title || item.ref || item.meta || item.slug || item.id) || String(item.id || "");
+}
+
+function contentRouteCreatedAt(item = {}) {
+  return String(item.createdAt || item.createdAtText || item.createdDate || "");
+}
+
+function assignContentRouteSlugs(items = []) {
+  const grouped = new Map();
+
+  items.forEach((item) => {
+    const baseSlug = contentBaseSlug(item);
+    if (!baseSlug) return;
+    const group = grouped.get(baseSlug) || [];
+    group.push(item);
+    grouped.set(baseSlug, group);
+  });
+
+  grouped.forEach((group, baseSlug) => {
+    group
+      .sort((first, second) => contentRouteCreatedAt(first).localeCompare(contentRouteCreatedAt(second)) || String(first.id || "").localeCompare(String(second.id || "")))
+      .forEach((item, index) => {
+        item.routeSlug = index === 0 ? baseSlug : `${baseSlug}-${index + 1}`;
+      });
+  });
+
+  return items;
+}
+
 function contentRouteSlug(item = {}) {
-  const baseSlug = slugifyText(item.title || item.ref || item.meta || item.slug || item.id) || String(item.id || "");
-  const itemId = String(item.id || "").trim();
-  if (!itemId) return baseSlug;
-  const safeId = itemId.replace(/[\/\\?#]+/g, "-");
-  const idAsSlug = slugifyText(safeId);
-  const baseWithoutId = idAsSlug
-    ? baseSlug.replace(new RegExp(`-+${idAsSlug}$`), "").replace(/-+$/g, "")
-    : baseSlug;
-  return `${baseWithoutId || baseSlug}--${safeId}`;
+  return slugifyText(item.routeSlug || contentBaseSlug(item)) || String(item.id || "");
 }
 
 function contentPath(type, item) {
@@ -312,11 +334,8 @@ async function fetchDocumentById(id) {
   return documentToItem(await response.json());
 }
 
-async function fetchDocumentBySlug(type, slug) {
-  const requestedSlug = slugifyText(decodeURIComponent(String(slug || "")));
-  if (!requestedSlug) return null;
-  let prefixMatch = null;
-  let prefixMatchCount = 0;
+async function fetchContentByType(type) {
+  const typeItems = [];
   let pageToken = "";
   do {
     const url = new URL(`https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents/contents`);
@@ -326,27 +345,34 @@ async function fetchDocumentBySlug(type, slug) {
     const response = await fetch(url);
     if (!response.ok) throw new Error(`Firestore returned ${response.status}`);
     const data = await response.json();
-    for (const item of (data.documents || []).map(documentToItem)) {
-      if (item.type !== type) continue;
-      const candidates = [item.title, item.slug, item.ref, item.meta, item.id]
-        .map(slugifyText)
-        .filter(Boolean);
-      if (candidates.some((candidate) => candidate === requestedSlug)) return item;
-      if (candidates.some((candidate) => candidate.startsWith(`${requestedSlug}-`))) {
-        prefixMatch = item;
-        prefixMatchCount += 1;
-      }
-    }
+    (data.documents || [])
+      .map(documentToItem)
+      .filter((item) => item.type === type)
+      .forEach((item) => typeItems.push(item));
     pageToken = data.nextPageToken || "";
   } while (pageToken);
-  return prefixMatchCount === 1 ? prefixMatch : null;
+  return assignContentRouteSlugs(typeItems);
+}
+
+async function fetchDocumentBySlug(type, slug) {
+  const requestedSlug = slugifyText(decodeURIComponent(String(slug || "")));
+  if (!requestedSlug) return null;
+  const typeItems = await fetchContentByType(type);
+  const matchingSlugs = (item) => [contentRouteSlug(item), item.slug, item.title, item.ref, item.meta, item.id]
+    .map(slugifyText)
+    .filter(Boolean);
+  const exactItem = typeItems.find((item) => matchingSlugs(item).includes(requestedSlug));
+  if (exactItem) return exactItem;
+
+  const prefixItems = typeItems.filter((item) => matchingSlugs(item).some((candidate) => candidate.startsWith(`${requestedSlug}-`)));
+  return prefixItems.length === 1 ? prefixItems[0] : null;
 }
 
 async function findContent(type, slug) {
   const idMatch = String(slug || "").match(/--([^/]+)$/);
   if (idMatch) {
-    const item = await fetchDocumentById(decodeURIComponent(idMatch[1]));
-    return item && item.type === type ? item : null;
+    const typeItems = await fetchContentByType(type);
+    return typeItems.find((item) => item.id === decodeURIComponent(idMatch[1])) || null;
   }
   return fetchDocumentBySlug(type, String(slug || ""));
 }
@@ -377,6 +403,16 @@ module.exports = async function handler(req, res) {
       res.setHeader("X-Robots-Tag", "noindex");
       res.setHeader("Content-Type", "text/html; charset=utf-8");
       res.end(template);
+      return;
+    }
+
+    const canonicalPath = contentPath(type, item);
+    const requestedPath = `/${TYPE_PATHS[type]}/${encodeURI(decodeURIComponent(slug))}`;
+    if (canonicalPath && canonicalPath !== requestedPath) {
+      res.statusCode = 308;
+      res.setHeader("Location", canonicalPath);
+      res.setHeader("Cache-Control", "public, s-maxage=300, stale-while-revalidate=3600");
+      res.end();
       return;
     }
 

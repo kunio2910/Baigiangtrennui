@@ -48,7 +48,7 @@ const FALLBACK_CONTENT_URLS = [
   "/cau-nguyen/cau-nguyen-khi-gap-kho-khan",
   "/cau-nguyen/cau-nguyen-buoi-toi",
   "/giao-ly/kinh-lay-cha",
-  "/giao-ly/kinh-kinh-mung-ave-maria--catechism-2",
+  "/giao-ly/kinh-kinh-mung-ave-maria",
   "/giao-ly/kinh-sang-danh",
   "/giao-ly/kinh-tin-kinh",
   "/giao-ly/kinh-an-nan-toi",
@@ -142,12 +142,41 @@ function dateOnly(value) {
   return date.toISOString().slice(0, 10);
 }
 
+function contentBaseSlug(item) {
+  return slugifyText(item.seoSlug || item.title || item.ref || item.meta || item.slug || item.id);
+}
+
+function contentRouteCreatedAt(item) {
+  return String(item.createdAt || item.createdAtText || item.createdDate || "");
+}
+
+function assignContentRouteSlugs(items = []) {
+  const grouped = new Map();
+
+  items.forEach((item) => {
+    const baseSlug = contentBaseSlug(item);
+    if (!baseSlug) return;
+    const group = grouped.get(`${item.type}:${baseSlug}`) || [];
+    group.push(item);
+    grouped.set(`${item.type}:${baseSlug}`, group);
+  });
+
+  grouped.forEach((group, groupKey) => {
+    const baseSlug = groupKey.slice(groupKey.indexOf(":") + 1);
+    group
+      .sort((first, second) => contentRouteCreatedAt(first).localeCompare(contentRouteCreatedAt(second)) || String(first.id || "").localeCompare(String(second.id || "")))
+      .forEach((item, index) => {
+        item.routeSlug = index === 0 ? baseSlug : `${baseSlug}-${index + 1}`;
+      });
+  });
+
+  return items;
+}
+
 function contentPath(item) {
   const typePath = TYPE_PATHS[item.type];
   if (!typePath || item.status === "unactived") return "";
-  const baseSlug = slugifyText(item.title || item.ref || item.meta || item.slug || item.id);
-  const id = String(item.id || "").trim();
-  const slug = id && !baseSlug.endsWith(`--${id}`) ? `${baseSlug}--${id}` : baseSlug;
+  const slug = slugifyText(item.routeSlug || contentBaseSlug(item));
   return slug ? `/${typePath}/${slug}` : "";
 }
 
@@ -196,11 +225,12 @@ async function fetchContentItems() {
 }
 
 function buildSitemap(items = []) {
+  const routeItems = assignContentRouteSlugs(items);
   const paths = new Map();
   const latestByType = {};
   let latestOverall = "";
 
-  items.forEach((item) => {
+  routeItems.forEach((item) => {
     const updatedDate = dateOnly(item.updatedAt || item.createdDate || item.createdAt);
     if (!updatedDate) return;
     if (!latestByType[item.type] || updatedDate > latestByType[item.type]) latestByType[item.type] = updatedDate;
@@ -213,13 +243,13 @@ function buildSitemap(items = []) {
     paths.set(path, { ...options, ...(lastmod ? { lastmod } : {}) });
   });
 
-  if (!items.length) {
+  if (!routeItems.length) {
     FALLBACK_CONTENT_URLS.forEach((path) => {
       paths.set(path, { changefreq: "monthly", priority: path.startsWith("/cac-thanh/") ? "0.8" : "0.7" });
     });
   }
 
-  items.forEach((item) => {
+  routeItems.forEach((item) => {
     const path = contentPath(item);
     if (!path) return;
     paths.set(path, {
