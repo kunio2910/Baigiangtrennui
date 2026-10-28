@@ -290,7 +290,7 @@ function prayerTemplate(item) {
   return `
     <article class="prayer-card clickable-card" style="--prayer-image: url('${imageOrFallback(item)}')" onclick="window.location.href='${link}'">
       <div>
-        <h3>${displayText(item.title)}</h3>
+        <h3><a class="prayer-title-link" href="${link}" onclick="event.stopPropagation()">${displayText(item.title)}</a></h3>
         <blockquote>“${summarizeText(prayerExcerpt, 125)}”</blockquote>
       </div>
     </article>

@@ -1,5 +1,7 @@
 const fs = require("fs");
 const path = require("path");
+const store = require('../lib/content-store');
+const { group, card, embed, fill } = require('../lib/list-pages');
 
 const SITE_URL = "https://www.baigiangtrennui.com";
 const TEMPLATE_PATH = path.join(process.cwd(), "category.html");
@@ -59,9 +61,9 @@ function replaceMeta(html, selector, content) {
   return pattern.test(html) ? html.replace(pattern, replacement) : html.replace("</head>", `    ${replacement}\n  </head>`);
 }
 
-function enrichTemplate(template, info) {
-  const canonical = `${SITE_URL}/${info.path}`;
-  const pageTitle = `${info.title} - Bài Giảng Trên Núi`;
+function enrichTemplate(template, info, page = 1) {
+  const canonical = `${SITE_URL}/${info.path}${page > 1 ? `?page=${page}` : ''}`;
+  const pageTitle = `${info.title}${page > 1 ? ` - Trang ${page}` : ''} - Bài Giảng Trên Núi`;
   const collectionSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -98,7 +100,7 @@ function enrichTemplate(template, info) {
   return html;
 }
 
-module.exports = function handler(req, res) {
+module.exports = async function handler(req, res) {
   if (req.method && req.method !== "GET" && req.method !== "HEAD") {
     res.statusCode = 405;
     res.setHeader("Allow", "GET, HEAD");
@@ -117,7 +119,20 @@ module.exports = function handler(req, res) {
     return;
   }
 
-  res.statusCode = 200;
-  res.setHeader("Cache-Control", "public, s-maxage=3600, stale-while-revalidate=86400");
-  res.end(req.method === "HEAD" ? "" : enrichTemplate(template, info));
+  try {
+    const content = group(await store.query('type', type));
+    const items = content[type];
+    const page = Number(req.query?.page || 1);
+    const count = Math.max(1, Math.ceil(items.length / 9));
+    if (!Number.isInteger(page) || page < 1 || page > count) {
+      res.statusCode = 404; res.setHeader('X-Robots-Tag', 'noindex'); res.end('Không tìm thấy trang.'); return;
+    }
+    let html = enrichTemplate(template, info, page);
+    html = fill(html, 'categoryList', items.slice((page - 1) * 9, page * 9).map(item => card(item, type, info)).join('') || '<article class="notice-panel"><h2>Chưa có nội dung</h2><p>Không tìm thấy nội dung phù hợp.</p></article>');
+    const links = count > 1 ? Array.from({ length: count }, (_, i) => `<a href="/${info.path}${i ? `?page=${i + 1}` : ''}" class="${page === i + 1 ? 'active' : ''}" data-page="${i + 1}"${page === i + 1 ? ' aria-current="page"' : ''}>${i + 1}</a>`).join('') : '';
+    html = html.replace('<nav class="pagination" id="categoryPagination" aria-label="Phân trang"></nav>', `<nav class="pagination" id="categoryPagination" aria-label="Phân trang">${links}</nav>`);
+    res.statusCode = 200;
+    res.setHeader('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300');
+    res.end(req.method === 'HEAD' ? '' : embed(html, content));
+  } catch (error) { store.unavailable(res); }
 };

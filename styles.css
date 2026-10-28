@@ -2688,7 +2688,8 @@ textarea {
   margin: 26px 0 0;
 }
 
-.pagination button {
+.pagination button,
+.pagination a {
   min-width: 34px;
   height: 34px;
   border: 1px solid var(--line);
@@ -2697,13 +2698,21 @@ textarea {
   background: var(--white);
   font-weight: 800;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  box-sizing: border-box;
 }
 
-.pagination button.active {
+.pagination button.active,
+.pagination a.active {
   color: var(--white);
   border-color: var(--gold);
   background: var(--gold);
 }
+
+.prayer-title-link { color: inherit; text-decoration: none; font: inherit; }
 
 .eyebrow {
   color: var(--gold-dark);

@@ -47,7 +47,7 @@ const ITEMS_PER_PAGE = 9;
 const lazyImageAttrs = 'loading="lazy" decoding="async"';
 const SITE_URL = "https://www.baigiangtrennui.com";
 let allCategoryItems = [];
-let currentPage = 1;
+let currentPage = Math.max(1, Number(categoryParams.get('page')) || 1);
 
 function categoryDetailLink(type, item) {
   return typeof contentDetailUrl === "function"
@@ -87,7 +87,7 @@ function setJsonLd(id, data) {
 }
 
 function updateCategorySchema(url) {
-  const itemListElement = allCategoryItems.slice(0, 100).map((item, index) => ({
+  const itemListElement = allCategoryItems.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE).map((item, index) => ({
     "@type": "ListItem",
     position: index + 1,
     name: textForSeo(item.title),
@@ -132,8 +132,8 @@ function updateCategorySchema(url) {
 }
 
 function updateCategorySeo() {
-  const url = `${SITE_URL}${typeof categoryUrl === "function" ? categoryUrl(activeType) : `/category.html?type=${encodeURIComponent(activeType)}`}`;
-  const title = `${textForSeo(categoryInfo.title)} - Bài Giảng Trên Núi`;
+  const url = `${SITE_URL}${categoryPageUrl(currentPage)}`;
+  const title = `${textForSeo(categoryInfo.title)}${currentPage > 1 ? ` - Trang ${currentPage}` : ''} - Bài Giảng Trên Núi`;
   const description = textForSeo(categoryInfo.description);
   document.title = title;
   setMeta('meta[name="robots"]', "content", "index, follow, max-image-preview:large");
@@ -208,6 +208,11 @@ function searchCategoryItems(items, keyword) {
   );
 }
 
+function categoryPageUrl(page) {
+  const path = categoryUrl(activeType);
+  return `${path}${page > 1 ? `?page=${page}` : ''}`;
+}
+
 function renderPagination(totalItems) {
   const pagination = document.querySelector("#categoryPagination");
   const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
@@ -219,7 +224,7 @@ function renderPagination(totalItems) {
 
   pagination.innerHTML = Array.from({ length: totalPages }, (_, index) => {
     const page = index + 1;
-    return `<button type="button" class="${page === currentPage ? "active" : ""}" data-page="${page}">${page}</button>`;
+    return `<a href="${categoryPageUrl(page)}" class="${page === currentPage ? "active" : ""}" data-page="${page}"${page === currentPage ? ' aria-current="page"' : ''}>${page}</a>`;
   }).join("");
 }
 
@@ -266,6 +271,8 @@ function renderCategoryView() {
   const keyword = document.querySelector("#categorySearch").value;
   const sortValue = document.querySelector("#categorySort").value;
   renderCategoryItems(sortCategoryItems(searchCategoryItems(allCategoryItems, keyword), sortValue));
+  window.history.replaceState({}, '', categoryPageUrl(currentPage));
+  updateCategorySeo();
   document.dispatchEvent(new Event("kito:content-rendered"));
 }
 
@@ -295,8 +302,10 @@ async function initCategory() {
   });
 
   document.querySelector("#categoryPagination").addEventListener("click", (event) => {
-    const button = event.target.closest("button[data-page]");
+    const button = event.target.closest("a[data-page]");
     if (!button) return;
+    if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
     currentPage = Number(button.dataset.page);
     renderCategoryView();
     document.querySelector(".category-intro").scrollIntoView({ behavior: "smooth", block: "start" });

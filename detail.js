@@ -89,7 +89,7 @@ function absoluteSeoUrl(value, fallback = "") {
 function updateDetailSchema(item, url, description) {
   const image = absoluteSeoUrl(item.image, `${SITE_URL}${fallbackImage}`);
   const publishedDate = schemaDate(item.createdDate || item.createdAtText || item.createdAt);
-  const modifiedDate = schemaDate(item.updatedAt || item.createdDate || item.createdAt);
+  const modifiedDate = schemaDate(item.contentUpdatedAt || item.createdDate || item.createdAt);
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -206,7 +206,7 @@ function sanitizeContentHtml(value) {
 
     if (element.tagName === "A") {
       const href = element.getAttribute("href") || "";
-      if (!/^https?:\/\//i.test(href) && !href.startsWith("#") && !href.startsWith("mailto:")) {
+      if (!/^(https?:\/\/|mailto:|#|\/(?!\/))/i.test(href)) {
         element.removeAttribute("href");
       }
       element.setAttribute("rel", "noopener noreferrer");
@@ -259,7 +259,7 @@ function renderDetail() {
   const exactItem = currentList.find((entry) => {
     if (id) return entry.id === id;
     const entrySlug = typeof contentRouteSlug === "function" ? contentRouteSlug(entry) : entry.slug;
-    return Boolean(requestedSlug && entrySlug === requestedSlug);
+    return Boolean(requestedSlug && (entrySlug === requestedSlug || (entry.previousSlugs || []).includes(requestedSlug)));
   });
   const prefixItems = !exactItem && requestedSlug
     ? currentList.filter((entry) => {
@@ -458,6 +458,11 @@ async function initDetail() {
     document.dispatchEvent(new Event("kito:content-rendered"));
   } catch (error) {
     content = structuredClone(defaultContent);
+    const embedded = document.getElementById('seoDetailContent');
+    if (embedded) {
+      const item = normalizeContentItem(JSON.parse(embedded.textContent));
+      content[item.type] = [item];
+    }
     renderDetail();
     renderRelated();
     document.dispatchEvent(new Event("kito:content-rendered"));

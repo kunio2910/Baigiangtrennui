@@ -1,4 +1,5 @@
 const SITE_URL = "https://www.baigiangtrennui.com";
+const contentStore = require('../lib/content-store');
 const FIREBASE_PROJECT_ID = "truyen-giao-kito";
 const FIREBASE_API_KEY = "AIzaSyDIwxGKJCMo5_BJv9fWTaFN-vIz-7CMpLc";
 
@@ -22,7 +23,7 @@ const CATEGORY_PATHS = [
   ["/gui-loi-cau-nguyen", { changefreq: "monthly", priority: "0.7" }],
   ["/kham-pha-duc-tin", { changefreq: "monthly", priority: "0.7" }],
   ["/hanh-trinh-kinh-thanh", { changefreq: "monthly", priority: "0.7" }],
-  ["/gop-y.html", { changefreq: "monthly", priority: "0.5" }],
+  ["/gop-y", { changefreq: "monthly", priority: "0.5" }],
 ];
 
 const FALLBACK_CONTENT_URLS = [
@@ -152,8 +153,10 @@ function contentRouteCreatedAt(item) {
 
 function assignContentRouteSlugs(items = []) {
   const grouped = new Map();
+  const used = new Set(items.filter(item => item.seoSlug).map(item => `${item.type}:${item.seoSlug}`));
 
   items.forEach((item) => {
+    if (item.seoSlug) { item.routeSlug = item.seoSlug; return; }
     const baseSlug = contentBaseSlug(item);
     if (!baseSlug) return;
     const group = grouped.get(`${item.type}:${baseSlug}`) || [];
@@ -166,7 +169,11 @@ function assignContentRouteSlugs(items = []) {
     group
       .sort((first, second) => contentRouteCreatedAt(first).localeCompare(contentRouteCreatedAt(second)) || String(first.id || "").localeCompare(String(second.id || "")))
       .forEach((item, index) => {
-        item.routeSlug = index === 0 ? baseSlug : `${baseSlug}-${index + 1}`;
+        let number = index + 1;
+        let candidate = number === 1 ? baseSlug : `${baseSlug}-${number}`;
+        while (used.has(`${item.type}:${candidate}`)) candidate = `${baseSlug}-${++number}`;
+        item.routeSlug = candidate;
+        used.add(`${item.type}:${candidate}`);
       });
   });
 
@@ -231,7 +238,8 @@ function buildSitemap(items = []) {
   let latestOverall = "";
 
   routeItems.forEach((item) => {
-    const updatedDate = dateOnly(item.updatedAt || item.createdDate || item.createdAt);
+    if (item.status === 'unactived') return;
+    const updatedDate = dateOnly(item.contentUpdatedAt || item.createdDate || item.createdAt);
     if (!updatedDate) return;
     if (!latestByType[item.type] || updatedDate > latestByType[item.type]) latestByType[item.type] = updatedDate;
     if (!latestOverall || updatedDate > latestOverall) latestOverall = updatedDate;
@@ -243,17 +251,12 @@ function buildSitemap(items = []) {
     paths.set(path, { ...options, ...(lastmod ? { lastmod } : {}) });
   });
 
-  if (!routeItems.length) {
-    FALLBACK_CONTENT_URLS.forEach((path) => {
-      paths.set(path, { changefreq: "monthly", priority: path.startsWith("/cac-thanh/") ? "0.8" : "0.7" });
-    });
-  }
 
   routeItems.forEach((item) => {
     const path = contentPath(item);
     if (!path) return;
     paths.set(path, {
-      lastmod: dateOnly(item.updatedAt || item.createdDate || item.createdAt),
+      lastmod: dateOnly(item.contentUpdatedAt || item.createdDate || item.createdAt),
       changefreq: item.type === "events" ? "weekly" : "monthly",
       priority: item.type === "saints" ? "0.8" : "0.7",
       image: /^https?:\/\//i.test(String(item.image || "")) ? String(item.image) : "",
@@ -278,15 +281,12 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const items = await fetchContentItems();
+    const items = (await contentStore.all()).map(item => ({ ...item }));
     res.setHeader("Content-Type", "application/xml; charset=utf-8");
     res.setHeader("Cache-Control", "public, s-maxage=60, stale-while-revalidate=300");
     res.statusCode = 200;
-    res.end(buildSitemap(items));
+    res.end(req.method === 'HEAD' ? '' : buildSitemap(items));
   } catch (error) {
-    res.setHeader("Content-Type", "application/xml; charset=utf-8");
-    res.setHeader("Cache-Control", "public, s-maxage=60, stale-while-revalidate=300");
-    res.statusCode = 200;
-    res.end(buildSitemap());
+    contentStore.unavailable(res);
   }
 };

@@ -1,4 +1,5 @@
 const fs = require("fs");
+const contentStore = require('../lib/content-store');
 const path = require("path");
 
 const SITE_URL = "https://www.baigiangtrennui.com";
@@ -97,8 +98,10 @@ function contentRouteCreatedAt(item = {}) {
 
 function assignContentRouteSlugs(items = []) {
   const grouped = new Map();
+  const used = new Set(items.filter(item => item.seoSlug).map(item => item.seoSlug));
 
   items.forEach((item) => {
+    if (item.seoSlug) { item.routeSlug = item.seoSlug; return; }
     const baseSlug = contentBaseSlug(item);
     if (!baseSlug) return;
     const group = grouped.get(baseSlug) || [];
@@ -110,7 +113,11 @@ function assignContentRouteSlugs(items = []) {
     group
       .sort((first, second) => contentRouteCreatedAt(first).localeCompare(contentRouteCreatedAt(second)) || String(first.id || "").localeCompare(String(second.id || "")))
       .forEach((item, index) => {
-        item.routeSlug = index === 0 ? baseSlug : `${baseSlug}-${index + 1}`;
+        let number = index + 1;
+        let candidate = number === 1 ? baseSlug : `${baseSlug}-${number}`;
+        while (used.has(candidate)) candidate = `${baseSlug}-${++number}`;
+        item.routeSlug = candidate;
+        used.add(candidate);
       });
   });
 
@@ -189,7 +196,7 @@ function sanitizeContentHtml(value) {
 
     if (name === "a") {
       const href = String(attributes.href || "").trim();
-      const safeHref = /^(https?:\/\/|mailto:|#)/i.test(href) ? href : "";
+      const safeHref = /^(https?:\/\/|mailto:|#|\/(?!\/))/i.test(href) ? href : "";
       const title = attributes.title ? ` title="${escapeHtml(attributes.title)}"` : "";
       const hrefAttribute = safeHref ? ` href="${escapeHtml(safeHref)}"` : "";
       return `<a${hrefAttribute}${title} target="_blank" rel="noopener noreferrer">`;
@@ -272,7 +279,7 @@ function enrichTemplate(template, type, item) {
   const image = absoluteUrl(item.image, FALLBACK_IMAGE);
   const categoryUrl = `${SITE_URL}/${TYPE_PATHS[type]}`;
   const published = schemaDate(item.createdDate || item.createdAtText || item.createdAt);
-  const modified = schemaDate(item.updatedAt || item.createdDate || item.createdAtText || item.createdAt);
+  const modified = schemaDate(item.contentUpdatedAt || item.createdDate || item.createdAtText || item.createdAt);
   const schema = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -335,28 +342,16 @@ async function fetchDocumentById(id) {
 }
 
 async function fetchContentByType(type) {
-  const typeItems = [];
-  let pageToken = "";
-  do {
-    const url = new URL(`https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents/contents`);
-    url.searchParams.set("key", FIREBASE_API_KEY);
-    url.searchParams.set("pageSize", "300");
-    if (pageToken) url.searchParams.set("pageToken", pageToken);
-    const response = await fetch(url);
-    if (!response.ok) throw new Error(`Firestore returned ${response.status}`);
-    const data = await response.json();
-    (data.documents || [])
-      .map(documentToItem)
-      .filter((item) => item.type === type)
-      .forEach((item) => typeItems.push(item));
-    pageToken = data.nextPageToken || "";
-  } while (pageToken);
-  return assignContentRouteSlugs(typeItems);
+  return assignContentRouteSlugs((await contentStore.query('type', type)).map(item => ({ ...item })));
 }
 
 async function fetchDocumentBySlug(type, slug) {
   const requestedSlug = slugifyText(decodeURIComponent(String(slug || "")));
   if (!requestedSlug) return null;
+  const pinned = (await contentStore.query('seoSlug', requestedSlug)).find(item => item.type === type);
+  if (pinned) return pinned;
+  const alias = (await contentStore.query('previousSlugs', requestedSlug, 'ARRAY_CONTAINS')).find(item => item.type === type);
+  if (alias) return alias;
   const typeItems = await fetchContentByType(type);
   const matchingSlugs = (item) => [contentRouteSlug(item), item.slug, item.title, item.ref, item.meta, item.id]
     .map(slugifyText)
@@ -417,15 +412,13 @@ module.exports = async function handler(req, res) {
     }
 
     const html = enrichTemplate(template, type, item);
+    const publicItem = JSON.stringify(item).replace(/</g, '\\u003c');
     res.statusCode = 200;
     res.setHeader("Content-Type", "text/html; charset=utf-8");
     res.setHeader("Cache-Control", "public, s-maxage=300, stale-while-revalidate=3600");
-    res.end(req.method === "HEAD" ? "" : html);
+    res.end(req.method === "HEAD" ? "" : html.replace('</head>', `<script id="seoDetailContent" type="application/json">${publicItem}</script></head>`));
   } catch (error) {
-    // Keep the existing client-rendered page available if Firestore is temporarily unavailable.
-    res.statusCode = 200;
-    res.setHeader("Content-Type", "text/html; charset=utf-8");
-    res.setHeader("Cache-Control", "public, s-maxage=30, stale-while-revalidate=120");
-    res.end(req.method === "HEAD" ? "" : template);
+    contentStore.unavailable(res);
   }
 };
+module.exports.helpers = { assignContentRouteSlugs, contentPath, escapeHtml, repairMojibakeText };

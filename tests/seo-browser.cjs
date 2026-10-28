@@ -1,0 +1,54 @@
+const assert = require('node:assert/strict');
+const os = require('node:os');
+const path = require('node:path');
+const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
+(async () => {
+  process.argv.push('--fixture');
+  const server = require('../scripts/seo-preview.cjs');
+  await new Promise(resolve => server.listening ? resolve() : server.once('listening', resolve));
+  const browser = await chromium.launch({ headless: true, channel: process.env.BROWSER_CHANNEL || 'msedge' });
+  try {
+    const context = await browser.newContext({ viewport: { width: 1365, height: 900 } });
+    // Keep the browser test deterministic and prevent analytics/database writes.
+    await context.route('**/*', route => new URL(route.request().url()).hostname === '127.0.0.1' ? route.continue() : route.abort());
+    const page = await context.newPage(); const errors = [];
+    page.on('pageerror', error => errors.push(error.message));
+    await page.goto('http://127.0.0.1:4175/bai-viet?page=2');
+    await page.waitForFunction(() => document.querySelectorAll('.category-card').length === 3);
+    assert.equal(await page.locator('.category-card').count(), 3);
+    assert.equal(await page.locator('link[rel=canonical]').getAttribute('href'), 'https://www.baigiangtrennui.com/bai-viet?page=2');
+    await page.locator('#categoryPagination a[data-page="1"]').click();
+    assert.equal(await page.locator('.category-card').count(), 9);
+    assert.equal(new URL(page.url()).search, '');
+    await page.locator('#categorySearch').fill('Bài suy niệm 11');
+    assert.equal(await page.locator('.category-card').count(), 1);
+    await page.locator('#categorySearch').fill('');
+    assert.equal(await page.locator('.category-card').count(), 9);
+    await page.evaluate(() => { document.documentElement.style.scrollBehavior = 'auto'; window.scrollTo({ top: 0, behavior: 'instant' }); });
+    const screenshot = path.join(os.tmpdir(), 'kito-seo-category-desktop.png');
+    await page.screenshot({ path: screenshot, fullPage: true });
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
+    assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
+    await page.screenshot({ path: path.join(os.tmpdir(), 'kito-seo-category-mobile.png'), fullPage: true });
+    await page.goto('http://127.0.0.1:4175/bai-viet/bai-suy-niem-0');
+    await page.waitForFunction(() => document.querySelector('h1')?.textContent === 'Bài suy niệm 0');
+    assert.equal(await page.locator('meta[name=robots]').getAttribute('content'), 'index, follow, max-image-preview:large');
+    assert.equal(await page.locator('.detail-body a').first().getAttribute('href'), '/giao-ly');
+    await page.goto('http://127.0.0.1:4175/');
+    await page.waitForFunction(() => document.querySelectorAll('#articlesList .article-card').length === 3);
+    assert.equal(await page.locator('#articlesList .article-card').count(), 3);
+    await page.goto('http://127.0.0.1:4175/gop-y.html');
+    assert.equal(new URL(page.url()).pathname, '/gop-y');
+    assert(!(await page.title()).includes('Ã'));
+    assert.deepEqual(errors, []);
+    const nojs = await browser.newContext({ javaScriptEnabled: false });
+    const bot = await nojs.newPage();
+    await bot.goto('http://127.0.0.1:4175/bai-viet?page=2');
+    assert.equal(await bot.locator('.category-card').count(), 3);
+    await bot.locator('#categoryPagination a').first().click();
+    assert.equal(await bot.locator('.category-card').count(), 9);
+    console.log('PASS: desktop/mobile, pagination, search, JS-disabled crawl, offline detail fallback, feedback redirect; no page errors.');
+    console.log(screenshot);
+  } finally { await browser.close(); server.close(); }
+})().catch(error => { console.error(error); process.exitCode = 1; });

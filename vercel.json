@@ -1,6 +1,9 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "functions": {
+    "api/home-page.js": {
+      "includeFiles": "index.html"
+    },
     "api/detail-page.js": {
       "includeFiles": "detail.html"
     },
@@ -8,7 +11,13 @@
       "includeFiles": "category.html"
     }
   },
+  "redirects": [
+    { "source": "/gop-y.html", "destination": "/gop-y", "permanent": true },
+    { "source": "/index.html", "destination": "/", "permanent": true }
+  ],
   "rewrites": [
+    { "source": "/", "destination": "/api/home-page" },
+    { "source": "/gop-y", "destination": "/gop-y.html" },
     {
       "source": "/sitemap.xml",
       "destination": "/api/sitemap"

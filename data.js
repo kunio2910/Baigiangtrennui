@@ -250,8 +250,10 @@ function contentRouteCreatedAt(item = {}) {
 
 function assignContentRouteSlugs(items = []) {
   const grouped = new Map();
+  const used = new Set(items.filter(item => item.seoSlug).map(item => item.seoSlug));
 
   items.forEach((item) => {
+    if (item.seoSlug) { item.routeSlug = item.seoSlug; return; }
     const baseSlug = contentBaseSlug(item);
     if (!baseSlug) return;
     const group = grouped.get(baseSlug) || [];
@@ -263,7 +265,11 @@ function assignContentRouteSlugs(items = []) {
     group
       .sort((first, second) => contentRouteCreatedAt(first).localeCompare(contentRouteCreatedAt(second)) || String(first.id || "").localeCompare(String(second.id || "")))
       .forEach((item, index) => {
-        item.routeSlug = index === 0 ? baseSlug : `${baseSlug}-${index + 1}`;
+        let number = index + 1;
+        let candidate = number === 1 ? baseSlug : `${baseSlug}-${number}`;
+        while (used.has(candidate)) candidate = `${baseSlug}-${++number}`;
+        item.routeSlug = candidate;
+        used.add(candidate);
       });
   });
 
@@ -359,6 +365,12 @@ async function seedDefaultContentIfEmpty(force = false) {
 }
 
 async function getContent() {
+  const embedded = document.getElementById('seoContent');
+  if (embedded && !/\/(admin|accounts)\.html$/.test(window.location.pathname)) {
+    const content = JSON.parse(embedded.textContent);
+    CONTENT_TYPES.forEach(type => { content[type] = (content[type] || []).map(normalizeContentItem); });
+    return content;
+  }
   await seedDefaultContentIfEmpty();
   const { db } = requireFirebase();
   const snapshot = await db.collection("contents").get();
@@ -399,12 +411,40 @@ async function getContent() {
   return content;
 }
 
+// Freeze every legacy route before a rename/delete can renumber duplicate titles.
+async function pinLegacyContentRoutes(db) {
+  const snapshot = await db.collection('contents').get();
+  const items = [];
+  snapshot.forEach(doc => items.push({ ...doc.data(), id: doc.id }));
+  CONTENT_TYPES.forEach(type => assignContentRouteSlugs(items.filter(item => item.type === type)));
+  const legacy = items.filter(item => CONTENT_TYPE_PATHS[item.type] && !item.seoSlug);
+  for (let offset = 0; offset < legacy.length; offset += 400) {
+    const batch = db.batch();
+    legacy.slice(offset, offset + 400).forEach(item => {
+      item.seoSlug = item.routeSlug;
+      batch.set(db.collection('contents').doc(item.id), { seoSlug: item.seoSlug }, { merge: true });
+    });
+    await batch.commit();
+  }
+  return items;
+}
+
 async function saveContentItem(type, item) {
   const { db } = requireFirebase();
+  const existingItems = await pinLegacyContentRoutes(db);
   const id = item.id || `${type}-${Date.now()}`;
   const ref = db.collection("contents").doc(id);
-  const exists = (await ref.get()).exists;
+  const previous = existingItems.find(entry => entry.id === id);
+  const exists = Boolean(previous);
   const preparedItem = normalizeContentItem(item);
+  const seoSlug = slugifyText(preparedItem.seoSlug || previous?.seoSlug || `${contentBaseSlug(preparedItem)}-${id}`);
+  if (existingItems.some(entry => entry.id !== id && entry.type === type &&
+      (entry.seoSlug === seoSlug || (entry.previousSlugs || []).includes(seoSlug)))) {
+    throw new Error('Đường dẫn đã được sử dụng. Vui lòng chọn đường dẫn khác.');
+  }
+  const contentFields = ['title', 'description', 'bodyHtml', 'image', 'meta', 'date', 'sourceUrl', 'status', 'seoSlug'];
+  const contentChanged = !previous || contentFields.some(key =>
+    String((key === 'seoSlug' ? seoSlug : preparedItem[key]) ?? previous?.[key] ?? '') !== String(previous?.[key] ?? ''));
   const payload = {
     ...preparedItem,
     id,
@@ -413,7 +453,11 @@ async function saveContentItem(type, item) {
     status: preparedItem.status || "actived",
     createdDate: preparedItem.createdDate || new Date().toISOString(),
     updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+    seoSlug,
+    previousSlugs: [...new Set([...(previous?.previousSlugs || []),
+      ...(previous?.seoSlug && previous.seoSlug !== seoSlug ? [previous.seoSlug] : [])])],
   };
+  if (contentChanged) payload.contentUpdatedAt = firebase.firestore.FieldValue.serverTimestamp();
 
   if (!exists) {
     payload.createdAt = firebase.firestore.FieldValue.serverTimestamp();
@@ -448,6 +492,7 @@ async function updateContentOrder(type, orderedIds) {
 
 async function deleteContentItem(id) {
   const { db } = requireFirebase();
+  await pinLegacyContentRoutes(db);
   await db.collection("contents").doc(id).delete();
 }
 
@@ -555,6 +600,7 @@ async function savePrayerRequest(id, payload) {
 
 async function approvePrayerRequest(id, payload) {
   const { db } = requireFirebase();
+  const existingItems = await pinLegacyContentRoutes(db);
   const displayName = payload.anonymous ? "Anonymous" : payload.displayName || "Anonymous";
   const prayerTitle = repairMojibakeText(String(payload.prayerTitle || "").trim() || `Lời cầu nguyện của ${displayName}`);
 
@@ -562,6 +608,7 @@ async function approvePrayerRequest(id, payload) {
   if (!prayerText) throw new Error("Lời cầu nguyện không được để trống.");
 
   const contentId = `prayer-request-${id}`;
+  const previous = existingItems.find(item => item.id === contentId);
   const batch = db.batch();
   batch.set(
     db.collection("prayerRequests").doc(id),
@@ -589,9 +636,11 @@ async function approvePrayerRequest(id, payload) {
       image: fallbackImage,
       status: "actived",
       source: "prayer-request",
-      createdDate: new Date().toISOString(),
+      seoSlug: previous?.seoSlug || slugifyText(`${prayerTitle}-${contentId}`),
+      contentUpdatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      createdDate: previous?.createdDate || new Date().toISOString(),
       updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      createdAt: previous?.createdAt || firebase.firestore.FieldValue.serverTimestamp(),
     },
     { merge: true }
   );
