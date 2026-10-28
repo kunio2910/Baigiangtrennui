@@ -86,8 +86,9 @@ test('HTML encoding and configured feedback route agree', () => {
     const html = fs.readFileSync(file, 'utf8'); assert(!/Ã|Ä|Æ|áº|á»/.test(html), file);
   }
   const config = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
-  assert(config.rewrites.some(x => x.source === '/gop-y' && x.destination === '/gop-y.html'));
-  assert(config.redirects.some(x => x.source === '/gop-y.html' && x.destination === '/gop-y'));
+  assert(config.routes.some(x => x.src === '^/gop-y$' && x.dest === '/gop-y.html'));
+  assert(config.routes.some(x => x.headers?.Location === '/gop-y' && x.status === 308));
+  assert(config.routes.findIndex(x => x.src === '^/$') < config.routes.findIndex(x => x.handle === 'filesystem'));
 });
 test('Admin edits pin existing URLs, record aliases, and keep rating/order timestamps separate', async () => {
   const records = new Map([

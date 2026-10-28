@@ -11,8 +11,8 @@ const root = path.resolve(__dirname, '..');
 const server = http.createServer(async (req, res) => {
   try {
     const url = new URL(req.url, 'http://localhost');
-    const redirect = config.redirects.find(x => x.source === url.pathname);
-    if (redirect) { res.writeHead(308, { Location: redirect.destination }); res.end(); return; }
+    const route = config.routes.find(x => x.src && new RegExp(x.src).test(url.pathname));
+    if (route?.status) { res.writeHead(route.status, route.headers); res.end(); return; }
     req.query = Object.fromEntries(url.searchParams);
     const [category, slug] = url.pathname.split('/').filter(Boolean);
     let handler;
@@ -20,8 +20,7 @@ const server = http.createServer(async (req, res) => {
     if (url.pathname === '/sitemap.xml') handler = 'sitemap';
     if (types[category]) { handler = slug ? 'detail-page' : 'category-page'; Object.assign(req.query, { type: types[category], slug }); }
     if (handler) { await require(`../api/${handler}`)(req, res); return; }
-    const rewrite = config.rewrites.find(x => x.source === url.pathname);
-    const requested = rewrite?.destination || url.pathname;
+    const requested = route?.dest || url.pathname;
     const file = path.resolve(root, '.' + requested);
     if (!file.startsWith(root + path.sep) || /[/\\](\.git|lib|api|tests|scripts)[/\\]/.test(file) || !fs.existsSync(file) || !fs.statSync(file).isFile()) { res.writeHead(404); res.end(); return; }
     const mime = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.txt': 'text/plain; charset=utf-8' };

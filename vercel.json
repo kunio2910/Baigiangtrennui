@@ -11,76 +11,95 @@
       "includeFiles": "category.html"
     }
   },
-  "redirects": [
-    { "source": "/gop-y.html", "destination": "/gop-y", "permanent": true },
-    { "source": "/index.html", "destination": "/", "permanent": true }
-  ],
-  "rewrites": [
-    { "source": "/", "destination": "/api/home-page" },
-    { "source": "/gop-y", "destination": "/gop-y.html" },
+  "routes": [
     {
-      "source": "/sitemap.xml",
-      "destination": "/api/sitemap"
+      "src": "^/gop-y\\.html$",
+      "headers": {
+        "Location": "/gop-y"
+      },
+      "status": 308
     },
     {
-      "source": "/cac-thanh",
-      "destination": "/api/category-page?type=saints"
+      "src": "^/index\\.html$",
+      "headers": {
+        "Location": "/"
+      },
+      "status": 308
     },
     {
-      "source": "/nha-tho",
-      "destination": "/api/category-page?type=churches"
+      "src": "^/$",
+      "dest": "/api/home-page"
     },
     {
-      "source": "/bai-viet",
-      "destination": "/api/category-page?type=articles"
+      "src": "^/gop-y$",
+      "dest": "/gop-y.html"
     },
     {
-      "source": "/su-kien",
-      "destination": "/api/category-page?type=events"
+      "src": "^/sitemap\\.xml$",
+      "dest": "/api/sitemap"
     },
     {
-      "source": "/cau-nguyen",
-      "destination": "/api/category-page?type=prayers"
+      "src": "^/cac-thanh$",
+      "dest": "/api/category-page?type=saints"
     },
     {
-      "source": "/giao-ly",
-      "destination": "/api/category-page?type=catechism"
+      "src": "^/nha-tho$",
+      "dest": "/api/category-page?type=churches"
     },
     {
-      "source": "/gui-loi-cau-nguyen",
-      "destination": "/prayer-request.html"
+      "src": "^/bai-viet$",
+      "dest": "/api/category-page?type=articles"
     },
     {
-      "source": "/kham-pha-duc-tin",
-      "destination": "/faith-discovery.html"
+      "src": "^/su-kien$",
+      "dest": "/api/category-page?type=events"
     },
     {
-      "source": "/hanh-trinh-kinh-thanh",
-      "destination": "/hanh-trinh-kinh-thanh-test.html"
+      "src": "^/cau-nguyen$",
+      "dest": "/api/category-page?type=prayers"
     },
     {
-      "source": "/cac-thanh/:slug",
-      "destination": "/api/detail-page?type=saints&slug=:slug"
+      "src": "^/giao-ly$",
+      "dest": "/api/category-page?type=catechism"
     },
     {
-      "source": "/nha-tho/:slug",
-      "destination": "/api/detail-page?type=churches&slug=:slug"
+      "src": "^/gui-loi-cau-nguyen$",
+      "dest": "/prayer-request.html"
     },
     {
-      "source": "/bai-viet/:slug",
-      "destination": "/api/detail-page?type=articles&slug=:slug"
+      "src": "^/kham-pha-duc-tin$",
+      "dest": "/faith-discovery.html"
     },
     {
-      "source": "/su-kien/:slug",
-      "destination": "/api/detail-page?type=events&slug=:slug"
+      "src": "^/hanh-trinh-kinh-thanh$",
+      "dest": "/hanh-trinh-kinh-thanh-test.html"
     },
     {
-      "source": "/cau-nguyen/:slug",
-      "destination": "/api/detail-page?type=prayers&slug=:slug"
+      "src": "^/cac-thanh/([^/]+)$",
+      "dest": "/api/detail-page?type=saints&slug=$1"
     },
     {
-      "source": "/giao-ly/:slug",
-      "destination": "/api/detail-page?type=catechism&slug=:slug"
+      "src": "^/nha-tho/([^/]+)$",
+      "dest": "/api/detail-page?type=churches&slug=$1"
+    },
+    {
+      "src": "^/bai-viet/([^/]+)$",
+      "dest": "/api/detail-page?type=articles&slug=$1"
+    },
+    {
+      "src": "^/su-kien/([^/]+)$",
+      "dest": "/api/detail-page?type=events&slug=$1"
+    },
+    {
+      "src": "^/cau-nguyen/([^/]+)$",
+      "dest": "/api/detail-page?type=prayers&slug=$1"
+    },
+    {
+      "src": "^/giao-ly/([^/]+)$",
+      "dest": "/api/detail-page?type=catechism&slug=$1"
+    },
+    {
+      "handle": "filesystem"
     }
   ]
 }
