@@ -1,5 +1,19 @@
 # Kito
 
+IndexNow automatically submits the article URL, old aliases, category and homepage
+after admin saves, deletes or approves a prayer. The verification key is a public
+root-level text file. The API accepts only same-origin JSON requests containing
+canonical URLs on this domain, with bounded batches and per-instance rate limiting.
+Failed submissions remain in the admin browser's localStorage and retry after one
+minute, when connectivity returns, or on the next authenticated admin page load.
+Keep that browser's storage until pending notifications are delivered. There is no
+server-side durable queue; changes made directly through Firestore/imports bypass
+these admin hooks. Run `node tests/indexnow.cjs` to test the submission endpoint.
+
+Google does not participate in IndexNow. Regular articles continue to be discovered
+through the dynamic sitemap and internal links; Google's Indexing API supports only
+eligible job postings and livestream pages, not these articles.
+
 ## SEO and local verification
 
 The Vercel handlers render homepage cards, category pagination and article content into

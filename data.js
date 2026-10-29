@@ -464,6 +464,9 @@ async function saveContentItem(type, item) {
   }
 
   await ref.set(payload, { merge: true });
+  if (contentChanged && CONTENT_TYPE_PATHS[type]) {
+    await queueIndexNowChanges(type, [previous, { ...payload, routeSlug: seoSlug }]);
+  }
   return id;
 }
 
@@ -492,8 +495,56 @@ async function updateContentOrder(type, orderedIds) {
 
 async function deleteContentItem(id) {
   const { db } = requireFirebase();
-  await pinLegacyContentRoutes(db);
+  const items = await pinLegacyContentRoutes(db);
   await db.collection("contents").doc(id).delete();
+  const deleted = items.find(item => item.id === id);
+  if (deleted) await queueIndexNowChanges(deleted.type, [deleted]);
+}
+
+const INDEXNOW_QUEUE_KEY = 'kito-indexnow-pending-v1';
+let indexNowFlushing = false;
+let indexNowRetryTimer;
+async function queueIndexNowChanges(type, items) {
+  if (!CONTENT_TYPE_PATHS[type]) return;
+  try {
+    const pending = JSON.parse(localStorage.getItem(INDEXNOW_QUEUE_KEY) || '[]');
+    const urls = items.filter(Boolean).flatMap(item => [contentDetailUrl(type, item),
+      ...(item.previousSlugs || []).map(slug => `/${CONTENT_TYPE_PATHS[type]}/${slug}`)]);
+    pending.push(...urls.map(path => `https://www.baigiangtrennui.com${path}`),
+      `https://www.baigiangtrennui.com/${CONTENT_TYPE_PATHS[type]}`, 'https://www.baigiangtrennui.com/');
+    localStorage.setItem(INDEXNOW_QUEUE_KEY, JSON.stringify([...new Set(pending)]));
+    await flushIndexNowChanges();
+  } catch (error) { console.warn('Không thể lưu thông báo IndexNow:', error); }
+}
+async function flushIndexNowChanges() {
+  if (indexNowFlushing || window.location.hostname !== 'www.baigiangtrennui.com') return;
+  indexNowFlushing = true;
+  try {
+    for (;;) {
+      const pending = JSON.parse(localStorage.getItem(INDEXNOW_QUEUE_KEY) || '[]');
+      if (!pending.length) break;
+      const batch = pending.slice(0, 20);
+      const response = await fetch('/api/indexnow', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ urls: batch }), signal: AbortSignal.timeout(15000),
+      });
+      if (![200, 202].includes(response.status)) throw new Error(`IndexNow: ${response.status}`);
+      const result = await response.json();
+      if (!result.accepted) throw new Error('IndexNow chưa tiếp nhận');
+      const current = JSON.parse(localStorage.getItem(INDEXNOW_QUEUE_KEY) || '[]');
+      localStorage.setItem(INDEXNOW_QUEUE_KEY, JSON.stringify(current.filter(url => !batch.includes(url))));
+    }
+  } catch (error) {
+    console.warn('Bài đã được lưu; thông báo IndexNow sẽ được thử lại.', error);
+    clearTimeout(indexNowRetryTimer);
+    indexNowRetryTimer = setTimeout(flushIndexNowChanges, 60000);
+  } finally { indexNowFlushing = false; }
+}
+if (/\/admin\.html$/.test(window.location.pathname)) {
+  document.addEventListener('DOMContentLoaded', () => {
+    if (typeof isAdmin === 'function') isAdmin().then(admin => { if (admin) flushIndexNowChanges(); }).catch(console.warn);
+  });
+  window.addEventListener('online', flushIndexNowChanges);
 }
 
 async function submitContentRating(id, ratings) {
@@ -645,6 +696,7 @@ async function approvePrayerRequest(id, payload) {
     { merge: true }
   );
   await batch.commit();
+  await queueIndexNowChanges('prayers', [{ id: contentId, seoSlug: previous?.seoSlug || slugifyText(`${prayerTitle}-${contentId}`) }]);
 }
 
 async function deletePrayerRequest(id) {

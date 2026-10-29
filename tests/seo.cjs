@@ -100,6 +100,7 @@ test('Admin edits pin existing URLs, record aliases, and keep rating/order times
     batch: () => { const writes = []; return { set: (doc, patch) => writes.push(() => doc.set(patch)), commit: async () => { for (const write of writes) await write(); } }; } };
   let stamp = 0;
   const context = vm.createContext({ requireFirebase: () => ({ db }),
+    queueIndexNowChanges: async () => {},
     firebase: { firestore: { FieldValue: { serverTimestamp: () => `stamp-${++stamp}`, increment: n => n } } },
     CONTENT_TYPES: ['articles'], CONTENT_TYPE_PATHS: { articles: 'bai-viet' },
     normalizeContentItem: item => item,
